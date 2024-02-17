@@ -1,0 +1,336 @@
+.erp-field-pili_sup_id {
+    width: 150px;
+}
+
+.erp-field-pili_prd_id {
+    width: 120px;
+}
+
+.erp-field-prd_supplier_item {
+    width: 100px;
+}
+
+.erp-field-prd_our_item_no {
+    width: 70px;
+}
+
+.erp-field-prd_images_url {
+    width: 150px;
+    max-width: 150px;
+    height: 80px;
+}
+
+.erp-field-prd_image_url {
+    width: 150px;
+    max-width: 150px;
+    height: 80px;
+}
+
+.erp-field-prd_description {
+    width: 120px;
+}
+
+.erp-field-prd_sup {
+    width: 80px;
+}
+
+.erp-field-pili_upmv {
+    width: 80px;
+}
+
+.erp-field-pili_up {
+    width: 80px;
+}
+
+.erp-field-pili_unit_id {
+    width: 100px;
+}
+
+.btn-group .dropdown-menu.show {
+    transform: translate3d(0px, 34px, 0px) !important;
+}
+
+[class^="i-"] {
+    font-weight: 600 !important;
+}
+
+.btn-field-grp button {
+    display: flex;
+    align-items: center;
+}
+
+#addContact [class^="i-"] {
+    line-height: 0 !important;
+}
+
+.erp-proformaInvoiceItem th {
+    min-width:100px;
+	font-size: 0.813rem;
+}
+
+.erp-purchaseOrderItem th {
+    min-width:100px;
+	font-size: 0.813rem;
+}
+
+.error {
+    color: red !important;
+}
+
+#id-erp-pili td .erp-field-prd_barcode, #id-erp-pili td .erp-field-supplier_id{min-width:130px;}
+#id-erp-pili td .erp-field-prd_hs_code{min-width:140px;}
+
+.pili-list .card-body .table-responsive {
+    overflow: auto;
+    max-height: calc(100vh - 300px);
+    position: relative;
+    border-collapse: collapse;
+	border-top:1px solid #dee2e6;
+	margin-top:10px;
+}
+
+.pili-list .card-body .table-responsive thead tr,
+.pili-list .card-body .table-responsive th {
+      background: white;
+      position: sticky;
+      top: 0; /* Don't forget this, required for the stickiness */
+      box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2);
+      border: 1px solid #dee2e6;
+      z-index: 1000;
+	  top: -1px;
+}
+
+#id-erp-pili .erp-field-prd_images_url {
+    width: 100px;
+    max-width: 100px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+#id-erp-pili .form-control:disabled {
+    background-color: transparent;
+}
+
+#id-erp-pili td {
+    vertical-align: middle !important;
+}
+
+#id-erp-pili .select2-container {
+    width: 230px !important;
+}
+
+#id-erp-pili .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 13px;
+}
+
+#id-erp-poli td .erp-field-prd_barcode, #id-erp-pili td .erp-field-poli_pi_id{min-width:130px;}
+#id-erp-poli td .erp-field-prd_hs_code{min-width:140px;}
+
+.poli-list .card-body .table-responsive {
+    overflow: auto;
+    max-height: calc(100vh - 300px);
+    position: relative;
+    border-collapse: collapse;
+	border-top:1px solid #dee2e6;
+	margin-top:10px;
+}
+
+.poli-list .card-body .table-responsive thead tr,
+.poli-list .card-body .table-responsive th {
+      background: white;
+      position: sticky;
+      top: 0; /* Don't forget this, required for the stickiness */
+      box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2);
+      border: 1px solid #dee2e6;
+      z-index: 1000;
+	  top: -1px;
+
+}
+
+#id-erp-poli .erp-field-prd_image_url {
+    width: 100px;
+    max-width: 100px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+#id-erp-poli .form-control:disabled {
+    background-color: transparent;
+}
+
+#id-erp-poli td {
+    vertical-align: middle !important;
+}
+
+#id-erp-poli .select2-container {
+    width: 230px !important;
+}
+
+#id-erp-poli .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 13px;
+}
+
+#id-erp-conli td .erp-field-prd_barcode, #id-erp-pili td .erp-field-poli_pi_id{min-width:130px;}
+#id-erp-conli td .erp-field-prd_hs_code{min-width:140px;}
+
+.coli-list .card-body .table-responsive {
+    overflow: auto;
+    max-height: calc(100vh - 300px);
+    position: relative;
+    border-collapse: collapse;
+	border-top:1px solid #dee2e6;
+	margin-top:10px;
+}
+
+.coli-list .card-body .table-responsive thead tr,
+.coli-list .card-body .table-responsive th {
+      background: white;
+      position: sticky;
+      top: 0; /* Don't forget this, required for the stickiness */
+      box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2);
+      border: 1px solid #dee2e6;
+      z-index: 1000;
+	  top: -1px;
+
+}
+
+#id-erp-conli .erp-field-prd_image_url {
+    width: 100px;
+    max-width: 100px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+#id-erp-conli .form-control:disabled {
+    background-color: transparent;
+}
+
+#id-erp-conli td {
+    vertical-align: middle !important;
+}
+
+#id-erp-conli .select2-container {
+    width: 230px !important;
+}
+
+#id-erp-conli .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 13px;
+}
+ //
+
+#id-erp-invli td .erp-field-prd_barcode, #id-erp-invli td .erp-field-invli_pi_id{min-width:130px;}
+#id-erp-invli td .erp-field-prd_hs_code{min-width:140px;}
+
+.invli-list .card-body .table-responsive {
+    overflow: auto;
+    max-height: calc(100vh - 300px);
+    position: relative;
+    border-collapse: collapse;
+	border-top:1px solid #dee2e6;
+	margin-top:10px;
+}
+
+.invli-list .card-body .table-responsive thead tr,
+.invli-list .card-body .table-responsive th {
+      background: white;
+      position: sticky;
+      top: 0; /* Don't forget this, required for the stickiness */
+      box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2);
+      border: 1px solid #dee2e6;
+      z-index: 1000;
+	  top: -1px;
+
+}
+
+#id-erp-invli .form-control:disabled {
+    background-color: transparent;
+}
+
+#id-erp-invli td {
+    vertical-align: middle !important;
+}
+
+#id-erp-invli .select2-container {
+    width: 230px !important;
+}
+
+#id-erp-invli .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 13px;
+}
+
+.erp-prd-form-submit .select2-container, .btn-field-grp .select2-container, .erp-form-submit .select2-container, .erp-purchase-form-submit .select2-container, .erp-inv-submit .select2-container{
+    width: 100% !important;
+}
+
+.breadcrumb-title{display: flex;align-items: center; justify-content: space-between; margin:0 0 1.25rem;}
+.breadcrumb-title .breadcrumb-left h4{margin-bottom:0px !important;}
+.select2-container--default .select2-selection--single{background: #f8f9fa !important;}
+textarea.form-control{height: calc(1.5em + 0.75rem + 2px);}
+
+.list-grid{margin:0 -15px;}
+.list-grid .list-item{width:20%; padding:0 15px; }
+
+
+table.dataTable{border-collapse: collapse !important;}
+
+.increment .filelabel{display: flex;align-items: center; justify-content: space-between;}
+.products-img-sec .multiple_row .clone{background: #f8f9fa;border: 1px solid #ced4da;min-height: 64px; border-radius: 0.25rem;}
+.products-img-sec .m-main{background: #f8f9fa; margin-top: -13px;}
+.products-img-sec .m-main .form-control{border:none; min-height:64px; margin: 0;}
+.products-img-sec .m-main .form-group{display: block; margin: 0px;}
+
+.s-acco-btn{margin-right:35px;}
+#accordionRightIcon .ul-card__v-space{margin: 15px 0 !important;}
+
+#id-erp-conli th, #id-erp-poli th, #id-erp-invli th{font-size: 0.813rem;}
+
+img{
+    object-fit: contain;
+}
+
+@media (max-width:1600px){
+
+.pavatar-upload .pavatar-preview > img{height:16vh !important;}
+
+}
+
+
+@media (max-width:1440px) {
+
+.select2-container{width:100% !important;}
+.pavatar-upload .pavatar-preview > img{height:23vh !important;}
+
+}
+
+@media (max-width: 1200px) {
+    .main-content-wrap.sidenav-open {
+        width: calc(100% - 120px) !important;
+    }
+	.pavatar-upload .pavatar-preview > img{height:13vh !important;}
+}
+
+@media (max-width:992px){
+
+.breadcrumb-title .breadcrumb-left h4{font-size:16px;}
+.list-grid .list-item{width: 33.333%;}
+.pavatar-upload .pavatar-preview > img{height:17vh !important;}
+
+}
+
+
+@media(max-width:767px) {
+    .erp-form-submit .select2-container {
+        width: 100% !important;
+    }
+
+	.breadcrumb-title{display:block;}
+	.breadcrumb-left{margin-bottom:10px;}
+	.breadcrumb-right{display: inline-block;}
+}
+
+@media(max-width:575px) {
+    .erp-select2 .btn-field-grp .select2-container {
+        width: 76% !important;
+    }
+	.list-grid .list-item{width: 50%;}
+}

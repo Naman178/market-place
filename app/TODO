@@ -1,0 +1,11 @@
+[ ] Proforma invoice item drag & drop using only # column
+[*] Proforma invoice item table padding reduce !
+[*] add new Proforma invoice item !
+[*] make new proforma invoice
+[*] enable/disable proforma invoice item !
+[ ] select2 plugin for supllier dropdown
+
+[ ] Setting Table -> Id(chars(45)), value(text), timestamps
+[ ] pili_unit__enum add common action
+[ ] Product edit/create Add Notes field
+

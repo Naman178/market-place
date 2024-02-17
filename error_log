@@ -1,0 +1,23 @@
+[22-Sep-2022 18:34:08 UTC] PHP Warning:  require(/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/vendor/autoload.php): Failed to open stream: No such file or directory in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:34:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php:34
+Stack trace:
+#0 /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php(21): require_once()
+#1 {main}
+  thrown in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:34:11 UTC] PHP Warning:  require(/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/vendor/autoload.php): Failed to open stream: No such file or directory in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:34:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php:34
+Stack trace:
+#0 /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php(21): require_once()
+#1 {main}
+  thrown in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:34:36 UTC] PHP Warning:  require(/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/../erp/vendor/autoload.php): Failed to open stream: No such file or directory in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:34:36 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/../erp/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php:34
+Stack trace:
+#0 /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php(21): require_once()
+#1 {main}
+  thrown in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/public/index.php on line 34
+[22-Sep-2022 18:35:24 UTC] PHP Warning:  require_once(/home2/cnhosxel/public_html/cybernetworks.net.au/erp../public/index.php): Failed to open stream: No such file or directory in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php on line 21
+[22-Sep-2022 18:35:24 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/cnhosxel/public_html/cybernetworks.net.au/erp../public/index.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php:21
+Stack trace:
+#0 {main}
+  thrown in /home2/cnhosxel/public_html/cybernetworks.net.au/erp/server.php on line 21
