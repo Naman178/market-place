@@ -9,7 +9,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\role\RoleController;
 use App\Http\Controllers\ProfileSettings\ProfileSettingsController;
 use App\Http\Controllers\Settings\SettingsController;
-
+use App\Http\Controllers\Category\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,4 +46,10 @@ Route::middleware(['auth'])->group(function () {
     //Settings Module
     Route::get('/settings',[SettingsController::class,'index'])->name('settings-index');
     Route::post('/settings/store',[SettingsController::class,'store'])->name('settings-store');
+
+    // Category module
+    Route::get('/category',[CategoryController::class,'index'])->name('category-index');
+    Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
+    Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category-edit');
+    Route::get('/category/delete/{id}', [CategoryController::class, 'remove'])->name('category-delete');
 });

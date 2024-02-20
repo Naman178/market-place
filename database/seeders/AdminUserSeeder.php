@@ -38,6 +38,12 @@ class AdminUserSeeder extends Seeder
         Permission::create(['name' => 'user-delete']);
         Permission::create(['name' => 'user-tab-show']);
         Permission::create(['name' => 'settings-tab-show']);
+        Permission::create(['name' => 'category-list']);
+        Permission::create(['name' => 'category-create']);
+        Permission::create(['name' => 'category-edit']);
+        Permission::create(['name' => 'category-delete']);
+        Permission::create(['name' => 'category-tab-show']);
+        
 
         // Creating the role
         $role = Role::create(['name' => 'Super Admin']);
