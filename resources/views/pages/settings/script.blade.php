@@ -5,30 +5,7 @@
         $("#preloader").show();
     });
 
-    /*xero settings submit ajax event */
-    $(".erp-form-submit").submit(function (e){
-        e.preventDefault();
-        var obj = {};
-        var $value = new FormData(this);
-        $value.forEach((value, key) => obj[key] = value);
-        var json = JSON.stringify(obj);
-        $.ajax({
-            url: "{{url('/settings/store')}}",
-            type:"POST",
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: $value,
-            dataType: 'json',
-            processData: false,
-            success:function(response){
-                $("#preloader").hide();
-                // toastr.info(response.success, response.title);
-                location.href = "{{route('xero-connect')}}";
-            }
-        });
-    });
+   
 
      /* pdf settings submit form event */
      $(document).on("click", ".settings_form_pdf", function(){
