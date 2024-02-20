@@ -25,7 +25,7 @@
             success:function(response){
                 $("#preloader").hide();
                 // toastr.info(response.success, response.title);
-                location.href = "{{route('xero-connect')}}";
+                location.reload();
             }
         });
     });
