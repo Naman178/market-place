@@ -5,7 +5,6 @@
         $("#preloader").show();
     });
 
-   
 
      /* pdf settings submit form event */
      $(document).on("click", ".settings_form_pdf", function(){

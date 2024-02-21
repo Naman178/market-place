@@ -26,6 +26,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('category-tab-show')
+                <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('category-index') }}">
+                        <i class="nav-icon i-Add-category"></i>
+                        <span class="nav-text">Category</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('settings-tab-show')
                 <li class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('settings-index') }}">

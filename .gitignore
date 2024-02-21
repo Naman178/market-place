@@ -1,1 +1,8 @@
+/vendor
 .env
+composer.lock
+/storage/*.key
+/storage/log/
+storage/debugbar/
+config/app.php
+config/database.php
