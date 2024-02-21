@@ -393,7 +393,7 @@
             var data_name = $(this).attr("data-name");
             var data_email = $(this).attr("data-email");
             var data_pass = $(this).attr("data-pass");
-            console.log();
+            
             $.ajax({
                 url: submit_url,
                 type:"POST",
@@ -429,5 +429,57 @@
             });
         });
 
+        // For category
+        $(document).on("click", ".erp-category-form", function (e) {
+            e.preventDefault();
+            $("#preloader").show();
+
+            var submitUrl = $('#category_form').attr("data-url");
+            var data_id = $('#category_form').attr("data-id");
+            var formData = new FormData($('#category_form')[0]);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Send AJAX request
+            $.ajax({
+                url: submitUrl,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (response) {
+                    $("#preloader").hide();
+
+                    if (response.success) {
+                        $('.error').text('');
+                        if ($(`.erp-id[name=${data_id}`).val() == 0) {
+                            var url = window.location.href;
+                            location.href = url.replace('new', response.data.id);
+                        } else {
+                            location.reload();
+                        }
+                    } else if (response.error) {
+                        handleFormErrors(response.error);
+                    }
+                },
+                error: function (error) {
+                    console.error('Ajax request failed:', error);
+                    $("#preloader").hide();
+                }
+            });
+        });
+
+        function handleFormErrors(errors) {
+            // Display errors next to corresponding form fields
+            $('#name_error').text(errors['name'] || '');
+            $('#image_error').text(errors['image'] || '');
+            $('#status_error').text(errors['status'] || '');
+            // Add more error handling for other fields if needed
+        }
     });
 </script>
