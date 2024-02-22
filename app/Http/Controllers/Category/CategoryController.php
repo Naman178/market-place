@@ -34,17 +34,25 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request){
+        
         if($request->ajax()){
-            if($request->id == "0"){
+            if($request->cid == "0"){
                 $validator = Validator::make($request->all(), [
                     'name' => 'required',
-                    'image' => 'required'
+                    'image' => 'required',
+                    'status' => 'required'
                 ]);
                 if ($validator->passes()){
                     $name = $request->name;
-                    $image = $request->image;
-                    
-                    $save_category = Category::create(['name'=>$name , 'image'=>$image]);
+                    $status = $request->status;
+
+                    if($request->hasFile('image'))
+                    {
+                        $image = $request->image ? uniqid() . '_' . trim($request->image->getClientOriginalName()) : '';
+                        $image ? $request->file('image')->move(public_path('storage/category_images/'),$image) : '';
+                    }
+
+                    $save_category = Category::create(['name'=>$name , 'image'=>$image, 'sys_state'=>$status]);
                     
                     session()->flash('success', 'Category created successfully!');
                     return response()->json([
@@ -60,15 +68,23 @@ class CategoryController extends Controller
             }else{
                 $validator = Validator::make($request->all(), [
                     'name' => 'required',
-                    'image' => 'required'
+                    'status' => 'required'
                 ]);
                 if ($validator->passes()){
-                    $category = Category::find($request->id);
+                    $category = Category::find($request->cid);
 
                     $name = $request->name;
-                    $image = $request->image;
-
-                    $category->update(['name'=>$name , 'image'=>$image]);
+                    $status = $request->status;
+                    if($request->hasFile('image'))
+                    {
+                        $image = $request->image ? uniqid() . '_' . trim($request->image->getClientOriginalName()) : '';
+                        $image ? $request->file('image')->move(public_path('storage/category_images/'),$image) : '';
+                    }
+                    else{
+                        $image = $request->old_image;
+                    }
+                   
+                    $category->update(['name'=>$name , 'image'=>$image, 'sys_state'=>$status]);
 
                     session()->flash('success', 'Category Updated successfully!');
                     return response()->json([
