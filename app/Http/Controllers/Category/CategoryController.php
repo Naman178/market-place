@@ -7,10 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
-
+use Carbon\Carbon;
 class CategoryController extends Controller
 {
     function __construct()
@@ -25,6 +23,12 @@ class CategoryController extends Controller
     {
         $category = Category::where('sys_state','!=','-1')->orderBy('id','desc')->get();
         return view('pages.category.category',compact('category'));
+    }
+
+    public function show($id)
+    {
+        $category = Category::where('id',$id)->first();
+        return view('pages.category.show',compact('category'));
     }
 
     public function edit($id)
@@ -52,7 +56,7 @@ class CategoryController extends Controller
                         $image ? $request->file('image')->move(public_path('storage/category_images/'),$image) : '';
                     }
 
-                    $save_category = Category::create(['name'=>$name , 'image'=>$image, 'sys_state'=>$status]);
+                    $save_category = Category::create(['name'=>$name , 'image'=>$image, 'sys_state'=>$status, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
                     
                     session()->flash('success', 'Category created successfully!');
                     return response()->json([
@@ -72,7 +76,6 @@ class CategoryController extends Controller
                 ]);
                 if ($validator->passes()){
                     $category = Category::find($request->cid);
-
                     $name = $request->name;
                     $status = $request->status;
                     if($request->hasFile('image'))
@@ -83,9 +86,9 @@ class CategoryController extends Controller
                     else{
                         $image = $request->old_image;
                     }
-                   
-                    $category->update(['name'=>$name , 'image'=>$image, 'sys_state'=>$status]);
 
+                    $category->update(['name'=>$name , 'image'=>$image, 'sys_state'=>$status, 'updated_at' => Carbon::now()]);
+                   
                     session()->flash('success', 'Category Updated successfully!');
                     return response()->json([
                         'success' => 'Category updated successfully!',

@@ -1,7 +1,7 @@
 <script>
     $('body').on('change', 'input[name="image"]', function(e) {
-        var imgprevid = $(this).closest('.input-file-col').find('.hidepreviewimg').attr('id');
-        var prevtitle = $(this).closest('.input-file-col').find('.title').attr('id');
+        var imgprevid = $('.image-prev-col').find('.hidepreviewimg').attr('id');
+        var prevtitle = $('.image-prev-col').find('.title').attr('id');
         console.log(imgprevid);
         console.log(prevtitle);
         $('#'+imgprevid).hide();

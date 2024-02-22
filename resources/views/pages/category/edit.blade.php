@@ -16,20 +16,22 @@
         height: auto;
         margin-bottom:0;
     }
-    .image-prev{
-        height: 100px;
+    .image-prev {
         width: 100px;
-        position: absolute;
+        height: 100px;
     }
-    .image-prev img{
-        position: absolute;
-        height: 100%;
+    .image-prev img {
         width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 
     .previewImgCls{
         display: none;
+    }
+
+    .input-group-append .input-group-text {
+        height: 32.6px;
     }
 </style>
 @endsection
@@ -63,7 +65,6 @@
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
                             <div class="form-group col-md-6 input-file-col">
-                                <?php $showFavIcon = (!empty($category->image)) ? 'display:inline-block' : ''; ?>
                                 <label for="category_image">Category Image</label>
                                 <div class="input-group mb-3">
                                     <div class="custom-file">
@@ -76,10 +77,6 @@
                                     </div>
                                 </div>
                                 <div class="error" style="color:red;" id="image_error"></div>
-                                <div class="image-prev">
-                                    <p class="title" id="category_image_title">@if(!empty($category->image)){{$category->image}}@endif</p>
-                                    <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($category->image)){{asset('storage/category_images/'.$category->image)}}@endif" style="{{$showFavIcon}}">
-                                </div>
                             </div>
                             <div class="form-group col-md-6 ">
                                 <label for="category_status" class="">Category status:</label>
@@ -96,6 +93,13 @@
                                     </label>
                                 </div>
                                 <div class="error" style="color:red;" id="status_error"></div>
+                            </div>
+                            <div class="col-md-6 image-prev-col">
+                                <?php $showImagePrev = (!empty($category->image)) ? 'display:inline-block' : ''; ?>
+                                <div class="image-prev">
+                                    <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($category->image)){{asset('storage/category_images/'.$category->image)}}@endif" style="{{$showImagePrev}}">
+                                </div>
+                                <p class="title" id="category_image_title">{{ $category->image ??  ''}}</p>
                             </div>
                         </div>
                     </form>
@@ -120,10 +124,6 @@
                                 </div>
                             </div>
                             <div class="error" style="color:red;" id="image_error"></div>
-                            <div class="image-prev">
-                                <p class="title" id="category_image_title"></p>
-                                <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
-                            </div>
                         </div>
                         <div class="form-group col-md-6 ">
                             <label for="category_status" class="">Category status:</label>
@@ -140,6 +140,12 @@
                                 </label>
                             </div>
                             <div class="error" style="color:red;" id="status_error"></div>
+                        </div>
+                        <div class="col-md-6 image-prev-col">
+                            <div class="image-prev">
+                                <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
+                            </div>
+                            <p class="title" id="category_image_title"></p>
                         </div>
                     </div>
                 </form>
