@@ -15,6 +15,18 @@
             flex-direction: column;
             align-items: flex-start;
         }
+
+        .image-prev{
+            height: 100px;
+            width: 100px;
+            position: relative;
+        }
+        .image-prev img{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
     </style>
 @endsection
 @section('main-content')
@@ -50,7 +62,11 @@
                             <tr>
                                 <td>{{$list->id}}</td>
                                 <td>{{$list->name}}</td>
-                                <td>{{$list->image}}</td>
+                                <td>
+                                    <div class="image-prev">
+                                        <img id="category_image_prev" src="@if(!empty($list->image)){{asset('storage/category_images/'.$list->image)}}@endif">
+                                    </div>
+                                </td>
                                 <td>{{Helper::dateFormatForView($list->created_at)}}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
