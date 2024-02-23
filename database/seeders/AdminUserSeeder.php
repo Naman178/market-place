@@ -42,7 +42,6 @@ class AdminUserSeeder extends Seeder
         Permission::create(['name' => 'category-create']);
         Permission::create(['name' => 'category-edit']);
         Permission::create(['name' => 'category-delete']);
-        Permission::create(['name' => 'category-show']);
         Permission::create(['name' => 'category-tab-show']);
         
 
