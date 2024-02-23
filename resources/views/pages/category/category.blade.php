@@ -58,9 +58,10 @@
                             </tr>
                         </thead>
                          <tbody>
+                            @php $count=1 @endphp
                             @foreach($category as $key => $list)
                             <tr>
-                                <td>{{$list->id}}</td>
+                                <td>{{$count}}</td>
                                 <td>{{$list->name}}</td>
                                 <td>
                                     <div class="image-prev">
@@ -75,6 +76,9 @@
                                         <span class="_dot _inline-dot"></span>
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
+                                    @can('category-show')
+                                        <a class="dropdown-item" href="{{route('category-show',$list->id)}}"><i class="nav-icon i-Double-Tap font-weight-bold" aria-hidden="true"> </i> View</a>
+                                    @endcan
                                     @can('category-edit')
                                         <a class="dropdown-item" href="{{route('category-edit',$list->id)}}"><i class="nav-icon i-Pen-2 font-weight-bold" aria-hidden="true"> </i> Edit</a>
                                     @endcan
@@ -84,6 +88,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            @php $count++ @endphp
                             @endforeach
                         </tbody>
                         <tfoot>
