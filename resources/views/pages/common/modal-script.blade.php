@@ -457,12 +457,10 @@
 
                     if (response.success) {
                         $('.error').text('');
-                        if ($(`.erp-id[name=${data_id}`).val() == 0) {
-                            var url = window.location.href;
-                            location.href = url.replace('new', response.data.id);
-                        } else {
-                            location.reload();
-                        }
+                        var redirectUrl = "{{ route('category-show', ['id' => ':id']) }}";
+                        redirectUrl = redirectUrl.replace(':id', response.data.id);
+                        console.log(redirectUrl);
+                        window.location.href = redirectUrl;
                     } else if (response.error) {
                         handleFormErrors(response.error);
                     }
