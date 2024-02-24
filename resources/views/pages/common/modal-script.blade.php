@@ -457,9 +457,7 @@
 
                     if (response.success) {
                         $('.error').text('');
-                        var redirectUrl = "{{ route('category-show', ['id' => ':id']) }}";
-                        redirectUrl = redirectUrl.replace(':id', response.data.id);
-                        console.log(redirectUrl);
+                        var redirectUrl = "{{ route('category-index') }}";
                         window.location.href = redirectUrl;
                     } else if (response.error) {
                         handleFormErrors(response.error);
@@ -473,11 +471,11 @@
         });
 
         function handleFormErrors(errors) {
-            // Display errors next to corresponding form fields
             $('#name_error').text(errors['name'] || '');
             $('#image_error').text(errors['image'] || '');
             $('#status_error').text(errors['status'] || '');
-            // Add more error handling for other fields if needed
+            $('#category_name').addClass(errors['name']?'is-invalid':'');
+            $('.image-input-wrapper').addClass(errors['image']?'is-invalid':'');
         }
     });
 </script>

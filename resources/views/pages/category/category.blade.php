@@ -8,6 +8,7 @@
 @endsection
 @section('page-css')
     <link rel="stylesheet" href="{{asset('assets/styles/vendor/datatables.min.css')}}">
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css " rel="stylesheet">
     <style>
         .custom-content {
             margin: auto;
@@ -26,6 +27,10 @@
             height: 100%;
             width: 100%;
             object-fit: cover;
+        }
+
+        .dropdown-item{
+            cursor: pointer;
         }
     </style>
 @endsection
@@ -76,14 +81,11 @@
                                         <span class="_dot _inline-dot"></span>
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
-                                    @can('category-show')
-                                        <a class="dropdown-item" href="{{route('category-show',$list->id)}}"><i class="nav-icon i-Double-Tap font-weight-bold" aria-hidden="true"> </i> View</a>
-                                    @endcan
                                     @can('category-edit')
                                         <a class="dropdown-item" href="{{route('category-edit',$list->id)}}"><i class="nav-icon i-Pen-2 font-weight-bold" aria-hidden="true"> </i> Edit</a>
                                     @endcan
                                     @can('category-delete')
-                                        <a class="dropdown-item" href="{{route('category-delete',$list->id)}}"><i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"> </i> Delete</a>
+                                        <div class="dropdown-item delete-btn" data-id="{{$list->id}}"><i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"> </i> Delete</div>
                                     @endcan
                                     </div>
                                 </td>
@@ -106,12 +108,13 @@
         </div>
     </div>
 </div>
+
 @endsection
 @section('page-js')
     <script src="{{asset('assets/js/vendor/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatables.script.js')}}"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js "></script>
 @endsection
 @section('bottom-js')
-<script type="text/javascript">
-</script>
+    @include('pages.category.script')
 @endsection
