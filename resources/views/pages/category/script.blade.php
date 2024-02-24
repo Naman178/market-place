@@ -1,7 +1,7 @@
 <script>
     $('body').on('change', 'input[name="image"]', function(e) {
-        var imgprevid = $('.image-prev-col').find('.hidepreviewimg').attr('id');
-        var prevtitle = $('.image-prev-col').find('.title').attr('id');
+        var imgprevid = $(this).siblings('.hidepreviewimg').attr('id');
+        var prevtitle = $(this).siblings('.title').attr('id');
         console.log(imgprevid);
         console.log(prevtitle);
         $('#'+imgprevid).hide();
@@ -43,4 +43,22 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    $('.delete-btn').click(function(event) {
+        event.preventDefault();
+        var id = $(this).attr("data-id");
+        Swal.fire({
+            title: 'Are you sure you want to delete this category?',
+            //text: 'If you delete this, it will be gone forever.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4caf50',
+            cancelButtonColor: '#f44336',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('category-delete', '') }}/" + id;
+            }
+        });
+    });
 </script>
