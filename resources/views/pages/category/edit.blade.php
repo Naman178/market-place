@@ -62,7 +62,7 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="name">Category Name</label>
-                                <input placeholder="Enter Category Name" class="form-control" id="category_name" name="name" type="text" value="{{ $category->name }}">
+                                <input placeholder="Enter Category Name" class="form-control input-error" id="category_name" name="name" type="text" value="{{ $category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
                             <div class="form-group col-md-12 input-file-col">
@@ -70,7 +70,7 @@
                                 <label for="category_image">Category Image</label>
                                 <label class="form-control filelabel mb-3 image-input-wrapper">
                                     <input type="hidden" name="old_image" value="@if(!empty($category->image)){{$category->image}}@endif">
-                                    <input type="file" name="image" id="category_image"  class="form-control image-input">
+                                    <input type="file" name="image" id="category_image"  class="form-control input-error image-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                     <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($category->image)){{asset('storage/category_images/'.$category->image)}}@endif" style="{{$showImagePrev}}">
                                     <span class="title" id="titleForLogo">{{ $category->image ??  ''}}</span>
@@ -101,14 +101,14 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label for="name">Category Name</label>
-                            {!! Form::text('name', null, array('placeholder' => 'Enter Category Name','class' => 'form-control' , 'id' => 'category_name')) !!}
+                            {!! Form::text('name', null, array('placeholder' => 'Enter Category Name','class' => 'form-control input-error' , 'id' => 'category_name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
                         <div class="form-group col-md-12 input-file-col">
                             <label for="category_image">Category Image</label>
                             <label class="form-control filelabel image-input-wrapper">
                                 <input type="hidden" name="old_image" value="">
-                                <input type="file" name="image" id="category_image"  class="image-input form-control">
+                                <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
                                 <span class="title" id="titleForLogo"></span>

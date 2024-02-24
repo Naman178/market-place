@@ -454,7 +454,7 @@
                 dataType: 'json',
                 success: function (response) {
                     $("#preloader").hide();
-
+                    $('.input-error').removeClass('is-invalid');
                     if (response.success) {
                         $('.error').text('');
                         var redirectUrl = "{{ route('category-index') }}";
