@@ -4,7 +4,7 @@
     $site = Settings::where('key','site_setting')->first();
 @endphp
 @section('title')
-    <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $category ? 'Edit: '.$category->id : 'New'}}</title>
+    <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $sub_category ? 'Edit: '.$sub_category->id : 'New'}}</title>
 @endsection
 @section('page-css')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -42,51 +42,51 @@
 @section('main-content')
 <div class="breadcrumb">
     <div class="col-sm-12 col-md-12">
-        <h4> <a href="{{route('dashboard')}}" class="text-uppercase">{{$site["value"]["site_name"] ?? "Infinity"}}</a> | <a href="{{route('category-index')}}">Category</a> | Category {{ $category ? 'Edit: '.$category->id : 'New'}} </a>
+        <h4> <a href="{{route('dashboard')}}" class="text-uppercase">{{$site["value"]["site_name"] ?? "Infinity"}}</a> | <a href="{{route('sub-category-index')}}">{{ trans('custom.sub_category_title') }}</a> | {{ trans('custom.sub_category_title') }} {{ $sub_category ? 'Edit: '.$sub_category->id : 'New'}} </a>
         <a href="javascript:history.back()" class="btn btn-outline-primary ml-2 float-right">Back</a>
         <div class="btn-group dropdown float-right">
-            <button type="submit" class="btn btn-outline-primary erp-category-form">
+            <button type="submit" class="btn btn-outline-primary erp-sub-category-form">
                 Save
             </button>
         </div>
     </div>
 </div>
-<h4 class="heading-color">Category</h4>
+<h4 class="heading-color">{{ trans('custom.sub_category_title') }}</h4>
 <div class="row">
     <div class="col-md-12">
         <div class="card mb-4">
             <div class="card-body">
-                @if($category)
-                    <form class="erp-category-submit" id="category_form" data-url="{{route('category-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
-                        <input type="hidden" id="erp-id" class="erp-id" value="{{$category->id}}" name="cid" />
+                @if($sub_category)
+                    <form class="erp-sub-category-submit" id="sub_category_form" data-url="{{route('sub-category-store')}}" data-id="scid" data-name="name">
+                        <input type="hidden" id="scid" class="erp-id" value="{{$sub_category->id}}" name="scid" />
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="name">Category Name</label>
-                                <input placeholder="Enter Category Name" class="form-control input-error" id="category_name" name="name" type="text" value="{{ $category->name }}">
+                                <label for="name">Name</label>
+                                <input placeholder="Enter sub category Name" class="form-control input-error" id="sub_category_name" name="name" type="text" value="{{ $sub_category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
                             <div class="form-group col-md-12 input-file-col">
-                                <?php $showImagePrev = (!empty($category->image)) ? 'display:inline-block' : ''; ?>
-                                <label for="category_image">Category Image</label>
+                                <?php $showImagePrev = (!empty($sub_category->image)) ? 'display:inline-block' : ''; ?>
+                                <label for="category_image">Image</label>
                                 <label class="form-control filelabel mb-3 image-input-wrapper">
-                                    <input type="hidden" name="old_image" value="@if(!empty($category->image)){{$category->image}}@endif">
+                                    <input type="hidden" name="old_image" value="@if(!empty($sub_category->image)){{$sub_category->image}}@endif">
                                     <input type="file" name="image" id="category_image"  class="form-control input-error image-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                    <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($category->image)){{asset('storage/category_images/'.$category->image)}}@endif" style="{{$showImagePrev}}">
-                                    <span class="title" id="titleForLogo">{{ $category->image ??  ''}}</span>
+                                    <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($sub_category->image)){{asset('storage/sub_category_images/'.$sub_category->image)}}@endif" style="{{$showImagePrev}}">
+                                    <span class="title" id="titleForLogo">{{ $sub_category->image ??  ''}}</span>
                                 </label>
                                 <div class="error" style="color:red;" id="image_error"></div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="category_status" class="">Category status:</label>
+                                <label for="category_status" class="">Status</label>
                                 <div class="ul-form__radio-inline">
                                     <label class=" ul-radio__position radio radio-primary form-check-inline">
-                                        <input type="radio" name="status" value="0" <?php if($category->sys_state == 0){echo 'checked="checked"';} ?>>
+                                        <input type="radio" name="status" value="0" <?php if($sub_category->sys_state == 0){echo 'checked="checked"';} ?>>
                                         <span class="ul-form__radio-font">Active</span>
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="ul-radio__position radio radio-primary">
-                                        <input type="radio" name="status" value="1" <?php if($category->sys_state == 1){echo 'checked="checked"';} ?>>
+                                        <input type="radio" name="status" value="1" <?php if($sub_category->sys_state == 1){echo 'checked="checked"';} ?>>
                                         <span class="ul-form__radio-font">Deactive</span>
                                         <span class="checkmark"></span>
                                     </label>
@@ -96,18 +96,22 @@
                         </div>
                     </form>
                 @else
-                <form class="erp-category-submit" id="category_form" data-url="{{route('category-store')}}" data-id="cid">
-                    <input type="hidden" id="erp-id" class="erp-id" name="cid" value="0" />
+                <form class="erp-sub-category-submit" id="sub_category_form" data-url="{{route('sub-category-store')}}" data-id="scid">
+                    <input type="hidden" id="scid" class="erp-id" name="scid" value="0" />
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            <label for="name">Category Name</label>
-                            {!! Form::text('name', null, array('placeholder' => 'Enter Category Name','class' => 'form-control input-error' , 'id' => 'category_name')) !!}
+                            <label for="name">Name</label>
+                            {!! Form::text('name', null, array('placeholder' => 'Enter sub category Name','class' => 'form-control input-error' , 'id' => 'sub_category_name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
+                        <div class="col-md-12 form-group">
+                            <label for="roles">Parent category</label>
+                            {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'parent_category']) !!}
+                            <div class="error" style="color:red;" id="parent_category_error"></div>
+                        </div>
                         <div class="form-group col-md-12 input-file-col">
-                            <label for="category_image">Category Image</label>
+                            <label for="category_image">Image</label>
                             <label class="form-control filelabel image-input-wrapper">
-                                <input type="hidden" name="old_image" value="">
                                 <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
@@ -116,7 +120,7 @@
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="category_status" class="">Category status:</label>
+                            <label for="category_status" class="">Status</label>
                             <div class="ul-form__radio-inline">
                                 <label class=" ul-radio__position radio radio-primary form-check-inline">
                                     <input type="radio" name="status" value="0" checked>
@@ -140,7 +144,7 @@
 </div>
 <a href="javascript:history.back()" class="btn btn-outline-primary ml-2 float-right">Back</a>
 <div class="btn-group dropdown float-right">
-    <button type="submit" class="btn btn-outline-primary erp-category-form">
+    <button type="submit" class="btn btn-outline-primary erp-sub-category-form">
         Save
     </button>
 </div>
