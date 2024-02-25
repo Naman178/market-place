@@ -429,10 +429,18 @@
             });
         });
 
+        $(document).on('keyup', 'input[type="text"]', function (e) {
+            $(this).removeClass('is-invalid');
+            $(this).closest(".form-group").find('.error').text("");
+        });
+        $(document).on('change', 'input[type="file"]', function () {
+            $(this).removeClass('is-invalid');
+            $(this).closest(".form-group").find('.error').text("");
+        });
         // For category
+        
         $(document).on("click", ".erp-category-form", function (e) {
             e.preventDefault();
-            $("#preloader").show();
 
             var submitUrl = $('#category_form').attr("data-url");
             var data_id = $('#category_form').attr("data-id");
@@ -445,36 +453,37 @@
             });
 
             // Send AJAX request
-            $.ajax({
-                url: submitUrl,
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                success: function (response) {
-                    $("#preloader").hide();
-                    $('.input-error').removeClass('is-invalid');
-                    if (response.success) {
-                        $('.error').text('');
-                        var redirectUrl = "{{ route('category-index') }}";
-                        window.location.href = redirectUrl;
-                    } else if (response.error) {
-                        handleFormErrors(response.error);
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('category-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
                     }
-                },
-                error: function (error) {
-                    console.error('Ajax request failed:', error);
-                    $("#preloader").hide();
-                }
-            });
+                });
+            }
         });
 
         // For category
         $(document).on("click", ".erp-sub-category-form", function (e) {
             e.preventDefault();
-            $("#preloader").show();
-
             var submitUrl = $('#sub_category_form').attr("data-url");
             var data_id = $('#sub_category_form').attr("data-id");
             var formData = new FormData($('#sub_category_form')[0]);
@@ -484,31 +493,33 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-            // Send AJAX request
-            $.ajax({
-                url: submitUrl,
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                success: function (response) {
-                    $("#preloader").hide();
-                    $('.input-error').removeClass('is-invalid');
-                    if (response.success) {
-                        $('.error').text('');
-                        var redirectUrl = "{{ route('sub-category-index') }}";
-                        window.location.href = redirectUrl;
-                    } else if (response.error) {
-                        handleFormErrors(response.error);
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('sub-category-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
                     }
-                },
-                error: function (error) {
-                    console.error('Ajax request failed:', error);
-                    $("#preloader").hide();
-                }
-            });
+                });
+            }
+           
         });
 
         function handleFormErrors(errors) {

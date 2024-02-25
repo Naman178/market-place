@@ -1,5 +1,7 @@
 <script>
     $('body').on('change', 'input[name="image"]', function(e) {
+        $('#image_error').text("");
+        $('.image-input-wrapper').removeClass('is-invalid');
         var imgprevid = $(this).siblings('.hidepreviewimg').attr('id');
         var prevtitle = $(this).siblings('.title').attr('id');
         console.log(imgprevid);
@@ -15,8 +17,10 @@
             readURL(this,imgprevid);
         }
         else{
-            alert('please upload valid image');
-            return true;
+            $('#image_error').text("Please upload valid image");
+            $('.image-input-wrapper').addClass("is-invalid");
+            $('#category_image_title').text("");
+            return false;
         }
         if(fileName){
             if (fileName.length > 50){

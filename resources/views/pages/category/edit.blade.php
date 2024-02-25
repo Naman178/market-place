@@ -68,12 +68,12 @@
                             <div class="form-group col-md-12 input-file-col">
                                 <?php $showImagePrev = (!empty($category->image)) ? 'display:inline-block' : ''; ?>
                                 <label for="category_image">Category Image</label>
-                                <label class="form-control filelabel mb-3 image-input-wrapper">
+                                <label class="form-control filelabel image-input-wrapper">
                                     <input type="hidden" name="old_image" value="@if(!empty($category->image)){{$category->image}}@endif">
                                     <input type="file" name="image" id="category_image"  class="form-control input-error image-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                     <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($category->image)){{asset('storage/category_images/'.$category->image)}}@endif" style="{{$showImagePrev}}">
-                                    <span class="title" id="titleForLogo">{{ $category->image ??  ''}}</span>
+                                    <span class="title" id="category_image_title">{{ $category->image ??  ''}}</span>
                                 </label>
                                 <div class="error" style="color:red;" id="image_error"></div>
                             </div>
@@ -111,7 +111,7 @@
                                 <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
-                                <span class="title" id="titleForLogo"></span>
+                                <span class="title" id="category_image_title"></span>
                             </label>
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
