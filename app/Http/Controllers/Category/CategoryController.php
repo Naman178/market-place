@@ -25,12 +25,6 @@ class CategoryController extends Controller
         return view('pages.category.category',compact('category'));
     }
 
-    public function show($id)
-    {
-        $category = Category::where('id',$id)->first();
-        return view('pages.category.show',compact('category'));
-    }
-
     public function edit($id)
     {
         $category = Category::where('id',$id)->first();

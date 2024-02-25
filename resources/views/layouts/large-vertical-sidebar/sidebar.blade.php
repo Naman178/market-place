@@ -35,6 +35,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('sub-category-tab-show')
+                <li class="nav-item {{ request()->is('sub-category*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('sub-category-index') }}">
+                        <i class="nav-icon i-Receipt-4"></i>
+                        <span class="nav-text">{{ trans('custom.sub_category_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('settings-tab-show')
                 <li class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('settings-index') }}">

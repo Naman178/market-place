@@ -10,6 +10,7 @@ use App\Http\Controllers\role\RoleController;
 use App\Http\Controllers\ProfileSettings\ProfileSettingsController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\SubCategory\SubCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,4 +53,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
     Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category-edit');
     Route::get('/category/delete/{id}', [CategoryController::class, 'remove'])->name('category-delete');
+
+    // Sub Category module
+    Route::get('/sub-category',[SubCategoryController::class,'index'])->name('sub-category-index');
+    Route::post('/sub-category/store',[SubCategoryController::class,'store'])->name('sub-category-store');
+    Route::get('/sub-category/edit/{id}', [SubCategoryController::class, 'edit'])->name('sub-category-edit');
+    Route::get('/sub-category/delete/{id}', [SubCategoryController::class, 'remove'])->name('sub-category-delete');
 });
