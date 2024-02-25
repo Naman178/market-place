@@ -1,5 +1,7 @@
-<script>
+$(document).ready(function () {
     $('body').on('change', 'input[name="image"]', function(e) {
+        $('#image_error').text("");
+        $('.image-input-wrapper').removeClass('is-invalid');
         var imgprevid = $(this).siblings('.hidepreviewimg').attr('id');
         var prevtitle = $(this).siblings('.title').attr('id');
         console.log(imgprevid);
@@ -15,8 +17,10 @@
             readURL(this,imgprevid);
         }
         else{
-            alert('please upload valid image');
-            return true;
+            $('#image_error').text("Please upload valid image");
+            $('.image-input-wrapper').addClass("is-invalid");
+            $('.title').text("");
+            return false;
         }
         if(fileName){
             if (fileName.length > 50){
@@ -46,9 +50,9 @@
 
     $('.delete-btn').click(function(event) {
         event.preventDefault();
-        var id = $(this).attr("data-id");
+        var submitURL = $(this).attr("data-url");
         Swal.fire({
-            title: 'Are you sure you want to delete this sub category?',
+            title: 'Are you sure you want to delete this category?',
             //text: 'If you delete this, it will be gone forever.',
             icon: 'warning',
             showCancelButton: true,
@@ -57,8 +61,8 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "{{ route('sub-category-delete', '') }}/" + id;
+                window.location.href = submitURL;
             }
         });
     });
-</script>
+});

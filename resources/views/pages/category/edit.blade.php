@@ -42,7 +42,7 @@
 @section('main-content')
 <div class="breadcrumb">
     <div class="col-sm-12 col-md-12">
-        <h4> <a href="{{route('dashboard')}}" class="text-uppercase">{{$site["value"]["site_name"] ?? "Infinity"}}</a> | <a href="{{route('category-index')}}">Category</a> | Category {{ $category ? 'Edit: '.$category->id : 'New'}} </a>
+        <h4> <a href="{{route('dashboard')}}" class="text-uppercase">{{$site["value"]["site_name"] ?? "Infinity"}}</a> | <a href="{{route('category-index')}}">Category</a> | Category {{ $category ? 'Edit: '.$category->name : 'New'}} </a>
         <a href="javascript:history.back()" class="btn btn-outline-primary ml-2 float-right">Back</a>
         <div class="btn-group dropdown float-right">
             <button type="submit" class="btn btn-outline-primary erp-category-form">
@@ -147,8 +147,8 @@
 @endsection
 @section('page-js')
 <script src="{{asset('assets/js/carousel.script.js')}}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @section('bottom-js')
-    @include('pages.category.script')
     @include('pages.common.modal-script')
 @endsection

@@ -433,15 +433,14 @@
             $(this).removeClass('is-invalid');
             $(this).closest(".form-group").find('.error').text("");
         });
-        $(document).on('change', 'input[type="file"]', function () {
+        $(document).on('change', 'input[type="file"], select', function () {
             $(this).removeClass('is-invalid');
             $(this).closest(".form-group").find('.error').text("");
         });
+
         // For category
-        
         $(document).on("click", ".erp-category-form", function (e) {
             e.preventDefault();
-
             var submitUrl = $('#category_form').attr("data-url");
             var data_id = $('#category_form').attr("data-id");
             var formData = new FormData($('#category_form')[0]);
@@ -525,11 +524,12 @@
         function handleFormErrors(errors) {
             $('#name_error').text(errors['name'] || '');
             $('#image_error').text(errors['image'] || '');
-            $('#parent_category_error').text(errors['category_id'] || '');
             $('#status_error').text(errors['status'] || '');
+            $('#parent_category_error').text(errors['parent_category_id'] || '');
+            
             $('#category_name').addClass(errors['name']?'is-invalid':'');
             $('#sub_category_name').addClass(errors['name']?'is-invalid':'');
-            $('#parent_category').addClass(errors['category_id']?'is-invalid':'');
+            $('#parent_category').addClass(errors['parent_category_id']?'is-invalid':'');
             $('.image-input-wrapper').addClass(errors['image']?'is-invalid':'');
         }
     });
