@@ -60,20 +60,25 @@
                     <form class="erp-sub-category-submit" id="sub_category_form" data-url="{{route('sub-category-store')}}" data-id="scid" data-name="name">
                         <input type="hidden" id="scid" class="erp-id" value="{{$sub_category->id}}" name="scid" />
                         <div class="row">
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-6 form-group">
                                 <label for="name">Name</label>
                                 <input placeholder="Enter sub category Name" class="form-control input-error" id="sub_category_name" name="name" type="text" value="{{ $sub_category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="roles">Parent category</label>
+                                {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, $sub_category->category_id, ['class' => 'form-control', 'id' => 'parent_category']) !!}
+                                <div class="error" style="color:red;" id="parent_category_error"></div>
+                            </div>
                             <div class="form-group col-md-12 input-file-col">
                                 <?php $showImagePrev = (!empty($sub_category->image)) ? 'display:inline-block' : ''; ?>
                                 <label for="category_image">Image</label>
-                                <label class="form-control filelabel mb-3 image-input-wrapper">
+                                <label class="form-control filelabel image-input-wrapper">
                                     <input type="hidden" name="old_image" value="@if(!empty($sub_category->image)){{$sub_category->image}}@endif">
                                     <input type="file" name="image" id="category_image"  class="form-control input-error image-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                     <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($sub_category->image)){{asset('storage/sub_category_images/'.$sub_category->image)}}@endif" style="{{$showImagePrev}}">
-                                    <span class="title" id="titleForLogo">{{ $sub_category->image ??  ''}}</span>
+                                    <span class="title" id="sub_category_image_title">{{ $sub_category->image ??  ''}}</span>
                                 </label>
                                 <div class="error" style="color:red;" id="image_error"></div>
                             </div>
@@ -99,12 +104,12 @@
                 <form class="erp-sub-category-submit" id="sub_category_form" data-url="{{route('sub-category-store')}}" data-id="scid">
                     <input type="hidden" id="scid" class="erp-id" name="scid" value="0" />
                     <div class="row">
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="name">Name</label>
                             {!! Form::text('name', null, array('placeholder' => 'Enter sub category Name','class' => 'form-control input-error' , 'id' => 'sub_category_name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="roles">Parent category</label>
                             {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'parent_category']) !!}
                             <div class="error" style="color:red;" id="parent_category_error"></div>
@@ -115,7 +120,7 @@
                                 <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <img id="category_image_prev" class="previewImgCls hidepreviewimg" src="">
-                                <span class="title" id="titleForLogo"></span>
+                                <span class="title" id="sub_category_image_title"></span>
                             </label>
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
@@ -139,7 +144,7 @@
                 </form>
                 @endif
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 <a href="javascript:history.back()" class="btn btn-outline-primary ml-2 float-right">Back</a>
@@ -151,8 +156,8 @@
 @endsection
 @section('page-js')
 <script src="{{asset('assets/js/carousel.script.js')}}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @section('bottom-js')
-    @include('pages.category.script')
     @include('pages.common.modal-script')
 @endsection

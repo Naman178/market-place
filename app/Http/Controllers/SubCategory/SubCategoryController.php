@@ -33,7 +33,7 @@ class SubCategoryController extends Controller
     public function edit($id)
     {
         $sub_category = SubCategory::where('id',$id)->first();
-        $categories = Category::pluck('name', 'id')->all();
+        $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
 
         return view('pages.sub-category.edit',compact('sub_category','categories'));
     }

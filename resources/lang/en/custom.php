@@ -5,7 +5,7 @@ return [
     'category_create_success' => 'Category created successfully!',
     'category_update_success' => 'Category updated successfully!',
     'category_delete_success' => 'Category deleted successfully!',
-
+    'category_has_subcategories_error' => 'Deletion failed. Subcategory is associated with category.',
     'sub_category_title' => 'Sub category',
     'sub_category_create_success' => 'Sub category created successfully!',
     'sub_category_update_success' => 'Sub category updated successfully!',
