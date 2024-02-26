@@ -85,7 +85,7 @@
                                         <a class="dropdown-item" href="{{route('category-edit',$list->id)}}"><i class="nav-icon i-Pen-2 font-weight-bold" aria-hidden="true"> </i> Edit</a>
                                     @endcan
                                     @can('category-delete')
-                                        <div class="dropdown-item delete-btn" data-id="{{$list->id}}"><i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"> </i> Delete</div>
+                                        <div class="dropdown-item delete-btn" data-url="{{route('category-delete',$list->id)}}"><i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"> </i> Delete</div>
                                     @endcan
                                     </div>
                                 </td>
@@ -113,8 +113,9 @@
 @section('page-js')
     <script src="{{asset('assets/js/vendor/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatables.script.js')}}"></script>
-    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js "></script>
+    <script src="{{asset('assets/js/sweetalert2.all.min.js')}}"></script>
+    <script>var baseUrl = "{{ url('/') }}";</script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @section('bottom-js')
-    @include('pages.category.script')
 @endsection
