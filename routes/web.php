@@ -53,10 +53,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
     Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category-edit');
     Route::get('/category/delete/{id}', [CategoryController::class, 'remove'])->name('category-delete');
+    Route::post("/category/status/{id}", [CategoryController::class, "changeStatus"])->name("category-status");
 
     // Sub Category module
     Route::get('/sub-category',[SubCategoryController::class,'index'])->name('sub-category-index');
     Route::post('/sub-category/store',[SubCategoryController::class,'store'])->name('sub-category-store');
     Route::get('/sub-category/edit/{id}', [SubCategoryController::class, 'edit'])->name('sub-category-edit');
     Route::get('/sub-category/delete/{id}', [SubCategoryController::class, 'remove'])->name('sub-category-delete');
+    Route::post("/sub-category/status/{id}", [SubCategoryController::class, "changeStatus"])->name("subcategory-status");
 });
