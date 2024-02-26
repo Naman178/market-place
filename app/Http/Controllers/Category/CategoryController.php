@@ -32,7 +32,7 @@ class CategoryController extends Controller
         return view('pages.category.edit',compact('category'));
     }
 
-    public function store(Request $request){  
+    public function store(Request $request){
         if($request->ajax()){
             $validator = $this->validateRequest($request);
             if ($validator->passes()){
@@ -40,13 +40,13 @@ class CategoryController extends Controller
                     $image = $this->uploadImage($request->image);
 
                     $save_category = Category::create([
-                        'name'=>$request->name, 
-                        'image'=>$image, 
-                        'sys_state'=>$request->status, 
-                        'created_at' => Carbon::now(), 
+                        'name'=>$request->name,
+                        'image'=>$image,
+                        'sys_state'=>$request->status,
+                        'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]);
-                    
+
                     session()->flash('success', trans('custom.category_create_success'));
                     return response()->json([
                         'success' => trans('custom.category_create_success'),
@@ -57,14 +57,14 @@ class CategoryController extends Controller
                 }else{
                     $category = Category::find($request->cid);
                     $image = $request->hasFile('image') ? $this->uploadImage($request->image) : $request->old_image;
-                   
+
                     $category->update([
-                        'name'=>$request->name, 
-                        'image'=>$image, 
-                        'sys_state'=>$request->status, 
+                        'name'=>$request->name,
+                        'image'=>$image,
+                        'sys_state'=>$request->status,
                         'updated_at' => Carbon::now()
                     ]);
-                    
+
                     session()->flash('success', trans('custom.category_update_success'));
                     return response()->json([
                         'success' => trans('custom.category_update_success'),
@@ -72,14 +72,14 @@ class CategoryController extends Controller
                         'type' => 'update',
                         'data' => $category
                     ]);
-                    
+
                 }
             }else{
                 return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             }
         }
     }
-    
+
 
     private function validateRequest(Request $request)
     {
@@ -130,5 +130,17 @@ class CategoryController extends Controller
                     'title' => trans('custom.category_title')
                 ]);
         }
+    }
+
+    public function changeStatus(Request $request, $id){
+        $category = Category::find($id);
+        $category->update([
+            "sys_state" => $request->status
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "data" => $category
+        ]);
     }
 }
