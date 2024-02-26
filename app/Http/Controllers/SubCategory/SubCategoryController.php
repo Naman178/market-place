@@ -53,7 +53,7 @@ class SubCategoryController extends Controller
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
                     ]);
-                    
+
                     session()->flash('success', trans('custom.sub_category_create_success'));
                     return response()->json([
                         'success' => trans('custom.sub_category_create_success'),
@@ -72,7 +72,7 @@ class SubCategoryController extends Controller
                         'sys_state' => $request->status,
                         'updated_at' => Carbon::now(),
                     ]);
-                
+
                     session()->flash('success', trans('custom.sub_category_update_success'));
                     return response()->json([
                         'success' => trans('custom.sub_category_update_success'),
@@ -127,5 +127,17 @@ class SubCategoryController extends Controller
                     'title' => trans('custom.sub_category_title')
                 ]);
         }
+    }
+
+    public function changeStatus(Request $request, $id){
+        $category = SubCategory::find($id);
+        $category->update([
+            "sys_state" => $request->status
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "data" => $category
+        ]);
     }
 }
