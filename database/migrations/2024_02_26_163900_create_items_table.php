@@ -20,11 +20,8 @@ class CreateItemsTable extends Migration
             $table->string('thumbnail_image')->nullable();
             $table->string('main_file_zip')->nullable();
             $table->string('preview_url')->nullable();
-            $table->enum('status', ['Active', 'Deactive'])->default('Active');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('sub_category_id');
-            $table->foreign('category_id')->references('id')->on('categories__tbl');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories__tbl');
+            $table->enum('status', [0,1])->default('1')->comment('0 = inactive, 1 = active');
+            $table->enum('sys_state',[0,1,-1])->comment('0 = active, 1 = inactive, -1 = deleted');
             $table->timestamps();
         });
     }
