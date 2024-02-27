@@ -8,24 +8,6 @@
                 </a>
                 <div class="triangle"></div>
             </li>
-            @can('user-tab-show')
-                <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
-                    <a class="nav-item-hold" href="{{ route('user-index') }}">
-                        <i class="nav-icon i-Add-User"></i>
-                        <span class="nav-text">User</span>
-                    </a>
-                    <div class="triangle"></div>
-                </li>
-            @endcan
-            @can('role-tab-show')
-                <li class="nav-item {{ request()->is('role*') ? 'active' : '' }}">
-                    <a class="nav-item-hold" href="{{ route('roles.index') }}">
-                        <i class="nav-icon i-Add-UserStar"></i>
-                        <span class="nav-text">Roles</span>
-                    </a>
-                    <div class="triangle"></div>
-                </li>
-            @endcan
             @can('category-tab-show')
                 <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('category-index') }}">
@@ -40,6 +22,33 @@
                     <a class="nav-item-hold" href="{{ route('sub-category-index') }}">
                         <i class="nav-icon i-Receipt-4"></i>
                         <span class="nav-text">{{ trans('custom.sub_category_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('items-tab-show')
+                <li class="nav-item {{ request()->is('items*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('items-index') }}">
+                        <i class="nav-icon i-Receipt-4"></i>
+                        <span class="nav-text">{{ trans('custom.items_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('user-tab-show')
+                <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('user-index') }}">
+                        <i class="nav-icon i-Add-User"></i>
+                        <span class="nav-text">User</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('role-tab-show')
+                <li class="nav-item {{ request()->is('role*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('roles.index') }}">
+                        <i class="nav-icon i-Add-UserStar"></i>
+                        <span class="nav-text">Roles</span>
                     </a>
                     <div class="triangle"></div>
                 </li>
