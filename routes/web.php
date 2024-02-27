@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileSettings\ProfileSettingsController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\SubCategory\SubCategoryController;
+use App\Http\Controllers\Items\ItemsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,4 +62,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sub-category/edit/{id}', [SubCategoryController::class, 'edit'])->name('sub-category-edit');
     Route::get('/sub-category/delete/{id}', [SubCategoryController::class, 'remove'])->name('sub-category-delete');
     Route::post("/sub-category/status/{id}", [SubCategoryController::class, "changeStatus"])->name("subcategory-status");
+
+    // Items module
+    Route::get('/items',[ItemsController::class,'index'])->name('items-index');
+    Route::post('/items/store',[ItemsController::class,'store'])->name('items-store');
+    Route::get('/items/edit/{id}', [ItemsController::class, 'edit'])->name('items-edit');
+    Route::get('/items/delete/{id}', [ItemsController::class, 'remove'])->name('items-delete');
+    Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
 });
