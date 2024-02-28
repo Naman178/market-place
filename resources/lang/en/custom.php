@@ -16,7 +16,8 @@ return [
     'sub_category_delete_success' => 'Sub category deleted successfully!',
 
     // ITEMS
-    'items_title' => 'Item',
+    'item_title' => 'Item',
+    'items_title' => 'Items',
     'items_create_success' => 'Item created successfully!',
     'items_update_success' => 'Item updated successfully!',
     'items_delete_success' => 'Item deleted successfully!',
