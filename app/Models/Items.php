@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Items extends Model
 {
     use HasFactory;
+    protected $table = 'items__tbl';
     protected $fillable = [
         'name',
         'html_description',
@@ -20,16 +21,6 @@ class Items extends Model
         'created_at',
         'updated_at',
     ];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function subcategory()
-    {
-        return $this->belongsTo(Subcategory::class);
-    }
 
     public function features()
     {
