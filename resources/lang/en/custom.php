@@ -21,4 +21,6 @@ return [
     'items_create_success' => 'Item created successfully!',
     'items_update_success' => 'Item updated successfully!',
     'items_delete_success' => 'Item deleted successfully!',
+    'items_create_fail' => 'Item create unsuccessfully!',
+    'items_update_fail' => 'Item update unsuccessfully!',
 ];
