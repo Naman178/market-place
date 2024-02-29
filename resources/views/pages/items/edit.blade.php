@@ -36,6 +36,13 @@
     
 </style>
 @endsection
+@section('page-js')
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- <script src="{{asset('assets/js/carousel.script.js')}}"></script>
+ --><!-- <script src="{{ asset('assets/js/tinymce.min.js') }}"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/tagify@3.28.1/dist/jQuery.tagify.min.js"></script> -->
+<script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
+@endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
     <div class="loader spinner-bubble spinner-bubble-primary"></div>
 </div>
@@ -109,8 +116,18 @@
                             <textarea name="html_description"  id="html_description"></textarea>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="key_feature">Tags</label>
-                            {!! Form::text('key_feature', null, array('placeholder' => 'Enter key feature','class' => 'form-control' , 'id' => 'key_feature')) !!}
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label for="key_feature">Features</label>
+                                    <div class="feature-input"> 
+                                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control' , 'id' => 'key_feature')) !!}
+                                        <!-- <input type="number" name="contact_number[]" class="form-control employee-contact mb-1" placeholder="Enter contact"> -->
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6 text-right">
+                                    <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group col-md-12 input-file-col">
                             <label for="item_thumbnail">Item Thumbnail</label>
@@ -133,13 +150,20 @@
                                 <span class="title" id="item_images_title"></span>
                             </label>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <label for="item_main_file">Description</label>
-                            <input type="file" name="item_main_file" id="item_main_file"  accept=".zip" class="form-control">
+                        <div class="col-md-6 form-group">
+                            <label for="item_main_file">Main file</label>
+                            <label class="form-control filelabel image-input-wrapper">
+                                <input type="hidden" name="old_image" value="">
+                                <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control image-input">
+                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="">
+                                <span class="title" id="item_images_title"></span>
+                            </label>
+                            <!-- <input type="file" name="item_main_file" id="item_main_file"  accept=".zip" class="form-control"> -->
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="preview_url">Preview URL</label>
-                            <input type="url" id="preview_url" name="preview_url" pattern="https?://.*" title="Include http:// or https:// in the URL">
+                            {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="category">Category</label>
@@ -153,13 +177,22 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="tags">Tags</label>
-                            <input type="text" id="tags-input" placeholder="Enter tags">
+                            <input type="text" name="tags" id="tags" placeholder="Type and press Enter to add tags">
+                            <!-- <input type="text" id="tags-input" placeholder="Enter tags"> -->
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="pricing">Pricing</label>
-                            {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error' , 'id' => 'item_fixed_price')) !!}
-                            {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control input-error' , 'id' => 'item_sale_price')) !!}
-                            {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error' , 'id' => 'item_fixed_price')) !!}
+                                </div>
+                                <div class="col-md-4">
+                                    {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control input-error' , 'id' => 'item_sale_price')) !!}
+                                </div>
+                                <div class="col-md-4">
+                                    {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -175,12 +208,7 @@
     </button>
 </div>
 @endsection
-@section('page-js')
-<script src="{{asset('assets/js/carousel.script.js')}}"></script>
-<!-- <script src="{{ asset('assets/js/tinymce.min.js') }}"></script>
- --><script src="{{ asset('assets/js/vendor/tagging.min.js') }}"></script>
-<script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
-@endsection
+
 @section('bottom-js')
     @include('pages.common.modal-script')
     @include('pages.items.items-script')
