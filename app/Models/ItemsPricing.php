@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ItemsPricing extends Model
 {
     use HasFactory;
+    protected $table = 'items_pricing__tbl';
     protected $fillable = ['item_id', 'fixed_price', 'sale_price', 'gst_percentage', 'created_at', 'updated_at'];
 
     public function item()

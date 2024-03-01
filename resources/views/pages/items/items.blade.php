@@ -76,13 +76,12 @@
                                         <td>
                                             <div class="image-prev">
                                                 <img id="items_image_prev" class="rounded-lg"
-                                                    src="@if (!empty($list->image)) {{ asset('storage/items_images/' . $list->image) }} @endif">
+                                                    src="@if (!empty($list->thumbnail_image)) {{ asset('storage/items_files/' . $list->thumbnail_image) }} @endif">
                                             </div>
                                         </td>
                                         <td>{{ Helper::dateFormatForView($list->created_at) }}</td>
                                         <td>
-                                            <span
-                                                class="badge {{ $list->status == 0 ? 'badge-success' : 'badge-danger' }} status-bagde mb-2">{{ $list->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                            <span class="badge {{ $list->status == 1 ? 'badge-success' : 'badge-danger' }} status-bagde mb-2">{{ $list->status == 1 ? 'Active' : 'Inactive' }}</span>
                                             <select class="form-control items-status-dropdown"
                                                 data-url="{{ route('items-status', ['id' => $list->id]) }}">
                                                 <option value="1" {{ $list->status == 1 ? 'selected' : null }}>
