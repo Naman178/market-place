@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ItemsTag extends Model
 {
     use HasFactory;
+    protected $table = 'items_tags__tbl';
     protected $fillable = ['item_id', 'tag_name', 'created_at', 'updated_at'];
 
     public function item()
