@@ -61,13 +61,13 @@
                         <input type="hidden" id="erp-id" class="erp-id" value="{{$category->id}}" name="cid" />
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="name">Category Name</label>
+                                <label for="name_label">Category Name</label>
                                 <input placeholder="Enter Category Name" class="form-control input-error" id="category_name" name="name" type="text" value="{{ $category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
                             <div class="form-group col-md-12 input-file-col">
                                 <?php $showImagePrev = (!empty($category->image)) ? 'display:inline-block' : ''; ?>
-                                <label for="category_image">Category Image</label>
+                                <label for="category_image_label">Category Image</label>
                                 <label class="form-control filelabel image-input-wrapper">
                                     <input type="hidden" name="old_image" value="@if(!empty($category->image)){{$category->image}}@endif">
                                     <input type="file" name="image" id="category_image"  class="form-control input-error image-input">
@@ -78,7 +78,7 @@
                                 <div class="error" style="color:red;" id="image_error"></div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="category_status" class="">Category status:</label>
+                                <label for="category_status_label" class="">Category status:</label>
                                 <div class="ul-form__radio-inline">
                                     <label class=" ul-radio__position radio radio-primary form-check-inline">
                                         <input type="radio" name="status" value="0" <?php if($category->sys_state == 0){echo 'checked="checked"';} ?>>
@@ -100,12 +100,12 @@
                     <input type="hidden" id="erp-id" class="erp-id" name="cid" value="0" />
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            <label for="name">Category Name</label>
+                            <label for="name_label">Category Name</label>
                             {!! Form::text('name', null, array('placeholder' => 'Enter Category Name','class' => 'form-control input-error' , 'id' => 'category_name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
                         <div class="form-group col-md-12 input-file-col">
-                            <label for="category_image">Category Image</label>
+                            <label for="category_image_label">Category Image</label>
                             <label class="form-control filelabel image-input-wrapper">
                                 <input type="hidden" name="old_image" value="">
                                 <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
@@ -116,7 +116,7 @@
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="category_status" class="">Category status:</label>
+                            <label for="category_status_label" class="">Category status:</label>
                             <div class="ul-form__radio-inline">
                                 <label class=" ul-radio__position radio radio-primary form-check-inline">
                                     <input type="radio" name="status" value="0" checked>
