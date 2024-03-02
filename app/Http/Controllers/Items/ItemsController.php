@@ -41,8 +41,8 @@ class ItemsController extends Controller
     }
 
     public function store(Request $request){
-        echo "<pre>";
-        print_r($request->all());exit;
+        /* echo "<pre>";
+        print_r($request->all());exit; */
         if($request->ajax()){
             $validator = $this->validateRequest($request);
             if ($validator->passes()){
