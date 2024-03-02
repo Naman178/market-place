@@ -150,12 +150,7 @@ class ItemsController extends Controller
             'category_id' => 'required',
             'subcategory_id' => 'required',
         ];
-
-        /* if ($request->item_id == "0") {
-            $rules['parent_category_id'] = 'required';
-            $rules['image'] = 'required';
-        } */
-
+        
         return Validator::make($request->all(), $rules);
     }
 

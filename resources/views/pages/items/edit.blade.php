@@ -34,6 +34,27 @@
         display: none;
     }
     
+    .remove-btn {
+        background-color: rgb(244, 67, 54);
+        color: #fff;
+        font-size: 27px;
+        border-radius: 5px;
+        text-align: center;
+        width: 45px;
+        line-height: 0;
+        padding: 16px 0;
+        margin-left: 30px;
+        cursor: pointer;
+    }
+
+    .display-flex {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .flex-col {
+        width: 50%;
+    }
 </style>
 @endsection
 
@@ -100,31 +121,17 @@
                 <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="item_id">
                     <input type="hidden" id="erp-id" class="erp-id" name="item_id" value="0" />
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="name">Name</label>
+                        <div class="col-6 form-group">
+                            <label for="name_label">Name</label>
                             {!! Form::text('name', null, array('placeholder' => 'Enter Item Name','class' => 'form-control input-error' , 'id' => 'name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <label for="item_thumbnail">Description</label>
-                            <textarea name="html_description"  id="html_description"></textarea>
+                        <div class="col-6 form-group">
+                            <label for="preview_url_label">Preview URL</label>
+                            {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
                         </div>
-                        <div class="col-md-12 form-group">
-                            <div class="row">
-                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
-                                    <label for="key_feature">Features</label>
-                                    <div class="feature-input"> 
-                                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
-                                        <!-- <input type="number" name="contact_number[]" class="form-control employee-contact mb-1" placeholder="Enter contact"> -->
-                                    </div>
-                                </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-6 text-right">
-                                    <button type="button" class="btn btn-info" id="add-feature">Add more</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6 input-file-col">
-                            <label for="item_thumbnail">Item Thumbnail</label>
+                        <div class="col-6 form-group input-file-col">
+                            <label for="item_thumbnail_label">Item Thumbnail</label>
                             <label class="form-control filelabel image-input-wrapper">
                                 <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error" data-title="previewImgCls">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -133,8 +140,8 @@
                             </label>
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
-                        <div class="col-md-6 form-group input-file-col">
-                            <label for="item_main_file">Main file</label>
+                        <div class="col-6 form-group input-file-col">
+                            <label for="item_main_file_label">Main file</label>
                             <label class="form-control filelabel file-input-wrapper">
                                 <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -143,46 +150,74 @@
                             </label>
                             <div class="error" style="color:red;" id="zip_file_error"></div>
                         </div>
-                        <div class="form-group col-md-12 input-file-col">
-                            <label for="item_images">Images</label>
+                        <div class="col-md-12 form-group">
+                            <label for="html_description_label">Description</label>
+                            <textarea name="html_description"  id="html_description"></textarea>
+                        </div>
+                        <div class="col-md-12 form-group">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-6 image-input-col">
-                                    <label class="form-control filelabel image-input-wrapper mb-3">
-                                        <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
-                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                        <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
-                                        <span class="title" id="item_images_title" data-title="title"></span>
-                                    </label>
+                                <div class="col-6">
+                                    <label for="key_feature_label">Features</label>
                                 </div>
-                                <div class="form-group col-sm-6 col-md-6 col-lg-6 text-right">
+                                <div class="col-6 text-right">
+                                <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="feature-input"> 
+                                        <div class="feature-input-wrapper display-flex">
+                                            {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3 flex-col' , 'id' => 'key_feature')) !!}
+                                            <div class="flex-col"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group input-file-col">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="item_images_label">Images</label>
+                                </div>
+                                <div class="col-6 text-right">
                                     <button type="button" class="btn btn-info" id="add-image">Add more</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 image-input-col">
+                                   <div class="row">
+                                        <div class="image-input-wrapper col-9">
+                                            <label class="form-control filelabel mb-3">
+                                                <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
+                                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                                <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
+                                                <span class="title" id="item_images_title" data-title="title"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-6"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
-                        
-                        <div class="col-md-6 form-group">
-                            <label for="preview_url">Preview URL</label>
-                            {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label for="tags">Tags</label>
+                        <div class="col-md-12 form-group">
+                            <label for="tags_label">Tags</label>
                             <input type="text" name="tags" id="tags" placeholder="Type and press Enter to add tags">
                             <!-- <input type="text" id="tags-input" placeholder="Enter tags"> -->
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="category">Category</label>
+                            <label for="category_label">Category</label>
                             {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'category_id']) !!}
                             <div class="error" style="color:red;" id="category_error"></div>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="subcategory">Sub category</label>
+                            <label for="subcategory_label">Sub category</label>
                             {!! Form::select('subcategory_id', ['' => 'Select sub category'] + $subcategories, null, ['class' => 'form-control', 'id' => 'subcategory_id']) !!}
                             <div class="error" style="color:red;" id="subcategories_error"></div>
                         </div>
                        
                         <div class="col-md-12 form-group">
-                            <label for="pricing">Pricing</label>
+                            <label for="pricing_label">Pricing</label>
                             <div class="row">
                                 <div class="col-md-4">
                                     {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error' , 'id' => 'item_fixed_price')) !!}
