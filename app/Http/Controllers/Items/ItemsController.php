@@ -41,6 +41,8 @@ class ItemsController extends Controller
     }
 
     public function store(Request $request){
+        echo "<pre>";
+        print_r($request->all());exit;
         if($request->ajax()){
             $validator = $this->validateRequest($request);
             if ($validator->passes()){
@@ -79,9 +81,8 @@ class ItemsController extends Controller
                             }
                         }
 
-                        if(isset($request->tags)){
-                            $tags = explode(',',$request->tags);
-                            foreach ($tags as $tag) {
+                        if(!empty($request->tag)){
+                            foreach ($request->tag as $tag) {
                                 ItemsTag::create([
                                     'item_id' => $save_item->id,
                                     'tag_name' =>$tag,

@@ -5,6 +5,21 @@
 @endphp
 @section('title')
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
+    <script src="https://cdn.tiny.cloud/1/o7h5fdpvwna0iulbykb99xeh6i53zmtdyswqphxutmkecio6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#html_description',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+    });
+    </script>
 @endsection
 @section('page-css')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -57,11 +72,10 @@
     }
 </style>
 @endsection
-
+@section('main-content')
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
     <div class="loader spinner-bubble spinner-bubble-primary"></div>
 </div>
-@section('main-content')
 <div class="breadcrumb">
     <div class="col-sm-12 col-md-12">
         <h4> <a href="{{route('dashboard')}}" class="text-uppercase">{{$site["value"]["site_name"] ?? "Infinity"}}</a> | <a href="{{route('items-index')}}">Item</a> | Item {{ $item ? 'Edit: '.$item->name : 'New'}} </a>
@@ -90,7 +104,7 @@
                             <div class="form-group col-md-12 input-file-col">
                                 <?php $showImagePrev = (!empty($item->thumbnail_image)) ? 'display:inline-block' : ''; ?>
                                 <label for="item_image">Item Thumbnail</label>
-                                <label class="form-control filelabel image-input-wrapper">
+                                <label class="form-control filelabel image-input-label">
                                     <input type="hidden" name="old_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
                                     <input type="file" name="image" id="item_image"  class="form-control input-error image-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -132,10 +146,10 @@
                         </div>
                         <div class="col-6 form-group input-file-col">
                             <label for="item_thumbnail_label">Item Thumbnail</label>
-                            <label class="form-control filelabel image-input-wrapper">
-                                <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error" data-title="previewImgCls">
+                            <label class="form-control filelabel image-input-label">
+                                <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="">
+                                <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
                                 <span class="title" id="item_thumbnail_title" data-title="title"></span>
                             </label>
                             <div class="error" style="color:red;" id="image_error"></div>
@@ -150,11 +164,11 @@
                             </label>
                             <div class="error" style="color:red;" id="zip_file_error"></div>
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group mb-4">
                             <label for="html_description_label">Description</label>
                             <textarea name="html_description"  id="html_description"></textarea>
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group add-more-input">
                             <div class="row">
                                 <div class="col-6">
                                     <label for="key_feature_label">Features</label>
@@ -163,13 +177,10 @@
                                 <button type="button" class="btn btn-info" id="add-feature">Add more</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    <div class="feature-input"> 
-                                        <div class="feature-input-wrapper display-flex">
-                                            {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3 flex-col' , 'id' => 'key_feature')) !!}
-                                            <div class="flex-col"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
-                                        </div>
+                            <div class="feature-input-wrapper">
+                                <div class="row input-row feature-input-row">
+                                    <div class="col-9"> 
+                                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -183,18 +194,15 @@
                                     <button type="button" class="btn btn-info" id="add-image">Add more</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6 image-input-col">
-                                   <div class="row">
-                                        <div class="image-input-wrapper col-9">
-                                            <label class="form-control filelabel mb-3">
-                                                <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
-                                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                                <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
-                                                <span class="title" id="item_images_title" data-title="title"></span>
-                                            </label>
-                                        </div>
-                                        <div class="col-6"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                            <div class="image-input-wrapper">
+                                <div class="row input-row image-input-row">
+                                    <div class="col-9">
+                                        <label class="form-control filelabel mb-3 image-input-label">
+                                            <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
+                                            <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                            <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
+                                            <span class="title" id="item_images_title" data-title="title"></span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -202,8 +210,7 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="tags_label">Tags</label>
-                            <input type="text" name="tags" id="tags" placeholder="Type and press Enter to add tags">
-                            <!-- <input type="text" id="tags-input" placeholder="Enter tags"> -->
+                            <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input"></div>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="category_label">Category</label>
@@ -245,11 +252,9 @@
 </div>
 @endsection
 @section('page-js')
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!-- <script src="{{asset('assets/js/carousel.script.js')}}"></script>
- --><!-- <script src="{{ asset('assets/js/tinymce.min.js') }}"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/tagify@3.28.1/dist/jQuery.tagify.min.js"></script> -->
 <script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/tagging.min.js') }}"></script>
+<script src="{{ asset('assets/js/tagging.script.js') }}"></script>
 @endsection
 @section('bottom-js')
     @include('pages.common.modal-script')
