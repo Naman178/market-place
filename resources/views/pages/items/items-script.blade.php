@@ -124,12 +124,12 @@
 
         /*  $('#tags').tagify(); */
         $('#add-feature').on('click', function () {
-            var newContactField = '{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}';
+            var newContactField = '<div class="feature-input-wrapper">{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}<div class="remove-btn">&#xF62A;</i></div></div>';
             $(this).closest('#item_form').find('.feature-input').append(newContactField);
         });
 
         $('#add-image').on('click', function () {
-            var newContactField = '<label class="form-control mb-3 filelabel image-input-wrapper"><input type="file" name="item_images[]" class="image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" data-title="title"></span></label>';
+            var newContactField = '<label class="form-control mb-3 filelabel image-input-wrapper"><input type="file" name="item_images[]" class="image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" data-title="title"></span><div class="remove-btn">&#xF62A;</div></label>';
             $(this).closest('#item_form').find('.image-input-col').append(newContactField);
         });
 }) 

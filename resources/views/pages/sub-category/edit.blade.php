@@ -61,12 +61,12 @@
                         <input type="hidden" id="scid" class="erp-id" value="{{$sub_category->id}}" name="scid" />
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="name">Name</label>
+                                <label for="name_label">Name</label>
                                 <input placeholder="Enter sub category Name" class="form-control input-error" id="sub_category_name" name="name" type="text" value="{{ $sub_category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="roles">Parent category</label>
+                                <label for="parent_category_label">Parent category</label>
                                 {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, $sub_category->category_id, ['class' => 'form-control', 'id' => 'parent_category']) !!}
                                 <div class="error" style="color:red;" id="parent_category_error"></div>
                             </div>
@@ -83,7 +83,7 @@
                                 <div class="error" style="color:red;" id="image_error"></div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="category_status" class="">Status</label>
+                                <label for="category_status_label" class="">Status</label>
                                 <div class="ul-form__radio-inline">
                                     <label class=" ul-radio__position radio radio-primary form-check-inline">
                                         <input type="radio" name="status" value="0" <?php if($sub_category->sys_state == 0){echo 'checked="checked"';} ?>>
@@ -105,17 +105,17 @@
                     <input type="hidden" id="scid" class="erp-id" name="scid" value="0" />
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label for="name">Name</label>
+                            <label for="name_label">Name</label>
                             {!! Form::text('name', null, array('placeholder' => 'Enter sub category Name','class' => 'form-control input-error' , 'id' => 'sub_category_name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="roles">Parent category</label>
+                            <label for="parent_category_label">Parent category</label>
                             {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'parent_category']) !!}
                             <div class="error" style="color:red;" id="parent_category_error"></div>
                         </div>
                         <div class="form-group col-md-12 input-file-col">
-                            <label for="category_image">Image</label>
+                            <label for="category_image_label">Image</label>
                             <label class="form-control filelabel image-input-wrapper">
                                 <input type="file" name="image" id="category_image"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -125,7 +125,7 @@
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="category_status" class="">Status</label>
+                            <label for="category_status_label" class="">Status</label>
                             <div class="ul-form__radio-inline">
                                 <label class=" ul-radio__position radio radio-primary form-check-inline">
                                     <input type="radio" name="status" value="0" checked>
