@@ -34,9 +34,9 @@ class ItemsController extends Controller
 
     public function edit($id)
     {
-        $item = Items::where('id',$id)->first();
+        $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id)->first();
         $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
-        $subcategories = SubCategory::where('sys_state', '0')->pluck('name', 'id')->all();
+        $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
         return view('pages.items.edit',compact('item','categories','subcategories'));
     }
 

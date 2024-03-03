@@ -11,8 +11,7 @@ class ItemsFeature extends Model
     protected $table = 'items_features__tbl';
     protected $fillable = ['item_id', 'key_feature', 'created_at', 'updated_at'];
 
-    public function item()
-    {
-        return $this->belongsTo(Items::class);
+    public function item() {
+        return $this->belongsTo(Items::class, 'item_id', 'id');
     }
 }

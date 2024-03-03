@@ -99,6 +99,35 @@
             }
         }
 
+        $(document).on('change', '.file-input', function(e) {
+            var obj = $(this).closest('.input-file-col');
+            var imageInputWrapper = obj.find('.file-input-label');
+            var prevtitle = imageInputWrapper.find('.title').attr('data-title');
+            var fileName = e.target.value.split('\\').pop();
+
+            if (fileName) {
+                if (fileName.length > 50) {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName.slice(0, 4) + '...' + extension);
+                } else {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName);
+                }
+            } else {
+                var labelVal = imageInputWrapper.find('.' + prevtitle).text();
+                imageInputWrapper.find('.' + prevtitle).text(labelVal);
+            }
+
+            var extension = fileName.split('.').pop();
+
+            if ($.inArray(extension, ['zip']) >= 0) {
+                return true;
+            } else {
+                obj.find('.error').text("Please upload a valid file");
+                imageInputWrapper.addClass("is-invalid");
+                imageInputWrapper.find('.' + prevtitle).text("");
+                return false;
+            }
+        });
+       
         $(document).on('click', '#add-image', function(e) {
             var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
             $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
@@ -123,6 +152,7 @@
         });
 
         $(document).find('.tag_input').tagging();
+
         $(document).on('click', '#add-feature', function(e) {
             var newFeatureFiled = '<div class="row input-row feature-input-row"><div class="col-9">{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}</div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
             $(this).closest('#item_form').find('.feature-input-wrapper').append(newFeatureFiled);
@@ -131,5 +161,15 @@
         $(document).on('click', '.remove-btn', function(e) {
             $(this).closest('.input-row').remove();
         }); 
-}) 
+
+        $(document).on('change', '#category_id', function(e) {
+            var selectedCategory = $(this).val();
+            $('#subcategory_id option').addClass('d-none').filter(function() {
+                return $(this).data('category') == selectedCategory;
+            }).removeClass('d-none');
+
+            $('#subcategory_id').val('').change();
+        });
+
+    }) ;
 </script>
