@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        $(".items-status-dropdown").on("change", function() {
+        $(document).find(".items-status-dropdown").on("change", function() {
             let itemId = $(this).data("id");
             let status = $(this).val();
             let dropdown = $(this);
@@ -53,59 +53,88 @@
         })
     
 
-        $('body').on('change', '.image-input', function(e) {
+        $(document).on('change', '.image-input', function(e) {
             var obj = $(this).closest('.input-file-col');
-            obj.find('.error').text("");
-            obj.find('.image-input-wrapper').removeClass('is-invalid');
-            var imageInputWrapper = $(this).closest('.image-input-wrapper');
-            var imgprevid = imageInputWrapper.find('.hidepreviewimg').attr('data-title');
+            var imageInputWrapper = obj.find('.image-input-label');
+            var imgprevid = imageInputWrapper.find('.previewImgCls').attr('data-title');
             var prevtitle = imageInputWrapper.find('.title').attr('data-title');
-            console.log(imgprevid);
-            console.log(prevtitle);
-            obj.find('.image-input-wrapper').find('.'+imgprevid).hide();
-            var labelVal = $("#"+prevtitle).text();
-            var oldfileName = $(this).val();
-            fileName = e.target.value.split( '\\' ).pop();
-            if (oldfileName == fileName) {return false;}
-            var extension = fileName.split('.').pop();
-            if ($.inArray(extension,['jpg','jpeg','png']) >= 0) {
-                obj.find('.image-input-wrapper').find('.'+imgprevid).show();
-                readURL(this,imgprevid, imageInputWrapper);
-            }
-            else{
-                obj.find('.error').text("Please upload valid image");
-                obj.find('.image-input-wrapper').addClass("is-invalid");
-                obj.find('.image-input-wrapper').find('.title').text("");
-                return false;
-            }
-            if(fileName){
-                if (fileName.length > 50){
-                    $("#"+prevtitle).text(fileName.slice(0,4)+'...'+extension);
+            var fileName = e.target.value.split('\\').pop();
+
+            obj.find('.' + imgprevid).hide();
+
+            if (fileName) {
+                if (fileName.length > 50) {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName.slice(0, 4) + '...' + extension);
+                } else {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName);
                 }
-                else{
-                    $("#"+prevtitle).text(fileName);
-                }
-            }
-            else{
-                $("#"+prevtitle).text(labelVal);
+            } else {
+                var labelVal = imageInputWrapper.find('.' + prevtitle).text();
+                imageInputWrapper.find('.' + prevtitle).text(labelVal);
             }
 
+            var extension = fileName.split('.').pop();
+
+            if ($.inArray(extension, ['jpg', 'jpeg', 'png']) >= 0) {
+                obj.find('.' + imgprevid).show();
+                readURL($(this), imgprevid, imageInputWrapper);
+            } else {
+                obj.find('.error').text("Please upload a valid image");
+                imageInputWrapper.addClass("is-invalid");
+                imageInputWrapper.find('.title').text("");
+                return false;
+            }
         });
+
         /* General function for image prev */
         function readURL(input, previd, imageInputWrapper) {
-            if (input.files && input.files[0]) {
+            if (input[0].files && input[0].files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     imageInputWrapper.find('.' + previd).prop("src", e.target.result);
                     imageInputWrapper.find('.' + previd).hide();
                     imageInputWrapper.find('.' + previd).fadeIn(650);
                 };
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(input[0].files[0]);
             }
         }
 
-        $('.delete-btn').click(function(event) {
-            event.preventDefault();
+        $(document).on('change', '.file-input', function(e) {
+            var obj = $(this).closest('.input-file-col');
+            var imageInputWrapper = obj.find('.file-input-label');
+            var prevtitle = imageInputWrapper.find('.title').attr('data-title');
+            var fileName = e.target.value.split('\\').pop();
+
+            if (fileName) {
+                if (fileName.length > 50) {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName.slice(0, 4) + '...' + extension);
+                } else {
+                    imageInputWrapper.find('.' + prevtitle).text(fileName);
+                }
+            } else {
+                var labelVal = imageInputWrapper.find('.' + prevtitle).text();
+                imageInputWrapper.find('.' + prevtitle).text(labelVal);
+            }
+
+            var extension = fileName.split('.').pop();
+
+            if ($.inArray(extension, ['zip']) >= 0) {
+                return true;
+            } else {
+                obj.find('.error').text("Please upload a valid file");
+                imageInputWrapper.addClass("is-invalid");
+                imageInputWrapper.find('.' + prevtitle).text("");
+                return false;
+            }
+        });
+       
+        $(document).on('click', '#add-image', function(e) {
+            var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
+            $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+        });
+
+        $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
             var submitURL = $(this).attr("data-url");
             Swal.fire({
                 title: 'Are you sure you want to delete this item?',
@@ -122,15 +151,25 @@
             });
         });
 
-        /*  $('#tags').tagify(); */
-        $('#add-feature').on('click', function () {
-            var newContactField = '<div class="feature-input-wrapper">{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}<div class="remove-btn">&#xF62A;</i></div></div>';
-            $(this).closest('#item_form').find('.feature-input').append(newContactField);
+        $(document).find('.tag_input').tagging();
+
+        $(document).on('click', '#add-feature', function(e) {
+            var newFeatureFiled = '<div class="row input-row feature-input-row"><div class="col-9">{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}</div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
+            $(this).closest('#item_form').find('.feature-input-wrapper').append(newFeatureFiled);
         });
 
-        $('#add-image').on('click', function () {
-            var newContactField = '<label class="form-control mb-3 filelabel image-input-wrapper"><input type="file" name="item_images[]" class="image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" data-title="title"></span><div class="remove-btn">&#xF62A;</div></label>';
-            $(this).closest('#item_form').find('.image-input-col').append(newContactField);
+        $(document).on('click', '.remove-btn', function(e) {
+            $(this).closest('.input-row').remove();
+        }); 
+
+        $(document).on('change', '#category_id', function(e) {
+            var selectedCategory = $(this).val();
+            $('#subcategory_id option').addClass('d-none').filter(function() {
+                return $(this).data('category') == selectedCategory;
+            }).removeClass('d-none');
+
+            $('#subcategory_id').val('').change();
         });
-}) 
+
+    }) ;
 </script>

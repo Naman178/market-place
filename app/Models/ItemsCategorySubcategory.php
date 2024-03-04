@@ -21,7 +21,7 @@ class ItemsCategorySubcategory extends Model
     // Define relationships if needed
     public function item()
     {
-        return $this->belongsTo(Items::class, 'item_id');
+        return $this->belongsTo(Items::class, 'item_id', 'id');
     }
 
     public function category()

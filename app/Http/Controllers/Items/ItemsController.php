@@ -34,13 +34,15 @@ class ItemsController extends Controller
 
     public function edit($id)
     {
-        $item = Items::where('id',$id)->first();
+        $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id)->first();
         $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
-        $subcategories = SubCategory::where('sys_state', '0')->pluck('name', 'id')->all();
+        $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
         return view('pages.items.edit',compact('item','categories','subcategories'));
     }
 
     public function store(Request $request){
+        /* echo "<pre>";
+        print_r($request->all());exit; */
         if($request->ajax()){
             $validator = $this->validateRequest($request);
             if ($validator->passes()){
@@ -79,9 +81,8 @@ class ItemsController extends Controller
                             }
                         }
 
-                        if(isset($request->tags)){
-                            $tags = explode(',',$request->tags);
-                            foreach ($tags as $tag) {
+                        if(!empty($request->tag)){
+                            foreach ($request->tag as $tag) {
                                 ItemsTag::create([
                                     'item_id' => $save_item->id,
                                     'tag_name' =>$tag,
