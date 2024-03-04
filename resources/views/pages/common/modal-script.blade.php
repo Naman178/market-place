@@ -523,6 +523,7 @@
 
         $(document).on("click", ".erp-item-form", function (e) {
             e.preventDefault();
+            tinymce.activeEditor.save();
             var submitUrl = $('#item_form').attr("data-url");
             var data_id = $('#item_form').attr("data-id");
             var formData = new FormData($('#item_form')[0]);

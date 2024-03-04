@@ -23,23 +23,27 @@ class Items extends Model
         'sys_state',
     ];
 
-    public function features()
-    {
-        return $this->hasMany(ItemsFeature::class);
+    public function features() {
+        return $this->hasMany(ItemsFeature::class, 'item_id', 'id');
     }
 
     public function images()
     {
-        return $this->hasMany(ItemsImage::class);
+        return $this->hasMany(ItemsImage::class, 'item_id', 'id');
     }
 
     public function tags()
     {
-        return $this->hasMany(ItemsTag::class);
+        return $this->hasMany(ItemsTag::class, 'item_id', 'id');
+    }
+
+    public function categorySubcategory()
+    {
+        return $this->hasOne(ItemsCategorySubcategory::class, 'item_id', 'id');
     }
 
     public function pricing()
     {
-        return $this->hasOne(ItemsPricing::class);
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'id');
     }
 }

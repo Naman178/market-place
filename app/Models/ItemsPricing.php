@@ -13,6 +13,6 @@ class ItemsPricing extends Model
 
     public function item()
     {
-        return $this->belongsTo(Items::class);
+        return $this->belongsTo(Items::class, 'item_id', 'id');
     }
 }
