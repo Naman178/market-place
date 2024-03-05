@@ -172,11 +172,13 @@ class ItemsController extends Controller
 
                         if(!empty($request->tag)){
                             foreach ($request->tag as $tag) {
-                                ItemsTag::create([
-                                    'item_id' => $item->id,
-                                    'tag_name' =>$tag,
-                                    'updated_at' => Carbon::now(),
-                                ]);
+                                if($tag != ''){
+                                    ItemsTag::create([
+                                        'item_id' => $item->id,
+                                        'tag_name' =>$tag,
+                                        'updated_at' => Carbon::now(),
+                                    ]);
+                                }
                             }
                         }
 
@@ -213,14 +215,36 @@ class ItemsController extends Controller
 
     private function validateRequest(Request $request)
     {
+        /* print_r($request->all());exit; */
         $rules = [
             'name' => 'required',
-            'fixed_price' => 'required',
+            'preview_url' => 'required',
+            'html_description' => 'required',
+            'key_feature' => 'required|array',
+            'key_feature.*' => 'required_without_all: key_feature',
             'category_id' => 'required',
             'subcategory_id' => 'required',
+            'fixed_price' => 'required'
+        ];
+
+        if ($request->item_id == "0") {
+            $rules['item_thumbnail'] = 'required';
+            $rules['item_main_file'] = 'required';
+        }/* else{
+            $rules['old_thumbnail_image'] = 'required';
+            $rules['old_main_file'] = 'required';
+        } */
+
+        $customMessages = [
+            'key_feature.*.required_without_all' => 'At least one feature is required.',
+            'html_description.required' => 'The description field is required.',
+            'category_id.required' => 'The category field is required.',
+            'subcategory_id.required' => 'The subcategory field is required.',
+            /* 'old_thumbnail_image.required' => 'The item thumbnail field is required.',
+            'old_main_file.required' => 'The item main file field is required.' */
         ];
         
-        return Validator::make($request->all(), $rules);
+        return Validator::make($request->all(), $rules, $customMessages);
     }
 
     private function uploadFile($file)

@@ -12,6 +12,12 @@
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes autocorrect inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        init_instance_callback: function(editor) {
+            editor.on('keyup', function(e) {
+                $(document).find('textarea').removeClass('is-invalid');
+                $('textarea').closest(".form-group").find('.error').text("");
+        });
+        }
     });
     </script>
 @endsection
@@ -77,7 +83,7 @@
             <div class="card-body">
                 @if($item)
                     <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
-                        <input type="hidden" id="erp-id" class="erp-id" value="{{$item->id}}" name="item_id" />
+                        <input type="hidden" id="item_id" class="erp-id" value="{{$item->id}}" name="item_id" />
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="name">Name</label>
@@ -87,22 +93,23 @@
                             <div class="col-6 form-group">
                                 <label for="preview_url_label">Preview URL</label>
                                 <input placeholder="Include http:// or https:// in the URL" class="form-control" id="item_preview_url" name="preview_url" type="url" value="{{ $item->preview_url }}" pattern= 'https?://.*'>
+                                <div class="error" style="color:red;" id="preview_url_error"></div>
                             </div>
                             <div class="col-6 form-group input-file-col">
                                 <label for="item_thumbnail_label">Item Thumbnail</label>
                                 <?php $showImagePrev = (!empty($item->thumbnail_image)) ? 'display:inline-block' : ''; ?>
-                                <label class="form-control filelabel image-input-label">
+                                <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
                                     <input type="hidden" name="old_thumbnail_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
                                     <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                     <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($item->thumbnail_image)){{asset('storage/items_files/'.$item->thumbnail_image)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
                                     <span class="title" id="item_thumbnail_title" data-title="title">{{ $item->thumbnail_image ??  ''}}</span>
                                 </label>
-                                <div class="error" style="color:red;" id="image_error"></div>
+                                <div class="error" style="color:red;" id="item_thumbnail_error"></div>
                             </div>
                             <div class="col-6 form-group input-file-col">
                                 <label for="item_main_file_label">Main file</label>
-                                <label class="form-control filelabel file-input-label">
+                                <label id="item_main_file_label" class="form-control filelabel file-input-label">
                                     <input type="hidden" name="old_main_file" value="@if(!empty($item->main_file_zip)){{$item->main_file_zip}}@endif">
                                     <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -113,6 +120,7 @@
                             <div class="col-md-12 form-group mb-4">
                                 <label for="html_description_label">Description</label>
                                 <textarea name="html_description"  id="html_description">{{ $item->html_description }}</textarea>
+                                <div class="error" style="color:red;" id="description_error"></div>
                             </div>
                             <div class="col-md-12 form-group add-more-input">
                                 <div class="row">
@@ -129,10 +137,11 @@
                                             <div class="col-9"> 
                                                 <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
                                             </div>
-                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                            <!-- <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div> -->
                                         </div>
                                     @endforeach
                                 </div>
+                                <div class="error" style="color:red;" id="feature_error"></div>
                             </div>
                             <div class="col-md-12 form-group input-file-col">
                                 <div class="row">
@@ -156,7 +165,7 @@
                                                     <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
                                                 </label>
                                             </div>
-                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                            <!-- <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div> -->
                                         </div>
                                     @endforeach
                                 </div>
@@ -203,6 +212,7 @@
                                         {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
                                     </div>
                                 </div>
+                                <div class="error" style="color:red;" id="fixed_price_error"></div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="item_status" class="">Item status:</label>
@@ -224,7 +234,7 @@
                     </form>
                 @else
                 <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="item_id">
-                    <input type="hidden" id="erp-id" class="erp-id" name="item_id" value="0" />
+                    <input type="hidden" id="item_id" class="erp-id" name="item_id" value="0" />
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="name_label">Name</label>
@@ -234,20 +244,21 @@
                         <div class="col-6 form-group">
                             <label for="preview_url_label">Preview URL</label>
                             {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
+                            <div class="error" style="color:red;" id="preview_url_error"></div>
                         </div>
                         <div class="col-6 form-group input-file-col">
                             <label for="item_thumbnail_label">Item Thumbnail</label>
-                            <label class="form-control filelabel image-input-label">
+                            <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
                                 <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
                                 <span class="title" id="item_thumbnail_title" data-title="title"></span>
                             </label>
-                            <div class="error" style="color:red;" id="image_error"></div>
+                            <div class="error" style="color:red;" id="item_thumbnail_error"></div>
                         </div>
                         <div class="col-6 form-group input-file-col">
                             <label for="item_main_file_label">Main file</label>
-                            <label class="form-control filelabel file-input-label">
+                            <label id="item_main_file_label"  class="form-control filelabel file-input-label">
                                 <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                 <span class="title" id="item_files_title"  data-title="title"></span>
@@ -257,6 +268,7 @@
                         <div class="col-md-12 form-group mb-4">
                             <label for="html_description_label">Description</label>
                             <textarea name="html_description"  id="html_description"></textarea>
+                            <div class="error" style="color:red;" id="description_error"></div>
                         </div>
                         <div class="col-md-12 form-group add-more-input">
                             <div class="row">
@@ -274,6 +286,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="error" style="color:red;" id="feature_error"></div>
                         </div>
                         <div class="col-md-12 form-group input-file-col">
                             <div class="row">
@@ -296,7 +309,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="error" style="color:red;" id="image_error"></div>
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="tags_label">Tags</label>
@@ -331,6 +343,7 @@
                                     {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
                                 </div>
                             </div>
+                            <div class="error" style="color:red;" id="fixed_price_error"></div>
                         </div>
                     </div>
                 </form>
