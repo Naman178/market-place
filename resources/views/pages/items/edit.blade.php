@@ -92,13 +92,23 @@
                                 <label for="item_thumbnail_label">Item Thumbnail</label>
                                 <?php $showImagePrev = (!empty($item->thumbnail_image)) ? 'display:inline-block' : ''; ?>
                                 <label class="form-control filelabel image-input-label">
-                                    <input type="hidden" name="old_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
+                                    <input type="hidden" name="old_thumbnail_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
                                     <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                     <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($item->thumbnail_image)){{asset('storage/items_files/'.$item->thumbnail_image)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
                                     <span class="title" id="item_thumbnail_title" data-title="title">{{ $item->thumbnail_image ??  ''}}</span>
                                 </label>
                                 <div class="error" style="color:red;" id="image_error"></div>
+                            </div>
+                            <div class="col-6 form-group input-file-col">
+                                <label for="item_main_file_label">Main file</label>
+                                <label class="form-control filelabel file-input-label">
+                                    <input type="hidden" name="old_main_file" value="@if(!empty($item->main_file_zip)){{$item->main_file_zip}}@endif">
+                                    <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
+                                    <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                    <span class="title" id="item_files_title"  data-title="title">{{ $item->main_file_zip ??  ''}}</span>
+                                </label>
+                                <div class="error" style="color:red;" id="zip_file_error"></div>
                             </div>
                             <div class="col-md-12 form-group mb-4">
                                 <label for="html_description_label">Description</label>
@@ -117,7 +127,7 @@
                                     @foreach($item->features as $feature)
                                         <div class="row input-row feature-input-row">
                                             <div class="col-9"> 
-                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature" type="text" value="{{ $feature->key_feature }}">
+                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
                                             </div>
                                             <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
                                         </div>
@@ -139,7 +149,7 @@
                                         <div class="row input-row image-input-row">
                                             <div class="col-9">
                                                 <label class="form-control filelabel mb-3 image-input-label">
-                                                    <input type="hidden" name="old_image" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
+                                                    <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
                                                     <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
                                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                                     <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($image->image_path)){{asset('storage/items_files/'.$image->image_path)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
@@ -155,8 +165,8 @@
                             <div class="col-md-12 form-group">
                                 <label for="tags_label">Tags</label>
                                 <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input">
-                                    @foreach($item->tags as $tag)
-                                        <div class="tag">{{ $tag->tag_name }}</div>
+                                    @foreach($item->tags as $index => $tag)
+                                    @if($index > 0) \n @endif{{ $tag->tag_name }}
                                     @endforeach
                                 </div>
                             </div>
@@ -198,12 +208,12 @@
                                 <label for="item_status" class="">Item status:</label>
                                 <div class="ul-form__radio-inline">
                                     <label class=" ul-radio__position radio radio-primary form-check-inline">
-                                        <input type="radio" name="status" value="0" <?php if($item->status == 1){echo 'checked="checked"';} ?>>
+                                        <input type="radio" name="status" value="1" <?php if($item->status == 1){echo 'checked="checked"';} ?>>
                                         <span class="ul-form__radio-font">Active</span>
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="ul-radio__position radio radio-primary">
-                                        <input type="radio" name="status" value="1" <?php if($item->status == 0){echo 'checked="checked"';} ?>>
+                                        <input type="radio" name="status" value="0" <?php if($item->status == 0){echo 'checked="checked"';} ?>>
                                         <span class="ul-form__radio-font">Inactive</span>
                                         <span class="checkmark"></span>
                                     </label>

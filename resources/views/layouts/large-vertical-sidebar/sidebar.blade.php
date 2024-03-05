@@ -11,7 +11,7 @@
             @can('category-tab-show')
                 <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('category-index') }}">
-                        <i class="nav-icon i-Receipt-4"></i>
+                        <i class="nav-icon i-Receipt"></i>
                         <span class="nav-text">Category</span>
                     </a>
                     <div class="triangle"></div>
@@ -29,7 +29,7 @@
             @can('items-tab-show')
                 <li class="nav-item {{ request()->is('items*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('items-index') }}">
-                        <i class="nav-icon i-Receipt-4"></i>
+                        <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">{{ trans('custom.items_title') }}</span>
                     </a>
                     <div class="triangle"></div>
