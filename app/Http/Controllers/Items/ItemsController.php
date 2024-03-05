@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\helper\helper;
 class ItemsController extends Controller
 {
     function __construct()
@@ -110,31 +110,99 @@ class ItemsController extends Controller
                     }else{
                         return response()->json(['error'=> trans('custom.items_create_fail')]);
                     }
-                    session()->flash('success', trans('custom.sub_category_create_success'));
+                    session()->flash('success', trans('custom.items_create_success'));
                     return response()->json([
-                        'success' => trans('custom.sub_category_create_success'),
-                        'title' => trans('custom.sub_category_title'),
+                        'success' => trans('custom.items_create_success'),
+                        'title' => trans('custom.item_title'),
                         'type' => 'create',
                         'data' => $save_item
                     ], Response::HTTP_OK);
                 }else{
-                    $sub_category = SubCategory::find($request->item_id);
-                    $image = $request->hasFile('image') ? $this->uploadImage($request->image) : $request->old_image;
+                    $item = Items::find($request->item_id);
 
-                    $sub_category->update([
-                        'category_id' => $request->parent_category_id,
+                    $thumbnail = $request->hasFile('item_thumbnail') ? $this->uploadFile($request->item_thumbnail) : $request->old_thumbnail_image;
+                    $mainFile = $request->hasFile('item_main_file') ? $this->uploadFile($request->item_main_file) : $request->old_main_file;
+
+                    $item->update([
                         'name' => $request->name,
-                        'image' => $image,
-                        'sys_state' => $request->status,
+                        'html_description' => $request->html_description,
+                        'thumbnail_image' => $thumbnail,
+                        'main_file_zip' => $mainFile,
+                        'preview_url' => $request->preview_url,
+                        'status' => $request->status,
+                        'sys_state' => '0',
                         'updated_at' => Carbon::now(),
                     ]);
+                    if ($item->id) {
+                        $item->images()->delete();
+                        $item->features()->delete();
+                        $item->tags()->delete();
+                        $item->categorySubcategory()->delete();
+                        $item->pricing()->delete();
 
-                    session()->flash('success', trans('custom.sub_category_update_success'));
+                        if(!empty($request->old_image)){
+                            foreach ($request->old_image as $image) {
+                                ItemsImage::create([
+                                    'item_id' => $item->id,
+                                    'image_path' => $image,
+                                    'updated_at' => Carbon::now(),
+                                ]);
+                            }
+                        }
+
+                        if(!empty($request->item_images)){
+                            foreach ($request->item_images as $image) {
+                                $itemImages = $this->uploadFile($image);
+                                ItemsImage::create([
+                                    'item_id' => $item->id,
+                                    'image_path' => $itemImages,
+                                    'updated_at' => Carbon::now(),
+                                ]);
+                            }
+                        }
+                        if(!empty($request->key_feature)){
+                            foreach ($request->key_feature as $feature) {
+                                ItemsFeature::create([
+                                    'item_id' => $item->id,
+                                    'key_feature' =>$feature,
+                                    'updated_at' => Carbon::now(),
+                                ]);
+                            }
+                        }
+
+                        if(!empty($request->tag)){
+                            foreach ($request->tag as $tag) {
+                                ItemsTag::create([
+                                    'item_id' => $item->id,
+                                    'tag_name' =>$tag,
+                                    'updated_at' => Carbon::now(),
+                                ]);
+                            }
+                        }
+
+                        if(isset($request->category_id) && isset($request->subcategory_id)){
+                            ItemsCategorySubcategory::create([
+                                'item_id' => $item->id,
+                                'category_id' =>$request->category_id,
+                                'subcategory_id' =>$request->subcategory_id,
+                                'updated_at' => Carbon::now(),
+                            ]);
+                        }
+
+                        ItemsPricing::create([
+                            'item_id' => $item->id,
+                            'fixed_price' =>$request->fixed_price,
+                            'sale_price' =>$request->sale_price,
+                            'gst_percentage' =>$request->gst_percentage,
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    }
+                    session()->flash('success', trans('custom.items_update_success'));
                     return response()->json([
-                        'success' => trans('custom.sub_category_update_success'),
-                        'title' => trans('custom.sub_category_title'),
+                        'success' => trans('custom.items_update_success'),
+                        'title' => trans('custom.item_title'),
                         'type' => 'update',
-                        'data' => $sub_category
+                        'data' => $item
                     ]);
                 }
             }else{
@@ -161,6 +229,25 @@ class ItemsController extends Controller
         $file_data ? $file->move(public_path('storage/items_files/'), $file_data) : '';
 
         return $file_data;
+    }
+
+    public function remove($id)
+    {
+        try{
+            $model = new Items();
+            helper::sysDelete($model,$id);
+            return redirect()->back()
+                ->with([
+                    'success' => trans('custom.items_delete_success'),
+                    'title' => trans('custom.items_title')
+                ]);
+        }catch(Exception $e){
+            return redirect()->back()
+                ->with([
+                    'error' => $e->getMessage(),
+                    'title' => trans('custom.items_title')
+                ]);
+        }
     }
 
     public function changeStatus(Request $request, $id){

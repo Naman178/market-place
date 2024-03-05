@@ -55,7 +55,7 @@
 
         $(document).on('change', '.image-input', function(e) {
             var obj = $(this).closest('.input-file-col');
-            var imageInputWrapper = obj.find('.image-input-label');
+            var imageInputWrapper = $(this).closest('.image-input-label');
             var imgprevid = imageInputWrapper.find('.previewImgCls').attr('data-title');
             var prevtitle = imageInputWrapper.find('.title').attr('data-title');
             var fileName = e.target.value.split('\\').pop();
@@ -76,8 +76,12 @@
             var extension = fileName.split('.').pop();
 
             if ($.inArray(extension, ['jpg', 'jpeg', 'png']) >= 0) {
-                obj.find('.' + imgprevid).show();
                 readURL($(this), imgprevid, imageInputWrapper);
+                obj.find('.' + imgprevid).each(function() {
+                    if ($(this).attr('src') !== '') {
+                        $(this).show();
+                    }
+                });
             } else {
                 obj.find('.error').text("Please upload a valid image");
                 imageInputWrapper.addClass("is-invalid");
