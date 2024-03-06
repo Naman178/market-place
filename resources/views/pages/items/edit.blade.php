@@ -5,7 +5,7 @@
 @endphp
 @section('title')
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
-    <script src="https://cdn.tiny.cloud/1/o7h5fdpvwna0iulbykb99xeh6i53zmtdyswqphxutmkecio6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
     tinymce.init({
         selector: 'textarea#html_description',
