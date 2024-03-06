@@ -429,15 +429,18 @@
             });
         });
 
-        $(document).on('keyup', 'input[type="text"]', function (e) {
+        $(document).on('keyup', 'input[type="text"],input[type="url"],textarea', function (e) {
             $(this).removeClass('is-invalid');
             $(this).closest(".form-group").find('.error').text("");
         });
-        $(document).on('change', 'input[type="file"], select', function () {
+        $(document).on('change', 'input[type="file"]', function () {
+            $(this).closest(".filelabel").removeClass('is-invalid');
+            $(this).closest(".form-group").find('.error').text("");
+        });
+        $(document).on('change', 'select', function () {
             $(this).removeClass('is-invalid');
             $(this).closest(".form-group").find('.error').text("");
         });
-
         // For category
         $(document).on("click", ".erp-category-form", function (e) {
             e.preventDefault();
@@ -525,7 +528,7 @@
             e.preventDefault();
             tinymce.activeEditor.save();
             var submitUrl = $('#item_form').attr("data-url");
-            var data_id = $('#item_form').attr("data-id");
+            var item_id = $('#item_id').val();
             var formData = new FormData($('#item_form')[0]);
 
             $.ajaxSetup({
@@ -550,7 +553,35 @@
                             var redirectUrl = "{{ route('items-index') }}";
                             window.location.href = redirectUrl;
                         } else if (response.error) {
-                            handleFormErrors(response.error);
+                            $('#name_error').text(response.error['name'] || '');
+                            $('#preview_url_error').text(response.error['preview_url'] || '');
+                            $('#item_thumbnail_error').text(response.error['item_thumbnail'] || '');
+                            $('#zip_file_error').text(response.error['item_main_file'] || '');
+                           /*  if(item_id!=0){
+                                $('#item_thumbnail_error').text(response.error['old_thumbnail_image'] || '');
+                                $('#zip_file_error').text(response.error['old_main_file'] || '');
+                                $('#item_thumbnail_label').addClass(response.error['old_thumbnail_image']?'is-invalid':'');
+                                $('#item_main_file_label').addClass(response.error['old_main_file']?'is-invalid':'');
+                            } */
+                            $('#description_error').text(response.error['html_description'] || '');
+                            $('#feature_error').text(response.error['key_feature.0'] || '');
+                            if(response.error['key_feature']){
+                                $('#feature_error').text(response.error['key_feature'] || '');
+                            }
+                            $('#fixed_price_error').text(response.error['fixed_price'] || '');
+                            $('#subcategories_error').text(response.error['subcategory_id'] || '');
+                            $('#category_error').text(response.error['category_id'] || '');
+
+                            $('#name').addClass(response.error['name']?'is-invalid':'');
+                            $('#item_preview_url').addClass(response.error['preview_url']?'is-invalid':'');
+                            $('#html_description').addClass(response.error['html_description']?'is-invalid':'');
+                            $('#key_feature').addClass(response.error['key_feature.0']?'is-invalid':'');
+                            $('#category_id').addClass(response.error['fixed_price']?'is-invalid':'');
+                            $('#subcategory_id').addClass(response.error['subcategory_id']?'is-invalid':'');
+                            $('#item_fixed_price').addClass(response.error['category_id']?'is-invalid':'');
+                            $('#item_thumbnail_label').addClass(response.error['item_thumbnail']?'is-invalid':'');
+                            $('#item_main_file_label').addClass(response.error['item_main_file']?'is-invalid':'');
+                            
                         }
                     },
                     error: function (error) {
