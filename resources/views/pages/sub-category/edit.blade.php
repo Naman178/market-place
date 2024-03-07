@@ -34,6 +34,11 @@
         display: none;
     }
     
+    .select2-container .select2-selection--single {
+        padding-bottom: 2px;
+        padding-top: 2px;
+        height: unset;
+    }
 </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
@@ -67,7 +72,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="parent_category_label">Parent category</label>
-                                {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, $sub_category->category_id, ['class' => 'form-control', 'id' => 'parent_category']) !!}
+                                {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, $sub_category->category_id, ['class' => 'form-control select-input', 'id' => 'parent_category']) !!}
                                 <div class="error" style="color:red;" id="parent_category_error"></div>
                             </div>
                             <div class="form-group col-md-12 input-file-col">
@@ -111,7 +116,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="parent_category_label">Parent category</label>
-                            {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'parent_category']) !!}
+                            {!! Form::select('parent_category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input', 'id' => 'parent_category']) !!}
                             <div class="error" style="color:red;" id="parent_category_error"></div>
                         </div>
                         <div class="form-group col-md-12 input-file-col">
@@ -155,9 +160,10 @@
 </div>
 @endsection
 @section('page-js')
-<script src="{{asset('assets/js/carousel.script.js')}}"></script>
+<script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @section('bottom-js')
     @include('pages.common.modal-script')
+    @include('pages.sub-category.subcategory-script')
 @endsection

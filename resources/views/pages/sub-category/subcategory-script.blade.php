@@ -50,6 +50,7 @@
                     });
                 }
             });
-        })
+        });
+        $('.select-input').select2();
     })
 </script>
