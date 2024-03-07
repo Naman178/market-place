@@ -576,9 +576,9 @@
                             $('#item_preview_url').addClass(response.error['preview_url']?'is-invalid':'');
                             $('#html_description').addClass(response.error['html_description']?'is-invalid':'');
                             $('#key_feature').addClass(response.error['key_feature.0']?'is-invalid':'');
-                            $('#category_id').addClass(response.error['fixed_price']?'is-invalid':'');
+                            $('#category_id').addClass(response.error['category_id']?'is-invalid':'');
                             $('#subcategory_id').addClass(response.error['subcategory_id']?'is-invalid':'');
-                            $('#item_fixed_price').addClass(response.error['category_id']?'is-invalid':'');
+                            $('#item_fixed_price').addClass(response.error['fixed_price']?'is-invalid':'');
                             $('#item_thumbnail_label').addClass(response.error['item_thumbnail']?'is-invalid':'');
                             $('#item_main_file_label').addClass(response.error['item_main_file']?'is-invalid':'');
                             

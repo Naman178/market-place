@@ -1,5 +1,6 @@
 <script>
     $(document).ready(function() {
+        $('.select-input').select2();
         $(document).find(".items-status-dropdown").on("change", function() {
             let itemId = $(this).data("id");
             let status = $(this).val();
@@ -158,22 +159,60 @@
         $(document).find('.tag_input').tagging();
 
         $(document).on('click', '#add-feature', function(e) {
-            var newFeatureFiled = '<div class="row input-row feature-input-row"><div class="col-9">{!! Form::text("key_feature[]", null, array("placeholder" => "Enter key feature","class" => "form-control mb-3" , "id" => "key_feature")) !!}</div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
-            $(this).closest('#item_form').find('.feature-input-wrapper').append(newFeatureFiled);
+            var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
+            var order = featureWrapper.find('.input-row').length + 1;
+
+            var newFeatureFiled = `
+                <div class="row input-row feature-input-row" data-order="${order}">
+                    <div class="col-9"> 
+                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
+                    </div>
+                    <div class="col-3">
+                        <div class="remove-btn">
+                            <span class="close-icon" aria-hidden="true">&times;</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            featureWrapper.append(newFeatureFiled);
         });
 
         $(document).on('click', '.remove-btn', function(e) {
-            $(this).closest('.input-row').remove();
-        }); 
-
-        $(document).on('change', '#category_id', function(e) {
-            var selectedCategory = $(this).val();
-            $('#subcategory_id option').addClass('d-none').filter(function() {
-                return $(this).data('category') == selectedCategory;
-            }).removeClass('d-none');
-
-            $('#subcategory_id').val('').change();
+            var removedRow = $(this).closest('.input-row');
+            var featureWrapper = removedRow.closest('.feature-input-wrapper');
+            removedRow.remove();
+            featureWrapper.find('.input-row').each(function(index) {
+                $(this).attr('data-order', index + 1);
+            });
         });
 
+        var subcategorySelect = $('.subcategory-select');
+        var originalOptions = subcategorySelect.find('option:not([value=""])').clone();
+        $(document).on('change', '#category_id', function(e) {
+            var selectedCategory = $(this).val();
+            subcategorySelect.find('option:not([value=""])').remove();
+            originalOptions.filter(function() {
+                return $(this).data('category') == selectedCategory || $(this).data('category') === undefined;
+            }).appendTo(subcategorySelect);
+            subcategorySelect.select2();
+            subcategorySelect.val('').trigger('change.select2');
+        });
+        
+        $(document).on('blur', '.price-input', function (e) {
+            var gst = parseFloat($(document).find('#item_gst_percentage').val());
+            var fixed_price = parseFloat($(document).find('#item_fixed_price').val());
+            var sale_price = parseFloat($(document).find('#item_sale_price').val());
+
+            if (!(isNaN(gst))) {
+                if (isNaN(sale_price)) {
+                    var gst_amount = (fixed_price * gst) / 100;
+                    $(document).find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
+                } else {
+                    var gst_amount = (fixed_price - sale_price) * (gst / (100 + gst));
+                    $(document).find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
+                }
+            }
+        });
     }) ;
 </script>
