@@ -224,9 +224,9 @@ class ItemsController extends Controller
             'key_feature.*' => 'required_without_all: key_feature',
             'category_id' => 'required',
             'subcategory_id' => 'required',
-            'fixed_price' => 'required|number',
-            'sale_price' => 'number',
-            'gst_percentage' => 'number'
+            'fixed_price' => 'required|numeric',
+            'sale_price' => 'numeric',
+            'gst_percentage' => 'numeric'
         ];
 
         if ($request->item_id == "0") {
