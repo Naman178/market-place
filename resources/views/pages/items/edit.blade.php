@@ -5,7 +5,7 @@
 @endphp
 @section('title')
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
-    <script src="https://cdn.tiny.cloud/1/o7h5fdpvwna0iulbykb99xeh6i53zmtdyswqphxutmkecio6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
     tinymce.init({
         selector: 'textarea#html_description',
@@ -58,6 +58,12 @@
         padding: 16px 0;
         margin-left: 30px;
         cursor: pointer;
+    }
+
+    .select2-container .select2-selection--single {
+        padding-bottom: 2px;
+        padding-top: 2px;
+        height: unset;
     }
 </style>
 @endsection
@@ -181,12 +187,12 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="category_label">Category</label>
-                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control', 'id' => 'category_id']) !!}
+                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input', 'id' => 'category_id']) !!}
                                 <div class="error" style="color:red;" id="category_error"></div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="subcategory_label">Sub category</label>
-                                <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select">
+                                <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
                                     <option value="">Select sub category</option>
                                     @foreach($subcategories as $subcategory)
                                         @if($subcategory->category_id == $item->categorySubcategory->category_id)
@@ -202,14 +208,28 @@
                             <div class="col-md-12 form-group">
                                 <label for="pricing_label">Pricing</label>
                                 <div class="row">
+                                    @php 
+                                    $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
+                                    $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
+                                    $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
+
+                                    if ($sale_price == 0) {
+                                        $gst_amount = ($fixed_price * $gst_percentage) / 100;
+                                    } else {
+                                        $gst_amount = ($fixed_price - $sale_price) * ($gst_percentage / (100 + $gst_percentage));
+                                    }
+
+                                    $gst_amount_formatted = number_format($gst_amount, 2);
+                                    @endphp
                                     <div class="col-md-4">
-                                        {!! Form::text('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error' , 'id' => 'item_fixed_price')) !!}
+                                        {!! Form::text('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price')) !!}
                                     </div>
                                     <div class="col-md-4">
-                                        {!! Form::text('sale_price', $item->pricing->sale_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error' , 'id' => 'item_sale_price')) !!}
+                                        {!! Form::text('sale_price', $item->pricing->sale_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error price-input' , 'id' => 'item_sale_price')) !!}
                                     </div>
                                     <div class="col-md-4">
-                                        {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
+                                        {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error price-input' , 'id' => 'item_gst_percentage')) !!}
+                                        <div class="gst-amount" id="gst_amount">GST Amount: <strong><span>{{ $gst_amount_formatted }}</span></strong></div>
                                     </div>
                                 </div>
                                 <div class="error" style="color:red;" id="fixed_price_error"></div>
@@ -280,7 +300,7 @@
                                 </div>
                             </div>
                             <div class="feature-input-wrapper">
-                                <div class="row input-row feature-input-row">
+                                <div class="row input-row feature-input-row" data-order='1'>
                                     <div class="col-9"> 
                                         {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                                     </div>
@@ -316,12 +336,12 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="category_label">Category</label>
-                            {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control', 'id' => 'category_id']) !!}
+                            {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input', 'id' => 'category_id']) !!}
                             <div class="error" style="color:red;" id="category_error"></div>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="subcategory_label">Sub category</label>
-                            <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select">
+                            <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
                                 <option value="">Select sub category</option>
                                 @foreach($subcategories as $subcategory)
                                     <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
@@ -334,15 +354,17 @@
                             <label for="pricing_label">Pricing</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error' , 'id' => 'item_fixed_price')) !!}
+                                    {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control input-error' , 'id' => 'item_sale_price')) !!}
+                                    {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control input-error' , 'id' => 'item_gst_percentage')) !!}
+                                    {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
+                                    <div class="gst-amount" id="gst_amount"></div>
                                 </div>
                             </div>
+                            
                             <div class="error" style="color:red;" id="fixed_price_error"></div>
                         </div>
                     </div>
