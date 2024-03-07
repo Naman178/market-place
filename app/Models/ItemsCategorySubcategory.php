@@ -9,7 +9,8 @@ class ItemsCategorySubcategory extends Model
 {
     use HasFactory;
     protected $table = 'items_category_subcategories__tbl';
-
+    protected $primaryKey = null;
+    public $incrementing = false;
     protected $fillable = [
         'item_id',
         'category_id',
