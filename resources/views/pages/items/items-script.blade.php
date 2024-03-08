@@ -134,8 +134,11 @@
         });
        
         $(document).on('click', '#add-image', function(e) {
-            var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
-            $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+            var featureWrapper = $(this).closest('.add-more-input').find('.image-input-wrapper');
+            var order = featureWrapper.find('.input-row').length + 1;
+            
+            var newImageField = `<div class="row input-row image-input-row"  data-order="${order}"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>`;
+            featureWrapper.append(newImageField);
         });
 
         $(document).on('click', '.delete-btn', function(e) {
@@ -155,8 +158,6 @@
                 }
             });
         });
-
-        $(document).find('.tag_input').tagging();
 
         $(document).on('click', '#add-feature', function(e) {
             var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
@@ -180,9 +181,9 @@
 
         $(document).on('click', '.remove-btn', function(e) {
             var removedRow = $(this).closest('.input-row');
-            var featureWrapper = removedRow.closest('.feature-input-wrapper');
+            var addMoreWrapper = removedRow.closest('.add-more-wrapper');
             removedRow.remove();
-            featureWrapper.find('.input-row').each(function(index) {
+            addMoreWrapper.find('.input-row').each(function(index) {
                 $(this).attr('data-order', index + 1);
             });
         });

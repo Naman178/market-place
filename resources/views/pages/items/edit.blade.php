@@ -7,18 +7,18 @@
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
     <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-    tinymce.init({
-        selector: 'textarea#html_description',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes autocorrect inlinecss',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-        init_instance_callback: function(editor) {
-            editor.on('keyup', function(e) {
-                $(document).find('textarea').removeClass('is-invalid');
-                $('textarea').closest(".form-group").find('.error').text("");
+        tinymce.init({
+            selector: 'textarea#html_description',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes autocorrect inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(document).find('textarea').removeClass('is-invalid');
+                    $('textarea').closest(".form-group").find('.error').text("");
+            });
+            }
         });
-        }
-    });
     </script>
 @endsection
 @section('page-css')
@@ -137,19 +137,19 @@
                                     <button type="button" class="btn btn-info" id="add-feature">Add more</button>
                                     </div>
                                 </div>
-                                <div class="feature-input-wrapper">
+                                <div class="add-more-wrapper feature-input-wrapper">
                                     @foreach($item->features as $feature)
-                                        <div class="row input-row feature-input-row">
+                                        <div class="row input-row feature-input-row" data-order="{{$feature->id}}">
                                             <div class="col-9"> 
-                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
+                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[{{$feature->id}}]" type="text" value="{{ $feature->key_feature }}">
                                             </div>
-                                            <!-- <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div> -->
+                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
                                         </div>
                                     @endforeach
                                 </div>
                                 <div class="error" style="color:red;" id="feature_error"></div>
                             </div>
-                            <div class="col-md-12 form-group input-file-col">
+                            <div class="col-md-12 form-group input-file-col add-more-input">
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="item_images_label">Images</label>
@@ -158,20 +158,20 @@
                                         <button type="button" class="btn btn-info" id="add-image">Add more</button>
                                     </div>
                                 </div>
-                                <div class="image-input-wrapper">
+                                <div class="add-more-wrapper image-input-wrapper">
                                     @foreach($item->images as $image)
                                         <?php $showImagePrev = (!empty($image->image_path)) ? 'display:inline-block' : ''; ?>
-                                        <div class="row input-row image-input-row">
+                                        <div class="row input-row image-input-row" data-order="{{$image->id}}">
                                             <div class="col-9">
                                                 <label class="form-control filelabel mb-3 image-input-label">
-                                                    <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
-                                                    <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
+                                                    <input type="hidden" name="old_image[{{$image->id}}]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
+                                                    <input type="file" name="item_images[{{$image->id}}]" id="item_images"  class=" image-input form-control">
                                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                                     <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($image->image_path)){{asset('storage/items_files/'.$image->image_path)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
                                                     <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
                                                 </label>
                                             </div>
-                                            <!-- <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div> -->
+                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
                                         </div>
                                     @endforeach
                                 </div>
@@ -299,7 +299,7 @@
                                 <button type="button" class="btn btn-info" id="add-feature">Add more</button>
                                 </div>
                             </div>
-                            <div class="feature-input-wrapper">
+                            <div class="add-more-wrapper feature-input-wrapper">
                                 <div class="row input-row feature-input-row" data-order='1'>
                                     <div class="col-9"> 
                                         {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
@@ -308,7 +308,7 @@
                             </div>
                             <div class="error" style="color:red;" id="feature_error"></div>
                         </div>
-                        <div class="col-md-12 form-group input-file-col">
+                        <div class="col-md-12 form-group input-file-col add-more-input">
                             <div class="row">
                                 <div class="col-6">
                                     <label for="item_images_label">Images</label>
@@ -317,8 +317,8 @@
                                     <button type="button" class="btn btn-info" id="add-image">Add more</button>
                                 </div>
                             </div>
-                            <div class="image-input-wrapper">
-                                <div class="row input-row image-input-row">
+                            <div class="add-more-wrapper image-input-wrapper">
+                                <div class="row input-row image-input-row" data-order='1'>
                                     <div class="col-9">
                                         <label class="form-control filelabel mb-3 image-input-label">
                                             <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
@@ -385,6 +385,9 @@
 <script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/tagging.min.js') }}"></script>
 <script src="{{ asset('assets/js/tagging.script.js') }}"></script>
+<script>
+    $(document).find('.tag_input').tagging();
+</script>
 @endsection
 @section('bottom-js')
     @include('pages.common.modal-script')
