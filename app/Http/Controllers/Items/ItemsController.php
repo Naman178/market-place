@@ -134,41 +134,58 @@ class ItemsController extends Controller
                         'updated_at' => Carbon::now(),
                     ]);
                     if ($item->id) {
-                        $item->images()->delete();
-                        $item->features()->delete();
                         $item->tags()->delete();
-                        $item->categorySubcategory()->delete();
-                        $item->pricing()->delete();
-
-                        if(!empty($request->old_image)){
-                            foreach ($request->old_image as $image) {
-                                ItemsImage::create([
-                                    'item_id' => $item->id,
-                                    'image_path' => $image,
-                                    'updated_at' => Carbon::now(),
-                                ]);
+                        /* echo "<pre>";
+                        print_r($request->all());exit; */
+                        $updatedImageIds = [];
+                        if (!empty($request->old_image)) {
+                            foreach ($request->old_image as $imageId => $image) {
+                                $existingImage = ItemsImage::find($imageId);
+                                if ($existingImage) {
+                                    $existingImage->update([
+                                        'image_path' => $image,
+                                        'updated_at' => now(),
+                                    ]);
+                                    $updatedImageIds[] = $existingImage->id;
+                                } else {
+                                    // Log or dd an error message if the existing image is not found
+                                    // dd("Error: Existing image not found for ID $imageId");
+                                }
                             }
                         }
 
-                        if(!empty($request->item_images)){
+                        // Update or create images
+                        if (!empty($request->item_images)) {
                             foreach ($request->item_images as $image) {
-                                $itemImages = $this->uploadFile($image);
-                                ItemsImage::create([
-                                    'item_id' => $item->id,
-                                    'image_path' => $itemImages,
-                                    'updated_at' => Carbon::now(),
-                                ]);
+                                $itemImage = ItemsImage::updateOrCreate(
+                                    ['item_id' => $item->id, 'image_path' => $this->uploadFile($image)],
+                                    ['updated_at' => now()]
+                                );
+                                $updatedImageIds[] = $itemImage->id;
                             }
                         }
-                        if(!empty($request->key_feature)){
+
+                        // Delete extra images
+                        ItemsImage::where('item_id', $item->id)
+                            ->whereNotIn('id', $updatedImageIds)
+                            ->delete();
+
+                        // Update or create features
+                        $updatedFeatureIds = [];
+                        if (!empty($request->key_feature)) {
                             foreach ($request->key_feature as $feature) {
-                                ItemsFeature::create([
-                                    'item_id' => $item->id,
-                                    'key_feature' =>$feature,
-                                    'updated_at' => Carbon::now(),
-                                ]);
+                                $itemFeature = ItemsFeature::updateOrCreate(
+                                    ['item_id' => $item->id, 'key_feature' => $feature],
+                                    ['updated_at' => now()]
+                                );
+                                $updatedFeatureIds[] = $itemFeature->id;
                             }
                         }
+                        
+                        // Delete features that were not created or updated
+                        ItemsFeature::where('item_id', $item->id)
+                            ->whereNotIn('id', $updatedFeatureIds)
+                            ->delete();
 
                         if(!empty($request->tag)){
                             foreach ($request->tag as $tag) {
@@ -182,22 +199,28 @@ class ItemsController extends Controller
                             }
                         }
 
-                        if(isset($request->category_id) && isset($request->subcategory_id)){
-                            ItemsCategorySubcategory::create([
-                                'item_id' => $item->id,
-                                'category_id' =>$request->category_id,
-                                'subcategory_id' =>$request->subcategory_id,
+                        if (isset($request->category_id) && isset($request->subcategory_id)) {
+                            $existingCategorySubcategory = ItemsCategorySubcategory::where('item_id', $item->id)->first();
+                        
+                            if ($existingCategorySubcategory) {
+                                $existingCategorySubcategory->update([
+                                    'category_id' => $request->category_id,
+                                    'subcategory_id' => $request->subcategory_id,
+                                    'updated_at' => Carbon::now(),
+                                ]);
+                            }
+                        }
+
+                       // Update pricing
+                        $existingPricing = ItemsPricing::where('item_id', $item->id)->first();
+                        if ($existingPricing) {
+                            $existingPricing->update([
+                                'fixed_price' => $request->fixed_price,
+                                'sale_price' => $request->sale_price,
+                                'gst_percentage' => $request->gst_percentage,
                                 'updated_at' => Carbon::now(),
                             ]);
                         }
-
-                        ItemsPricing::create([
-                            'item_id' => $item->id,
-                            'fixed_price' =>$request->fixed_price,
-                            'sale_price' =>$request->sale_price,
-                            'gst_percentage' =>$request->gst_percentage,
-                            'updated_at' => Carbon::now(),
-                        ]);
                     }
                     session()->flash('success', trans('custom.items_update_success'));
                     return response()->json([
@@ -215,7 +238,6 @@ class ItemsController extends Controller
 
     private function validateRequest(Request $request)
     {
-        /* print_r($request->all());exit; */
         $rules = [
             'name' => 'required',
             'preview_url' => 'required',
@@ -224,26 +246,21 @@ class ItemsController extends Controller
             'key_feature.*' => 'required_without_all: key_feature',
             'category_id' => 'required',
             'subcategory_id' => 'required',
-            'fixed_price' => 'required|number',
-            'sale_price' => 'number',
-            'gst_percentage' => 'number'
+            'fixed_price' => 'required|numeric',
+            'sale_price' => 'numeric|nullable',
+            'gst_percentage' => 'numeric|nullable'            
         ];
 
         if ($request->item_id == "0") {
             $rules['item_thumbnail'] = 'required';
             $rules['item_main_file'] = 'required';
-        }/* else{
-            $rules['old_thumbnail_image'] = 'required';
-            $rules['old_main_file'] = 'required';
-        } */
+        }
 
         $customMessages = [
             'key_feature.*.required_without_all' => 'At least one feature is required.',
             'html_description.required' => 'The description field is required.',
             'category_id.required' => 'The category field is required.',
-            'subcategory_id.required' => 'The subcategory field is required.',
-            /* 'old_thumbnail_image.required' => 'The item thumbnail field is required.',
-            'old_main_file.required' => 'The item main file field is required.' */
+            'subcategory_id.required' => 'The subcategory field is required.'
         ];
         
         return Validator::make($request->all(), $rules, $customMessages);
