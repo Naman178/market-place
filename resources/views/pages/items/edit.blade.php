@@ -5,6 +5,7 @@
 @endphp
 @section('title')
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
+    <!-- <script src="https://cdn.tiny.cloud/1/o7h5fdpvwna0iulbykb99xeh6i53zmtdyswqphxutmkecio6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
     <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
@@ -139,9 +140,9 @@
                                 </div>
                                 <div class="add-more-wrapper feature-input-wrapper">
                                     @foreach($item->features as $feature)
-                                        <div class="row input-row feature-input-row" data-order="{{$feature->id}}">
+                                        <div class="row input-row feature-input-row">
                                             <div class="col-9"> 
-                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[{{$feature->id}}]" type="text" value="{{ $feature->key_feature }}">
+                                                <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
                                             </div>
                                             <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
                                         </div>
@@ -161,11 +162,11 @@
                                 <div class="add-more-wrapper image-input-wrapper">
                                     @foreach($item->images as $image)
                                         <?php $showImagePrev = (!empty($image->image_path)) ? 'display:inline-block' : ''; ?>
-                                        <div class="row input-row image-input-row" data-order="{{$image->id}}">
+                                        <div class="row input-row image-input-row">
                                             <div class="col-9">
                                                 <label class="form-control filelabel mb-3 image-input-label">
-                                                    <input type="hidden" name="old_image[{{$image->id}}]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
-                                                    <input type="file" name="item_images[{{$image->id}}]" id="item_images"  class=" image-input form-control">
+                                                    <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
+                                                    <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
                                                     <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                                     <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($image->image_path)){{asset('storage/items_files/'.$image->image_path)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
                                                     <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
@@ -187,7 +188,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="category_label">Category</label>
-                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input', 'id' => 'category_id']) !!}
+                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
                                 <div class="error" style="color:red;" id="category_error"></div>
                             </div>
                             <div class="col-md-6 form-group">
@@ -336,7 +337,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="category_label">Category</label>
-                            {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input', 'id' => 'category_id']) !!}
+                            {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
                             <div class="error" style="color:red;" id="category_error"></div>
                         </div>
                         <div class="col-md-6 form-group">
