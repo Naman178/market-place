@@ -69,4 +69,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items/edit/{id}', [ItemsController::class, 'edit'])->name('items-edit');
     Route::get('/items/delete/{id}', [ItemsController::class, 'remove'])->name('items-delete');
     Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
+    Route::post("/items/get-subcategory", [ItemsController::class, "getSubCategory"])->name("get-subcategory");
 });
