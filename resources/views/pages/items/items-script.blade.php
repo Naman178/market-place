@@ -52,7 +52,6 @@
                 }
             });
         })
-    
 
         $(document).on('change', '.image-input', function(e) {
             var obj = $(this).closest('.input-file-col');
@@ -180,18 +179,44 @@
             removedRow.remove();
         });
 
-        var subcategorySelect = $('.subcategory-select');
-        var originalOptions = subcategorySelect.find('option:not([value=""])').clone();
         $(document).on('change', '#category_id', function(e) {
-            var selectedCategory = $(this).val();
-            subcategorySelect.find('option:not([value=""])').remove();
-            originalOptions.filter(function() {
-                return $(this).data('category') == selectedCategory || $(this).data('category') === undefined;
-            }).appendTo(subcategorySelect);
-            subcategorySelect.select2();
-            subcategorySelect.val('').trigger('change.select2');
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route("get-subcategory") }}',
+                    data: {'category_id': categoryId, '_token': '{{ csrf_token() }}'},
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#subcategory_id').empty();
+                        
+                        if (data.length > 0) {
+                            $('#subcategory_id').append('<option value="">Select subcategory</option>');
+                            $.each(data, function (key, value) {
+                                $('#subcategory_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                        } else {
+                            $('#subcategory_id').append('<option value="">No subcategories found</option>');
+                        }
+
+                        // Refresh Select2 
+                        $('#subcategory_id').select2('destroy').select2();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                $('#subcategory_id').empty();
+                $('#subcategory_id').append('<option value="">Select subcategory</option>');
+                $('#subcategory_id').select2('destroy').select2();
+            }
         });
-        
+
+        if (window.location.href.indexOf('edit') !== -1) {
+            $('#subcategory_id option.d-none').remove();
+        }   
+
         $(document).on('blur', '.price-input', function (e) {
             var gst = parseFloat($(document).find('#item_gst_percentage').val());
             var fixed_price = parseFloat($(document).find('#item_fixed_price').val());
