@@ -41,8 +41,6 @@ class ItemsController extends Controller
     }
 
     public function store(Request $request){
-        /* echo "<pre>";
-        print_r($request->all());exit; */
         if($request->ajax()){
             $validator = $this->validateRequest($request);
             if ($validator->passes()){
@@ -61,6 +59,7 @@ class ItemsController extends Controller
                         'created_at' => Carbon::now(),
                     ]);
                     if($save_item->id){
+                        // IMAGES
                         if(!empty($request->item_images)){
                             foreach ($request->item_images as $image) {
                                 $itemImages = $this->uploadFile($image);
@@ -71,6 +70,8 @@ class ItemsController extends Controller
                                 ]);
                             }
                         }
+
+                        // FEATURES
                         if(!empty($request->key_feature)){
                             foreach ($request->key_feature as $feature) {
                                 ItemsFeature::create([
@@ -81,6 +82,7 @@ class ItemsController extends Controller
                             }
                         }
 
+                        // TAGS
                         if(!empty($request->tag)){
                             foreach ($request->tag as $tag) {
                                 ItemsTag::create([
@@ -91,6 +93,7 @@ class ItemsController extends Controller
                             }
                         }
 
+                        // CATEGORY AND SUBCATEGORY
                         if(isset($request->category_id) && isset($request->subcategory_id)){
                             ItemsCategorySubcategory::create([
                                 'item_id' => $save_item->id,
@@ -100,6 +103,7 @@ class ItemsController extends Controller
                             ]);
                         }
 
+                        // PRICING
                         ItemsPricing::create([
                             'item_id' => $save_item->id,
                             'fixed_price' =>$request->fixed_price,
@@ -135,58 +139,48 @@ class ItemsController extends Controller
                     ]);
                     if ($item->id) {
                         $item->tags()->delete();
-                        /* echo "<pre>";
-                        print_r($request->all());exit; */
-                        $updatedImageIds = [];
-                        if (!empty($request->old_image)) {
-                            foreach ($request->old_image as $imageId => $image) {
-                                $existingImage = ItemsImage::find($imageId);
-                                if ($existingImage) {
-                                    $existingImage->update([
-                                        'image_path' => $image,
-                                        'updated_at' => now(),
-                                    ]);
-                                    $updatedImageIds[] = $existingImage->id;
-                                } else {
-                                    // Log or dd an error message if the existing image is not found
-                                    // dd("Error: Existing image not found for ID $imageId");
-                                }
+                        $item->features()->delete();
+                        $item->images()->delete();
+
+                        // IMAGES
+                        $oldImages = $request->old_image ?? [];
+                        $newImages = $request->item_images ?? [];
+
+                        $mergedImages = [];
+                        $uniqueIndices = array_unique(array_merge(array_keys($oldImages), array_keys($newImages)));
+
+                        foreach ($uniqueIndices as $index) {
+                            if (isset($newImages[$index])) {
+                                $itemImages = $newImages[$index] ? $this->uploadFile($newImages[$index]) : null;
+                            } elseif (isset($oldImages[$index])) {
+                                $itemImages = $oldImages[$index];
+                            } else {
+                                continue;
                             }
+
+                            $mergedImages[] = [
+                                'item_id' => $item->id,
+                                'image_path' => $itemImages,
+                                'updated_at' => Carbon::now(),
+                            ];
                         }
 
-                        // Update or create images
-                        if (!empty($request->item_images)) {
-                            foreach ($request->item_images as $image) {
-                                $itemImage = ItemsImage::updateOrCreate(
-                                    ['item_id' => $item->id, 'image_path' => $this->uploadFile($image)],
-                                    ['updated_at' => now()]
-                                );
-                                $updatedImageIds[] = $itemImage->id;
-                            }
+                        foreach ($mergedImages as $imageData) {
+                            ItemsImage::create($imageData);
                         }
 
-                        // Delete extra images
-                        ItemsImage::where('item_id', $item->id)
-                            ->whereNotIn('id', $updatedImageIds)
-                            ->delete();
-
-                        // Update or create features
-                        $updatedFeatureIds = [];
+                        // FEATURES
                         if (!empty($request->key_feature)) {
                             foreach ($request->key_feature as $feature) {
-                                $itemFeature = ItemsFeature::updateOrCreate(
-                                    ['item_id' => $item->id, 'key_feature' => $feature],
-                                    ['updated_at' => now()]
-                                );
-                                $updatedFeatureIds[] = $itemFeature->id;
+                                ItemsFeature::create([
+                                    'item_id' => $item->id,
+                                    'key_feature' =>$feature,
+                                    'updated_at' => Carbon::now(),
+                                ]);
                             }
                         }
-                        
-                        // Delete features that were not created or updated
-                        ItemsFeature::where('item_id', $item->id)
-                            ->whereNotIn('id', $updatedFeatureIds)
-                            ->delete();
 
+                        // TAGS
                         if(!empty($request->tag)){
                             foreach ($request->tag as $tag) {
                                 if($tag != ''){
@@ -199,6 +193,7 @@ class ItemsController extends Controller
                             }
                         }
 
+                        // CATEGORY AND SUBCATEGORY
                         if (isset($request->category_id) && isset($request->subcategory_id)) {
                             $existingCategorySubcategory = ItemsCategorySubcategory::where('item_id', $item->id)->first();
                         
@@ -211,7 +206,7 @@ class ItemsController extends Controller
                             }
                         }
 
-                       // Update pricing
+                        // PRICING
                         $existingPricing = ItemsPricing::where('item_id', $item->id)->first();
                         if ($existingPricing) {
                             $existingPricing->update([
@@ -306,4 +301,8 @@ class ItemsController extends Controller
         ]);
     }
 
+    public function getSubCategory(Request $request){
+        $subcategories = SubCategory::where('sys_state', '0')->where('category_id', $request->category_id)->get(['id', 'name', 'category_id']);
+        return response()->json($subcategories);
+    }
 }
