@@ -12,6 +12,7 @@ use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
+use App\Http\Controllers\Reviews\ReviewsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -70,4 +71,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items/delete/{id}', [ItemsController::class, 'remove'])->name('items-delete');
     Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
     Route::post("/items/get-subcategory", [ItemsController::class, "getSubCategory"])->name("get-subcategory");
+
+    // Review module
+    Route::get('/items-list', [ReviewsController::class,'items_list'])->name('items-list');
+    Route::get('/items-list/{id}/reviews', [ReviewsController::class,'showReviews'])->name('reviews-list');
+    Route::post("/review/status/{id}", [ReviewsController::class, "changeStatus"])->name("reviews-status");
+    Route::get('/review/delete/{id}', [ReviewsController::class, 'remove'])->name('reviews-delete');
 });

@@ -27,10 +27,19 @@
                 </li>
             @endcan
             @can('items-tab-show')
-                <li class="nav-item {{ request()->is('items*') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->routeIs('items-index') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('items-index') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">{{ trans('custom.items_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('reviews-tab-show')
+                <li class="nav-item {{ request()->routeIs('items-list') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('items-list') }}">
+                        <i class="nav-icon i-Technorati"></i>
+                        <span class="nav-text">{{ trans('custom.reviews_title') }}</span>
                     </a>
                     <div class="triangle"></div>
                 </li>
