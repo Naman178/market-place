@@ -46,4 +46,9 @@ class Items extends Model
     {
         return $this->hasOne(ItemsPricing::class, 'item_id', 'id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Reviews::class, 'item_id');
+    }
 }

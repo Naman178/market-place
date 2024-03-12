@@ -130,14 +130,14 @@ class SubCategoryController extends Controller
     }
 
     public function changeStatus(Request $request, $id){
-        $category = SubCategory::find($id);
-        $category->update([
+        $subcategory = SubCategory::find($id);
+        $subcategory->update([
             "sys_state" => $request->status
         ]);
 
         return response()->json([
             "success" => true,
-            "data" => $category
+            "data" => $subcategory
         ]);
     }
 }

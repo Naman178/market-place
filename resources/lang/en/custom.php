@@ -23,4 +23,11 @@ return [
     'items_delete_success' => 'Item deleted successfully!',
     'items_create_fail' => 'Item create unsuccessfully!',
     'items_update_fail' => 'Item update unsuccessfully!',
+
+    // REVIEWS
+    'review_title' => 'Review',
+    'reviews_title' => 'Reviews',
+    'reviews_accept_success' => 'Review accepted!',
+    'reviews_rejected_success' => 'Review rejected!',
+    'reviews_delete_success' => 'Review deleted successfully!',
 ];
