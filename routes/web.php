@@ -13,6 +13,7 @@ use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
+use App\Http\Controllers\HomePage\HomePageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,9 @@ use App\Http\Controllers\Reviews\ReviewsController;
 |
 */
 Auth::routes();
+
+// Home Page 
+Route::get("/home", [HomePageController::class, "index"])->name("home");
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
