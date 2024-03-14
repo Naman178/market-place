@@ -13,7 +13,6 @@ a{
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    width: 100%;
 }
 
 .header-row {
@@ -78,9 +77,108 @@ a{
     padding: 13px 28px;
 }
 
-.items-container{
-    background: #007AC1;
+.items-container {
+    background: #EDF2F4;
     height: 750px;
     width: 100%;
 }
 
+.footer-container {
+    background-color: #007AC1;
+    padding: 50px 50px 20px;
+}
+
+.horizontal-menu-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 25px;
+    color: #fff;
+}
+
+/* 2) First Row: Horizontal Menu in Left Side and Social Menu in Right Side */
+.left-row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.menu-horizontal {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.menu-horizontal li {
+    padding-right: 50px;
+}
+
+.social-link {
+    margin-left: 15px;
+}
+
+/* 3) Second Row: Vertical Menu Left Side */
+.vertical-menu-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0 25px;
+    color: #fff;
+}
+
+.vertical-menu-row .row.left-row {
+    width: 60%;
+    justify-content: space-between;
+}
+
+.row.left-row {
+    display: flex;
+}
+
+.col {
+    margin-right: 20px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.menu-vertical {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-vertical li {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.menu-vertical.list-style {
+    list-style-type: disc;
+    padding-left: 18px;
+}
+
+/* 4) Second Row: Contact Right Side */
+.row.right-row {
+    display: flex;
+}
+
+/* 5) Copyright Third Row Full Size */
+.copyright-row {
+    color: #fff;
+    text-align: left;
+}
+
+.footer-container a{
+    color: #fff;
+}
+
+.row.right-row.contact li {
+    line-height: 10px;
+}
+
+.menu-horizontal li a {
+    font-size: 16px;
+}
