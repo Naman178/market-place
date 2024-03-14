@@ -242,8 +242,8 @@ class ItemsController extends Controller
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
-            'sale_price' => 'numeric|nullable',
-            'gst_percentage' => 'numeric|nullable'            
+            'sale_price' => 'required|numeric',
+            'gst_percentage' => 'required|numeric'            
         ];
 
         if ($request->item_id == "0") {
