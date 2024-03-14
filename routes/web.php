@@ -24,11 +24,12 @@ use App\Http\Controllers\HomePage\HomePageController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 
 // Home Page 
+Route::redirect('/', '/home');
 Route::get("/home", [HomePageController::class, "index"])->name("home");
 
+Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('dashboard.dashboardv1');

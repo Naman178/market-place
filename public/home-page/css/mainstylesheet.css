@@ -77,12 +77,6 @@ a{
     padding: 13px 28px;
 }
 
-.items-container {
-    background: #EDF2F4;
-    height: 750px;
-    width: 100%;
-}
-
 .footer-container {
     background-color: #007AC1;
     padding: 50px 50px 20px;
@@ -160,12 +154,10 @@ a{
     padding-left: 18px;
 }
 
-/* 4) Second Row: Contact Right Side */
 .row.right-row {
     display: flex;
 }
 
-/* 5) Copyright Third Row Full Size */
 .copyright-row {
     color: #fff;
     text-align: left;
@@ -181,4 +173,42 @@ a{
 
 .menu-horizontal li a {
     font-size: 16px;
+}
+
+.items-container {
+    background: #EDF2F4;
+    height: 750px;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.items-container .title {
+    text-align: center;
+    margin-bottom: 20px; 
+}
+
+.items-container .title h3 {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 67.2px;
+    margin: 0;
+}
+
+.items-container .title h3 .color-blue {
+    color: #007AC1;
+    line-height: 0;
+    position: relative;
+}
+
+.items-container .title h3 span {
+    font-weight: 700;
+    color: #4D4D4D;
+}
+
+.title h3 .underline-text::after {
+    content: url('/home-page/images/Vector_7.png');
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 48px;
 }
