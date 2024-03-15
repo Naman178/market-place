@@ -217,26 +217,25 @@
                                     $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
                                     $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
 
-                                    if ($sale_price == 0) {
-                                        $gst_amount = ($fixed_price * $gst_percentage) / 100;
-                                    } else {
-                                        $gst_amount = ($fixed_price - $sale_price) * ($gst_percentage / (100 + $gst_percentage));
-                                    }
+                                    $gst_amount = ($sale_price * $gst_percentage) / 100;
 
                                     $gst_amount_formatted = number_format($gst_amount, 2);
                                     @endphp
                                     <div class="col-md-4">
                                         {!! Form::text('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price')) !!}
+                                        <div class="error" style="color:red;" id="fixed_price_error"></div>
                                     </div>
                                     <div class="col-md-4">
                                         {!! Form::text('sale_price', $item->pricing->sale_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error price-input' , 'id' => 'item_sale_price')) !!}
+                                        <div class="error" style="color:red;" id="sale_price_error"></div>
                                     </div>
                                     <div class="col-md-4">
                                         {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error price-input' , 'id' => 'item_gst_percentage')) !!}
+                                        <div class="error" style="color:red;" id="gst_percentage_error"></div>
                                         <div class="gst-amount" id="gst_amount">GST Amount: <strong><span>{{ $gst_amount_formatted }}</span></strong></div>
                                     </div>
                                 </div>
-                                <div class="error" style="color:red;" id="fixed_price_error"></div>
+                                
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="item_status" class="">Item status:</label>
@@ -359,17 +358,18 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
+                                    <div class="error" style="color:red;" id="fixed_price_error"></div>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
+                                    <div class="error" style="color:red;" id="sale_price_error"></div>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
+                                    <div class="error" style="color:red;" id="gst_percentage_error"></div>
                                     <div class="gst-amount" id="gst_amount"></div>
                                 </div>
                             </div>
-                            
-                            <div class="error" style="color:red;" id="fixed_price_error"></div>
                         </div>
                     </div>
                 </form>
