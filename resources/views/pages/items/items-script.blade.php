@@ -221,13 +221,9 @@
             var gst = parseFloat($(document).find('#item_gst_percentage').val());
             var fixed_price = parseFloat($(document).find('#item_fixed_price').val());
             var sale_price = parseFloat($(document).find('#item_sale_price').val());
-
             if (!(isNaN(gst))) {
-                if (isNaN(sale_price)) {
-                    var gst_amount = (fixed_price * gst) / 100;
-                    $(document).find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
-                } else {
-                    var gst_amount = (fixed_price - sale_price) * (gst / (100 + gst));
+                if (!isNaN(sale_price)) {
+                    var gst_amount = (sale_price * gst) / 100;
                     $(document).find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
                 }
             }
