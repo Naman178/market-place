@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HomePage;
 use App\Http\Controllers\Controller;
+use App\Models\Items;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
@@ -11,6 +12,7 @@ class HomePageController extends Controller
 {
     public function index()
     {
-        return view('home-page.master');
+        $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        return view('home-page.master',compact('data'));
     }
 }

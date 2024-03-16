@@ -1,4 +1,4 @@
-<div class="header-container">
+<div class="container header-container">
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
