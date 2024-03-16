@@ -1,4 +1,4 @@
-<div class="footer-container">
+<div class="container footer-container">
     <div class="horizontal-menu-row">
         <ul class="row menu-horizontal left-row">
             <li class="footer-link">
