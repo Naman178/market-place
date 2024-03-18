@@ -7,9 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('home-page/css/mainstylesheet.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
+    @stack('page-css')
 </head>
 <body>
-    @include('home-page.common.header')
-    @include('home-page.section.items-grid')
-    @include('home-page.common.footer')
