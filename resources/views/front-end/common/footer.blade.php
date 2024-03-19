@@ -30,7 +30,7 @@
     <div class="vertical-menu-row">
         <div class="row left-row">
             <div>
-                <div class="title">General</div>
+                <div class="title pb-2">General</div>
                 <ul class="menu-vertical list-style">
                     <li>Documentation</li>
                     <li>Pricing</li>
@@ -40,7 +40,7 @@
                 </ul>
             </div>
             <div>
-                <div class="title">Account</div>
+                <div class="title pb-2">Account</div>
                 <ul class="menu-vertical">
                     <li>Sign Up For Free</li>
                     <li>Free Log in</li>
@@ -48,7 +48,7 @@
                 </ul>
             </div>
             <div>
-                <div class="title">Resources</div>
+                <div class="title pb-2">Resources</div>
                 <ul class="menu-vertical list-style">
                     <li>Currencies</li>
                     <li>Shopify</li>
@@ -58,7 +58,7 @@
                 </ul>
             </div>
             <div>
-                <div class="title">Legal</div>
+                <div class="title pb-2">Legal</div>
                 <ul class="menu-vertical">
                     <li>Terms & Conditions</li>
                     <li>Privacy Policy</li>
@@ -67,7 +67,7 @@
         </div>
         <div class="row right-row contact">
             <div>
-                <div class="title">Contact</div>
+                <div class="title pb-3">Contact</div>
                 <ul class="menu-vertical">
                     <li>
                         <p>Bhagwati Circle,</p><p>Opposite Annapurna</p><p>Dining Hall, Kaliyabid,</p><p>Bhavnagar - 364002,</p><p>Gujarat India</p>
