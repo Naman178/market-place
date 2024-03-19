@@ -14,6 +14,8 @@ use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\HomePage\HomePageController;
+use App\Http\Controllers\Checkout\CheckoutController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +30,7 @@ use App\Http\Controllers\HomePage\HomePageController;
 // Home Page 
 Route::redirect('/', '/home');
 Route::get("/home", [HomePageController::class, "index"])->name("home");
+Route::get("/checkout", [CheckoutController::class, "index"])->name("checkout");
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
