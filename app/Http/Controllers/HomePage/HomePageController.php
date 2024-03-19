@@ -13,6 +13,6 @@ class HomePageController extends Controller
     public function index()
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
-        return view('home-page.master',compact('data'));
+        return view('front-end.home-page.home-page',compact('data'));
     }
 }
