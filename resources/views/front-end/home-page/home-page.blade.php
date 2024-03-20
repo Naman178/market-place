@@ -1,7 +1,8 @@
 @extends('front-end.common.master')
-@push('page-css')
+@section('title', 'Home')
+@section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
-@endpush
-@include('front-end.common.header')
+@endsection
+@section('content')
 @include('front-end.home-page.section.items-grid')
-@include('front-end.common.footer')
+@endsection

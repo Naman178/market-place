@@ -1,0 +1,81 @@
+.checkout-container {
+    background-color: rgb(237, 242, 244);
+}
+
+.padding {
+    padding: 5rem 0 5rem;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.08);
+    border: 0;
+}
+
+.dark-blue-card {
+    background-color: #2A2742 !important;
+}
+
+.dark-blue-card .form-group {
+    margin-bottom: 25px;
+}
+
+.dark-blue-card .form-group label {
+    margin-bottom: 8px;
+}
+
+.dark-blue-card .form-group label,
+.dark-blue-card a {
+    color: #fff;
+}
+
+.dark-blue-card a {
+    text-decoration: underline;
+}
+
+.dark-blue-card .form-group .form-control {
+    border-radius: 5px;
+}
+
+.form-control {
+    height: calc(2.5em + 0.75rem + 2px);
+    background: #FFF;
+}
+
+
+.dark-blue-card .error {
+    color: #D6445E !important;
+}
+
+.checkout-container  hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: 0;
+  }
+
+  .pink_blue_grad_button {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 15px 15px;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #2B2842, #D6445E, #2B2842, #D6445E);
+    color: #f4f4f4;
+    background-size: 300% 100%;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.pink_blue_grad_button:hover {
+    color: #f4f4f4;
+    background-position: 99% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}

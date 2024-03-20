@@ -1,176 +1,11 @@
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-.header-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-around;
-}
-
-.col {
-    margin: 0 15px;
-}
-
-.logo-container img {
-    width: 192px;
-    height: 34px;
-}
-
-.menu-container ul {
-    list-style: none;
-    display: flex;
-    font-family: 'Work Sans';
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    letter-spacing: 0em;
-}
-
-.header-row ul a{
-    text-align: left;
-    color: #4D4D4D;
-}
-
-.menu-container li {
-    padding: 0 30px;
-}
-
-.signin-container ul {
-    list-style: none;
-    display: flex;
-    font-family: 'Work Sans';
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #4D4D4D;
-}
-
-.signin-container li {
-    margin-right: 20px;
-}
-
-.signin-container li:last-child {
-    margin-right: 0;
-}
-
-.signup-wrapper a {
-    border: 2px solid #007AC1;
-    background: #FFFFFF;
-    color: #007AC1;
-    padding: 13px 28px;
-}
-
-.footer-container {
-    background-color: #007AC1;
-    padding: 50px 50px 20px;
-}
-
-.horizontal-menu-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 0 25px;
-    color: #fff;
-}
-
-/* 2) First Row: Horizontal Menu in Left Side and Social Menu in Right Side */
-.left-row {
-    display: flex;
-    align-items: flex-start;
-}
-
-.menu-horizontal {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-.menu-horizontal li {
-    padding-right: 50px;
-}
-
-.social-link {
-    margin-left: 15px;
-}
-
-/* 3) Second Row: Vertical Menu Left Side */
-.vertical-menu-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 50px 0 25px;
-    color: #fff;
-}
-
-.vertical-menu-row .row.left-row {
-    width: 60%;
-    justify-content: space-between;
-}
-
-.row.left-row {
-    display: flex;
-}
-
-.col {
-    margin-right: 20px;
-}
-
-.title {
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.menu-vertical {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.menu-vertical li {
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 40px;
-}
-
-.menu-vertical.list-style {
-    list-style-type: disc;
-    padding-left: 18px;
-}
-
-.row.right-row {
-    display: flex;
-}
-
-.copyright-row {
-    color: #fff;
-    text-align: left;
-}
-
-.footer-container a{
-    color: #fff;
-}
-
-.row.right-row.contact li {
-    line-height: 10px;
-}
-
-.menu-horizontal li a {
-    font-size: 16px;
-}
-
 .items-container {
-    background: #EDF2F4;
     width: 100%;
+    overflow: hidden;
+    background: #EDF2F4;
     padding: 50px 0;
 }
 
+/* HEADING */
 .items-container .title {
     text-align: center;
     margin-bottom: 50px; 
@@ -181,6 +16,8 @@
     font-size: 48px;
     line-height: 67.2px;
     margin: 0;
+    color: #007AC1;
+    text-align: center; 
 }
 
 .items-container .title h3 .color-blue {
@@ -202,29 +39,6 @@
     top: 48px;
 }
 
-/* Plan section */
-.items-container {
-    width: 100%;
-    overflow: hidden;
-}
-
-.txt-blue {
-    color: #007AC1;
-}
-
-.txt-white{
-    color: #fff;
-}
-
-.txt-blue{
-    color: #007AC1;
-}
-
-.items-container .title h3 {
-    color: #007AC1;
-    text-align: center; 
-}
-
 .items-container .row {
     display: flex;
     flex-wrap: wrap;
@@ -236,16 +50,6 @@
     position: relative;
 }
 
-.bg-blue{
-    border: 1px solid #007AC1;
-    background: #007AC1;
-}
-
-.bg-white{
-    border: 1px solid #fff;
-    background: #fff;
-}
-
 .items-container .col {
     width: 394px;
     border-radius: 24px;
@@ -254,6 +58,7 @@
     box-sizing: border-box;
 }
 
+/* THUMB AND TITLE */
 .items-container .header {
     display: flex;
     align-items: center;
@@ -271,6 +76,7 @@
     font-size: 23px;
 }
 
+/* DESCRIPTION */
 .items-container .description {
     margin-top: 20px;
 }
@@ -280,6 +86,7 @@
     font-weight: 300;
 }
 
+/* PRICE */
 .items-container .price {
     margin-top: 20px;
 }
@@ -296,7 +103,7 @@
     font-weight: 400;
 }
 
-/* Features */
+/* FEATURE */
 .items-container .feature {
     margin-top: 20px;
     height: 320px;
@@ -333,6 +140,7 @@
     font-size: 16px;
 }
 
+/* BUTTONS */
 .items-container .btn {
     margin-top: 40px;
     text-align: center;
@@ -352,4 +160,10 @@
     padding: 20px 0;
     font-size: 20px;
     font-weight: 500;
+}
+
+.items-container .col {
+    flex-basis: unset;
+    flex-grow: unset;
+    max-width: 100%;
 }
