@@ -1,40 +1,38 @@
 @extends('front-end.common.master')
-
-@push('page-css')
-    <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
-@endpush
-
-@include('front-end.common.header')
-
-<div class="container checkout-container main-content py-5">
-   <div class="checkout cust-page-padding">
+@section('title', 'Checkout')
+@section('styles')
+   <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
+@endsection
+@section('content')
+<div class="container checkout-container">
+   <div class="checkout padding">
       <div class="container">
          <div class="row justify-content-center">
             <!-- if user is already logged in -->
             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
                <div class="col-md-12 border p-4 card dark-blue-card">
-                  <p class="text-white">Already Have an Account ?...Please <a href="https://skyfinity.co.in/user-login"> Login</a> or Register Below</p>
-                  <h4 class="mb-5 text-white">Billing Details</h4>
+                  <p class="txt-white">Already Have an Account ?...Please <a href="#"> Login</a> or Register Below</p>
+                  <h4 class="mb-5 txt-white">Billing Details</h4>
                   <div class="row">
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="firstname">First Name</label>
                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter First Name">
-                           <div class="error" style="color:red;" id="firstname_error"></div>
+                           <div class="error" id="firstname_error"></div>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="lastname">Last Name</label>
                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Last Name">
-                           <div class="error" style="color:red;" id="lastname_error"></div>
+                           <div class="error" id="lastname_error"></div>
                         </div>
                      </div>
                      <div class="col-md-12">
                         <div class="form-group">
                            <label for="email">Email</label>
                            <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email">
-                           <div class="error" style="color:red;" id="email_error"></div>
+                           <div class="error" id="email_error"></div>
                         </div>
                      </div>
                      <div class="col-md-4">
@@ -49,21 +47,21 @@
                         <div class="form-group">
                            <label for="contact">Contact Number</label>
                            <input type="number" name="contact" id="contact" class="form-control" placeholder="Enter Contact Number">
-                           <div class="error" style="color:red;" id="contact_error"></div>
+                           <div class="error" id="contact_error"></div>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="company_name">Company Name</label>
                            <input type="text" name="company_name" id="company_name" class="form-control" placeholder="Enter Company Name">
-                           <div class="error" style="color:red;" id="company_name_error"></div>
+                           <div class="error" id="company_name_error"></div>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="company_website">Company Website</label>
                            <input type="text" name="company_website" id="company_website" class="form-control" placeholder="Enter Company Website">
-                           <div class="error" style="color:red;" id="company_website_error"></div>
+                           <div class="error" id="company_website_error"></div>
                         </div>
                      </div>
                      <div class="col-md-12">
@@ -72,35 +70,35 @@
                            <select name="country" id="country" class="form-control">
                               <option value="0">Select Country</option>
                            </select>
-                           <div class="error" style="color:red;" id="country_error"></div>
+                           <div class="error" id="country_error"></div>
                         </div>
                      </div>
                      <div class="col-md-12">
                         <div class="form-group">
                            <label for="address_line_one">Address Line 1</label>
                            <input type="text" name="address_line_one" id="address_line_one" class="form-control" placeholder="Enter Address Line 1">
-                           <div class="error" style="color:red;" id="address_line_one_error"></div>
+                           <div class="error" id="address_line_one_error"></div>
                         </div>
                      </div>
                      <div class="col-md-12">
                         <div class="form-group">
                            <label for="address_line_two">Address Line 2</label>
                            <input type="text" name="address_line_two" id="address_line_two" class="form-control" placeholder="Enter Address Line 2">
-                           <div class="error" style="color:red;" id="address_line_two_error"></div>
+                           <div class="error" id="address_line_two_error"></div>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="city">City</label>
                            <input type="text" name="city" id="city" class="form-control" placeholder="Enter City Name">
-                           <div class="error" style="color:red;" id="city_error"></div>
+                           <div class="error" id="city_error"></div>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="postal">Zip / Postal Code</label>
                            <input type="text" name="postal" id="postal" class="form-control" placeholder="Enter Zip / Postal Code">
-                           <div class="error" style="color:red;" id="postal_error"></div>
+                           <div class="error" id="postal_error"></div>
                         </div>
                      </div>
                   </div>
@@ -112,7 +110,7 @@
                      <h4 class="mb-3">Wallet Summary</h4>
                      <hr>
                      <div class="accordion" id="accordionExample">
-                        <div class="card ul-card__border-radius">
+                        <div class="card">
                            <h6 class="card-title mb-0">
                               <a data-toggle="collapse" class="text-default collapsed" href="#accordion-item-group1" aria-expanded="false">
                               Have Coupon Code ?
@@ -214,6 +212,4 @@
       </div>
    </div>
 </div>
-
-
-@include('front-end.common.footer')
+@endsection
