@@ -1,81 +1,129 @@
 .checkout-container {
-    background-color: rgb(237, 242, 244);
+	background-color: rgb(237, 242, 244);
 }
 
 .padding {
-    padding: 5rem 0 5rem;
+	padding: 5rem 0 5rem;
 }
 
 .card {
-    border-radius: 10px;
-    box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.08);
-    border: 0;
+	border-radius: 10px;
+	box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.08);
+	border: 0;
 }
 
 .dark-blue-card {
-    background-color: #2A2742 !important;
+	background-color: #2A2742 !important;
 }
 
 .dark-blue-card .form-group {
-    margin-bottom: 25px;
+	margin-bottom: 25px;
 }
 
 .dark-blue-card .form-group label {
-    margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 
 .dark-blue-card .form-group label,
 .dark-blue-card a {
-    color: #fff;
+	color: #fff;
 }
 
 .dark-blue-card a {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .dark-blue-card .form-group .form-control {
-    border-radius: 5px;
+	border-radius: 5px;
 }
 
 .form-control {
-    height: calc(2.5em + 0.75rem + 2px);
-    background: #FFF;
+	height: calc(2.5em + 0.75rem + 2px);
+	background: #FFF;
 }
 
 
 .dark-blue-card .error {
-    color: #D6445E !important;
+	color: #D6445E !important;
 }
 
-.checkout-container  hr {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    height: 0;
-  }
+.checkout-container hr {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	height: 0;
+}
 
-  .pink_blue_grad_button {
-    padding: 10px 30px;
+.pink-blue-grad-button {
+	padding: 10px 30px;
+	text-decoration: none;
+	font-size: 15px;
+	margin: 15px 15px;
+	border-radius: 10px;
+	background-image: linear-gradient(to right, #2B2842, #D6445E, #2B2842, #D6445E);
+	color: #f4f4f4;
+	background-size: 300% 100%;
+	moz-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+}
+
+.pink-blue-grad-button:hover {
+	color: #f4f4f4;
+	background-position: 99% 0;
+	moz-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+
+.card-body h4 {
+	margin-top: 0;
+}
+
+.border-radius-none {
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.checkout .nav-tabs {
+	border-bottom: 1px solid #663399;
+}
+
+.checkout .nav-tabs .nav-item {
+	width: 50%;
+	text-align: center;
+}
+
+.checkout .nav-tabs .nav-item .nav-link.active {
+    border: 1px solid transparent;
+    background: rgba(102, 51, 153, 0.1);
+    border-color: #663399 #663399 #fff;
     text-decoration: none;
-    font-size: 15px;
-    margin: 15px 15px;
-    border-radius: 10px;
-    background-image: linear-gradient(to right, #2B2842, #D6445E, #2B2842, #D6445E);
-    color: #f4f4f4;
-    background-size: 300% 100%;
-    moz-transition: all .4s ease-in-out;
-    -o-transition: all .4s ease-in-out;
-    -webkit-transition: all .4s ease-in-out;
-    transition: all .4s ease-in-out;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    color: #000;
 }
 
-.pink_blue_grad_button:hover {
-    color: #f4f4f4;
-    background-position: 99% 0;
-    moz-transition: all .4s ease-in-out;
-    -o-transition: all .4s ease-in-out;
-    -webkit-transition: all .4s ease-in-out;
-    transition: all .4s ease-in-out;
+.checkout .select2-container .select2-selection--single {
+	height: 45px !important;
+	display: flex !important;
+	align-items: center !important;
+	font-size: 0.813rem;
+  	font-weight: 400;
+}
+
+.checkout .select2-container--default .select2-selection--single {
+	border-radius: 5px !important;
+}
+
+.checkout .select2-container--default .select2-selection--single .select2-selection__arrow {
+	top: 8px !important;
+}
+
+.select2-results__option {
+    font-size: 0.813rem;
+    font-weight: 400;
 }

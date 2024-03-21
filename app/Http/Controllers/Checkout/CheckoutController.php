@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
 use Carbon\Carbon;
+use App\Models\ContactsCountryEnum;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
-        return view('front-end.checkout.checkout');
+        $countaries = ContactsCountryEnum::orderBy('id','asc')->get();
+        return view('front-end.checkout.checkout',compact('countaries'));
     }
 }
