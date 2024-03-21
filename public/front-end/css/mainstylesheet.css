@@ -67,6 +67,10 @@ button:focus {
 	color: #000;
 }
 
+.txt-center {
+	text-align: center;
+}
+
 div {
 	box-sizing: border-box;
 }
@@ -376,6 +380,10 @@ hr {
 
 .border-dark {
 	border-color: #47404f !important;
+}
+
+.border-radius-1 {
+    border-radius: 1rem;
 }
 
 .p-4 {
