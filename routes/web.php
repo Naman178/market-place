@@ -10,12 +10,13 @@ use App\Http\Controllers\role\RoleController;
 use App\Http\Controllers\ProfileSettings\ProfileSettingsController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\FrontEnd\Auth\RegisterController;
 use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
-use App\Http\Controllers\HomePage\HomePageController;
-use App\Http\Controllers\Checkout\CheckoutController;
-
+use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
+use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,7 @@ use App\Http\Controllers\Checkout\CheckoutController;
 Route::redirect('/', '/home');
 Route::get("/home", [HomePageController::class, "index"])->name("home");
 Route::get("/checkout", [CheckoutController::class, "index"])->name("checkout");
+Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
@@ -85,4 +87,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items-list/{id}/reviews', [ReviewsController::class,'showReviews'])->name('reviews-list');
     Route::post("/review/status/{id}", [ReviewsController::class, "changeStatus"])->name("reviews-status");
     Route::get('/review/delete/{id}', [ReviewsController::class, 'remove'])->name('reviews-delete');
+});
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return "Cache cleared successfully";
+
 });
