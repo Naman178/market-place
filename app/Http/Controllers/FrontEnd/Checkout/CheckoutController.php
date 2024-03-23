@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Checkout;
+namespace App\Http\Controllers\FrontEnd\Checkout;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
