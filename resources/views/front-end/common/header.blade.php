@@ -21,7 +21,7 @@
         <div class="col">
             <div class="signin-container">
                 <ul>
-                    <li><a href="#">Login</a></li>
+                    <li><a href="{{ url('/user-login') }}">Login</a></li>
                     <li class="signup-wrapper"><a href="#">Sign Up</a></li>
                 </ul>
             </div>

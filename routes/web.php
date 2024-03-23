@@ -16,6 +16,7 @@ use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
+use App\Http\Controllers\FrontEnd\Auth\LoginController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +34,13 @@ Route::redirect('/', '/home');
 Route::get("/home", [HomePageController::class, "index"])->name("home");
 Route::get("/checkout", [CheckoutController::class, "index"])->name("checkout");
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
+Route::get('/user-login', [LoginController::class, 'index']);
+Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
+Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
+    Route::get('/dashboard', function () {
         return view('dashboard.dashboardv1');
     })->name('dashboard');
 

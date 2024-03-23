@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HomePage;
+namespace App\Http\Controllers\FrontEnd\HomePage;
 use App\Http\Controllers\Controller;
 use App\Models\Items;
 use Illuminate\Http\Request;

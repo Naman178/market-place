@@ -30,3 +30,13 @@
     left: 0;
     top: 48px;
 }
+
+.btn-google {
+    background-color: #dd4b39;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+}
