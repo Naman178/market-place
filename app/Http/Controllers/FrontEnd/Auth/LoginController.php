@@ -40,7 +40,6 @@ class LoginController extends Controller
             Auth::login($newUser);
         }
 
-        // Redirect to dashboard or desired route
-        return redirect()->route('home');
+        return redirect()->route('checkout');
     }
 }

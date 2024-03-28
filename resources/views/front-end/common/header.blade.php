@@ -2,7 +2,7 @@
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
-                <a href="#">
+                <a href="{{ url('/home') }}">
                     <img src="{{ asset('front-end/images/header_logo.png') }}" alt="Logo">
                 </a>
             </div>
@@ -21,8 +21,25 @@
         <div class="col">
             <div class="signin-container">
                 <ul>
-                    <li><a href="{{ url('/user-login') }}">Login</a></li>
-                    <li class="signup-wrapper"><a href="#">Sign Up</a></li>
+                    @auth
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Welcome, {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @else
+                        <li><a href="{{ url('/user-login') }}">Login</a></li>
+                        <li class="signup-wrapper"><a href="#">Sign Up</a></li>
+                    @endauth
                 </ul>
             </div>
         </div>
