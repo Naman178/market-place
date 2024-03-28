@@ -29,7 +29,7 @@
                         </ul>
                     </div>
                     <div class="btn">
-                        <a href="{{ $list->preview_url }}" target="_blank" rel="noopener noreferrer">Get started</a>
+                        <a href="{{ route('checkout', ['itemId' => $list->id]) }}" class="checkout_btn" target="_blank" rel="noopener noreferrer">Get started</a>
                     </div>
                 </div>
             </div>
