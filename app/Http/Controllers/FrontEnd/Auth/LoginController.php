@@ -24,7 +24,6 @@ class LoginController extends Controller
     public function handleGoogleCallback()
     {
         $user = Socialite::driver('google')->user();
-
         // Check if the user exists in your database, or create a new user
         $existingUser = User::where('email', $user->email)->first();
 

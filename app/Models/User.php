@@ -1,16 +1,17 @@
 <?php
 namespace App\Models;
-  
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-  
+use Laravel\Passport\HasApiTokens;
+
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
-  
+    use HasFactory, Notifiable, HasRoles, HasApiTokens;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,8 +24,21 @@ class User extends Authenticatable
         'email',
         'status',
         'password',
+        "address_line1",
+        "address_line2",
+        "company_website",
+        "country",
+        "company_name",
+        "contact_number",
+        "country_code",
+        "status",
+        "sys_state",
+        "created_at",
+        "updated_at",
+        "postal_code",
+        "city"
     ];
-  
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -34,7 +48,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-  
+
     /**
      * The attributes that should be cast to native types.
      *
