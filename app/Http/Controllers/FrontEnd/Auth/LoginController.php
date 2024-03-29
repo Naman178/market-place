@@ -40,6 +40,6 @@ class LoginController extends Controller
             Auth::login($newUser);
         }
 
-        return redirect()->route('checkout');
+        return redirect("/");
     }
 }

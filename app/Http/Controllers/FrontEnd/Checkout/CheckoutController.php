@@ -1,18 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\FrontEnd\Checkout;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use DB;
-use Carbon\Carbon;
 use App\Models\ContactsCountryEnum;
+use App\Models\Items;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(string $id)
     {
-        $countaries = ContactsCountryEnum::orderBy('id','asc')->get();
-        return view('front-end.checkout.checkout',compact('countaries'));
+        $planId = base64_decode($id);
+
+        $countaries = ContactsCountryEnum::orderBy('id')
+            ->get();
+
+        $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
+
+        return view('front-end.checkout.checkout', compact('countaries', 'plan'));
     }
 }
+
