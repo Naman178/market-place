@@ -15,7 +15,7 @@
                     <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
                 </div>
             </div>
-        </div> 
+        </div>
     </form>
 </div>
 @endsection

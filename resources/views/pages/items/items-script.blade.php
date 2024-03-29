@@ -131,7 +131,7 @@
                 return false;
             }
         });
-       
+
         $(document).on('click', '#add-image', function(e) {
             var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
             $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
@@ -159,7 +159,7 @@
             var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
             var newFeatureFiled = `
                 <div class="row input-row feature-input-row">
-                    <div class="col-9"> 
+                    <div class="col-9">
                         {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                     </div>
                     <div class="col-3">
@@ -189,7 +189,7 @@
                     dataType: 'json',
                     success: function (data) {
                         $('#subcategory_id').empty();
-                        
+
                         if (data.length > 0) {
                             $('#subcategory_id').append('<option value="">Select subcategory</option>');
                             $.each(data, function (key, value) {
@@ -199,7 +199,7 @@
                             $('#subcategory_id').append('<option value="">No subcategories found</option>');
                         }
 
-                        // Refresh Select2 
+                        // Refresh Select2
                         $('#subcategory_id').select2('destroy').select2();
                     },
                     error: function (xhr, status, error) {
@@ -215,7 +215,7 @@
 
         if (window.location.href.indexOf('edit') !== -1) {
             $('#subcategory_id option.d-none').remove();
-        }   
+        }
 
         $(document).on('blur', '.price-input', function (e) {
             var gst = parseFloat($(document).find('#item_gst_percentage').val());

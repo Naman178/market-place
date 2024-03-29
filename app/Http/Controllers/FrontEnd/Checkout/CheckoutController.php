@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\FrontEnd\Checkout;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use DB;
-use Carbon\Carbon;
 use App\Models\ContactsCountryEnum;
 use App\Models\Items;
 use App\Models\ItemsFeature;
@@ -32,5 +30,7 @@ class CheckoutController extends Controller
 
         $data['countaries'] = ContactsCountryEnum::orderBy('id', 'asc')->get();
         return view('front-end.checkout.checkout', compact('data'));
+
     }
 }
+
