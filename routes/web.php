@@ -32,8 +32,9 @@ use Illuminate\Support\Facades\Artisan;
 // Home Page
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
-// Route::get("/home", [HomePageController::class, "index"])->name("home");
+
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
+
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get('/user-login', [LoginController::class, 'index']);
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);

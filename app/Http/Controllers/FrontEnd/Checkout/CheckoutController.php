@@ -6,19 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ContactsCountryEnum;
 use App\Models\Items;
-
+use App\Models\ItemsFeature;
+use App\Models\ItemsImage;
+use App\Models\ItemsPricing;
+use App\Models\ItemsTag;
 class CheckoutController extends Controller
 {
-    public function index(string $id)
+    public function index($itemId)
     {
-        $planId = base64_decode($id);
+        $data = [];
+        
+        if ($itemId) {
+            $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])
+                         ->where('id', $itemId)
+                         ->first();
 
-        $countaries = ContactsCountryEnum::orderBy('id')
-            ->get();
+            if (!$item) {
+                abort(404);
+            }
 
-        $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
+            $data['item'] = $item;
+        }
 
-        return view('front-end.checkout.checkout', compact('countaries', 'plan'));
+        $data['countaries'] = ContactsCountryEnum::orderBy('id', 'asc')->get();
+        return view('front-end.checkout.checkout', compact('data'));
+
     }
 }
 
