@@ -22,12 +22,17 @@
    </style>
 @endsection
 @section('content')
-<div class="container checkout-container">
+<div class="container checkout-container"> 
    <div class="checkout padding">
       <div class="container">
          <div class="row justify-content-center">
             <!-- if user is already logged in -->
             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+
+               @include("front-end.checkout.section.billing-details")
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 checkout-outer-card cart-details">
+               @include("front-end.checkout.section.cart-details")
                <div class="col-md-12 border p-4 card dark-blue-card">
                   <p class="txt-white" style="margin-bottom: 20px">Already Have an Account ?...Please <a href="#"> Login</a> or Register Below</p>
                     <div style="display: flex;">
@@ -237,6 +242,7 @@
                      </div>
                   </div>
                </div>
+
             </div>
          </div>
       </div>

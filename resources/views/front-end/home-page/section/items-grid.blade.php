@@ -34,6 +34,25 @@
                         <div class="btn">
                             <a href="{{ route("checkout", ["id" => base64_encode($item->id)]) }}" target="_blank" rel="noopener noreferrer">Get started</a>
                         </div>
+
+                    </div>
+                    <div class="description">
+                        <p class="txt-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    </div>
+                    <div class="price">
+                        <h2>&#8377; {{ (int) $list->pricing->fixed_price }} <span class="duration">/monthly</span></h2>
+                    </div>
+                    <div class="feature txt-white">
+                        <p class="title">What's included</p>
+                        <ul>
+                            @foreach($list->features as $feature)
+                                <li>{{ $feature->key_feature }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="btn">
+                        <a href="{{ route('checkout', ['itemId' => $list->id]) }}" class="checkout_btn" target="_blank" rel="noopener noreferrer">Get started</a>
+
                     </div>
                 </div>
             @endif
