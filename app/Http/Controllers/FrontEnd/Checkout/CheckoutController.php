@@ -10,27 +10,18 @@ use App\Models\ItemsFeature;
 use App\Models\ItemsImage;
 use App\Models\ItemsPricing;
 use App\Models\ItemsTag;
+use Illuminate\Support\Facades\Auth;
+
+
 class CheckoutController extends Controller
 {
-    public function index($itemId)
+    public function index(string $id)
     {
-        $data = [];
-        
-        if ($itemId) {
-            $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])
-                         ->where('id', $itemId)
-                         ->first();
-
-            if (!$item) {
-                abort(404);
-            }
-
-            $data['item'] = $item;
-        }
-
-        $data['countaries'] = ContactsCountryEnum::orderBy('id', 'asc')->get();
-        return view('front-end.checkout.checkout', compact('data'));
-
+        $planId = base64_decode($id);
+        $countaries = ContactsCountryEnum::orderBy('id')->get();
+        $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
+        $user = Auth::user();
+        return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user'));
     }
 }
 
