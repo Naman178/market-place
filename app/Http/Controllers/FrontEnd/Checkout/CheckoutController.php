@@ -12,7 +12,6 @@ use App\Models\ItemsPricing;
 use App\Models\ItemsTag;
 use Illuminate\Support\Facades\Auth;
 
-
 class CheckoutController extends Controller
 {
     public function index(string $id)

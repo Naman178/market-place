@@ -3,23 +3,9 @@
 @section('styles')
    <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
-   <style>
-    .google-btn{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-        padding: 10px;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        border-radius: 5px;
-        background-color: white;
-        margin: 20px 0px;
-    }
-
-    .google-btn > span{
-        color: black;
-    }
-   </style>
+@endsection
+@section('scripts')
+   <script src="https://js.stripe.com/v3/"></script>
 @endsection
 @section('content')
 <div class="container checkout-container">
@@ -246,8 +232,8 @@
       </div>
    </div>
 </div>
+@include("front-end.checkout.checkout-script");
 @endsection
 @section('scripts')
    <script src="{{ asset('front-end/js/checkout.js') }}"></script>
-   @include("front-end.checkout.checkout-script");
 @endsection
