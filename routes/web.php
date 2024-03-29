@@ -17,6 +17,7 @@ use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
+use App\Http\Controllers\FrontEnd\Payment\PaymentController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items-list/{id}/reviews', [ReviewsController::class,'showReviews'])->name('reviews-list');
     Route::post("/review/status/{id}", [ReviewsController::class, "changeStatus"])->name("reviews-status");
     Route::get('/review/delete/{id}', [ReviewsController::class, 'remove'])->name('reviews-delete');
+
+    Route::post("/payment", [PaymentController::class, "store"])->name("payment");
 });
 
 Route::get('/clear-cache', function () {

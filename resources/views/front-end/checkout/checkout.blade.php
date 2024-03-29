@@ -12,8 +12,8 @@
         padding: 10px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         border-radius: 5px;
-        margin-bottom: 30px;
         background-color: white;
+        margin: 20px 0px;
     }
 
     .google-btn > span{
@@ -22,18 +22,17 @@
    </style>
 @endsection
 @section('content')
-<div class="container checkout-container"> 
+<div class="container checkout-container">
    <div class="checkout padding">
       <div class="container">
          <div class="row justify-content-center">
             <!-- if user is already logged in -->
             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
-
                @include("front-end.checkout.section.billing-details")
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 checkout-outer-card cart-details">
                @include("front-end.checkout.section.cart-details")
-               <div class="col-md-12 border p-4 card dark-blue-card">
+               {{-- <div class="col-md-12 border p-4 card dark-blue-card">
                   <p class="txt-white" style="margin-bottom: 20px">Already Have an Account ?...Please <a href="#"> Login</a> or Register Below</p>
                     <div style="display: flex;">
                         <a href="{{ url('/user-login/google') }}" class="google-btn">
@@ -136,9 +135,9 @@
                         </div>
                      </div>
                   </div>
-               </div>
+               </div> --}}
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 checkout-outer-card">
+            {{-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 checkout-outer-card">
                <div class="card">
                   <div class="card-body">
                      <h4 class="mb-3">Wallet Summary</h4>
@@ -242,8 +241,7 @@
                      </div>
                   </div>
                </div>
-
-            </div>
+            </div> --}}
          </div>
       </div>
    </div>
@@ -251,4 +249,5 @@
 @endsection
 @section('scripts')
    <script src="{{ asset('front-end/js/checkout.js') }}"></script>
+   @include("front-end.checkout.checkout-script");
 @endsection
