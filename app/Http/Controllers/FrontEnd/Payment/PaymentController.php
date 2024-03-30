@@ -5,7 +5,8 @@ namespace App\Http\Controllers\FrontEnd\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Stripe\Stripe;
+use Stripe\Charge;
 class PaymentController extends Controller
 {
     /**
@@ -54,9 +55,31 @@ class PaymentController extends Controller
                 ]);
             }
 
-            return response()->json([
-                "success" => true,
-            ]);
+            // Set your secret key
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            // Get payment token from Stripe.js
+            $token = $request->stripeToken;
+
+            try {
+                // Charge the user's card
+                Charge::create([
+                    'amount' => $request->amount,
+                    'currency' => 'INR',
+                    'description' => 'Test Payment',
+                    'source' => $token,
+                ]);
+
+                // Payment successful
+                return response()->json([
+                    "success" => true,
+                ]);
+            } catch (\Exception $e) {
+                // Payment failed
+                return response()->json([
+                    "error" => $e->getMessage(),
+                ]);
+            }
         }
     }
 

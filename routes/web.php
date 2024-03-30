@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::get("/", [HomePageController::class, "index"]);
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
-
+Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get('/user-login', [LoginController::class, 'index']);
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);

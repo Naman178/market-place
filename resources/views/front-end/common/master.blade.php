@@ -10,6 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
     @yield('styles')
+
+    <script src="{{ asset('front-end/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 </head>
 <body>
     @include('front-end.common.header')
@@ -17,8 +20,6 @@
         @yield('content')
     </div>
     @include('front-end.common.footer')
-    <script src="{{ asset('front-end/js/jquery-3.3.1.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @yield('scripts')
 </body>
