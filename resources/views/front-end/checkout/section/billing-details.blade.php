@@ -2,7 +2,7 @@
 <div class="col-md-12 border p-4 card dark-blue-card">
     <p class="txt-white mb-0">
         @auth
-            Billing Details of {{ Auth::user()->name }}
+           <!--  Billing Details of {{ Auth::user()->name }} -->
         @else
             Already Have an Account ?...Please <a href="{{ url('/user-login') }}"> Login</a> or Register Below</p>
             <div style="display: flex;">
