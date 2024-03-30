@@ -137,3 +137,19 @@
   object-fit: cover;
   object-position: center center;
 }
+
+.google-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 5px;
+  background-color: white;
+  margin: 20px 0px;
+}
+
+.google-btn > span {
+  color: black;
+}

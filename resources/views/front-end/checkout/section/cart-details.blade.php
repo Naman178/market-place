@@ -12,7 +12,7 @@
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product align-content-center">
                 <h3 class="mt-0 mb-2">{{ $plan->name }}</h3>
                 {{-- <h5 class="mt-0 mb-2">INR {{ (int) $plan->pricing->fixed_price }} Quantity: 1</h5> --}}
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->sale_price ) }} Quantity: 1</h5>
+                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->fixed_price ) }} Quantity: 1</h5>
             </div>
         </div>
         <hr>
@@ -44,7 +44,7 @@
                 <h5 class="mt-0 mb-2">Subtotal</h5>
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->sale_price ) }}</h5>
+                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->fixed_price ) }}</h5>
             </div>
         </div>
         <div class="row mb-1 discount_row d-none">
@@ -61,7 +61,7 @@
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
                 @php
-                    $total = (int)$plan->pricing->sale_price;
+                    $total = (int)$plan->pricing->fixed_price;
                     $gst = ($plan->pricing->gst_percentage/100) * $total;
                     $final_total = $total + $gst;
                 @endphp
@@ -78,6 +78,8 @@
         <div class="tab-content" id="paymentTabContent">
             <div class="tab-pane fade show active" id="stripePaymentForm" role="tabpanel" aria-labelledby="profile-icon-pill">
                 <form role="form" action="" method="post" id="stripe-for">
+                    <input type="hidden" id="stripeToken" name="stripeToken">
+                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <div class="form-row row">
                         <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
@@ -106,14 +108,17 @@
                     </div>
                     <p class="error" id="stripe_payment_error"></p>
                     <div class="row">
+                        @php
+                            $total = (int)$plan->pricing->fixed_price;
+                            $gst = ($plan->pricing->gst_percentage/100) * $total;
+                            $final_total = $total + $gst;
+                        @endphp
                         <div class="col-md-12">
                         <button
                             class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"
-                            {{-- id="stripeBtn" --}}
                             id="proceed_to_pay_btn"
                             type="button"
-                            data-url="{{ route("payment") }}"
-                        >
+                            data-url="{{ route('payment') }}" >
                             Proceed To Pay {{ number_format((int) $final_total) }} INR
                         </button>
                         </div>
