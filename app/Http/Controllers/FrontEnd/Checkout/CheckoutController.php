@@ -11,6 +11,7 @@ use App\Models\ItemsImage;
 use App\Models\ItemsPricing;
 use App\Models\ItemsTag;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 
 class CheckoutController extends Controller
 {

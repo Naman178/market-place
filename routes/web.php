@@ -96,6 +96,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/review/delete/{id}', [ReviewsController::class, 'remove'])->name('reviews-delete');
 
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
+    Route::get("/payment/payment-status", [PaymentController::class, "paymentStatus"])->name("payment-status");
+    Route::get("/payment/cancel", [PaymentController::class, "cancel"])->name("payment-cancel");
+
+    Route::get('orders', [UserController::class, "orders"])->name('orders');
 });
 
 Route::get('/clear-cache', function () {

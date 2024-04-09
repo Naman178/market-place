@@ -13,7 +13,7 @@
 }
 
 .dark-blue-card {
-  background-color: #2a2742 !important;
+  background-color: #007ac1;
 }
 
 .dark-blue-card .form-group {
@@ -54,30 +54,88 @@
   height: 0;
 }
 
-.pink-blue-grad-button {
-  padding: 10px 30px;
-  text-decoration: none;
-  font-size: 15px;
-  /* margin: 15px 15px; */
-  border-radius: 10px;
-  background-image: linear-gradient(to right, #2b2842, #d6445e, #2b2842, #d6445e);
-  color: #f4f4f4;
-  background-size: 300% 100%;
-  moz-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+body .pink-blue-grad-button {
+  display: flex !important;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  outline: 0px;
+  border: 0px solid transparent;
+  margin: 0px;
   cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  appearance: none;
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.71429;
+  text-transform: unset;
+  font-family: "Public Sans", sans-serif;
+  min-width: 64px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: none;
+  color: rgb(255, 255, 255);
+  background-color: #007ac1;
+  height: 48px;
+  font-size: 15px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  &:hover {
+    background-color: #005e96;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
-.pink-blue-grad-button:hover {
-  color: #f4f4f4;
-  background-position: 99% 0;
-  moz-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
+/* HTML: <div class="loader"></div> */
+body .loader {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+.loader::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 2px solid #808080;
+  animation: prixClipFix 2s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
 }
 
 .card-body h4 {
@@ -152,4 +210,8 @@
 
 .google-btn > span {
   color: black;
+}
+
+body .error-border {
+  border: 1px solid red;
 }

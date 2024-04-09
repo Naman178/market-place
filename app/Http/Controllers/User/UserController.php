@@ -17,6 +17,7 @@ use DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Models\Order;
 
 class UserController extends Controller
 {
@@ -136,7 +137,7 @@ class UserController extends Controller
     }
 
     public function sendResetPassword($email){
-        
+
         $token = Str::random(64);
 
         $pass_reset = DB::table('password_resets')->where('email',$email)->first();
@@ -155,7 +156,7 @@ class UserController extends Controller
                 'created_at' => Carbon::now()
             ]);
         }
-       
+
         if ($this->sendResetEmail($email, $token)) {
             return redirect()->back()
                 ->with([
@@ -171,20 +172,26 @@ class UserController extends Controller
         }
     }
     private function sendResetEmail($email, $token)
-    {        
+    {
 
         $link = url('/password/reset/' . $token . '?email=' . urlencode($email));
-        
+
         try {
             $mailData = [
                 'title' => 'Hello!',
                 'url' => $link
             ];
-            Mail::to($email)->send(new SendPassWordReset($mailData));            
+            Mail::to($email)->send(new SendPassWordReset($mailData));
             return true;
 
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function orders()
+    {
+        $orders = Order::with(["products"])->where('user_id',auth()->user()->id)->get();
+        return view('front-end.orders.orders',compact('orders'));
     }
 }

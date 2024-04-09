@@ -77,13 +77,15 @@
         </ul>
         <div class="tab-content" id="paymentTabContent">
             <div class="tab-pane fade show active" id="stripePaymentForm" role="tabpanel" aria-labelledby="profile-icon-pill">
-                <form role="form" action="" method="post" id="stripe-for">
+                <form role="form" action="{{ route("payment") }}" method="post" id="payment-form" data-url="{{ route("payment") }}">
                     <input type="hidden" id="stripeToken" name="stripeToken">
+                    <input type="hidden" name="product_id" id="product_id" value="{{ $plan->id ?? "" }}">
+                    <div id="card-element"></div>
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <div class="form-row row">
                         <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
-                        <input class="form-control" size="4" type="text" id="name_on_card" required="">
+                        <input class="form-control" size="4" type="text" name="name_on_card" id="name_on_card" required="">
                         </div>
                     </div>
                     <div class="form-row row">
@@ -95,11 +97,11 @@
                     <div class="form-row row">
                         <div class="col-xs-12 col-md-4 form-group expiration">
                         <label class="control-label">Expiration Month</label>
-                        <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month" type="text" required="">
+                        <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_exp_month" type="text" required="">
                         </div>
                         <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Expiration Year</label>
-                        <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year" type="text" required="">
+                        <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_exp_year" type="text" required="">
                         </div>
                         <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
@@ -117,8 +119,9 @@
                         <button
                             class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"
                             id="proceed_to_pay_btn"
-                            type="button"
-                            data-url="{{ route('payment') }}" >
+                            type="submit"
+                            data-url="{{ route("payment") }}"
+                        >
                             Proceed To Pay {{ number_format((int) $final_total) }} INR
                         </button>
                         </div>

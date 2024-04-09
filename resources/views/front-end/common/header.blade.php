@@ -1,8 +1,27 @@
+<style>
+    .dropdown-item {
+        border-radius: .375rem;
+        padding-left: .75rem;
+        padding-right: .75rem;
+        background-color: transparent;
+        transition: all .1s ease-in-out;
+        &:hover {
+            background-color: rgb(236 239 241);
+            color : rgb(38 50 56);
+        }
+    }
+
+    .dropdown-menu{
+        border-radius: .375rem;
+        padding: .75rem;
+    }
+</style>
+
 <div class="container header-container">
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
-                <a href="{{ url('/home') }}">
+                <a href="{{ url('/') }}">
                     <img src="{{ asset('front-end/images/header_logo.png') }}" alt="Logo">
                 </a>
             </div>
@@ -34,6 +53,7 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
+                                <a class="dropdown-item" href="{{ route('orders') }}">Orders</a>
                             </div>
                         </li>
                     @else

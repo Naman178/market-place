@@ -16,6 +16,7 @@
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.3",
         "spatie/laravel-permission": "^5.7",
+        "stripe/stripe-php": "^13.16",
         "symfony/css-selector": "^6.1"
     },
     "require-dev": {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -18,11 +19,13 @@ class LoginController extends Controller
 
     public function redirectToGoogle()
     {
+        Session::put('checkout_url', url()->previous());
         return Socialite::driver('google')->redirect();
     }
 
     public function handleGoogleCallback()
     {
+        $checkout_url = Session::pull('checkout_url', '/');
         $user = Socialite::driver('google')->user();
         // Check if the user exists in your database, or create a new user
         $existingUser = User::where('email', $user->email)->first();
@@ -39,6 +42,6 @@ class LoginController extends Controller
             Auth::login($newUser);
         }
 
-        return redirect("/");
+        return redirect()->intended($checkout_url);
     }
 }

@@ -196,7 +196,7 @@ class ItemsController extends Controller
                         // CATEGORY AND SUBCATEGORY
                         if (isset($request->category_id) && isset($request->subcategory_id)) {
                             $existingCategorySubcategory = ItemsCategorySubcategory::where('item_id', $item->id)->first();
-                        
+
                             if ($existingCategorySubcategory) {
                                 $existingCategorySubcategory->update([
                                     'category_id' => $request->category_id,
@@ -243,7 +243,7 @@ class ItemsController extends Controller
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
-            'gst_percentage' => 'required|numeric'            
+            'gst_percentage' => 'required|numeric'
         ];
 
         if ($request->item_id == "0") {
@@ -257,7 +257,7 @@ class ItemsController extends Controller
             'category_id.required' => 'The category field is required.',
             'subcategory_id.required' => 'The subcategory field is required.'
         ];
-        
+
         return Validator::make($request->all(), $rules, $customMessages);
     }
 

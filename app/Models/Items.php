@@ -51,4 +51,9 @@ class Items extends Model
     {
         return $this->hasMany(Reviews::class, 'item_id');
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'product_id', 'id');
+    }
 }
