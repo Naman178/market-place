@@ -3,6 +3,19 @@
 @section('styles')
    <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
+   <style>
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox */
+        appearance: textfield; /* Other browsers */
+    }
+
+    /* Hide the increment and decrement buttons */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+   </style>
 @endsection
 @section('content')
 <div class="container checkout-container">

@@ -37,7 +37,7 @@ Route::get("/", [HomePageController::class, "index"]);
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
-Route::get('/user-login', [LoginController::class, 'index']);
+Route::get('/user-login', [LoginController::class, 'index'])->name('user-login');
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
