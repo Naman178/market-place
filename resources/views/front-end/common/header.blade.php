@@ -2,7 +2,7 @@
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
-                <a href="{{ url('/home') }}">
+                <a href="{{ url('/') }}">
                     <img src="{{ asset('front-end/images/header_logo.png') }}" alt="Logo">
                 </a>
             </div>
