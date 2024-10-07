@@ -153,3 +153,25 @@
 .google-btn > span {
   color: black;
 }
+
+.cust-page-padding {
+    padding: 10rem 0 5rem;
+    margin-bottom: 10rem;
+}
+
+.items-container{
+ width: 1540px;   
+}
+
+.plan-feature-heading {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #182433;
+    margin: 0 0 20px;
+}
+
+.text-center {
+    text-align: center !important;
+}
