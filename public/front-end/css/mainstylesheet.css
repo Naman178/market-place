@@ -2088,3 +2088,48 @@ select.form-control {
     margin-left: 91.6666666667%;
   }
 }
+
+.pink-btn {
+  background: #D94B62;
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 23px;
+  padding: 10px 44.5px;
+  margin-bottom: 35px;
+  color: #fff;
+  transition: all 0.3s ease 0s;
+  background-image: linear-gradient(to right, #D6445F, #D6445F, #2B2842);
+  background-size: 300% 100%;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.pink-btn:hover {
+  color: #fFF;
+  border: 0.2px solid #FFF;
+  background-position: 99% 0;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.float_right{
+  float: right;
+}

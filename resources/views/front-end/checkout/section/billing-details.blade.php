@@ -47,6 +47,7 @@
                     <option value="{{ $countery->id }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->country_code }}</option>
                 @endforeach
             </select>
+            <div class="error" id="country_code_error"></div>
         </div>
         </div>
         <div class="col-md-8">
@@ -76,7 +77,7 @@
             <select name="country" id="country" class="form-control select-input">
                 <option value="0">Select Country</option>
                 @foreach($countaries as $countery)
-                    <option value="{{ $countery->id }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
+                    <option value="{{ $countery->id }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
                 @endforeach
             </select>
             <div class="error" id="country_error"></div>
