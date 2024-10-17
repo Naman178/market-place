@@ -37,10 +37,18 @@ Route::get("/", [HomePageController::class, "index"]);
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
+Route::get("/register", [RegisterController::class, "register"])->name("register");
+Route::post("/signup/store", [RegisterController::class, "register"])->name("registerUser");
 Route::get('/user-login', [LoginController::class, 'index']);
+Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post'); 
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
+// user register
+Route::post('/post-registration', [RegisterController::class, 'postRegistration'])->name('user-register-post');
+Route::post('/user-create-checkout', [RegisterController::class, 'userCreateCheckout'])->name('user-create-checkout');
+Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent'])->name('create-payment-intent');
+Route::get('/thankyou', function () { return view('Thankyou.thankyou'); })->name('thankyou');
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {

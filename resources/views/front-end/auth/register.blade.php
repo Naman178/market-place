@@ -8,7 +8,8 @@
     <div class="title">
         <h3><span class="txt-black">Sign</span><span class="color-blue underline-text"> Up</span></h3>
     </div>
-    <form action="#" method="POST">
+    <form action="{{ route('user-register-post') }}" method="POST">
+        @csrf
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="row  border p-3 pt-4 pb-4 border-radius-1">
@@ -99,6 +100,7 @@
                     <div class="col-md-12 pt-3">
                         <div class="form-group">
                             <button type="submit" class="form-control" class="btn">Register</button>
+                            <p class="text-center d-block text-white mt-3">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                     </div>
                 </div>
