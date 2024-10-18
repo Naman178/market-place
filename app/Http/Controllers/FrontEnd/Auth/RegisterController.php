@@ -236,28 +236,35 @@ class RegisterController extends Controller
     public function postRegistration(Request $request)
     {
         $request->validate([
-            'fname' => 'required',
-            'lname' => 'required',
-            'email' => 'required|email|unique:users',
-            'contact' => 'required',
-            'password' => 'required|min:6|same:confirm_password',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users', // Check for unique email
+            'country_code' => 'required|string',
+            'contact_number' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'company_website' => 'nullable|url|max:255',
+            'country' => 'required|string',
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:20',
+            'password' => 'required|string|min:8|confirmed', // Add confirmation rule if applicable
         ]);
-        
-        $name = $request['fname'] .' '.$request['lname'];
-        $fname = $request['fname'];
-        $lname = $request['lname'];
-        $email = $request['email'];
-        $country_code = $request['country_code'];
-        $contact = $request['contact'];
+        $name = $request->first_name .' '.$request->last_name;
+        $fname = $request->first_name;
+        $lname = $request->last_name;
+        $email = $request->email;
+        $country_code = $request->country_code;
+        $contact = $request->contact;
         $mobile = '+'.$country_code.$contact;
-        $company_name = $request['company_name'];
-        $company_website = $request['company_website'];
-        $country = $request['country'];
-        $address_line_one = $request['address_line_one'];
-        $address_line_two = $request['address_line_two'];
-        $city = $request['city'];
-        $postal = $request['postal'];
-        $gst = $request['gst'];
+        $company_name = $request->company_name;
+        $company_website = $request->company_website;
+        $country = $request->country;
+        $address_line_one = $request->address_line_one;
+        $address_line_two = $request->address_line_two;
+        $city = $request->city;
+        $postal = $request->postal;
+        $gst = $request->gst;
         
         $password = Hash::make($request['password']);
         
@@ -333,12 +340,38 @@ class RegisterController extends Controller
             'password' => $request['password'],
         ];
 
-        Mail::to($email)->send(new WelcomeEmail($mailData));
+        // Google Captcha Code
+		$url = 'https://www.google.com/recaptcha/api/siteverify';
+		$remoteip = $_SERVER['REMOTE_ADDR'];
+		$data = [
+			'secret' => config('services.recaptcha.secret'),
+			'response' => $request->get('recaptcha'),
+			'remoteip' => $remoteip
+		];
+		$options = [
+			'http' => [
+			'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method' => 'POST',
+			'content' => http_build_query($data)
+			]
+		];
+		$context = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+		$resultJson = json_decode($result);
+		if ($resultJson->success != true) {
+			return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+		}
+		
+		if ($resultJson->score < 0.3) {			
+			return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+		}
 
+        Mail::to($email)->send(new WelcomeEmail( $save_user, $password));
+        return redirect('user-login')->withSuccess('Great! You have Successfully loggedin');
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect("user-dashboard")->withSuccess('Great! You have Successfully loggedin');
+            return redirect("/")->withSuccess('Great! You have Successfully loggedin');
         }
     }
 }

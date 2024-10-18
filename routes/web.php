@@ -18,6 +18,7 @@ use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
 use App\Http\Controllers\FrontEnd\Payment\PaymentController;
+use App\Http\Controllers\Auth\CutomForgotPasswordController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -105,6 +106,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
 });
+
+// forgot password
+Route::get('forget-password', [CutomForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget-password-get');
+Route::post('forget-password', [CutomForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget-password-post'); 
+Route::get('reset-password/{token}', [CutomForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password-get');
+Route::post('reset-password', [CutomForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset-password-post');
+
+
+// Contact us
+Route::get('/contact-us', function () { 
+    return view('pages.Home.Contact'); 
+})->name('contact-us');
+Route::post('/user/contact-us', [UserController::class, 'contactUs'])->name('contactUs-send');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');

@@ -36,7 +36,7 @@
                     <li>Pricing</li>
                     <li>FAQ</li>
                     <li>Sponsorship</li>
-                    <li>Contact</li>
+                    <li><a href="{{ route('contact-us') }}">Contact</a></li>
                 </ul>
             </div>
             <div>
