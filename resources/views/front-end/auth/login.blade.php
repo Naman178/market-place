@@ -18,6 +18,7 @@
         </div>
     </form> --}}
         <form method="POST" action="{{ route('user-login-post') }}">
+            <input type="hidden" name="recaptcha" id="recaptcha">
             @csrf
             <div class="row justify-content-center">
                 <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
@@ -54,7 +55,7 @@
                             <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn">Sign In</button>
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                     href="{{ route('signup') }}"> Register </a> </p>
-                            {{-- <p class="text-center d-block text-white">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p> --}}
+                            <p class="text-center d-block text-white">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
                             <div class="float_right">
                                 <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
                             </div>
@@ -66,4 +67,16 @@
     </div>
 @endsection
 @section('scripts')
+  <!--Google Captcha-->
+  <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+  <script>
+          grecaptcha.ready(function() {
+              grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}', {action: 'signin'}).then(function(token) {
+                  if (token) {
+                  document.getElementById('recaptcha').value = token;
+                  }
+              });
+          });
+  </script>
+
 @endsection

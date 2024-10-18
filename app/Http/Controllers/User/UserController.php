@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
 use App\Mail\SendPassWordReset;
+use App\Mail\SendInquiry;
+use App\Mail\SendInquiryAdmin;
 use Symfony\Component\HttpFoundation\Response;
 use Spatie\Permission\Models\Role;
 use DB;
+use App\Models\UserInquiry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -185,6 +188,64 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             return false;
+        }
+    }
+
+    public function contactUs(Request $request){
+        if($request->ajax()){
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'email' => 'required',
+                'contact_number' => 'required',
+            ],
+            $message = [
+                'full_name.required' => 'Full Name Is Required.',
+                'email.required' => 'Email Is Required',
+                'contact_number.required' => 'Contact Number Is Required',
+            ]);
+            if ($validator->passes()){
+
+                $full_name = $request->full_name;
+                $email = $request->email;
+                $contact_number = $request->contact_number;
+                $website_url = $request->website_url;
+                $message = $request->message;
+                $stack = $request->stack;
+
+                $userinquiry = UserInquiry::create([
+                    'full_name'=>$full_name, 
+                    'email'=>$email , 
+                    'contact_number'=> $contact_number , 
+                    'website_url'=>$website_url,
+                    'message'=>$message ,
+                    'stack'=>$stack
+                ]);
+
+                $mailData = [
+                    'title' => 'Thank You!',
+                    'full_name' => $full_name,
+                    'email' => $email,
+                    'contact_number' => $contact_number,
+                    'website_url' => $website_url,
+                    'message' => $message,
+                    'stack' => $stack,
+                ];
+
+                Mail::to($email)->send(new SendInquiry($mailData));
+
+                Mail::to('info@infinitysoftech.co')->send(new SendInquiryAdmin($mailData));
+
+                session()->flash('success', 'ThankYou For Your Inquiry We Will Contact You Soon !');
+                return response()->json([
+                    'success' => 'inqury added successfully!',
+                    'title' => 'Inquiry',
+                    'type' => 'Add',
+                    'data' => $userinquiry
+                ]);
+            }   
+            else{
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            }            
         }
     }
 }

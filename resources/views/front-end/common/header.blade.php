@@ -15,6 +15,7 @@
                     <li><a href="#">Guide</a></li>
                     <li><a href="#">Faq</a></li>
                     <li><a href="#">Status</a></li>
+                    <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
                 </ul>
             </div>
         </div>
