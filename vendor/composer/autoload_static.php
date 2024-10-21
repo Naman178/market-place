@@ -422,8 +422,8 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -633,6 +633,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\APIs\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIs/AuthController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
+        'App\\Http\\Controllers\\Auth\\CutomForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/CutomForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -663,7 +664,13 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Mail\\SendEmail' => __DIR__ . '/../..' . '/app/Mail/SendEmail.php',
+        'App\\Mail\\SendInquiry' => __DIR__ . '/../..' . '/app/Mail/SendInquiry.php',
+        'App\\Mail\\SendInquiryAdmin' => __DIR__ . '/../..' . '/app/Mail/SendInquiryAdmin.php',
+        'App\\Mail\\SendNewUserPassword' => __DIR__ . '/../..' . '/app/Mail/SendNewUserPassword.php',
         'App\\Mail\\SendPassWordReset' => __DIR__ . '/../..' . '/app/Mail/SendPassWordReset.php',
+        'App\\Mail\\SendThankyou' => __DIR__ . '/../..' . '/app/Mail/SendThankyou.php',
+        'App\\Mail\\WelcomeEmail' => __DIR__ . '/../..' . '/app/Mail/WelcomeEmail.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\ContactsCountryEnum' => __DIR__ . '/../..' . '/app/Models/ContactsCountryEnum.php',
         'App\\Models\\Items' => __DIR__ . '/../..' . '/app/Models/Items.php',
@@ -676,6 +683,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Models\\Settings' => __DIR__ . '/../..' . '/app/Models/Settings.php',
         'App\\Models\\SubCategory' => __DIR__ . '/../..' . '/app/Models/SubCategory.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserInquiry' => __DIR__ . '/../..' . '/app/Models/UserInquiry.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
