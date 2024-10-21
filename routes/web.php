@@ -14,6 +14,7 @@ use App\Http\Controllers\FrontEnd\Auth\RegisterController;
 use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
+use App\Http\Controllers\TerAndCondition\TermAndConditionController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -104,6 +105,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/review/status/{id}", [ReviewsController::class, "changeStatus"])->name("reviews-status");
     Route::get('/review/delete/{id}', [ReviewsController::class, 'remove'])->name('reviews-delete');
 
+    // Term And Condition module
+    Route::get('/term-condition',[TermAndConditionController::class,'index'])->name('term-condition-index');
+    Route::post('/term-condition/store',[TermAndConditionController::class,'store'])->name('term-condition-store');
+    Route::get('/term-condition/edit/{id}', [TermAndConditionController::class, 'edit'])->name('term-condition-edit');
+    Route::get('/term-condition/delete/{id}', [TermAndConditionController::class, 'remove'])->name('term-condition-delete');
+ 
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
 });
 
@@ -119,6 +126,10 @@ Route::get('/contact-us', function () {
     return view('pages.Home.Contact'); 
 })->name('contact-us');
 Route::post('/user/contact-us', [UserController::class, 'contactUs'])->name('contactUs-send');
+
+// Terms and Condition Page
+Route::get('/terms-and-condition', [TermAndConditionController::class,'user_index']
+)->name('terms-and-condition');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');

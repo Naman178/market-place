@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FrontEnd\Auth;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -62,34 +63,45 @@ class RegisterController extends Controller
 
     public function userCreateCheckout(Request $request){
         if($request->ajax()){
+         if(!Auth::user()->id){
             $validator = Validator::make($request->all(), [
-                'firstname' => 'required',
-                'lastname' => 'required',
+                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'email' => 'required|email|unique:users',
                 'country_code' => 'required',
-                'contact' => 'required',
+                'contact' => 'required|digits:10',
                 'country' => 'required',
-                'address_line_one' => 'required',
-                'city' => 'required',
-                'postal' => 'required',
-                'company_name' => 'required',
-                'company_website' => 'required'
-            ],
+                'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                'city' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'postal' => 'required|digits_between:5,6',
+                'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'company_website' => 'required|url',
+            ], 
             $message = [                
                 'firstname.required' => 'The First Name Is Required.',
-                'lastname.required' => 'The Lsat Name Is Required.',
+                'firstname.regex' => 'The First Name should only contain letters and spaces.',
+                'lastname.required' => 'The Last Name Is Required.',
+                'lastname.regex' => 'The Last Name should only contain letters and spaces.',
                 'email.required' => 'The Email Is Required.',
-                'country_code.required' => 'The Country Code Is Required.',
-                'contact.required' => 'The Contact Number Is Required.',
-                'country.required' => 'The Country Is Required.',
-                'address_line_one.required' => 'The Address Line One Is Required.',
+                'email.email' => 'Please enter a valid email address.',
+                'email.unique' => 'The email has already been taken.',
+                'country_code.required' => 'Please Select Any One Country Code.',
+                'contact.required' => 'Please Add Your Contact Number.',
+                'contact.digits' => 'The Contact Number must be exactly 10 digits.',
+                'country.required' => 'Please Select Any One Country.',
+                'address_line_one.required' => 'Please Add Your Address.',
+                'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                 'city.required' => 'The City Is Required.',
+                'city.regex' => 'The City name should only contain letters and spaces.',
                 'postal.required' => 'The Postal Code Is Required.',
+                'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
                 'company_name.required' => 'The Company Name is required.',
-                'company_website.required' => 'The Company Website is required.',
+                'company_name.regex' => 'The Company Name should only contain letters and spaces.',
+                'company_website.required' => 'Please enter a valid URL for the company website.',
+                'company_website.url' => 'Please enter a valid company website URL.',
             ]);
             if ($validator->passes()){
-
+               
                 $name = $request->firstname .' '.$request->lastname;
                 $fname = $request->firstname;
                 $lname = $request->lastname;
@@ -225,10 +237,131 @@ class RegisterController extends Controller
                 }
                 else{
                     return response()->json(['error'=> 'Error in login in user' ]);
-                }                
+                }      
             }
             else{
                 return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            }
+            
+         }
+         else{
+                if($request->ajax()){
+                    $validator = Validator::make($request->all(), [
+                        'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                        'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                        'email' => 'required|email',
+                        'country_code' => 'required',
+                        'contact' => 'required|digits:10',
+                        'country' => 'required',
+                        'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                        'city' => 'required|regex:/^[a-zA-Z\s]+$/',
+                        'postal' => 'required|digits_between:5,6',
+                        'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
+                        'company_website' => 'required|url',
+                    ], 
+                    $message = [                
+                        'firstname.required' => 'The First Name Is Required.',
+                        'firstname.regex' => 'The First Name should only contain letters and spaces.',
+                        'lastname.required' => 'The Last Name Is Required.',
+                        'lastname.regex' => 'The Last Name should only contain letters and spaces.',
+                        'email.required' => 'The Email Is Required.',
+                        'email.email' => 'Please enter a valid email address.',
+                        'country_code.required' => 'Please Select Any One Country Code.',
+                        'contact.required' => 'Please Add Your Contact Number.',
+                        'contact.digits' => 'The Contact Number must be exactly 10 digits.',
+                        'country.required' => 'Please Select Any One Country.',
+                        'address_line_one.required' => 'Please Add Your Address.',
+                        'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+                        'city.required' => 'The City Is Required.',
+                        'city.regex' => 'The City name should only contain letters and spaces.',
+                        'postal.required' => 'The Postal Code Is Required.',
+                        'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
+                        'company_name.required' => 'The Company Name is required.',
+                        'company_name.regex' => 'The Company Name should only contain letters and spaces.',
+                        'company_website.required' => 'Please enter a valid URL for the company website.',
+                        'company_website.url' => 'Please enter a valid company website URL.',
+                    ]);
+                    
+                    if ($validator->passes()){
+                        $user = User::find(Auth::user()->id);
+                        if($user){
+                            $user->update([
+                                "name" => $request->firstname . ' '. $request->lastname,
+                                "email" => $request->email,
+                                "country_code" => $request->country_code,
+                                "contact_number" => $request->contact,
+                                "country_code" => $request->country_code,
+                                "company_website" => $request->company_website,
+                                "company_name" => $request->company_name,
+                                "country" => $request->country,
+                                "address_line1" => $request->address_line_one,
+                                "address_line2" => $request->address_line_two,
+                                "city" => $request->city,
+                                "postal_code" => $request->postal
+                            ]);
+                        }
+        
+                        // Set your secret key
+                        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                    
+                        // Get payment token from Stripe.js
+                        $token = $request->stripeToken;
+                        try {
+                            // Create a customer in Stripe
+                            $customer = \Stripe\Customer::create([
+                                'name' => $request->name,
+                                'email' => $request->email,
+                                    'address' => [
+                                    'line1' => $request->address_line_one,
+                                    'line2' => $request->address_line_two,
+                                    'city' => $request->city,
+                                    'postal_code' => $request->postal,
+                                    'country' => $request->country,
+                                ],
+                            ]);
+                            $customer_id = $customer->id;
+                            // $customer = \Stripe\Customer::retrieve($customer_id);
+                            // $customer->source = $token;
+                            // $customer->save();
+                    
+                            // $stripe_payment = Charge::create ([
+                            //     "amount" => $request->amount * 100,
+                            //     "currency" => "AED",            
+                            //     'customer' => $customer_id,
+                            //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
+                            // ]);   
+                            $paymentIntent = \Stripe\PaymentIntent::create([
+                                'amount' => $request->amount * 100,
+                                'currency' => "INR",
+                                'customer' => $customer_id,
+                                'payment_method_types' => ['card'],
+                                'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
+                            ]);
+                            
+                            $paymentMethod = \Stripe\PaymentMethod::create([
+                                'type' => 'card',
+                                'card' => [
+                                    'token' => $request->stripeToken,
+                                ],
+                            ]);
+
+                            // Payment successful
+                            return response()->json([
+                                "success" => true,
+                                "message" => "Payment has been successfully processed.",
+                            ]);
+                                
+                        } catch (\Exception $e) {
+                            // Payment failed
+                            return response()->json([
+                                "error" => $e->getMessage(),
+                            ]);
+                        }
+                    }
+                else{
+                        return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+                    }
+                }
             }
         }        
     }

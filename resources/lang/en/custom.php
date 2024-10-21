@@ -30,4 +30,11 @@ return [
     'reviews_accept_success' => 'Review accepted!',
     'reviews_rejected_success' => 'Review rejected!',
     'reviews_delete_success' => 'Review deleted successfully!',
+    
+    // TERM & CONDITION
+    'term_condition_title' => 'Terms & Condition',
+    'term_condition_create_success' => 'Terms & Condition created successfully!',
+    'term_condition_update_success' => 'Terms & Condition updated successfully!',
+    'term_condition_delete_success' => 'Terms & Condition deleted successfully!',
+
 ];

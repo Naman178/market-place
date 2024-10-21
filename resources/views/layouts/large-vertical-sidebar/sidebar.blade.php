@@ -44,6 +44,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('term-condition-tab-show')
+                <li class="nav-item {{ request()->routeIs('term-condition*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('term-condition-index') }}">
+                        <i class="nav-icon i-File-Text--Image"></i>
+                        <span class="nav-text">{{ trans('custom.term_condition_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('user-tab-show')
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('user-index') }}">

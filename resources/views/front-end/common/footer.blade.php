@@ -60,7 +60,7 @@
             <div>
                 <div class="title pb-2">Legal</div>
                 <ul class="menu-vertical">
-                    <li>Terms & Conditions</li>
+                    <li><a href="{{ route('terms-and-condition') }}">Terms & Conditions</a></li>
                     <li>Privacy Policy</li>
                 </ul>
             </div>
