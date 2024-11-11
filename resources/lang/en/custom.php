@@ -37,4 +37,15 @@ return [
     'term_condition_update_success' => 'Terms & Condition updated successfully!',
     'term_condition_delete_success' => 'Terms & Condition deleted successfully!',
 
+    // PRIVACY POLICY
+    'privacy_policy_title' => 'Privacy Policy',
+    'privacy_policy_create_success' => 'Privacy Policy created successfully!',
+    'privacy_policy_update_success' => 'Privacy Policy updated successfully!',
+    'privacy_policy_delete_success' => 'Privacy Policy deleted successfully!',
+
+    // SEO
+    'SEO_title' => 'SEO',
+    'SEO_create_success' => 'SEO created successfully!',
+    'SEO_update_success' => 'SEO updated successfully!',
+    'SEO_delete_success' => 'SEO deleted successfully!',
 ];

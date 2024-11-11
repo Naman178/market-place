@@ -29,7 +29,10 @@ class LoginController extends Controller
     
             if ($intendedUrl) {
                 return redirect()->intended($intendedUrl);
-            } else {
+            } else if (Auth::user()->name('Super Admin')) { 
+                return $intendedUrl ? redirect()->intended($intendedUrl) : redirect()->intended('/dashboard')->withSuccess('You have Successfully logged in as Super Admin');
+            }
+            else {
                 return redirect()->intended('/')->withSuccess('You have Successfully loggedin');
             }
         }

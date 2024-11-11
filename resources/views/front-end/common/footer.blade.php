@@ -61,7 +61,7 @@
                 <div class="title pb-2">Legal</div>
                 <ul class="menu-vertical">
                     <li><a href="{{ route('terms-and-condition') }}">Terms & Conditions</a></li>
-                    <li>Privacy Policy</li>
+                    <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -78,6 +78,6 @@
     </div>
     <hr>
     <div class="copyright-row">
-        <p>© 2023 MetalpriceAPI. all rights reserved.</p>
+        <p>© 2024 MetalpriceAPI. all rights reserved.</p>
     </div>
 </div>
