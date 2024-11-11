@@ -571,6 +571,88 @@
            
         });
 
+        // For Privacy Policy
+        $(document).on("click", ".erp-privacy-policy-form", function (e) {
+            e.preventDefault();
+            var submitUrl = $('#privacy_policy_form').attr("data-url");
+            var data_id = $('#privacy_policy_form').attr("data-id");
+            var formData = new FormData($('#privacy_policy_form')[0]);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('privacy-policy-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+            }
+           
+        });
+
+        // For SEO
+        $(document).on("click", ".erp-SEO-form", function (e) {
+            e.preventDefault();
+            var submitUrl = $('#SEO_form').attr("data-url");
+            var data_id = $('#SEO_form').attr("data-id");
+            var formData = new FormData($('#SEO_form')[0]);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('SEO-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+            }
+           
+        });
+
         $(document).on("click", ".erp-item-form", function (e) {
             e.preventDefault();
             tinymce.activeEditor.save();

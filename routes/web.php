@@ -15,6 +15,8 @@ use App\Http\Controllers\SubCategory\SubCategoryController;
 use App\Http\Controllers\Items\ItemsController;
 use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\TerAndCondition\TermAndConditionController;
+use App\Http\Controllers\PrivacyPolicy\PrivacyPolicyController;
+use App\Http\Controllers\SEO\SEOController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -110,7 +112,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/term-condition/store',[TermAndConditionController::class,'store'])->name('term-condition-store');
     Route::get('/term-condition/edit/{id}', [TermAndConditionController::class, 'edit'])->name('term-condition-edit');
     Route::get('/term-condition/delete/{id}', [TermAndConditionController::class, 'remove'])->name('term-condition-delete');
- 
+
+    // Privacy Policy module
+    Route::get('/privacy-policy',[PrivacyPolicyController::class,'index'])->name('privacy-policy-index');
+    Route::post('/privacy-policy/store',[PrivacyPolicyController::class,'store'])->name('privacy-policy-store');
+    Route::get('/privacy-policy/edit/{id}', [PrivacyPolicyController::class, 'edit'])->name('privacy-policy-edit');
+    Route::get('/privacy-policy/delete/{id}', [PrivacyPolicyController::class, 'remove'])->name('privacy-policy-delete');
+
+    // SEO module
+    Route::get('/SEO',[SEOController::class,'index'])->name('SEO-index');
+    Route::post('/SEO/store',[SEOController::class,'store'])->name('SEO-store');
+    Route::get('/SEO/edit/{id}', [SEOController::class, 'edit'])->name('SEO-edit');
+    Route::get('/SEO/delete/{id}', [SEOController::class, 'remove'])->name('SEO-delete');
+
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
 });
 
@@ -130,6 +144,10 @@ Route::post('/user/contact-us', [UserController::class, 'contactUs'])->name('con
 // Terms and Condition Page
 Route::get('/terms-and-condition', [TermAndConditionController::class,'user_index']
 )->name('terms-and-condition');
+
+// Privacy Policy Page
+Route::get('/user-privacy-policy', [PrivacyPolicyController::class,'user_index']
+)->name('privacy-policy');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');

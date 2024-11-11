@@ -53,6 +53,24 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('privacy-policy-tab-show')
+                <li class="nav-item {{ request()->routeIs('privacy-policy*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('privacy-policy-index') }}">
+                        <i class="nav-icon i-Security-Settings"></i>
+                        <span class="nav-text">{{ trans('custom.privacy_policy_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('SEO-tab-show')
+                <li class="nav-item {{ request()->routeIs('SEO*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('SEO-index') }}">
+                        <i class="nav-icon i-Search-on-Cloud"></i>
+                        <span class="nav-text">{{ trans('custom.SEO_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('user-tab-show')
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('user-index') }}">
