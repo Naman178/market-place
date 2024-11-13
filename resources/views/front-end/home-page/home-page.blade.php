@@ -1,8 +1,9 @@
 @extends('front-end.common.master')
-@section('title', $seoData->title ?? 'Default Title')
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
-
+@endsection
+@section('meta')
+<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">

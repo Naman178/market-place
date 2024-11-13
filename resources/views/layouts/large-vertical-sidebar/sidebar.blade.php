@@ -71,6 +71,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('FAQ-tab-show')
+                <li class="nav-item {{ request()->routeIs('FAQ*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('FAQ-index') }}">
+                        <i class="nav-icon i-Information"></i>
+                        <span class="nav-text">{{ trans('custom.FAQ_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('user-tab-show')
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('user-index') }}">

@@ -1,3 +1,5 @@
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
     // $(document).on("click", '#proceed_to_pay_btn', function (e) {
     //     console.log("test");
@@ -30,7 +32,6 @@
     //         },
     //     });
     // });
-   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
        $(function() {  
            /* Stripe Payment Code */    
            var $form = $(".require-validation");     

@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Support\Str;
 use Stripe\Stripe;
+use App\Models\SEO;
 use Stripe\Charge;
 class RegisterController extends Controller
 {
     public function index()
     {
-        return view('front-end.auth.register');
+        $seoData = SEO::where('page','sign up')->first();
+        return view('front-end.auth.register',compact('seoData'));
     }
 
     public function register(Request $request)

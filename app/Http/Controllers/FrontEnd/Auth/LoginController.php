@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\SEO;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -13,7 +14,8 @@ class LoginController extends Controller
     public function index()
     {
         session(['url.intended' => url()->previous()]);
-        return view('front-end.auth.login');
+        $seoData = SEO::where('page','login')->first();
+        return view('front-end.auth.login', compact('seoData'));
         //return Socialite::driver('google')->redirect();
     }
     public function postLogin(Request $request)
@@ -28,12 +30,17 @@ class LoginController extends Controller
             $intendedUrl = session()->get('url.intended');
     
             if ($intendedUrl) {
-                return redirect()->intended($intendedUrl);
+                if($intendedUrl == "https://market-place-main.infinty-stage.com/"){
+                     return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
+                }
+                else{
+                    return redirect()->intended($intendedUrl);
+                }
             } else if (Auth::user()->name('Super Admin')) { 
                 return $intendedUrl ? redirect()->intended($intendedUrl) : redirect()->intended('/dashboard')->withSuccess('You have Successfully logged in as Super Admin');
             }
             else {
-                return redirect()->intended('/')->withSuccess('You have Successfully loggedin');
+                return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
             }
         }
   
@@ -42,7 +49,13 @@ class LoginController extends Controller
     
     public function redirectToGoogle()
     {
-        session(['url.intended' => url()->previous()]);
+        $previousUrl = url()->previous();
+
+        if (str_contains($previousUrl, 'checkout')) {
+            session(['url.intended' => $previousUrl]);
+        } else {
+            session(['url.intended' => url('/user-dashboard')]);
+        }
         return Socialite::driver('google')->redirect();
     }
 
@@ -75,7 +88,7 @@ class LoginController extends Controller
             if ($intendedUrl) {
                 return redirect()->intended($intendedUrl);
             } else {
-                return redirect()->intended('/');
+                return redirect()->intended('/user-dashboard');
             }
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Failed to login using Google, please try again.');

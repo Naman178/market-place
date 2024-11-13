@@ -83,7 +83,7 @@ class SEOController extends Controller
     {
         $rules = [
             'title' => 'required',
-            'page' => 'required|unique:seo,page',
+            'page' => 'required',
         ];
         return Validator::make($request->all(), $rules);
     }
