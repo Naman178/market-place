@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PrivacyPolicy;
 
 use App\Http\Controllers\Controller;
 use App\Models\PrivacyPolicy;
+use App\Models\SEO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,6 +100,7 @@ class PrivacyPolicyController extends Controller
     public function user_index()
     {
         $privacy_policies = PrivacyPolicy::get();
-        return view('pages.Home.PrivacyPolicy',compact('privacy_policies'));
+        $seoData = SEO::where('page','privacy policy')->first();
+        return view('pages.Home.PrivacyPolicy',compact('privacy_policies','seoData'));
     }
 }

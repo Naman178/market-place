@@ -13,7 +13,7 @@
                     <li><a href="#">Price</a></li>
                     <li><a href="#">Documentation</a></li>
                     <li><a href="#">Guide</a></li>
-                    <li><a href="#">Faq</a></li>
+                    <li><a href="{{ route('user-faq') }}">Faq</a></li>
                     <li><a href="#">Status</a></li>
                     <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
                 </ul>
@@ -28,6 +28,12 @@
                                 Welcome, {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('user-dashboard') }}">
+                                    Dashboard
+                                </a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">
+                                    Profile Setting
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout

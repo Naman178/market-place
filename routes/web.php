@@ -17,11 +17,15 @@ use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\TerAndCondition\TermAndConditionController;
 use App\Http\Controllers\PrivacyPolicy\PrivacyPolicyController;
 use App\Http\Controllers\SEO\SEOController;
+use App\Http\Controllers\FAQ\FAQController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
 use App\Http\Controllers\FrontEnd\Payment\PaymentController;
 use App\Http\Controllers\Auth\CutomForgotPasswordController;
+use App\Http\Controllers\UserProfile\UserProfileController;
+use App\Http\Controllers\Stripe\StripePaymentController;
+use App\Http\Controllers\Razorpay\RazorpayPaymentController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings',[SettingsController::class,'index'])->name('settings-index');
     Route::post('/settings/store',[SettingsController::class,'store'])->name('settings-store');
 
+    // front user dashboard
+    Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
+
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');
     Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
@@ -125,6 +132,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/SEO/edit/{id}', [SEOController::class, 'edit'])->name('SEO-edit');
     Route::get('/SEO/delete/{id}', [SEOController::class, 'remove'])->name('SEO-delete');
 
+    // FAQ module
+    Route::get('/FAQ',[FAQController::class,'index'])->name('FAQ-index');
+    Route::post('/FAQ/store',[FAQController::class,'store'])->name('FAQ-store');
+    Route::get('/FAQ/edit/{id}', [FAQController::class, 'edit'])->name('FAQ-edit');
+    Route::get('/FAQ/delete/{id}', [FAQController::class, 'remove'])->name('FAQ-delete');
+
+    // Profile
+    Route::get("/profile", [UserProfileController::class, "index"])->name("profile");
+    Route::post("/store-user-profile", [UserProfileController::class, "store_user_profile"])->name("store-user-profile");
+
+    // stripe payment
+    Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
+    Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
+    
+    // razorpay payment
+    Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
+    Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
+
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
 });
 
@@ -148,6 +173,11 @@ Route::get('/terms-and-condition', [TermAndConditionController::class,'user_inde
 // Privacy Policy Page
 Route::get('/user-privacy-policy', [PrivacyPolicyController::class,'user_index']
 )->name('privacy-policy');
+
+// FAQ
+Route::get('/user-faq', [FAQController::class,'user_index']
+)->name('user-faq');
+
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');

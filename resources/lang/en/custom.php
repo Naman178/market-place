@@ -48,4 +48,10 @@ return [
     'SEO_create_success' => 'SEO created successfully!',
     'SEO_update_success' => 'SEO updated successfully!',
     'SEO_delete_success' => 'SEO deleted successfully!',
+
+    // FAQ
+    'FAQ_title' => 'FAQ',
+    'FAQ_create_success' => 'FAQ created successfully!',
+    'FAQ_update_success' => 'FAQ updated successfully!',
+    'FAQ_delete_success' => 'FAQ deleted successfully!',
 ];

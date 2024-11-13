@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\helper\helper;
 use App\Http\Controllers\Controller;
+use App\Models\Items;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,8 +12,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
 use App\Mail\SendPassWordReset;
+use App\Models\Transaction;
 use App\Mail\SendInquiry;
 use App\Mail\SendInquiryAdmin;
+use App\Models\WoocommerceOrderHistory;
+use App\Models\Order;
+use App\Models\Wallet;
+use App\Models\UserCustomer;
 use Symfony\Component\HttpFoundation\Response;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -248,4 +254,19 @@ class UserController extends Controller
             }            
         }
     }
+    public function userDashboard(){
+        $user = auth()->user();
+        $user_id = $user['id'];
+        $wallet = Wallet::where('user_id',$user['id'])->first();
+        $transactions = Transaction::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
+        $orders = Order::where('user_id',$user['id'])
+            ->with(['product','key'])
+            ->get();
+        $order_history = WoocommerceOrderHistory::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
+        $woo_user = UserCustomer::where('register_under_user_id',$user['id'])->get();
+        $allplan = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
+
+        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','order_history','allplan','woo_user'));
+    }
+
 }

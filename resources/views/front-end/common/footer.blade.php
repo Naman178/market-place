@@ -34,7 +34,7 @@
                 <ul class="menu-vertical list-style">
                     <li>Documentation</li>
                     <li>Pricing</li>
-                    <li>FAQ</li>
+                    <li><a href="{{ route('user-faq') }}">FAQ</a></li>
                     <li>Sponsorship</li>
                     <li><a href="{{ route('contact-us') }}">Contact</a></li>
                 </ul>
@@ -44,7 +44,7 @@
                 <ul class="menu-vertical">
                     <li>Sign Up For Free</li>
                     <li>Free Log in</li>
-                    <li>Forgot Password</li>
+                    <li><a href="{{url('/user-dashboard#list-settings')}}" id="forgot-password-link">Forgot Password</a></li>
                 </ul>
             </div>
             <div>

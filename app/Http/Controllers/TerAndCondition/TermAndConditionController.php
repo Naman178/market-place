@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TerAndCondition;
 
 use App\Http\Controllers\Controller;
 use App\Models\TermCondition;
+use App\Models\SEO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,6 +99,7 @@ class TermAndConditionController extends Controller
     public function user_index()
     {
         $term_conditions = TermCondition::get();
-        return view('pages.Home.TermsAndCondition',compact('term_conditions'));
+        $seoData = SEO::where('page','term and condition')->first();
+        return view('pages.Home.TermsAndCondition',compact('term_conditions','seoData'));
     }
 }
