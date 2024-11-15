@@ -10,8 +10,8 @@
         <div class="col">
             <div class="menu-container">
                 <ul>
-                    <li><a href="#">Price</a></li>
-                    <li><a href="#">Documentation</a></li>
+                    <li><a href="{{ route('user-price') }}">Price</a></li>
+                    {{-- <li><a href="#">Documentation</a></li> --}}
                     <li><a href="#">Guide</a></li>
                     <li><a href="{{ route('user-faq') }}">Faq</a></li>
                     <li><a href="#">Status</a></li>

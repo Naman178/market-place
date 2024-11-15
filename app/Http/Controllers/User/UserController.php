@@ -15,6 +15,7 @@ use App\Mail\SendPassWordReset;
 use App\Models\Transaction;
 use App\Mail\SendInquiry;
 use App\Mail\SendInquiryAdmin;
+use App\Models\SEO;
 use App\Models\WoocommerceOrderHistory;
 use App\Models\Order;
 use App\Models\Wallet;
@@ -267,6 +268,12 @@ class UserController extends Controller
         $allplan = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
 
         return view('dashboard.user-dashboard',compact('orders','wallet','transactions','order_history','allplan','woo_user'));
+    }
+    public function user_price()
+    {
+        $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $seoData = SEO::where('page','price')->first();
+        return view('pages.Home.Price',compact('data','seoData'));
     }
 
 }
