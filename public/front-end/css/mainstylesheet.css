@@ -1022,6 +1022,8 @@ input {
   align-items: center;
   width: 100%;
   justify-content: space-around;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .col {
@@ -1049,7 +1051,7 @@ input {
 }
 
 .menu-container li {
-  padding: 0 30px;
+  padding: 0 15px;
 }
 
 .signin-container ul {
@@ -1083,6 +1085,11 @@ input {
 .footer-container {
   background-color: #007ac1;
   padding: 50px 50px 20px;
+}
+
+.footer-container .container{
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .horizontal-menu-row {

@@ -178,6 +178,9 @@ Route::get('/user-privacy-policy', [PrivacyPolicyController::class,'user_index']
 Route::get('/user-faq', [FAQController::class,'user_index']
 )->name('user-faq');
 
+// Price
+Route::get('/user-price', [UserController::class,'user_price']
+)->name('user-price');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
