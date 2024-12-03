@@ -90,8 +90,8 @@
         }
 
         .user-dashboard-list-grp .list-group-item.active {
-            background-image: linear-gradient(to right, #2B2842, #D6445E, #2B2842, #D6445E);
-            border-color: #D94B62;
+            background-image: linear-gradient(to right, #007ac1, #2B2842, #007ac1, #2B2842);
+            border-color: #007ac1;
         }
 
         .list-group-item+.list-group-item.active {
@@ -110,13 +110,13 @@
         .list-group-item.active {
             z-index: 2;
             color: #fff;
-            background-color: #663399;
-            border-color: #663399;
+            background-color: #335699;
+            border-color: #335699;
         }
 
         .card-icon [class^=i-],
         .card-icon .lead {
-            color: #663399;
+            color: #335699;
         }
 
         .card {
@@ -157,12 +157,12 @@
             width: 120px;
             height: 45px;
             position: relative;
-            border: 2px solid #7B74B7;
+            border: 2px solid #7486b7;
             border-radius: 4px;
         }
 
         .text-primary {
-            color: #663399 !important;
+            color: #335699 !important;
         }
 
         .wallet_plan_radio_button input[type="radio"] {
@@ -183,7 +183,7 @@
         }
 
         .nav-tabs {
-            border-bottom: 1px solid #663399;
+            border-bottom: 1px solid #335699;
         }
 
         .checkout .nav-tabs .nav-item,
@@ -194,13 +194,13 @@
 
         .nav-tabs .nav-item .nav-link.active {
             border: 1px solid transparent;
-            background: rgba(102, 51, 153, 0.1);
-            border-color: #663399 #663399 #fff;
+            background: rgb(51 96 153 / 10%);
+            border-color: #335699 #335699 #fff;
         }
 
         .nav-tabs .nav-item .nav-link.active {
-            border-bottom: 2px solid #663399;
-            background: rgba(102, 51, 153, 0.1);
+            border-bottom: 2px solid #335699;
+            background: rgb(51 96 153 / 10%);
         }
 
         .nav-tabs .nav-item .nav-link:not(.disabled) {
@@ -235,7 +235,7 @@
         }
 
         .btn-dark-blue {
-            background: #2A2742;
+            background: #2B2842;
             border-radius: 8px;
             padding: 10px;
             color: #FFF;
@@ -257,16 +257,16 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: #2A2742;
+            background-color: #2B2842;
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background-color: #D94B62;
+            background-color: #007ac1;
         }
 
         .dark-blue-btn {
-            background: #2A2742;
+            background: #2B2842;
             border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
@@ -275,7 +275,7 @@
             padding: 17.5px 44.5px;
             color: #fff;
             transition: all 0.3s ease 0s;
-            background-image: linear-gradient(to right, #2B2842, #2B2842, #D6445E, #D6445E);
+            background-image: linear-gradient(to right, #2B2842, #2B2842, #007ac1, #007ac1);
             background-size: 300% 100%;
             moz-transition: all .4s ease-in-out;
             -o-transition: all .4s ease-in-out;
@@ -291,7 +291,7 @@
         .dark-blue-btn:hover {
             color: #fFF;
             background-position: 99% 0;
-            border-color: #D6445E;
+            border-color: #007ac1;
             moz-transition: all .4s ease-in-out;
             -o-transition: all .4s ease-in-out;
             -webkit-transition: all .4s ease-in-out;
@@ -303,7 +303,7 @@
             font-size: 15px;
             /* margin: 15px 15px; */
             border-radius: 10px;
-            background-image: linear-gradient(to right, #2b2842, #d6445e, #2b2842, #d6445e);
+            background-image: linear-gradient(to right, #2b2842, #007ac1, #2b2842, #007ac1);
             color: #f4f4f4;
             background-size: 300% 100%;
             moz-transition: all 0.4s ease-in-out;
@@ -1117,7 +1117,7 @@
                 },
                 customer_id: razorpay_customer_id,
                 theme: {
-                    color: "#2A2742"
+                    color: "#2B2842"
                 },
                 handler: function(response) {
                     $('#razorpay_payment_id').val(response.razorpay_payment_id);

@@ -2,13 +2,19 @@
 @section('title')
     <title>Skyfinity Quick Checkout | Login</title>
 @endsection
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
+@endsection
 @section('content')
 <div class="forgot_password cust-page-padding">
-    <div class="cotainer">
+    <div class="cotainer register-container pt-5 pb-5">
+        <div class="title text-center">
+            <h3><span class="txt-black">Forgot</span><span class="color-blue underline-text"> Password</span></h3>
+        </div>
         <div class="row justify-content-center">
-            <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card mb-5">                    
-                    <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                    
+                    {{-- <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                     --}}
                     @if (Session::has('message'))
                         <p class="text-white"> {{ Session::get('message') }} </p>                    
                     @endif

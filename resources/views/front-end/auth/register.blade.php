@@ -154,7 +154,7 @@
                     </div>
                     <div class="col-md-12 pt-3">
                         <div class="form-group">
-                            <button type="submit" class="form-control" class="btn">Register</button>
+                            <button type="submit" class="btn btn-block pink-btn mt-3">Register</button>
                           <p class="text-center d-block text-white mt-3">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                     </div>

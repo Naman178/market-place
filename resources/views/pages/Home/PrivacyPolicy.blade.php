@@ -10,6 +10,7 @@
 <meta property="og:type" content="website">
 @endsection
 @section('styles')
+<link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
     <style>
         .cust-page-padding {
             padding: 2rem 58px 5rem;
@@ -28,14 +29,21 @@
             color: #182433;
             margin: 80px 0 85px;
         }
+        hr{
+            border: none;
+            border-bottom: 1px solid #007ac1;
+        }
     </style>
 @endsection
 @section('content')
     <div class="cust-page-padding">
-        <div class="container">  
+        <div class="container register-container"> 
+            <div class="title">
+                <h3><span class="txt-black">Privacy </span><span class="color-blue underline-text"> Policy</span></h3>
+            </div> 
             <div class="row justify-content-center"> 
                 <div class="terms-and-condition cust-page-padding">          
-                    <h1 class="text-center feature_heading">Privacy Policy</h1>
+                    {{-- <h1 class="text-center feature_heading">Privacy Policy</h1> --}}
                     @foreach ($privacy_policies as  $privacy_policy)
                         <h4>{{ $privacy_policy->title ?? '' }}</h4>        
                         <p>{{ $privacy_policy->description ?? '' }}</p>

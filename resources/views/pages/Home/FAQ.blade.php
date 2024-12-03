@@ -11,6 +11,7 @@
 <meta property="og:type" content="website">
 @endsection
 @section('styles')
+<link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
 <style>
     .cust-page-padding {
         padding: 2rem 10rem 5rem;
@@ -38,7 +39,7 @@
 
     #faqAccordian .card {
         border: none;
-        border-bottom: 1px solid #D1295F;
+        border-bottom: 1px solid #007ac1;
     }
 
     .accordion>.card:not(:last-of-type) {
@@ -72,6 +73,7 @@
         width: 19px;
         height: 19px;
         left: 5px;
+        filter: invert(33%) sepia(80%) saturate(745%) hue-rotate(190deg) brightness(90%) contrast(85%);
         top: 35px;
         transition: 0.2s ease;
     }
@@ -137,10 +139,13 @@
     </div> --}}
 <div class="cust-page-padding">
     <div class="faq">
-        <div class="container">
+        <div class="container  register-container">
+            <div class="title">
+                <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline-text"> Questions</span></h3>
+            </div> 
             <div class="d-flex flex-wrap justify-content-between">
                 <div class="faq-heading-row">
-                    <h1 class="text-center faq_heading">Frequently Asked Questions</h1>
+                    {{-- <h1 class="text-center faq_heading">Frequently Asked Questions</h1> --}}
                     <div class="faq-button_n_text d-lg-block d-none">
                         <p>Have more questions?</p>
                         <a href="{{ Route('contact-us') }}"
