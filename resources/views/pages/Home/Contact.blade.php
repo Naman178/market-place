@@ -13,6 +13,7 @@
     <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
     <style>
         #message {
             height: 200px;
@@ -21,11 +22,14 @@
 @endsection
 @section('content')
     <div class="contact-us cust-page-padding">
-        <div class="container">            
+        <div class="container  register-container">
+            <div class="title">
+                <h3><span class="txt-black">Contact  </span><span class="color-blue underline-text"> Us</span></h3>
+            </div>            
             <div class="row justify-content-center">
                 <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="card p-4 dark-blue-card mb-5">
-                        <h1 class="mb-3 text-8 text-center text-white">Contact Us</h1>
+                        {{-- <h1 class="mb-3 text-8 text-center text-white">Contact Us</h1> --}}
                         <form method="POST">                          
                             <div class="row">                               
                                 <div class="col-md-6 form-group"">

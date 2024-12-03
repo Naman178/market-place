@@ -31,7 +31,7 @@
             <input type="hidden" name="recaptcha" id="recaptcha">
             @csrf
             <div class="row justify-content-center">
-                <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="card p-4 dark-blue-card">
                         <div class="col-md-12 form-group">
                             <label for="email">Email</label>
@@ -66,7 +66,7 @@
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                     href="{{ route('signup') }}"> Register </a> </p>
                             <p class="text-center d-block text-white">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
-                            <div class="float_right">
+                            <div class="float_right mt-2">
                                 <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
                             </div>
                         </div>

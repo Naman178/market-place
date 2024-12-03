@@ -18,16 +18,19 @@
     <script src="https://js.stripe.com/v3/"></script>
 @endsection
 @section('content')
-    <div class="container checkout-container">
+    <div class="container">
         <div class="checkout padding">
-            <div class="container">
+            <div class="container  register-container">
+                <div class="title">
+                    <h3><span class="txt-black">Profile   </span><span class="color-blue underline-text"> Details</span></h3>
+                </div>   
                 <div class="row justify-content-center">
                     <!-- if user is already logged in -->
                     <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
 
                         @php $name = optional($user)->name ? explode(" ", $user->name) : ['', ''];  @endphp
-                        <div class="col-md-12 border p-4 card dark-blue-card">
-                            <h4 class="mb-5 txt-white">Profile Details</h4>
+                        <div class="col-md-12 border p-4 card">
+                            {{-- <h4 class="mb-5 txt-white">Profile Details</h4> --}}
                             <form method="POST" class="erp-profile-submit" id="profile_form"
                                 data-url="{{ route('store-user-profile') }}">
                                 @csrf

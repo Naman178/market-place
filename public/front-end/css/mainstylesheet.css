@@ -1043,6 +1043,7 @@ input {
   font-weight: 500;
   line-height: 19px;
   letter-spacing: 0em;
+  width: 106%;
 }
 
 .header-row ul a {
@@ -2097,7 +2098,8 @@ select.form-control {
 }
 
 .pink-btn {
-  background: #D94B62;
+  background: #007AC1;
+  border: none;
   border-radius: 10px;
   text-decoration: none;
   font-family: 'Mulish';
@@ -2109,7 +2111,7 @@ select.form-control {
   margin-bottom: 35px;
   color: #fff;
   transition: all 0.3s ease 0s;
-  background-image: linear-gradient(to right, #D6445F, #D6445F, #2B2842);
+  background-image: linear-gradient(to right, #007ac1, #007ac1, #2B2842);
   background-size: 300% 100%;
   moz-transition: all .4s ease-in-out;
   -o-transition: all .4s ease-in-out;
