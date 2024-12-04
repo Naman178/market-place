@@ -1052,7 +1052,8 @@ input {
 }
 
 .menu-container li {
-  padding: 0 15px;
+  /* padding: 0 15px; */
+  margin-right: 60px;
 }
 
 .signin-container ul {
@@ -1162,6 +1163,15 @@ input {
 
 .footer-container a {
   color: #fff;
+}
+
+.footer_img{
+  width: 16px;
+}
+
+li.social-link {
+  margin-right: 22.11px !important;
+  padding-right: 0 !important;
 }
 
 .row.right-row.contact li {

@@ -17,13 +17,13 @@
             </ul>
             <ul class="row menu-horizontal right-row">
                 <li class="social-link">
-                    <a href="#"></a>
+                    <a href="#"><img class="footer_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook"></a>
                 </li>
                 <li class="social-link">
-                    <a href="#"></a>
+                    <a href="#"><img class="footer_img" src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram"></a>
                 </li>
                 <li class="social-link">
-                    <a href="#"></a>
+                    <a href="#"><img class="footer_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter"></a>
                 </li>
             </ul>
         </div>
@@ -79,7 +79,9 @@
         </div>
         <hr>
         <div class="copyright-row">
-            <p>© 2024 MetalpriceAPI. all rights reserved.</p>
+            <p>© <script>
+                document.write(new Date().getFullYear())
+            </script> MetalpriceAPI. all rights reserved.</p>
         </div>
     </div>
 </div>

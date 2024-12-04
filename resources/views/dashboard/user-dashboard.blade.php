@@ -1109,7 +1109,7 @@
                 currency: currency,
                 name: "Skyfinity Quick Checkout",
                 description: "Payment For The Topup of Skyfinity Quick Checkout Wallet",
-                image: "{{ asset('storage/Logo_Settings/skyfinity_logo.png') }}",
+                image: "{{ asset('front-end/images/header_logo.png') }}",
                 prefill: {
                     name: name,
                     email: email,

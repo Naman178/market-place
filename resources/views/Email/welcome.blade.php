@@ -114,7 +114,7 @@
     <section>
         <div class="container">
             <div class="image">
-                <img src="{{ asset('storage/Logo_Settings/skyfinity_logo.png') }}" alt="logo">
+                <img src="{{ asset('front-end/images/header_logo.png') }}" alt="logo">
             </div>
             <div class="header">                                                    
                 <div class="title">
