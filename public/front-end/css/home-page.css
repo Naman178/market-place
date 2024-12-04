@@ -32,7 +32,7 @@
 }
 
 .title h3 .underline-text::after {
-  content: url("/front-end/images/Vector_7.png");
+  content: url("../images/Vector_7.png");
   display: block;
   position: absolute;
   left: 0;
@@ -168,4 +168,488 @@
   flex-basis: unset;
   flex-grow: unset;
   max-width: 100%;
+}
+
+
+  /* Real-time Precious Metal Rates and Currency Conversion API */
+  .real_time_section {
+    font-family: Work Sans;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    display: flex;
+
+}
+
+.d-flex{
+  display: flex;
+}
+
+.hero_banner .container ,.plugins .container, .int_bg .container,.features .container {
+  max-width: 1400px !important;
+}
+
+.plugins , .int_bg , .features{
+  margin-bottom: 150px;
+}
+
+.real_time h1 {
+    font-family: Work Sans;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 72px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    margin-right: 4rem;
+    margin-top: 132px;
+    color: #FFFFFF;
+}
+
+.real_time p {
+    font-family: Work Sans;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-top: 40px;
+    color: #FFFFFF;
+    margin-bottom: 60px;
+}
+
+.btn_text {
+    color: #007AC1;
+}
+
+.white_btn {
+    background-color: #FFFFFF;
+    border: none;
+    height: 51px;
+    width: 150px;
+    position: relative;
+    top: -21px;
+    left: -1px;
+}
+
+.mr-20 {
+    margin-right: 20px;
+}
+
+.blue_btn {
+    width: 191px;
+    height: 51px;
+}
+
+.bg {
+  background-color: #007AC1;
+}
+
+.mb-131 {
+    margin-bottom: 131px;
+}
+
+.MetalPrice_img {
+    width: 628px;
+    height: 628px;
+    top: 161px;
+    left: 1032px;
+    margin-top: 61px;
+    margin-bottom: 61px;
+
+}
+
+.gold_price_img {
+  top: 20em;
+  position: relative;
+  margin-left: 124px;
+  margin-right: 388.02px;
+  width: 115.978515625px;
+  height: 42.99999237060547px;
+  left: 1px;
+}
+
+.vector5_img {
+    margin-top: -18px;
+    margin-left: -5px;
+}
+
+/* Plugin */
+.wordpress_plugin {
+    margin-top: 9px;
+    margin-bottom: 60px;
+}
+
+.wordpress_plugin h1 {
+    font-family: Work Sans;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 48px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #4D4D4D;
+    margin-top: 0;
+}
+
+.wordpress_plugin h1 span {
+    font-family: Work Sans;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #007AC1;
+}
+
+.vector_img {
+    margin-top: -15px;
+    margin-left: 400px;
+}
+
+.plugin_h4 {
+    font-family: Work Sans;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+
+.plugin_p {
+    font-family: Work Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.know_more {
+    margin-top: 40px;
+    font-family: Work Sans;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.know_more:hover{
+  color:#402060;
+}
+
+.wordpress_plugin_bg {
+    background-color: #007AC1;
+    width: 450px;
+    height: 327px;
+    top: 1200px;
+    left: 260px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+}
+
+.round_img {
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.wordpress_logo {
+    /* margin-top: 15px;
+    margin-left: 15px; */
+    margin-top: 55px;
+    margin-left: -70px;
+    margin-bottom: 15px;
+    width: 49.99877166748047px;
+    height: 50px;
+    top: 1255px;
+    left: 315px;
+}
+
+.ml-40 {
+    margin-left: 40px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* integration */
+.int_bg {
+    background-color: #EDF2F4;
+}
+
+.vector2_img {
+    margin-top: -16px;
+    margin-left: 191px;
+}
+
+.mt-65 {
+    margin-top: 65px;
+}
+
+.arrow_img {
+    margin-top: 33px;
+    margin-left: 867px;
+}
+
+.integration {
+    margin-top: 9px;
+    margin-bottom: 25px;
+}
+
+.integration h1 {
+  font-family: Work Sans;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #4D4D4D;
+  margin-top: 0;
+}
+
+
+.integration h1 span {
+  font-family: Work Sans;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #007AC1;
+}
+
+.integra_p {
+    color: #4D4D4D;
+    font-family: Work Sans;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+
+}
+
+.integration_p {
+    color: #4D4D4D;
+    font-family: Work Sans;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+
+}
+
+.mb-60 {
+    margin-bottom: 60px;
+}
+
+.wordpress_bg {
+    background-color: #FFFFFF;
+    width: 450px;
+    height: 338px;
+    border: 0.4000000059604645px;
+    margin-right: 25px;
+    margin-bottom: 65px;
+}
+
+.wordpress_bg:hover {
+  transition: all 350ms ease-out;
+  border: 3px solid #007AC1;
+}
+
+.round_blue_img {
+    margin-top: 53px;
+    margin-left: 53px;
+}
+
+.wordpress_white_logo {
+    /* margin-top: 66px;
+    margin-left: -54px;
+    margin-bottom: 15px; */
+    position: absolute;
+    margin-left: 66px;
+    top: 4rem;
+}
+.wordpress_bg:hover .wordpress_white_logo {
+  top: 68px; 
+}
+
+.mt-69 {
+    margin-top: 69px;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.wordpress_bg .integration_p p:hover {
+    border-bottom: 3px solid #007AC1;
+}
+
+.click_img {
+    margin-top: 35px;
+    margin-left: 129px;
+}
+
+.int_p {
+    color: #4D4D4D;
+    margin-left: 40px;
+    margin-top: 40px;
+    font-family: Work Sans;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-bottom: 63px;
+
+}
+
+.int_p span {
+    color: #007AC1;
+}
+
+.integration_know {
+    color: #007AC1;
+    font-family: Work Sans;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.integration_know:hover {
+    border-bottom: 3px solid #007AC1;
+}
+
+.plus_logo {
+  margin-top: -13px;
+  margin-left: 228.2px;
+  width: 37px;
+  height: 37px;
+}
+
+.plus_img {
+  width: 18px;
+  height: 18px;
+  margin-left: -27px;
+  margin-top: -3px;
+}
+
+.plus_img:hover {
+    filter: brightness(0%);
+    cursor: pointer;
+}
+
+.intig_p {
+    color: #4D4D4D;
+    font-family: Work Sans;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-left: 40px;
+    margin-top: 22px;
+    margin-bottom: 45px;
+}
+
+.intig_p span {
+    color: #FFC331;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.know_arrow {
+    margin-left: 5px;
+    margin-top: 7px;
+}
+
+.frame_img{
+  position: relative;
+  top: 46rem;
+}
+
+.slick-prev, .slick-next {
+  z-index: 10;
+  position: absolute;
+  top: -40px;
+  transform: translateY(-50%);
+}
+
+.slick-prev {
+  left: -25px; 
+}
+
+.slick-next {
+  right: -25px;
+}
+
+.feature_img {
+  width: 692px;
+  height: 461px;
+  top: 161px;
+  left: 1032px;
+  margin-top: 61px;
+  margin-bottom: 61px;
+
+}
+
+.support_img {
+  top: 15em;
+  position: relative;
+  margin-left: 124px;
+  margin-right: 388.02px;
+  width: 101.72px;
+  height: 42.46px;
+  left: 21rem;
+}
+
+.rates_img {
+  top: 25em;
+  position: relative;
+  margin-left: 124px;
+  margin-right: 388.02px;
+  width: 159.26px;
+  height: 43px;
+  left: 1px;
+}
+
+.features .vector2_img {
+  margin-top: -16px;
+  margin-left: 30rem;
+}
+
+.features h1{
+  margin-bottom: 0 !important;
+}
+
+.features .tick_img{
+  margin-bottom: -2px;
+}
+
+.read_btn{
+  background-color: #007AC1;
+  padding: 12px;
+  color: #FFFFFF;
+}
+
+.mb-53{
+  margin-bottom: 53px;
+}
+
+.features .integration div {
+   display: flex; 
+   align-items: center;
 }

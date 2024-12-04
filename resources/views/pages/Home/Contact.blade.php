@@ -55,6 +55,7 @@
                                 <div class="col-md-12 form-group"">
                                     <label for="message">Message</label>
                                     <textarea name="message" class="form-control" id="message" cols="30" rows="10"></textarea>
+                                    <div class="error" style="color:red;" id="message_error"></div>
                                 </div>
                                 <div class="col-md-12 form-group"">
                                     <label for="stack">What Tech Stack Is Your Website Built On ?</label>
@@ -112,7 +113,9 @@
                         $("#preloader").hide();
                         response.error['full_name'] ? $('#full_name_error').text(response.error['full_name']) : $('#full_name_error').text('');
                         response.error['email'] ? $('#email_error').text(response.error['email']) : $('#email_error').text('');
-                        response.error['contact_number'] ? $('#contact_number_error').text(response.error['contact_number']) : $('#contact_number_error').text('');                                 
+                        response.error['contact_number'] ? $('#contact_number_error').text(response.error['contact_number']) : $('#contact_number_error').text('');    
+                        response.error['website_url'] ? $('#website_url_error').text(response.error['website_url']) : $('#website_url_error').text('');     
+                        response.error['message'] ? $('#message_error').text(response.error['message']) : $('#message_error').text('');                                                               
                     }
                 }
             });            

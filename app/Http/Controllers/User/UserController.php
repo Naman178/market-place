@@ -202,13 +202,18 @@ class UserController extends Controller
         if($request->ajax()){
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'email' => 'required',
-                'contact_number' => 'required',
-            ],
-            $message = [
-                'full_name.required' => 'Full Name Is Required.',
-                'email.required' => 'Email Is Required',
-                'contact_number.required' => 'Contact Number Is Required',
+                'email' => 'required|email',
+                'contact_number' => 'required|numeric',
+                'website_url' => 'required|url',
+                'message' => 'required',
+            ], [
+                'full_name.required' => 'Full Name is required.',
+                'email.required' => 'Email is required.',
+                'email.email' => 'Please provide a valid email address.',
+                'contact_number.required' => 'Contact Number is required.',
+                'website_url.required' => 'Website URL is required.',
+                'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
+                'message.required' => 'Message is required.',
             ]);
             if ($validator->passes()){
 
