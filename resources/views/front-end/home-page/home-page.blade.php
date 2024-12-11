@@ -30,6 +30,13 @@
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
 </div>
+@include('front-end.home-page.section.social_media')
+<div class="carousel-container">
+@include('front-end.home-page.section.Our_Patients')
+@include('front-end.home-page.section.FAQ')
+</div>
+
+
 @endsection
 @section('scripts')
 <!-- jQuery -->
@@ -88,6 +95,140 @@
         $('.right-arrow').click(function() {
             $('#blogCarousel').carousel('next');
         });
+
+        $('.left-arrow').click(function() {
+            $('#patientCarousel').carousel('prev');
+        });
+
+        $('.right-arrow').click(function() {
+            $('#patientCarousel').carousel('next');
+        });
+
+        $('#patientCarousel').carousel({
+            interval: false, // Disable auto-sliding
+            wrap: true // Enable wrapping around from last to first slide
+        });
+        
     });
+    // for Social media
+    $(document).ready(function () {
+        $('.social_media_slider').slick({
+            infinite: true,
+            slidesToShow: 6, 
+            slidesToScroll: 1, 
+            arrows: false, 
+            dots: false,
+            autoplay: true, 
+            autoplaySpeed: 2000, 
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 480, 
+                    settings: {
+                        slidesToShow: 1,
+                    }
+                }
+            ]
+        });
+    });
+    // For patient
+    document.addEventListener('DOMContentLoaded', function () {
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const testimonialText = document.querySelector('.testimonial-text');
+    const patientName = document.querySelector('.patient-name');
+    const patientRole = document.querySelector('.patient-role');
+
+    const testimonials = [
+        {
+        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+        name: 'Joe Root',
+        role: 'Happy Patient',
+        },
+        {
+        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+        name: 'Jane Doe',
+        role: 'Satisfied Patient',
+        },
+        {
+        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+        name: 'John Smith',
+        role: 'Grateful Patient',
+        },
+    ];
+
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', () => {
+        // Update active thumbnail
+        document.querySelector('.thumbnail.active').classList.remove('active');
+        thumbnail.classList.add('active');
+
+        // Update testimonial content
+        const testimonial = testimonials[index];
+        patientImage.src = testimonial.image;
+        testimonialText.textContent = testimonial.text;
+        patientName.textContent = testimonial.name;
+        patientRole.textContent = testimonial.role;
+        });
+    });
+
+    // Add slider buttons functionality
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    let currentIndex = 0;
+
+    function updateSlider(index) {
+        document.querySelector('.thumbnail.active').classList.remove('active');
+        thumbnails[index].classList.add('active');
+
+        const testimonial = testimonials[index];
+        testimonialText.textContent = testimonial.text;
+        patientName.textContent = testimonial.name;
+        patientRole.textContent = testimonial.role;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex === 0) ? testimonials.length - 1 : currentIndex - 1;
+        updateSlider(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex === testimonials.length - 1) ? 0 : currentIndex + 1;
+        updateSlider(currentIndex);
+    });
+    });
+    // for FAQ
+    window.onload = () => {
+        const firstFaq = document.querySelector('.faq-item');
+        if (firstFaq) {
+            const firstQuestion = firstFaq.querySelector('.faq-question');
+            const firstAnswer = firstFaq.querySelector('.faq-answer');
+            const firstIcon = firstFaq.querySelector('.faq-icon');
+
+            // Set the first FAQ as open
+            firstAnswer.classList.add('open');
+            firstIcon.classList.add('rotate');
+            firstQuestion.classList.add('active');
+        }
+    };
+
+    // Event listener for FAQ questions
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const parent = question.parentElement;
+            const answer = parent.querySelector('.faq-answer');
+            const icon = question.querySelector('.faq-icon');
+
+            // Toggle open/close for the current FAQ
+            answer.classList.toggle('open');
+            icon.classList.toggle('rotate');
+            question.classList.toggle('active');
+        });
+    });
+
 </script>
 @endsection
