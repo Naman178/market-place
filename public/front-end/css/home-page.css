@@ -164,6 +164,18 @@
   font-weight: 500;
 }
 
+.items-container .btn a:hover{
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  color: #fff;
+}
+
+.plans-slider .item:nth-child(odd) .btn a:hover{
+  background-color: transparent;
+  border: 1px solid #007AC1;
+  color: #007AC1 !important;
+}
+
 .items-container .col {
   flex-basis: unset;
   flex-grow: unset;
@@ -187,7 +199,7 @@
   display: flex;
 }
 
-.hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container {
+.hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container {
   max-width: 1400px !important;
 }
 
@@ -224,13 +236,47 @@
 }
 
 .white_btn {
-    background-color: #FFFFFF;
-    border: none;
-    height: 51px;
-    width: 150px;
-    position: relative;
-    top: -21px;
-    left: -1px;
+  background-color: #FFFFFF;
+  border: 1px solid #fff;
+  color: #007AC1;
+  padding: 15px;
+  /* height: 51px; */
+  /* width: 150px; */
+  position: relative;
+  top: -19px;
+  left: -1px;
+}
+
+.white_btn .fa{
+  font-size: 15px;
+}
+.white_btn:hover, .white_btn .btn_text:hover{
+  background-color: transparent;
+  color: #ffffff !important;
+}
+
+.setting_btn{
+  padding: 16px;
+  border: 1px solid #fff;
+  color: #FFFFFF;
+  position: relative;
+  top: -19px;
+  font-size: 16px;
+  left: -1px;
+}
+
+.setting_btn:hover{
+  color: #007AC1;
+  background-color: #fff;
+}
+
+.signup_btn:hover{
+  background-color: #007AC1;
+  color: #fff;
+}
+
+.menu-container li a:hover, .signin-container li a:hover{
+  border-bottom: 3px solid #007AC1;
 }
 
 .mr-20 {
@@ -452,11 +498,12 @@
 
 .wordpress_bg {
     background-color: #FFFFFF;
-    width: 450px;
+    width: 447px;
     height: 338px;
     border: 0.4000000059604645px;
     margin-right: 25px;
     margin-bottom: 65px;
+    border: 3px solid #fff;
 }
 
 .wordpress_bg:hover {
@@ -475,10 +522,7 @@
     margin-bottom: 15px; */
     position: absolute;
     margin-left: -52px;
-    top: 4rem;
-}
-.wordpress_bg:hover .wordpress_white_logo {
-  top: 68px; 
+    top: 67px;
 }
 
 .mt-69 {
@@ -643,6 +687,28 @@
   background-color: #007AC1;
   padding: 12px;
   color: #FFFFFF;
+}
+
+.read_btn .fa-solid{
+  font-size: 12px;
+}   
+
+.read_btn:hover{
+  background-color: #fff;
+  border: 1px solid #007AC1;
+  color: #007AC1;
+}
+
+
+.sign_up_btn{
+  background-color: #007AC1;
+  padding: 12px;
+  color: #FFFFFF;
+}
+
+.sign_up_btn:hover{
+  background-color: #fff;
+  color: #007AC1;
 }
 
 .mb-53{
@@ -953,7 +1019,7 @@
 
 .faq-section h1 {
   font-size: 2.5rem;
-  margin-bottom: 10px;
+  margin-bottom: 28px;
   text-align: center;
   position: relative;
 }
@@ -1033,12 +1099,13 @@
 
 .banner {
   position: absolute;
-  left: 35rem;
+  /* left: 35rem; */
+  left: 555px;
   margin-top: -12rem;
   color: #fff;
 }
 
-.banner button {
+.banner .button {
   background-color: #007AC1;
   border: 1px solid #fff;
   color: #fff;
@@ -1049,34 +1116,85 @@
   margin-top: 10px;
 }
 
-.pattern_img{
+.banner .button:hover{
+  background-color: #fff;
+  color: #007AC1;
+}
+
+.pattern_img {
   position: relative;
-  left: -18rem;
+  left: -21rem;
   top: 15rem;
   height: 13rem;
-
 }
-.pattern2_img{
+
+.pattern2_img {
   position: relative;
-  left: -35rem;
-  top: 15rem;
-  height: 15rem;
+  left: -38rem;
+  top: 14rem;
+  height: 14rem;
 }
 
 .pattern3_img {
   position: relative;
   left: 38rem;
-  top: -15rem;
+  top: -14rem;
   height: 14rem;
 }
 
 .pattern4_img {
-  position: relative;
-  left: 19rem;
-  top: -13rem;
-  height: 15rem;
+    position: relative;
+    left: 22rem;
+    top: -14rem;
+    height: 12rem;
 }
 
 .api_section{
   margin-top: -10rem !important;
+}
+
+.tech h1 span {
+  font-family: Work Sans;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #007AC1;
+}
+
+.tech {
+  padding: 7rem;
+  background-color: #EDF2F4;
+}
+
+.email_text{
+  padding: 12px;
+  width: 100%;
+  background-color: transparent;
+}
+
+.tech .testimonial-text{
+  font-size: 18px;
+}
+
+.tech  .small_text {
+  font-size: 11px;
+}
+
+.tech .mt-13{
+  padding-left: 9rem;
+  margin-top: 2rem;
+}
+
+.text-end{
+  text-align: end;
+}
+
+
+@media (max-width: 1199px) {
+  
+  .d-flex {
+      flex-wrap: wrap !important;
+  }
 }

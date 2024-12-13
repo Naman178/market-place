@@ -45,7 +45,7 @@
                         </li>
                     @else
                         <li><a href="{{ url('/user-login') }}">Login</a></li>
-                        <li class="signup-wrapper"><a href="{{ url('/signup') }}">Sign Up</a></li>
+                        <li class="signup-wrapper"><a class="signup_btn" href="{{ url('/signup') }}">Sign Up</a></li>
                     @endauth
                 </ul>
             </div>

@@ -6,6 +6,8 @@
 <!-- Slick CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+<!-- Latest Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endsection
 @section('meta')
 <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
@@ -138,69 +140,79 @@
     });
     // For patient
     document.addEventListener('DOMContentLoaded', function () {
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    const testimonialText = document.querySelector('.testimonial-text');
-    const patientName = document.querySelector('.patient-name');
-    const patientRole = document.querySelector('.patient-role');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const testimonialText = document.querySelector('.testimonial-text');
+        const patientName = document.querySelector('.patient-name');
+        const patientRole = document.querySelector('.patient-role');
+        const largeImage = document.getElementById('large-image');
 
-    const testimonials = [
-        {
-        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-        name: 'Joe Root',
-        role: 'Happy Patient',
-        },
-        {
-        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-        name: 'Jane Doe',
-        role: 'Satisfied Patient',
-        },
-        {
-        text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-        name: 'John Smith',
-        role: 'Grateful Patient',
-        },
-    ];
+        const testimonials = [
+            {
+                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+                name: 'Joe Root',
+                role: 'Happy Patient',
+                image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
+            },
+            {
+                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+                name: 'Jane Doe',
+                role: 'Satisfied Patient',
+                image: '{{ asset("front-end/images/Group 5748.png") }}',
+            },
+            {
+                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+                name: 'John Smith',
+                role: 'Grateful Patient',
+                image: '{{ asset("front-end/images/Group 5749.png") }}',
+            },
+        ];
 
-    thumbnails.forEach((thumbnail, index) => {
-        thumbnail.addEventListener('click', () => {
-        // Update active thumbnail
-        document.querySelector('.thumbnail.active').classList.remove('active');
-        thumbnail.classList.add('active');
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                // Update active thumbnail
+                document.querySelector('.thumbnail.active').classList.remove('active');
+                thumbnail.classList.add('active');
 
-        // Update testimonial content
-        const testimonial = testimonials[index];
-        patientImage.src = testimonial.image;
-        testimonialText.textContent = testimonial.text;
-        patientName.textContent = testimonial.name;
-        patientRole.textContent = testimonial.role;
+                // Update testimonial content
+                const testimonial = testimonials[index];
+                testimonialText.textContent = testimonial.text;
+                patientName.textContent = testimonial.name;
+                patientRole.textContent = testimonial.role;
+
+                // Update the large image
+                largeImage.src = testimonial.image;
+            });
+        });
+
+        // Add slider buttons functionality
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentIndex = 0;
+
+        function updateSlider(index) {
+            document.querySelector('.thumbnail.active').classList.remove('active');
+            thumbnails[index].classList.add('active');
+
+            const testimonial = testimonials[index];
+            testimonialText.textContent = testimonial.text;
+            patientName.textContent = testimonial.name;
+            patientRole.textContent = testimonial.role;
+
+            // Update the large image
+            largeImage.src = testimonial.image;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex === 0) ? testimonials.length - 1 : currentIndex - 1;
+            updateSlider(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex === testimonials.length - 1) ? 0 : currentIndex + 1;
+            updateSlider(currentIndex);
         });
     });
 
-    // Add slider buttons functionality
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    let currentIndex = 0;
-
-    function updateSlider(index) {
-        document.querySelector('.thumbnail.active').classList.remove('active');
-        thumbnails[index].classList.add('active');
-
-        const testimonial = testimonials[index];
-        testimonialText.textContent = testimonial.text;
-        patientName.textContent = testimonial.name;
-        patientRole.textContent = testimonial.role;
-    }
-
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex === 0) ? testimonials.length - 1 : currentIndex - 1;
-        updateSlider(currentIndex);
-    });
-
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex === testimonials.length - 1) ? 0 : currentIndex + 1;
-        updateSlider(currentIndex);
-    });
-    });
     // for FAQ
     window.onload = () => {
         const firstFaq = document.querySelector('.faq-item');
@@ -219,11 +231,24 @@
     // Event listener for FAQ questions
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
+            // Close all other FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const answer = item.querySelector('.faq-answer');
+                const icon = item.querySelector('.faq-icon');
+                const itemQuestion = item.querySelector('.faq-question');
+
+                if (itemQuestion !== question) {
+                    answer.classList.remove('open');
+                    icon.classList.remove('rotate');
+                    itemQuestion.classList.remove('active');
+                }
+            });
+
+            // Toggle open/close for the current FAQ
             const parent = question.parentElement;
             const answer = parent.querySelector('.faq-answer');
             const icon = question.querySelector('.faq-icon');
 
-            // Toggle open/close for the current FAQ
             answer.classList.toggle('open');
             icon.classList.toggle('rotate');
             question.classList.toggle('active');

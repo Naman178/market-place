@@ -1,16 +1,15 @@
 <div class="features integration patients int_bg ">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="mt-65" src="{{ asset('front-end/images/Group 5685.png') }}" alt="not found">
                 <h1>Our <span>Patients</span></h1>
                 <img class="vector2_img" src="{{ asset('front-end/images/Vector 8.png') }}" alt="not found">
                 <div>
-                    <img class="mt-65 rectangle_img" src="{{ asset('front-end/images/Rectangle 3985.png') }}"
-                        alt="not found">
+                    <img id="large-image" class="mt-65 rectangle_img" src="{{ asset('front-end/images/Rectangle 3985.png') }}" alt="not found">
                 </div>
             </div>
-            <div class="col-lg-6 col-sm-12 col-12 mt-13">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12 mt-13">
                 <div class="">
                     <div class="testimonial-section">
                         <div class="testimonial-slider">

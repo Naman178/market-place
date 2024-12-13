@@ -1,7 +1,7 @@
 <div class="support">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <div class="integration">
                     <img class="mt-65" src="{{ asset('front-end/images/Group 1000002959.png') }}" alt="not found">
                     <h1>Continuous Support <br>and <span>Upgrade</span></h1>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="cust_support_img" src="{{ asset('front-end/images/Rectangle 3998.png') }}" alt="not found">
             </div>
             
