@@ -9,13 +9,12 @@
                     <p>MetalpriceAPI is a lightweight reliable API for live and <br>historical metals rates in
                         over 150+
                         currencies.</p>
-                    <button class="white_btn mr-20"><img src="{{ asset('front-end/images/Vector.png') }}"
-                            alt="not found">
-                        <span class="btn_text">View Demo</span></button>
-                    <a href="#"><img class="blue_btn mr-20" src="{{ asset('front-end/images/Button.png') }}"
-                            alt="not found"></a>
-                    <a href="#"><img class="blue_btn" src="{{ asset('front-end/images/buy_now_btn.png') }}"
-                            alt="not found"></a>
+                    <a href="#" class="white_btn mr-20"><i class="fa fa-eye"></i>
+                        <span>View Demo</span></a>
+                    <a href="#" class="setting_btn mr-20"><i class="fab fa-wordpress" aria-hidden="true"></i>
+                        <span>Settings Pictures</span></a>
+                    <a href="#" class="setting_btn"><i class="fa-solid fa-cart-arrow-down"></i>
+                        <span>$100 Buy Now</span></a>
                 </div>
                 <div>
                     <img class="gold_price_img" src="{{ asset('front-end/images/Group 1000002957.png') }}"

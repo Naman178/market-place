@@ -1,12 +1,12 @@
 <div class="features">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="support_img" src="{{ asset('front-end/images/Group 5.png') }}" alt="not found">
                 <img class="rates_img" src="{{ asset('front-end/images/Group 6.png') }}" alt="not found">
                 <img class="feature_img" src="{{ asset('front-end/images/Metalprice-Some-feature-PSD-File 2.png') }}" alt="not found">
             </div>
-            <div class="col-lg-6 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="mt-65" src="{{ asset('front-end/images/Group 1000002956.png') }}" alt="not found">
                 <div class="integration">
                     <h1>Some Features and <span>Options</span></h1>
@@ -32,7 +32,7 @@
                     </div>
                     <a href="#" class="read_btn">
                         Read More <span>
-                            <img class="" src="{{ asset('front-end/images/line-angle-down-icon 1.png') }}" alt="not found">
+                            <i class="fa-solid fa-greater-than"></i>
                         </span>
                     </a>
                 </div>
