@@ -18,6 +18,8 @@ use App\Http\Controllers\TerAndCondition\TermAndConditionController;
 use App\Http\Controllers\PrivacyPolicy\PrivacyPolicyController;
 use App\Http\Controllers\SEO\SEOController;
 use App\Http\Controllers\FAQ\FAQController;
+use App\Http\Controllers\Blog\BlogController;
+use App\Http\Controllers\Blog_category\BlogCategoryController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -151,6 +153,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
 
     Route::post("/payment", [PaymentController::class, "store"])->name("payment");
+
+    // Blog module
+    Route::get('/Blog-index',[BlogController::class,'index'])->name('Blog-index');
+    Route::post('/Blog/store',[BlogController::class,'store'])->name('Blog-store');
+    Route::get('/Blog/edit/{id}', [BlogController::class, 'edit'])->name('Blog-edit');
+    Route::get('/Blog/delete/{id}', [BlogController::class, 'remove'])->name('Blog-delete');
+    Route::post('/update-blog-status', [BlogController::class, 'updateStatus'])->name('updateStatus');
+    Route::post('/delete-section', [BlogController::class, 'deleteSection'])->name('deleteSection');
+
+    // Blog_category module
+    Route::get('/Blog_category-index',[BlogCategoryController::class,'index'])->name('Blog_category-index');
+    Route::post('/Blog_category/store',[BlogCategoryController::class,'store'])->name('Blog_category-store');
+    Route::get('/Blog_category/edit/{id}', [BlogCategoryController::class, 'edit'])->name('Blog_category-edit');
+    Route::get('/Blog_category/delete/{id}', [BlogCategoryController::class, 'remove'])->name('Blog_category-delete');
 });
 
 // forgot password

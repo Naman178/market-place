@@ -80,6 +80,24 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('Blog-tab-show')
+                <li class="nav-item {{ request()->routeIs('Blog-index*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('Blog-index') }}">
+                        <i class="nav-icon i-Blogger"></i>
+                        <span class="nav-text">{{ trans('custom.Blog_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('Blog_category-tab-show')
+                <li class="nav-item {{ request()->routeIs('Blog_category-index*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('Blog_category-index') }}">
+                        <i class="nav-icon i-File-Clipboard-File--Text"></i>
+                        <span class="nav-text">{{ trans('custom.Blog_category_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('user-tab-show')
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('user-index') }}">
