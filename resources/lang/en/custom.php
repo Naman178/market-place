@@ -54,4 +54,17 @@ return [
     'FAQ_create_success' => 'FAQ created successfully!',
     'FAQ_update_success' => 'FAQ updated successfully!',
     'FAQ_delete_success' => 'FAQ deleted successfully!',
+
+    // Blog
+    'Blog_title' => 'Blog',
+    'Blog_create_success' => 'Blog created successfully!',
+    'Blog_update_success' => 'Blog updated successfully!',
+    'Blog_delete_success' => 'Blog deleted successfully!',
+
+
+    // Blog category
+    'Blog_category_title' => 'Blog Category',
+    'Blog_category_create_success' => 'Blog Category created successfully!',
+    'Blog_category_update_success' => 'Blog Category updated successfully!',
+    'Blog_category_delete_success' => 'Blog Category deleted successfully!',
 ];
