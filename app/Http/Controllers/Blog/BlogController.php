@@ -9,6 +9,9 @@ use App\Models\Blog_category;
 use App\Models\BlogContent;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Comments;
+use App\Models\Share;
+use App\Models\SEO;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -185,124 +188,80 @@ class BlogController extends Controller
                     ]);
             
                     // Step 3: Handle Content Sections for update
-                    if ($request->has('select_type')) {
-                        // $contentSections = [];
-            
-                        // // Build content sections data
-                        // foreach ($request->all() as $key => $value) {
-                        //     if (strpos($key, 'select_type_') !== false) {
-                        //         // Extract the section index from the key (e.g., select_type_1 -> 1)
-                        //         $index = str_replace('select_type_', '', $key);
-                                
-                        //         // Store the selected type for each section
-                        //         $contentSections[$index]['select_type'] = $value;
-                        //     }
-                        //     if (strpos($key, 'heading_') !== false && !empty($value)) {
-                        //         $index = str_replace('heading_', '', $key);
-                        //         $contentSections[$index]['heading'] = $value;
-                        //     }
-            
-                        //     if (strpos($key, 'description_') !== false && !empty($value)) {
-                        //         $index = str_replace('description_', '', $key);
-                        //         $contentSections[$index]['description'] = $value;
-                        //     }
-            
-                        //     if (strpos($key, 'description2_') !== false && !empty($value)) {
-                        //         $index = str_replace('description2_', '', $key);
-                        //         $contentSections[$index]['description2'] = $value;
-                        //     }
-            
-                        //     if (strpos($key, 'image_') !== false) {
-                        //         $index = str_replace('image_', '', $key);
-                        //         if ($request->hasFile($key)) {
-                        //             $file = $request->file($key);
-                        //             $fileName = $file->getClientOriginalName();
-                        //             $file->move(public_path('storage/images/'), $fileName);
-                        //             $contentSections[$index]['image'] = $fileName;
-                        //         } else {
-                        //             // Retain the old image if no new one is uploaded
-                        //             $oldImageKey = 'old_content_image_' . $index;
-                        //             $contentSections[$index]['image'] = $request->input($oldImageKey);
-                        //         }
-                        //     }
-                        // }
-            
-                        // // Step 4: Update Content Sections for the Blog in bulk
-                        // $contentData = [];
-                        // foreach ($contentSections as $section) {
-                        //     $existingContent = BlogContent::where('blog_id', $Blog->blog_id)
-                        //         ->first();
-                        //     // Prepare data to insert or update
-                        //     $contentDataItem = [
-                        //         'blog_id' => $Blog->blog_id,
-                        //         'content_type' => $section['select_type'] ?? null,
-                        //         'content_heading' => $section['heading'] ?? null,
-                        //         'content_description_1' => $section['description'] ?? null,
-                        //         'content_description_2' => $section['description2'] ?? null,
-                        //         'content_image' => $section['image'] ?? null,
-                        //         'updated_at' => Carbon::now(),
-                        //     ];
-                        
-                        //     // If content exists, update it
-                        //     if ($existingContent) {
-                        //         $existingContent->update($contentDataItem);
-                        //     } else {
-                        //         // If content doesn't exist, create a new entry
-                        //         BlogContent::create($contentDataItem);
-                        //     }
-                        // }
-                        $contentSections = [];
+                    foreach ($request->all() as $key => $value) {
+                        // Match keys like 'heading_0', 'heading_1', etc.
+                        if (preg_match('/^heading_(\d+)$/', $key, $matches)) {
+                            $index = $matches[1]; 
+                            $content_type = $request->input('select_type.' . $index); 
+                            $newcontent_type = $request->input('select_type_' . $index); 
+                            $oldcontent_type = $request->input('old_content_type_' . $index); 
+                            $heading = $request->input('heading_' . $index);
+                            $description = $request->input('description_' . $index);
+                            $description2 = $request->input('description2_' . $index);
+                            $image = $request->file('image_' . $index); 
+                            $oldImage = $request->input('old_content_image_' . $index);
+                            $content_id = $request->input('content_id_' . $index); 
 
-                        // Loop through the request data
-                        foreach ($request->all() as $key => $value) {
-                            // Check if the key matches the pattern 'heading_' followed by a number
-                            if (preg_match('/^heading_(\d+)$/', $key, $matches)) {
-                                $index = $matches[1]; // Extract the index from 'heading_0', 'heading_1', etc.
-
-                                // Dynamically get the heading, description, and image for each index
-                                $heading = $request->input('heading_' . $index); 
-                                $description = $request->input('description_' . $index);
-                                $image = $request->file('image_' . $index); // Handle the uploaded file
-                                $oldImage = $request->input('old_content_image_' . $index); // Old image if exists
-
-                                // Prepare data for this section
-                                if ($heading || $description || $image || $oldImage) {
-                                    $sectionData = [
-                                        'content_heading' => $heading,
-                                        'content_description_1' => $description,
-                                        'content_image' => null, // Placeholder for image
-                                        'content_description_2' => null, // If you have a second description field
-                                        'updated_at' => Carbon::now(),
-                                    ];
-
-                                    // Handle image upload
-                                    if ($image) {
-                                        $imagePath = $image->store('images', 'public'); // Store the image
-                                        $sectionData['content_image'] = $imagePath;
-                                    } elseif ($oldImage) {
-                                        $sectionData['content_image'] = $oldImage; // Use old image if no new one is uploaded
-                                    }
-
-                                    // Add the section data to the contentSections array
-                                    $contentSections[] = $sectionData;
+                            if (empty($content_type)) {
+                                $content_type = $oldcontent_type;
+                            }
+                    
+                            if (!empty($newcontent_type)) {
+                                $content_type = $newcontent_type;
+                            }
+                    
+                            if ($heading || $description || $image || $oldImage) {
+                                $sectionData = [
+                                    'id' => $content_id,
+                                    'blog_id' => $request->scid,
+                                    'content_type' => $content_type,
+                                    'content_heading' => $heading,
+                                    'content_description_1' => $description,
+                                    'content_description_2' => $description2 ?? null,
+                                    'content_image' => null,
+                                    'updated_at' => Carbon::now(),
+                                ];
+                    
+                                if ($image) {
+                                    $fileName = $image->getClientOriginalName();
+                                    $image->move(public_path('storage/images/'), $fileName);
+                                    $sectionData['content_image'] = $fileName; 
+                                } elseif ($oldImage) {
+                                    $sectionData['content_image'] = $oldImage;
                                 }
+                    
+                                $contentSections[] = $sectionData;
                             }
                         }
-                        // Now you can use $contentSections to update or create entries in the BlogContent table
-                        foreach ($contentSections as $sectionData) {
-                            // Update or create logic (same as before)
-                            $existingContent = BlogContent::where('blog_id', $Blog->blog_id)
-                                                        ->first();
-                                                        
+                    }
+                    foreach ($contentSections as $sectionData) {
+                        if (!empty($sectionData['id'])) {
+                            $existingContent = BlogContent::where('blog_id', $request->scid)
+                                                          ->where('id', $sectionData['id'])
+                                                          ->first();
+                    
                             if ($existingContent) {
-                                $existingContent->update($sectionData);
-                            } else {
-                                
-                                BlogContent::create($sectionData);
+                                $existingContent->update([
+                                    'content_type' => $sectionData['content_type'],
+                                    'content_heading' => $sectionData['content_heading'],
+                                    'content_description_1' => $sectionData['content_description_1'],
+                                    'content_description_2' => $sectionData['content_description_2'],
+                                    'content_image' => $sectionData['content_image'],
+                                    'updated_at' => Carbon::now(),
+                                ]);
                             }
+                        } else {
+                            BlogContent::create([
+                                'blog_id' => $sectionData['blog_id'],
+                                'content_type' => $sectionData['content_type'],
+                                'content_heading' => $sectionData['content_heading'],
+                                'content_description_1' => $sectionData['content_description_1'],
+                                'content_description_2' => $sectionData['content_description_2'],
+                                'content_image' => $sectionData['content_image'],
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now(),
+                            ]);
                         }
-
-            
                     }
             
                     // Flash success message
@@ -366,8 +325,9 @@ class BlogController extends Controller
     {
     
         $sectionId = $request->input('section_id');
+        $blog_id = $request->input('blog_id');
 
-        $section = BlogContent::where('id', $sectionId)->first(); 
+        $section = BlogContent::where('id', $sectionId)->where('blog_id',$blog_id)->first(); 
 
         if ($section) {
             $section->delete();
@@ -376,4 +336,33 @@ class BlogController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Section not found'], 404);
     }
+    public function blogDetails($blog_id)
+    {
+        $blog = Blog::where('status', '1')->where('blog_id', $blog_id)->firstOrFail();
+        if (!is_null($blog->related_blogs)) {
+            $blog->related_blogs = json_decode($blog->related_blogs); 
+        }
+        $comments = Comments::where('blog_id', $blog_id)->with('user')->get();
+        $Blogcontents = BlogContent::where('blog_id', $blog_id)->get();
+        $Blog_category = Blog_category::get();
+        $seoData = SEO::where('page', 'home')->first();
+        return view('front-end.Blog.blog_details',compact('seoData','blog','comments','Blogcontents','Blog_category'));
+    }
+
+
+    public function postComment(Request $request, $blog_id)
+    {
+      
+        if (!Auth::check()) {
+            return redirect()->route('user-login')->with('error', 'You need to be logged in to submit a comment.');
+        }
+    
+        $comment = new Comments();
+        $comment->blog_id = $blog_id;
+        $comment->user_id = Auth::id();
+        $comment->description = $request->input('comment');
+        $comment->save();
+        return redirect()->back()->with('success', 'Your comment has been posted.');
+    }
+    
 }

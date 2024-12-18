@@ -103,8 +103,11 @@
                             </div>
                             <h5>Blog Content Section</h5>
                             <button type="button" class="btn btn-primary mt-2" id="add-section">Add Section</button>
-                            @foreach ($BlogContents as $index => $BlogContent)
-                                <input type="hidden" id="old_content_image_{{ $index }}"  name="old_content_image_{{ $index }}"  value="{{ $BlogContent->content_image }}">
+                            {{-- @foreach ($BlogContents as $index => $BlogContent)
+                                <input type="hidden" id="old_content_image_{{ $index }}" name="old_content_image_{{ $index }}" value="{{ $BlogContent->content_image }}">
+                                <input type="hidden" id="content_id_{{$index}}" name="content_id_{{$index}}" value="{{ $BlogContent->id }}">
+                                <input type="hidden" id="old_select_type_{{ $index }}" name="old_select_type_{{ $index }}" value="{{ $BlogContent->content_type }}">
+                                
                                 <div id="blog-sections">
                                     <div class="row mt-2 blog-section" id="section-{{ $index }}">
                                         <div class="col-md-12">
@@ -113,95 +116,209 @@
                                                     <div class="col-md-12 mb-3 section-container" id="section-{{ $index }}">
                                                         <div class="form-group">
                                                             <label for="select-type-{{ $index }}">Select Type</label>
-                                                            <select name="select_type" id="select-type-{{ $index }}" class="form-control select-type" data-section-index="{{ $index }}">
-                                                                <option value="heading-description-image" {{ $BlogContent->content_type == 1 || $BlogContent->content_type == 'heading-description-image' ? 'selected' : '' }}>Heading - Description - Image</option>
-                                                                <option value="heading-image-description" {{ $BlogContent->content_type == 2 || $BlogContent->content_type == 'heading-image-description' ? 'selected' : '' }}>Heading - Image - Description</option>
-                                                                <option value="image-description-heading" {{ $BlogContent->content_type == 3 || $BlogContent->content_type == 'image-description-heading' ? 'selected' : '' }}>Image - Description - Heading</option>
-                                                                <option value="heading-description-image-description" {{ $BlogContent->content_type == 4 || $BlogContent->content_type == 'heading-description-image-description' ? 'selected' : '' }}>Heading - Description - Image - Description</option>
+                                                            <select name="select_type[]" id="select-type-{{ $index }}" class="form-control select_type" data-section-index="{{ $index }}">
+                                                                <option value="heading-description-image" {{ old('select_type.' . $index) == 'heading-description-image'}}  {{($BlogContent->content_type == 'heading-description-image' ? 'selected' : '')}} >Heading - Description - Image</option>
+                                                                <option value="heading-image-description" {{ old('select_type.' . $index) == 'heading-image-description' }}{{ ($BlogContent->content_type == 'heading-image-description' ? 'selected' : '') }}>Heading - Image - Description</option>
+                                                                <option value="image-description-heading" {{ old('select_type.' . $index) == 'image-description-heading' }}{{  ($BlogContent->content_type == 'image-description-heading' ? 'selected' : '') }}>Image - Description - Heading</option>
+                                                                <option value="heading-description-image-description" {{ old('select_type.' . $index) == 'heading-description-image-description' }}{{  ($BlogContent->content_type == 'heading-description-image-description' ? 'selected' : '') }}>Heading - Description - Image - Description</option>
                                                             </select>
                                                         </div>
                                                         <div class="dynamic-content">
                                                             <!-- Heading - Description - Image -->
-                                                            <div class="content-option" id="content-option-1" style="{{ $BlogContent->content_type == 1 || $BlogContent->content_type == 'heading-description-image' ? 'display:block;' : 'display:none;' }}">
+                                                            <div class="content-option" id="content-option-1" style="{{ (old('select_type.' . $index) == 'heading-description-image' || $BlogContent->content_type == 'heading-description-image') ? 'display:block;' : 'display:none;' }}">
                                                                 <div class="form-group heading-field">
                                                                     <label for="heading-{{ $index }}">Heading</label>
-                                                                    <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ $BlogContent->content_heading }}">
+                                                                    <input type="text" class="form-control" id="heading-{{ $index }}"  name="heading_{{ $index }}" value="{{ isset($BlogContent->content_heading) ? $BlogContent->content_heading : old('heading_' . $index) }}">
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! $BlogContent->content_description_1 !!}</textarea>                                                                    
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
                                                                 </div>
                                                                 <div class="form-group image-field">
                                                                     <label for="image-{{ $index }}">Image</label>
                                                                     <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
-                                                                    <img src="{{ asset('storage/images/' . $BlogContent->content_image) }}" alt="not found" width="100px">
+                                                                    <img src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="not found" width="100px">
                                                                 </div>
                                                             </div>
-                                                        
                                                             <!-- Heading - Image - Description -->
-                                                            <div class="content-option" id="content-option-2" style="{{ $BlogContent->content_type == 2 || $BlogContent->content_type == 'heading-image-description' ? 'display:block;' : 'display:none;' }}">
+                                                            <div class="content-option" id="content-option-2" style="{{ (old('select_type.' . $index) == 'heading-image-description' || $BlogContent->content_type == 'heading-image-description') ? 'display:block;' : 'display:none;' }}">
                                                                 <div class="form-group heading-field">
                                                                     <label for="heading-{{ $index }}">Heading</label>
-                                                                    <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ $BlogContent->content_heading }}">
+                                                                    <input type="text" class="form-control" id="heading-{{ $index }}"  name="heading_{{ $index }}" value="{{ isset($BlogContent->content_heading) ? $BlogContent->content_heading : old('heading_' . $index) }}">
                                                                 </div>
                                                                 <div class="form-group image-field">
                                                                     <label for="image-{{ $index }}">Image</label>
                                                                     <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
-                                                                    <img src="{{ asset('storage/images/' . $BlogContent->content_image) }}" alt="not found" width="100px">
+                                                                    <img src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="not found" width="100px">
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! $BlogContent->content_description_1 !!}</textarea>                                                                    
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
                                                                 </div>
                                                             </div>
-                                                        
                                                             <!-- Image - Description - Heading -->
-                                                            <div class="content-option" id="content-option-3" style="{{ $BlogContent->content_type == 3 || $BlogContent->content_type == 'image-description-heading' ? 'display:block;' : 'display:none;' }}">
+                                                            <div class="content-option" id="content-option-3" style="{{ (old('select_type.' . $index) == 'image-description-heading' || $BlogContent->content_type == 'image-description-heading') ? 'display:block;' : 'display:none;' }}">
                                                                 <div class="form-group image-field">
                                                                     <label for="image-{{ $index }}">Image</label>
                                                                     <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
-                                                                    <img src="{{ asset('storage/images/' . $BlogContent->content_image) }}" alt="not found" width="100px">
+                                                                    <img src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="not found" width="100px">
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! $BlogContent->content_description_1 !!}</textarea>                                                                    
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
                                                                 </div>
                                                                 <div class="form-group heading-field">
                                                                     <label for="heading-{{ $index }}">Heading</label>
-                                                                    <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ $BlogContent->content_heading }}">
+                                                                    <input type="text" class="form-control" id="heading-{{ $index }}"  name="heading_{{ $index }}" value="{{ isset($BlogContent->content_heading) ? $BlogContent->content_heading : old('heading_' . $index) }}">
                                                                 </div>
                                                             </div>
-                                                        
                                                             <!-- Heading - Description - Image - Description -->
-                                                            <div class="content-option" id="content-option-4" style="{{ $BlogContent->content_type == 4 || $BlogContent->content_type == 'heading-description-image-description' ? 'display:block;' : 'display:none;' }}">
+                                                            <div class="content-option" id="content-option-4" style="{{ (old('select_type.' . $index) == 'heading-description-image-description' || $BlogContent->content_type == 'heading-description-image-description') ? 'display:block;' : 'display:none;' }}">
                                                                 <div class="form-group heading-field">
                                                                     <label for="heading-{{ $index }}">Heading</label>
-                                                                    <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ $BlogContent->content_heading }}">
+                                                                    <input type="text" class="form-control" id="heading-{{ $index }}"  name="heading_{{ $index }}" value="{{ isset($BlogContent->content_heading) ? $BlogContent->content_heading : old('heading_' . $index) }}">
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! $BlogContent->content_description_1 !!}</textarea>                                                                    
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">
+                                                                        {{ old('description_' . $index, isset($BlogContent->content_description_1) ? $BlogContent->content_description_1 : '') }}
+                                                                    </textarea>
                                                                 </div>
+                                                                
                                                                 <div class="form-group image-field">
                                                                     <label for="image-{{ $index }}">Image</label>
                                                                     <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
-                                                                    <img src="{{ asset('storage/images/' . $BlogContent->content_image) }}" alt="not found" width="100px">
+                                                                    @if(isset($BlogContent->content_image))
+                                                                        <img src="{{ asset('storage/images/' . $BlogContent->content_image) }}" alt="Image not found" width="100px">
+                                                                    @endif
                                                                 </div>
+                                                                
                                                                 <div class="form-group description-field">
-                                                                    <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description2_{{ $index }}">{!! $BlogContent->content_description_2 !!}</textarea>
+                                                                    <label for="description2-{{ $index }}">Description</label>
+                                                                    <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">
+                                                                        {{ old('description2_' . $index, isset($BlogContent->content_description_2) ? $BlogContent->content_description_2 : '') }}
+                                                                    </textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-danger edit_remove_section" data-section-id="section-{{ $index }}">Remove Section</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach --}}
+                            @foreach ($BlogContents as $index => $BlogContent)
+                                <input type="hidden" id="old_content_image_{{ $index }}" name="old_content_image_{{ $index }}" value="{{ $BlogContent->content_image }}">
+                                <input type="hidden" id="content_id_{{$index}}" name="content_id_{{$index}}" value="{{ $BlogContent->id }}">
+                                <input type="hidden" id="old_select_type_{{ $index }}" name="old_select_type_{{ $index }}" value="{{ $BlogContent->content_type }}">
+                                
+                                <div id="blog-sections">
+                                    <div class="row mt-2 blog-section" id="section-{{ $index }}">
+                                        <div class="col-md-12">
+                                            <div class="card mb-4">
+                                                <div class="card-body">
+                                                    <div class="col-md-12 mb-3 section-container" id="section-{{ $index }}">
+                                                        <div class="form-group">
+                                                            <label for="select-type-{{ $index }}">Select Type</label>
+                                                            <select name="select_type[]" id="select-type-{{ $index }}" class="form-control select_type" data-section-index="{{ $index }}">
+                                                                <option value="heading-description-image" {{ old('select_type.' . $index) == 'heading-description-image' || $BlogContent->content_type == 'heading-description-image' ? 'selected' : '' }}>Heading - Description - Image</option>
+                                                                <option value="heading-image-description" {{ old('select_type.' . $index) == 'heading-image-description' || $BlogContent->content_type == 'heading-image-description' ? 'selected' : '' }}>Heading - Image - Description</option>
+                                                                <option value="image-description-heading" {{ old('select_type.' . $index) == 'image-description-heading' || $BlogContent->content_type == 'image-description-heading' ? 'selected' : '' }}>Image - Description - Heading</option>
+                                                                <option value="heading-description-image-description" {{ old('select_type.' . $index) == 'heading-description-image-description' || $BlogContent->content_type == 'heading-description-image-description' ? 'selected' : '' }}>Heading - Description - Image - Description</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="dynamic-content">
+                                                            @if( $BlogContent->content_type == 'heading-description-image')
+                                                                <!-- Heading - Description - Image -->
+                                                                <div class="content-option" id="content-option-heading-description-image" style="{{ (old('select_type.' . $index) == 'heading-description-image' || $BlogContent->content_type == 'heading-description-image') ? 'display:block;' : 'display:none;' }}">
+                                                                    <div class="form-group heading-field">
+                                                                        <label for="heading-{{ $index }}">Heading</label>
+                                                                        <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ old('heading_' . $index, $BlogContent->content_heading) }}">
+                                                                    </div>
+                                                                    <div class="form-group description-field">
+                                                                        <label for="description-{{ $index }}">Description</label>
+                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group image-field">
+                                                                        <label for="image-{{ $index }}">Image</label>
+                                                                        <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
+                                                                        <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
+                                                                    </div>
+                                                                    @if($BlogContent->content_description_2)
+                                                                        <div class="form-group description-field">
+                                                                            <label for="description2-{{ $index }}">Description</label>
+                                                                            <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_description_2) !!}</textarea>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @elseif( $BlogContent->content_type == 'heading-image-description')
+                                                                <!-- Heading - Image - Description -->
+                                                                <div class="content-option" id="content-option-heading-image-description" style="{{ (old('select_type.' . $index) == 'heading-image-description' || $BlogContent->content_type == 'heading-image-description') ? 'display:block;' : 'display:none;' }}">
+                                                                    <div class="form-group heading-field">
+                                                                        <label for="heading-{{ $index }}">Heading</label>
+                                                                        <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ old('heading_' . $index, $BlogContent->content_heading) }}">
+                                                                    </div>
+                                                                    <div class="form-group image-field">
+                                                                        <label for="image-{{ $index }}">Image</label>
+                                                                        <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
+                                                                        <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
+                                                                    </div>
+                                                                    <div class="form-group description-field">
+                                                                        <label for="description-{{ $index }}">Description</label>
+                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            @elseif($BlogContent->content_type == 'image-description-heading')
+                                                                <!-- Image - Description - Heading -->
+                                                                <div class="content-option" id="content-option-image-description-heading" style="{{ (old('select_type.' . $index) == 'image-description-heading' || $BlogContent->content_type == 'image-description-heading') ? 'display:block;' : 'display:none;' }}">
+                                                                    <div class="form-group image-field">
+                                                                        <label for="image-{{ $index }}">Image</label>
+                                                                        <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
+                                                                        <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
+                                                                    </div>
+                                                                    <div class="form-group description-field">
+                                                                        <label for="description-{{ $index }}">Description</label>
+                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group heading-field">
+                                                                        <label for="heading-{{ $index }}">Heading</label>
+                                                                        <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ old('heading_' . $index, $BlogContent->content_heading) }}">
+                                                                    </div>
+                                                                </div>
+                                                            @elseif($BlogContent->content_type == 'heading-description-image-description')
+                                                                <!-- Heading - Description - Image - Description -->
+                                                                <div class="content-option" id="content-option-heading-description-image-description" style="{{ (old('select_type.' . $index) == 'heading-description-image-description' || $BlogContent->content_type == 'heading-description-image-description') ? 'display:block;' : 'display:none;' }}">
+                                                                    <div class="form-group heading-field">
+                                                                        <label for="heading-{{ $index }}">Heading</label>
+                                                                        <input type="text" class="form-control" id="heading-{{ $index }}" name="heading_{{ $index }}" value="{{ old('heading_' . $index, $BlogContent->content_heading) }}">
+                                                                    </div>
+                                                                    <div class="form-group description-field">
+                                                                        <label for="description-{{ $index }}">Description</label>
+                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group image-field">
+                                                                        <label for="image-{{ $index }}">Image</label>
+                                                                        <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
+                                                                        <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
+                                                                    </div>
+                                                                    @if($BlogContent->content_description_2)
+                                                                        <div class="form-group description-field">
+                                                                            <label for="description2-{{ $index }}">Description</label>
+                                                                            <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_description_2) !!}</textarea>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-danger edit-remove-section" data-blog-id="{{ $Blog->blog_id }}" data-section-id="section-{{ $index }}" data-section-index="{{ $BlogContent->id }}">Remove Section</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
-
 
                             <div id="blog-sections"></div>
                         </form>
@@ -279,8 +396,7 @@
 @endsection
 @section('page-js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/ejnnzaok0jwbp4pk4n48cwd5v538rpszj6t1zvcgn466bsq7/tinymce/7/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>

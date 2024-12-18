@@ -49,7 +49,7 @@ Route::post('/checkout/process-payment', [CheckoutController::class, "processPay
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get("/register", [RegisterController::class, "register"])->name("register");
 Route::post("/signup/store", [RegisterController::class, "register"])->name("registerUser");
-Route::get('/user-login', [LoginController::class, 'index']);
+Route::get('/user-login', [LoginController::class, 'index'])->name('user-login');
 Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post'); 
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
@@ -198,6 +198,9 @@ Route::get('/user-faq', [FAQController::class,'user_index']
 Route::get('/user-price', [UserController::class,'user_price']
 )->name('user-price');
 
+// Blog Details
+Route::get('/blog-details/{blog_id}', [BlogController::class, 'blogDetails'])->name('blog_details');
+Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');        
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');

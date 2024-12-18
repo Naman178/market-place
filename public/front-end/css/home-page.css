@@ -199,7 +199,7 @@
   display: flex;
 }
 
-.hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container {
+.hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
   max-width: 1400px !important;
 }
 
@@ -918,6 +918,10 @@
   font-size: 24px;
 }
 
+.blog_img{
+  width: 100%;
+  height: 200px; 
+}
 .social_media .mr-7{
   margin-right: 5rem;
 }
