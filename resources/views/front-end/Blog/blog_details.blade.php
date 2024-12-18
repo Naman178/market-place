@@ -38,7 +38,7 @@
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
                         </a>
                         <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
-                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_twitter.png') }}" alt="twitter">
+                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
                         </a>
                     </div>
                         
@@ -119,7 +119,6 @@
         toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
         height: 200
     });
-    
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.social-share').forEach(function(element) {
             element.addEventListener('click', function(event) {
@@ -127,9 +126,10 @@
                 var platform = this.getAttribute('data-platform');
                 var blogId = this.getAttribute('data-blog-id');
                 var userId = this.getAttribute('data-user-id');
-                
+                var url;
+    
                 // Send AJAX request to store share data
-                fetch('/share', {
+                fetch('{{ route("share.store") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -147,6 +147,23 @@
                 }).catch(error => {
                     console.error('Error storing share data:', error);
                 });
+    
+                // Open the respective social media sharing or login page
+                if (platform === 'facebook') {
+                    // Direct share URL
+                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('blog_details', $blog->blog_id)) }}`;
+    
+                    // Open Facebook sharing or login page
+                    window.open(url, '_blank').focus();
+                    window.open('https://www.facebook.com/', '_blank');
+                } else if (platform === 'twitter') {
+                    // Direct share URL
+                    url = `https://twitter.com/intent/tweet?url={{ urlencode(route('blog_details', $blog->blog_id)) }}&text={{ urlencode($blog->title) }}`;
+    
+                    // Open Twitter sharing or login page
+                    window.open(url, '_blank').focus();
+                    window.open('https://x.com/i/flow/login', '_blank');
+                }
             });
         });
     });

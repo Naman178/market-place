@@ -200,7 +200,8 @@ Route::get('/user-price', [UserController::class,'user_price']
 
 // Blog Details
 Route::get('/blog-details/{blog_id}', [BlogController::class, 'blogDetails'])->name('blog_details');
-Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');        
+Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');   
+Route::post('/share', [BlogController::class, 'sharedatastore'])->name('share.store');
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');

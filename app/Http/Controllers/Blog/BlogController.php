@@ -364,5 +364,15 @@ class BlogController extends Controller
         $comment->save();
         return redirect()->back()->with('success', 'Your comment has been posted.');
     }
+    public function sharedatastore(Request $request){
+
+        $share = new Share();
+        $share->platfrom_name = $request->platform;
+        $share->blog_id = $request->blog_id;
+        $share->user_id = $request->user_id;
+        $share->save();
+
+        return response()->json(['success' => true, 'message' => 'Share data stored successfully']);
+    }
     
 }
