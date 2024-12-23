@@ -1,37 +1,6 @@
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
-    // $(document).on("click", '#proceed_to_pay_btn', function (e) {
-    //     console.log("test");
-
-    //     e.preventDefault();
-    //     const url = $(this).data("url");
-    //     console.log(url);
-    //     $.ajax({
-    //         type: "POST",
-    //         url: url,
-    //         data: {
-    //             _token: "{{ csrf_token() }}",
-    //             user_id: $("#user_id").val(),
-    //             name: `${$("#firstname").val()} ${$("#lastname").val()}`,
-    //             email: $("#email").val(),
-    //             country_code: $("#country_code").val(),
-    //             contact: $("#contact").val(),
-    //             company_website: $("#company_website").val(),
-    //             company_name: $("#company_name").val(),
-    //             country: $("#country").val(),
-    //             address_line_one: $("#address_line_one").val(),
-    //             address_line_two: $("#address_line_two").val(),
-    //             city: $("#city").val(),
-    //             postal: $("#postal").val(),
-    //             amount: $("#amount").val(),
-    //             stripeToken: $("#stripeToken").val(),
-    //         },
-    //         success: (data) => {
-    //             window.location.href = '{{ route("thankyou") }}';
-    //         },
-    //     });
-    // });
        $(function() {  
            /* Stripe Payment Code */    
            var $form = $(".require-validation");     
@@ -80,7 +49,7 @@
                        address_state: $('#state').val(), // Add state if you have it
                        address_zip: $('#postal').val(), // Add postal code
                        address_country: $('#country').find(':selected').data('country-code')
-                   }, stripeResponseHandlernew);
+                   }, stripeResponseHandler);
                }
            });      
            /*  Stripe Response Handler */
@@ -100,7 +69,7 @@
            }
        });
    </script>
-   <script>
+   {{-- <script>
        $(document).ready(function() {
            $('#proceed_to_pay_btn').click(function(e) {
                e.preventDefault();
@@ -186,15 +155,15 @@
                };
    
                $.ajax({
-                   url: "{{ route('user-create-checkout') }}",
+                   url: "{{ route('stripe-payment-store') }}",
                    type: "POST",
                    data: formData,
                    dataType: 'json',
                    success: function(response) {
                        $('#preloader').hide();
+                       console.log('Checkout:', response.success);
                        if (response.success) {
-                           console.log('Checkout:', response.success);
-                           window.location.href = '{{ route("thankyou") }}';
+                        //    window.location.href = '{{ route("thankyou") }}';
                        } else if (response.error) {
                            console.error('Checkout error:', response.error);
                            handleErrorMessages(response.error);
@@ -222,4 +191,4 @@
        }
    
 
-</script>
+</script> --}}
