@@ -420,10 +420,10 @@
                                     <?php
                                     $currency = $_COOKIE['currency'] ?? '';
                                     $plan = '';
-                                    $min_amount = '';
+                                    $min_amount = 1;
                                     if ($wallet) {
-                                        $plan = \App\Models\Plan::where('id', $wallet->product_id)->first();
-                                        $min_amount = $plan->yearly_price;
+                                        // $plan = \App\Models\Plan::where('id', $wallet->product_id)->first();
+                                        // $min_amount = $plan->yearly_price;
                                     }
                                     ?>
                                     @if ($wallet)

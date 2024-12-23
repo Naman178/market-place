@@ -21,8 +21,7 @@ use App\Models\ContactsCountryEnum;
 class StripePaymentController extends Controller
 {
     public function stripePost(Request $request)
-    {
-
+    {        
         $input = $request->all();
         $product_id = $input['product_id'];
         $amount = 0;
@@ -55,17 +54,7 @@ class StripePaymentController extends Controller
             $customer_id = $customer->id;
         }
         
-        // $customer = Customer::retrieve($customer_id);
-        // $customer->source = $request->stripeToken;
-        // $customer->save();
-
-        // $stripe_payment = Stripe\Charge::create ([
-        //     "amount" => $amount * 100,
-        //     "currency" => "INR",            
-        //     'customer' => $customer_id,
-        //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
-        // ]);   
-        $currency = $_COOKIE['currency'];
+        $currency = $input['currency'];
         $paymentIntent = \Stripe\PaymentIntent::create([
             'amount' => $amount * 100,
             'currency' => $currency,
@@ -86,12 +75,18 @@ class StripePaymentController extends Controller
             'return_url' => route('stripe-payment-3d',['product_id' => $product_id, 'amount' => $amount, 'discount' => $discount]),
         ]);
 
+        // if ($paymentIntent->status === 'requires_action') {
+        //     $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
+            
+        //     echo "<script>window.open('$authenticationUrl');</script>";
+        //     exit;
+        // }     
         if ($paymentIntent->status === 'requires_action') {
             $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
-            
-            echo "<script>window.open('$authenticationUrl');</script>";
+
+            echo "<script>window.location.href = '$authenticationUrl';</script>";
             exit;
-        }       
+        }
     }
     public function stripeAfterPayment(Request $request){
         
@@ -101,11 +96,11 @@ class StripePaymentController extends Controller
         $product_id = $_GET['product_id'];
         $amount = $_GET['amount'];
         $old_amount = $amount;
-        $discount = $_GET['discount'];
-        if($discount == 'yes'){
-            $plan = Plan::where('id',$product_id)->first();
-            $amount = $plan->yearly_price;
-        }
+        // $discount = $_GET['discount'];
+        // if($discount == 'yes'){
+        //     $plan = Plan::where('id',$product_id)->first();
+        //     $amount = $plan->yearly_price;
+        // }
 
         $paymentIntentId = $_GET['payment_intent'];
         
@@ -116,8 +111,8 @@ class StripePaymentController extends Controller
         $stripe_payment_status = $stripe_payment->status;
         if ($stripe_payment_status === 'succeeded') {
 
-            $plan = Plan::where('id',$product_id)->first();
-            $per_order_amount = $plan->monthly_price;
+            // $plan = Plan::where('id',$product_id)->first();
+            $per_order_amount = 1;
 
             $tran = Transaction::create([
                 'user_id' => $user['id'],
