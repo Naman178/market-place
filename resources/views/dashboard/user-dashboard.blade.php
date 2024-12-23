@@ -415,7 +415,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 border-top pt-4">
+                                {{-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 border-top pt-4">
                                     <h4 class="mb-4">Topup Your Wallet</h4>
                                     <?php
                                     $currency = $_COOKIE['currency'] ?? '';
@@ -453,9 +453,9 @@
                                         </div>
                                         <h4 class="mb-3">Select Payment Method</h4>
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            {{--    <li class="nav-item">
+                                               <li class="nav-item">
                                                 <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
-                                            </li> --}}
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
                                                     href="#stripePayment" onclick="showTab(event, 'stripePayment')"
@@ -464,7 +464,7 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
-                                            {{--  <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
                                                 <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
                                                     @csrf
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -477,7 +477,7 @@
                                                     <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
                                                     <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
                                                 </form>
-                                            </div> --}}
+                                            </div>
                                             <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
                                                 aria-labelledby="profile-icon-pill">
                                                 <form role="form" action="{{ route('stripe-payment-store') }}"
@@ -561,9 +561,9 @@
                                         </div>
                                         <h4 class="mb-3">Select Payment Method</h4>
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            {{--  <li class="nav-item">
+                                             <li class="nav-item">
                                                 <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
-                                            </li> --}}
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
                                                     href="#stripePayment" role="tab" aria-controls="stripePayment"
@@ -571,7 +571,7 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
-                                            {{--  <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
                                                 <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
                                                     @csrf
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -584,7 +584,7 @@
                                                     <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
                                                     <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
                                                 </form>
-                                            </div> --}}
+                                            </div>
                                             <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
                                                 aria-labelledby="profile-icon-pill">
                                                 <form role="form" action="{{ route('stripe-payment-store') }}"
@@ -642,14 +642,14 @@
                                                 </form>
                                             </div>
                                         </div>
-                                </div>
-                                @endif
+                                </div> --}}
+                                {{-- @endif --}}
                             </div>
                         </div>
                         <!-- orders -->
                         <div class="tab-pane fade d-none" id="list-profile" role="tabpanel"
                             aria-labelledby="list-profile-list">
-                            <h4 class="mb-4">ALL Orders</h4>
+                            <h4 class="mb-4">ALL Orders</h4>                            
                             @if ($orders->count() > 0)
                                 <div class="accordion" id="accordionRightIcon">
                                     @foreach ($orders as $order)
