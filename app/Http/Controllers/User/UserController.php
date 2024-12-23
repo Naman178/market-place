@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\helper\helper;
 use App\Http\Controllers\Controller;
+use App\Models\Items;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,9 +12,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
 use App\Mail\SendPassWordReset;
+use App\Models\Transaction;
+use App\Mail\SendInquiry;
+use App\Mail\SendInquiryAdmin;
+use App\Models\SEO;
+use App\Models\WoocommerceOrderHistory;
+use App\Models\Order;
+use App\Models\Wallet;
+use App\Models\UserCustomer;
 use Symfony\Component\HttpFoundation\Response;
 use Spatie\Permission\Models\Role;
 use DB;
+use App\Models\UserInquiry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -187,4 +197,88 @@ class UserController extends Controller
             return false;
         }
     }
+
+    public function contactUs(Request $request){
+        if($request->ajax()){
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'email' => 'required|email',
+                'contact_number' => 'required|numeric',
+                'website_url' => 'required|url',
+                'message' => 'required',
+            ], [
+                'full_name.required' => 'Full Name is required.',
+                'email.required' => 'Email is required.',
+                'email.email' => 'Please provide a valid email address.',
+                'contact_number.required' => 'Contact Number is required.',
+                'website_url.required' => 'Website URL is required.',
+                'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
+                'message.required' => 'Message is required.',
+            ]);
+            if ($validator->passes()){
+
+                $full_name = $request->full_name;
+                $email = $request->email;
+                $contact_number = $request->contact_number;
+                $website_url = $request->website_url;
+                $message = $request->message;
+                $stack = $request->stack;
+
+                $userinquiry = UserInquiry::create([
+                    'full_name'=>$full_name, 
+                    'email'=>$email , 
+                    'contact_number'=> $contact_number , 
+                    'website_url'=>$website_url,
+                    'message'=>$message ,
+                    'stack'=>$stack
+                ]);
+
+                $mailData = [
+                    'title' => 'Thank You!',
+                    'full_name' => $full_name,
+                    'email' => $email,
+                    'contact_number' => $contact_number,
+                    'website_url' => $website_url,
+                    'message' => $message,
+                    'stack' => $stack,
+                ];
+
+                Mail::to($email)->send(new SendInquiry($mailData));
+
+                Mail::to('info@infinitysoftech.co')->send(new SendInquiryAdmin($mailData));
+
+                session()->flash('success', 'ThankYou For Your Inquiry We Will Contact You Soon !');
+                return response()->json([
+                    'success' => 'inqury added successfully!',
+                    'title' => 'Inquiry',
+                    'type' => 'Add',
+                    'data' => $userinquiry
+                ]);
+            }   
+            else{
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            }            
+        }
+    }
+    public function userDashboard(){
+        $user = auth()->user();
+        $user_id = $user['id'];
+        $wallet = Wallet::where('user_id',$user['id'])->first();
+        $transactions = Transaction::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
+        $orders = Order::where('user_id',$user['id'])
+            ->with(['product','key'])
+            ->get();
+        $order_history = WoocommerceOrderHistory::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
+        $woo_user = UserCustomer::where('register_under_user_id',$user['id'])->get();
+        $allplan = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
+
+        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','order_history','allplan','woo_user'));
+    }
+    public function user_price()
+    {
+        $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $seoData = SEO::where('page','price')->first();
+        return view('pages.Home.Price',compact('data','seoData'));
+    }
+
 }

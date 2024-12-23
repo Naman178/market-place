@@ -13,7 +13,7 @@
 }
 
 .dark-blue-card {
-  background-color: #2a2742 !important;
+  background-color: #2B2842 !important;
 }
 
 .dark-blue-card .form-group {
@@ -60,7 +60,7 @@
   font-size: 15px;
   /* margin: 15px 15px; */
   border-radius: 10px;
-  background-image: linear-gradient(to right, #2b2842, #d6445e, #2b2842, #d6445e);
+  background-image: linear-gradient(to right, #2b2842, #007ac1, #2b2842, #007ac1);
   color: #f4f4f4;
   background-size: 300% 100%;
   moz-transition: all 0.4s ease-in-out;
@@ -90,7 +90,7 @@
 }
 
 .checkout .nav-tabs {
-  border-bottom: 1px solid #663399;
+  border-bottom: 1px solid #007ac1;
 }
 
 .checkout .nav-tabs .nav-item {
@@ -100,8 +100,8 @@
 
 .checkout .nav-tabs .nav-item .nav-link.active {
   border: 1px solid transparent;
-  background: rgba(102, 51, 153, 0.1);
-  border-color: #663399 #663399 #fff;
+  background: rgb(51 82 153 / 10%);
+  border-color: #007ac1 #007ac1 #fff;
   text-decoration: none;
   color: #000;
 }
@@ -152,4 +152,26 @@
 
 .google-btn > span {
   color: black;
+}
+
+.cust-page-padding {
+    padding: 10rem 0 5rem;
+    margin-bottom: 10rem;
+}
+
+.items-container{
+ width: 1540px;   
+}
+
+.plan-feature-heading {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #182433;
+    margin: 0 0 20px;
+}
+
+.text-center {
+    text-align: center !important;
 }

@@ -30,4 +30,41 @@ return [
     'reviews_accept_success' => 'Review accepted!',
     'reviews_rejected_success' => 'Review rejected!',
     'reviews_delete_success' => 'Review deleted successfully!',
+    
+    // TERM & CONDITION
+    'term_condition_title' => 'Terms & Condition',
+    'term_condition_create_success' => 'Terms & Condition created successfully!',
+    'term_condition_update_success' => 'Terms & Condition updated successfully!',
+    'term_condition_delete_success' => 'Terms & Condition deleted successfully!',
+
+    // PRIVACY POLICY
+    'privacy_policy_title' => 'Privacy Policy',
+    'privacy_policy_create_success' => 'Privacy Policy created successfully!',
+    'privacy_policy_update_success' => 'Privacy Policy updated successfully!',
+    'privacy_policy_delete_success' => 'Privacy Policy deleted successfully!',
+
+    // SEO
+    'SEO_title' => 'SEO',
+    'SEO_create_success' => 'SEO created successfully!',
+    'SEO_update_success' => 'SEO updated successfully!',
+    'SEO_delete_success' => 'SEO deleted successfully!',
+
+    // FAQ
+    'FAQ_title' => 'FAQ',
+    'FAQ_create_success' => 'FAQ created successfully!',
+    'FAQ_update_success' => 'FAQ updated successfully!',
+    'FAQ_delete_success' => 'FAQ deleted successfully!',
+
+    // Blog
+    'Blog_title' => 'Blog',
+    'Blog_create_success' => 'Blog created successfully!',
+    'Blog_update_success' => 'Blog updated successfully!',
+    'Blog_delete_success' => 'Blog deleted successfully!',
+
+
+    // Blog category
+    'Blog_category_title' => 'Blog Category',
+    'Blog_category_create_success' => 'Blog Category created successfully!',
+    'Blog_category_update_success' => 'Blog Category updated successfully!',
+    'Blog_category_delete_success' => 'Blog Category deleted successfully!',
 ];

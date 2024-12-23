@@ -77,53 +77,77 @@
         </ul>
         <div class="tab-content" id="paymentTabContent">
             <div class="tab-pane fade show active" id="stripePaymentForm" role="tabpanel" aria-labelledby="profile-icon-pill">
-                <form role="form" action="" method="post" id="stripe-for">
-                    <input type="hidden" id="stripeToken" name="stripeToken">
-                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
-                    <div class="form-row row">
-                        <div class="col-md-12 form-group">
+                <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form"> 
+                <input type="hidden" id="stripeToken" name="stripeToken">
+                <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
+                <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">   
+                <!-- Name on Card -->
+                <div class="form-row row">
+                    <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
                         <input class="form-control" size="4" type="text" id="name_on_card" required="">
-                        </div>
+                        <div class="error" id="name_on_card_error"></div>
                     </div>
-                    <div class="form-row row">
-                        <div class="col-md-12 form-group">
+                </div>
+            
+                <!-- Card Number -->
+                <div class="form-row row">
+                    <div class="col-md-12 form-group">
                         <label class="control-label">Card Number</label>
                         <input autocomplete="off" class="form-control card-number" id="card_number" name="card_number" size="20" placeholder="xxxx xxxx xxxx xxxx" type="text" required="">
-                        </div>
+                        <div class="error" id="card_number_error"></div>
                     </div>
-                    <div class="form-row row">
-                        <div class="col-xs-12 col-md-4 form-group expiration">
+                </div>
+            
+                <!-- Expiration Month -->
+                <div class="form-row row">
+                    <div class="col-xs-12 col-md-4 form-group expiration">
                         <label class="control-label">Expiration Month</label>
                         <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month" type="text" required="">
-                        </div>
-                        <div class="col-xs-12 col-md-4 form-group expiration required">
+                        <div class="error" id="card_exp_month_error"></div>
+                    </div>
+                    
+                    <!-- Expiration Year -->
+                    <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Expiration Year</label>
                         <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year" type="text" required="">
-                        </div>
-                        <div class="col-xs-12 col-md-4 form-group cvc">
+                        <div class="error" id="card_exp_year_error"></div>
+                    </div>
+                    
+                    <!-- CVC -->
+                    <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
                         <input autocomplete="off" class="form-control card-cvc" id="card_cvc" name="card_cvc" placeholder="ex. 311" size="4" type="text" required="">
-                        </div>
+                        <div class="error" id="card_cvc_error"></div>
                     </div>
-                    <p class="error" id="stripe_payment_error"></p>
-                    <div class="row">
-                        @php
-                            $total = (int)$plan->pricing->fixed_price;
-                            $gst = ($plan->pricing->gst_percentage/100) * $total;
-                            $final_total = $total + $gst;
-                        @endphp
-                        <div class="col-md-12">
-                        <button
-                            class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"
-                            id="proceed_to_pay_btn"
-                            type="button"
-                            data-url="{{ route('payment') }}" >
-                            Proceed To Pay {{ number_format((int) $final_total) }} INR
-                        </button>
-                        </div>
+                </div>
+            
+                <p class="error" id="stripe_payment_error"></p>
+                <div class="row">
+                    @php
+                        $total = (int)$plan->pricing->fixed_price;
+                        $gst = ($plan->pricing->gst_percentage / 100) * $total;
+                        $final_total = $total + $gst;
+                    @endphp
+                    
+                 @if(Auth::check())
+                    <!--<div class="col-md-12">-->
+                    <!--     <button-->
+                    <!--        class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"-->
+                    <!--        id="proceed_to_pay_btn"-->
+                    <!--        type="button"-->
+                    <!--        data-url="{{ route('payment') }}" >-->
+                    <!--        Proceed To Pay {{ number_format((int) $final_total) }} INR-->
+                    <!--    </button>-->
+                    <!--</div>-->
+                     <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button>
+                @else
+                 <div class="col-md-12">
+                    <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} INR</button>
                     </div>
-                </form>
+                    @endif
+                </div>
+            </form>
             </div>
         </div>
     </div>

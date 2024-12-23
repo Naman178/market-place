@@ -2,7 +2,7 @@
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
-                <a href="{{ url('/home') }}">
+                <a href="{{ url('/') }}">
                     <img src="{{ asset('front-end/images/header_logo.png') }}" alt="Logo">
                 </a>
             </div>
@@ -10,11 +10,12 @@
         <div class="col">
             <div class="menu-container">
                 <ul>
-                    <li><a href="#">Price</a></li>
-                    <li><a href="#">Documentation</a></li>
+                    <li><a href="{{ route('user-price') }}">Price</a></li>
+                    {{-- <li><a href="#">Documentation</a></li> --}}
                     <li><a href="#">Guide</a></li>
-                    <li><a href="#">Faq</a></li>
+                    <li><a href="{{ route('user-faq') }}">Faq</a></li>
                     <li><a href="#">Status</a></li>
+                    <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
                 </ul>
             </div>
         </div>
@@ -27,6 +28,12 @@
                                 Welcome, {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('user-dashboard') }}">
+                                    Dashboard
+                                </a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">
+                                    Profile Setting
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout
@@ -38,7 +45,7 @@
                         </li>
                     @else
                         <li><a href="{{ url('/user-login') }}">Login</a></li>
-                        <li class="signup-wrapper"><a href="#">Sign Up</a></li>
+                        <li class="signup-wrapper"><a class="signup_btn" href="{{ url('/signup') }}">Sign Up</a></li>
                     @endauth
                 </ul>
             </div>

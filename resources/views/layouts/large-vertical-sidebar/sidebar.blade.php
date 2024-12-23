@@ -44,6 +44,60 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('term-condition-tab-show')
+                <li class="nav-item {{ request()->routeIs('term-condition*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('term-condition-index') }}">
+                        <i class="nav-icon i-File-Text--Image"></i>
+                        <span class="nav-text">{{ trans('custom.term_condition_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('privacy-policy-tab-show')
+                <li class="nav-item {{ request()->routeIs('privacy-policy*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('privacy-policy-index') }}">
+                        <i class="nav-icon i-Security-Settings"></i>
+                        <span class="nav-text">{{ trans('custom.privacy_policy_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('SEO-tab-show')
+                <li class="nav-item {{ request()->routeIs('SEO*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('SEO-index') }}">
+                        <i class="nav-icon i-Search-on-Cloud"></i>
+                        <span class="nav-text">{{ trans('custom.SEO_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('FAQ-tab-show')
+                <li class="nav-item {{ request()->routeIs('FAQ*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('FAQ-index') }}">
+                        <i class="nav-icon i-Information"></i>
+                        <span class="nav-text">{{ trans('custom.FAQ_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('Blog-tab-show')
+                <li class="nav-item {{ request()->routeIs('Blog-index*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('Blog-index') }}">
+                        <i class="nav-icon i-Blogger"></i>
+                        <span class="nav-text">{{ trans('custom.Blog_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('Blog_category-tab-show')
+                <li class="nav-item {{ request()->routeIs('Blog_category-index*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('Blog_category-index') }}">
+                        <i class="nav-icon i-File-Clipboard-File--Text"></i>
+                        <span class="nav-text">{{ trans('custom.Blog_category_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('user-tab-show')
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('user-index') }}">
