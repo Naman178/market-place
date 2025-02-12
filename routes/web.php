@@ -43,6 +43,7 @@ use Illuminate\Support\Facades\Artisan;
 // Home Page
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
+Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
