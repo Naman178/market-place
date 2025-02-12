@@ -255,5 +255,46 @@
         });
     });
 
+    //newsletter
+    $(document).ready(function(){
+        $('.sign_up_btn').on('click',function(){
+            let email = $('.email_text').val();
+            let submit_url = $(this).attr('data-route');
+            console.log(submit_url);
+            $.ajax({
+                url: submit_url,
+                type: "POST",
+                data: { 
+                    "_token": "{{ csrf_token() }}",
+                    email: email
+                },
+                success: function(response) {
+                    $('.email_text').val('');
+                    $('.newsletter_success').text("Successfully subscribed!").css({"color": "green"}).fadeIn();
+                    setTimeout(function() {
+                        $('.newsletter_success').fadeOut();
+                    }, 5000);
+                },
+                error: function(xhr, status, error) {
+                   
+                    let errorMessage = "This email is already subscribed try another email id";
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        if (errors.email) {
+                            errorMessage = errors.email[0]
+                        }
+                    }
+                    
+                    $('.newsletter_success').text(errorMessage).css("color", "red").fadeIn();
+                    setTimeout(function() {
+                        $('.newsletter_success').fadeOut();
+                        $('.email_text').val('');
+                    }, 5000);
+                }
+            });
+        })
+    });
+
 </script>
 @endsection

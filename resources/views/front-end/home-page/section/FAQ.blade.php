@@ -56,10 +56,11 @@
                     <input type="text" class="email_text" value="" name="email" placeholder="Enter your email">
                     </div>
                     <div class="col-lg-3 col-sm-12 col-12 mt-2 text-end">
-                        <a href="#" class="sign_up_btn">
+                        <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
-                        </a>
+                        </div>
                     </div>
+                    <span class="newsletter_success"></span>
                     <p class="integra_p testimonial-text small_text">By clicking Sign Up you're confirming that you agree with our Terms and Conditions.</p>
                 </div>
             </div>
