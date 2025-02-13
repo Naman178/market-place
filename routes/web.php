@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\newsletter\NewsletterController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -95,6 +96,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category-edit');
     Route::get('/category/delete/{id}', [CategoryController::class, 'remove'])->name('category-delete');
     Route::post("/category/status/{id}", [CategoryController::class, "changeStatus"])->name("category-status");
+
+    //newsletter module
+    Route::get('/newsletter', [NewsletterController::class,'index'])->name('newsletter');
 
     // Sub Category module
     Route::get('/sub-category',[SubCategoryController::class,'index'])->name('sub-category-index');

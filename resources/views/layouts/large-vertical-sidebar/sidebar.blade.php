@@ -116,6 +116,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('newsletter-tab-show')
+                <li class="nav-item {{ request()->is('newsletter*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('newsletter') }}">
+                        <i class="nav-icon i-Receipt"></i>
+                        <span class="nav-text">Newsletter</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('settings-tab-show')
                 <li class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('settings-index') }}">
