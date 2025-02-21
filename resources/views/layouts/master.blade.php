@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="{{asset('assets/styles/vendor/toastr.css')}}">
         <link rel="stylesheet" href="{{asset('assets/styles/css/custom.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.tiny.cloud/1/hceguej559036vk45g6vodzt402ywsiun4ns0mwnf2nx126i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
         {{-- page specific css --}}
         <script>
             xui = {}; //Global xui variable
@@ -93,6 +94,11 @@
                     toastr.info('{{ Session::get('success') }}','{{ Session::get('title')}}');
                 @endif
             });
+        </script>
+        <script>
+            tinymce.init({
+                selector: 'textarea',                
+            });    
         </script>
         @yield('bottom-js')
     </body>
