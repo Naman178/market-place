@@ -125,6 +125,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('email-tab-show')
+                <li class="nav-item {{ request()->is('email*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('email') }}">
+                        <i class="nav-icon i-Receipt-3"></i>
+                        <span class="nav-text">Sent Mail</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('settings-tab-show')
                 <li class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('settings-index') }}">
