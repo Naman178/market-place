@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\newsletter\NewsletterController;
+use App\Http\Controllers\SentMail\SentMailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -100,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
     //newsletter module
     Route::get('/newsletter', [NewsletterController::class,'index'])->name('newsletter');
 
+    //email sent module
+    Route::get('/email' , [SentMailController::class , 'index'])->name('email');
+    Route::post('/email/preview', [SentMailController::class, 'preview'])->name('email-preview');
+    Route::post('/email/store', [SentMailController::class, 'store'])->name('email-store');
     // Sub Category module
     Route::get('/sub-category',[SubCategoryController::class,'index'])->name('sub-category-index');
     Route::post('/sub-category/store',[SubCategoryController::class,'store'])->name('sub-category-store');
