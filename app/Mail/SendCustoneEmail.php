@@ -36,11 +36,12 @@ class SendCustoneEmail extends Mailable
         }
 
         if ($this->mailData['template'] == 'template_v3') {
+            // dd($this);
             $brochure = $this->view('Email.SendCustomEmailV3')
                 ->with('mailData', $this->mailData)
                 ->subject($this->mailData['subject']);
         }
-
+        // dd( $brochure->from('no-reply@market-place-main.infinty-stage.com'));
         return $brochure->from('no-reply@market-place-main.infinty-stage.com');
     }
 }

@@ -155,6 +155,7 @@
                 } else {
                     $("#emailDropdown").hide();
                     $("#manualEmailInput").show();
+                    $('#emailSelect').val(null).trigger('change');
                 }
             });
         });
