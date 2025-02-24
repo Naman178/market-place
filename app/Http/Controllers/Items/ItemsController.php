@@ -168,7 +168,7 @@ class ItemsController extends Controller
                     'custom_cycle_days'=>$request->itembillingcycle=='custom' ? $request->custombillingcycle : null,
                     'auto_renew' => $request->has('autorenewalcheckbox') ? '1' : '0',
                     'grace_period'=>$request->graceperiod,
-                    'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : '',
+                    'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : null,
                     $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
                 ]
             );
