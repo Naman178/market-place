@@ -36,7 +36,8 @@ class SentMailController extends Controller
     {
         $desc = $req->desc;
         $template = $req->template;
-        $emails = $req->email;
+        $emails = is_array($req->email) ? $req->email : [$req->email];
+        // dd($emails);
         $subject = $req->subject;
 
         foreach ($emails as $email) {
