@@ -13,14 +13,16 @@ class CreateSeoTable extends Migration
      */
     public function up()
     {
-        Schema::create('seo', function (Blueprint $table) {
-            $table->id();
-            $table->string('page')->unique();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->string('keyword')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('seo')) {
+            Schema::create('seo', function (Blueprint $table) {
+                $table->id();
+                $table->string('page')->unique();
+                $table->string('title')->nullable();
+                $table->text('description')->nullable();
+                $table->string('keyword')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,6 +32,8 @@ class CreateSeoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seo');
+        if (Schema::hasTable('seo')) {
+            Schema::dropIfExists('seo');
+        }
     }
 }

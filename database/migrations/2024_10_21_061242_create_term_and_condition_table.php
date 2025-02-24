@@ -13,12 +13,14 @@ class CreateTermAndConditionTable extends Migration
      */
     public function up()
     {
-        Schema::create('term_and_condition', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('term_and_condition')) {
+            Schema::create('term_and_condition', function (Blueprint $table) {
+                $table->id();
+                $table->string('title')->nullable();
+                $table->text('description')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -28,6 +30,8 @@ class CreateTermAndConditionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('term_and_condition');
+        if (Schema::hasTable('term_and_condition')) {
+            Schema::dropIfExists('term_and_condition');
+        }
     }
 }

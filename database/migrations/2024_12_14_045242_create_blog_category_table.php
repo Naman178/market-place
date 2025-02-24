@@ -13,14 +13,16 @@ class CreateBlogCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_category', function (Blueprint $table) {
-            $table->id('category_id');
-            $table->text('name')->nullable();
-            $table->text('description')->nullable();
-            $table->text('date')->nullable();
-            $table->text('image')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('blog_category')) {
+            Schema::create('blog_category', function (Blueprint $table) {
+                $table->id('category_id');
+                $table->text('name')->nullable();
+                $table->text('description')->nullable();
+                $table->text('date')->nullable();
+                $table->text('image')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,6 +32,8 @@ class CreateBlogCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blog_category');
+        if (Schema::hasTable('blog_category')) {
+            Schema::dropIfExists('blog_category');
+        }
     }
 }

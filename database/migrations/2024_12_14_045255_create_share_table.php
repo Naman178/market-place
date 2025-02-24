@@ -13,16 +13,18 @@ class CreateShareTable extends Migration
      */
     public function up()
     {
-        Schema::create('share', function (Blueprint $table) {
-            $table->id();
-            $table->text('platfrom_name')->nullable();
-            $table->unsignedBigInteger('blog_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->timestamps();
-            // Adding foreign keys
-            $table->foreign('blog_id')->references('blog_id')->on('blog')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+        if (!Schema::hasTable('share')) {
+            Schema::create('share', function (Blueprint $table) {
+                $table->id();
+                $table->text('platfrom_name')->nullable();
+                $table->unsignedBigInteger('blog_id')->nullable();
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->timestamps();
+                // Adding foreign keys
+                $table->foreign('blog_id')->references('blog_id')->on('blog')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -32,6 +34,8 @@ class CreateShareTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('share');
+        if (Schema::hasTable('share')) {
+            Schema::dropIfExists('share');
+        }
     }
 }
