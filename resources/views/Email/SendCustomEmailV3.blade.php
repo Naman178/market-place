@@ -218,6 +218,9 @@
             display: none !important
         }
     </style>
+    @php
+        dd(1);
+    @endphp
     <table width="100%" border="0" cellpadding="0" cellspacing="0"
         style="background-color:#d6d6d5;border:0;border-collapse:collapse;border-spacing:0;mso-table-lspace:0;mso-table-rspace:0"
         bgcolor="#d6d6d5" class="">
