@@ -1,4 +1,7 @@
 <script>
+    window.descEditor = new Quill('#desc', {
+        theme: 'snow'
+    });
     $(document).on('click', '.email-form-preview', function(e) {
         $('#preloader').show();
         e.preventDefault();
@@ -10,11 +13,7 @@
         let subject = $('#mailSubject').val();
 
         let template = $("input[name='template']:checked").val();
-        var descEditor = tinymce.get('desc');
-        var desc = '';
-        if (descEditor) {
-            desc = descEditor.getContent();
-        }
+        let desc = window.descEditor.root.innerHTML;
         $.ajax({
             url: "{{ route('email-preview') }}",
             type: 'POST',
@@ -43,11 +42,7 @@
         }
 
         let template = $("input[name='template']:checked").val();
-        var descEditor = tinymce.get('desc');
-        var desc = '';
-        if (descEditor) {
-            desc = descEditor.getContent();
-        }
+        let desc = window.descEditor.root.innerHTML;
         $.ajax({
             url: "{{ route('email-store') }}",
             type: 'POST',
