@@ -14,7 +14,9 @@ class AddCountryCodeToContactCountryEnumTable extends Migration
     public function up()
     {
         Schema::table('contact_country__enum', function (Blueprint $table) {
-            $table->longText('country_code')->nullable();
+            if (!Schema::hasColumn('contact_country__enum', 'country_code')) {
+                $table->longText('country_code')->nullable();
+            }
         });
     }
 
