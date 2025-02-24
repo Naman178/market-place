@@ -24,8 +24,10 @@
         <link rel="stylesheet" href="{{asset('assets/styles/vendor/toastr.css')}}">
         <link rel="stylesheet" href="{{asset('assets/styles/css/custom.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.tiny.cloud/1/hceguej559036vk45g6vodzt402ywsiun4ns0mwnf2nx126i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+        {{-- <script src="https://cdn.tiny.cloud/1/hceguej559036vk45g6vodzt402ywsiun4ns0mwnf2nx126i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
         {{-- page specific css --}}
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
         <script>
             xui = {}; //Global xui variable
             xui.select2 = {};
@@ -96,9 +98,9 @@
             });
         </script>
         <script>
-            tinymce.init({
-                selector: 'textarea',                
-            });    
+            var quill = new Quill('textarea', {
+                theme: 'snow'
+            });   
         </script>
         @yield('bottom-js')
     </body>
