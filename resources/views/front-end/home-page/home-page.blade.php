@@ -81,6 +81,30 @@
             }
         ]
     });
+
+    $(document).ready(function(){
+        $('.blog-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+    });
     $(document).ready(function(){
         $('#left-arrow-btn').on('click', function () {
             $('#integrationCarousel').slick('slickPrev');
@@ -90,12 +114,12 @@
             $('#integrationCarousel').slick('slickNext');
         });
 
-        $('.left-arrow').click(function() {
-            $('#blogCarousel').carousel('prev');
+        $('#blog-left-arrow-btn').click(function() {
+            $('.blog-slider').slick('slickPrev');
         });
 
-        $('.right-arrow').click(function() {
-            $('#blogCarousel').carousel('next');
+        $('#blog-right-arrow-btn').click(function() {
+            $('.blog-slider').slick('slickNext');
         });
 
         $('.left-arrow').click(function() {
@@ -110,18 +134,18 @@
             interval: false, // Disable auto-sliding
             wrap: true // Enable wrapping around from last to first slide
         });
-        
+
     });
     // for Social media
     $(document).ready(function () {
         $('.social_media_slider').slick({
             infinite: true,
-            slidesToShow: 6, 
-            slidesToScroll: 1, 
-            arrows: false, 
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: false,
             dots: false,
-            autoplay: true, 
-            autoplaySpeed: 2000, 
+            autoplay: true,
+            autoplaySpeed: 2000,
             responsive: [
                 {
                     breakpoint: 768,
@@ -130,7 +154,7 @@
                     }
                 },
                 {
-                    breakpoint: 480, 
+                    breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
                     }
@@ -140,12 +164,12 @@
 
         $('#integrationCarousel').slick({
             infinite: true,
-            slidesToShow: 3, 
-            slidesToScroll: 1, 
-            arrows: false, 
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: false,
             dots: false,
-            autoplay: true, 
-            autoplaySpeed: 2000, 
+            autoplay: true,
+            autoplaySpeed: 2000,
             responsive: [
                 {
                     breakpoint: 768,
@@ -154,7 +178,7 @@
                     }
                 },
                 {
-                    breakpoint: 480, 
+                    breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
                     }
@@ -162,7 +186,7 @@
             ]
         });
     });
-    
+
     let currentIndex = 0;
 
     const testimonials = [
@@ -185,7 +209,7 @@
             image: '{{ asset("front-end/images/Group 5749.png") }}',
         },
     ];
-    
+
     function updateTestimonial(index) {
         let selectedTestimonial = testimonials[index];
 
@@ -287,7 +311,7 @@
             $.ajax({
                 url: submit_url,
                 type: "POST",
-                data: { 
+                data: {
                     "_token": "{{ csrf_token() }}",
                     email: email
                 },
@@ -299,7 +323,7 @@
                     }, 5000);
                 },
                 error: function(xhr, status, error) {
-                   
+
                     let errorMessage = "This email is already subscribed try another email id";
 
                     if (xhr.status === 422) {
@@ -308,7 +332,7 @@
                             errorMessage = errors.email[0]
                         }
                     }
-                    
+
                     $('.newsletter_success').text(errorMessage).css("color", "red").fadeIn();
                     setTimeout(function() {
                         $('.newsletter_success').fadeOut();
