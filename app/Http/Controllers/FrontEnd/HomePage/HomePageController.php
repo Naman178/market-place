@@ -27,7 +27,8 @@ class HomePageController extends Controller
         $FAQs = FAQ::get();
         $Blogs = Blog::where('status', '1')->get();
         foreach ($Blogs as $blog) {
-            $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count(); 
+            $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
+            $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count();
             $blog->shares_count = Share::where('blog_id', $blog->blog_id)->count();
         }
         $seoData = SEO::where('page', 'home')->first();

@@ -32,203 +32,182 @@ class ItemsController extends Controller
         return view('pages.items.items',compact('items'));
     }
 
-    public function edit($id)
+    public function edit($id,$id1=null)
     {
-        $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id)->first();
-        $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
-        $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
-        return view('pages.items.edit',compact('item','categories','subcategories'));
+        if($id === 'new' && (is_null($id1) || $id1 === 'new')){
+            $itemid = $id;
+            $type = 'null';
+            $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id1)->first();
+            $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
+            $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
+            if($id1 == null){
+                $isshow = true;
+            }else{
+                if($id1 == 'new'){
+                    $isshow = false;
+                }
+            }
+        }elseif($id !=='new' && (is_null($id1) || $id1 === 'new')){
+            $itemid = $id;
+            $itemtype = ItemsPricing::where('item_id',$id)->first();
+            $type = $itemtype->pricing_type;
+            if($id1 == 'new'){
+                $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id1)->first();
+            }else{
+                $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id)->first();
+            }
+            $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
+            $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
+            $isshow = false;
+        }else{
+            $itemid = $id;
+            $itemtype = ItemsPricing::where('item_id',$id)->first();
+            $type = $itemtype->pricing_type;
+            $item = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('id', $id)->first();
+            $categories = Category::where('sys_state', '0')->pluck('name', 'id')->all();
+            $subcategories = SubCategory::where('sys_state', '0')->get(['id', 'name', 'category_id']);
+            $isshow = false;
+        }
+        return view('pages.items.edit',compact('item','categories','subcategories','itemid','isshow','type'));
     }
 
-    public function store(Request $request){
-        if($request->ajax()){
+    public function store(Request $request) {
+        if ($request->ajax()) {
             $validator = $this->validateRequest($request);
-            if ($validator->passes()){
-                if($request->item_id == "0"){
-                    $thumbnail = $this->uploadFile($request->item_thumbnail);
-                    $mainFile = $this->uploadFile($request->item_main_file);
 
-                    $save_item = Items::create([
-                        'name' => $request->name,
-                        'html_description' => $request->html_description,
-                        'thumbnail_image' => $thumbnail,
-                        'main_file_zip' => $mainFile,
-                        'preview_url' => $request->preview_url,
-                        'status' => '1',
-                        'sys_state' => '0',
-                        'created_at' => Carbon::now(),
-                    ]);
-                    if($save_item->id){
-                        // IMAGES
-                        if(!empty($request->item_images)){
-                            foreach ($request->item_images as $image) {
-                                $itemImages = $this->uploadFile($image);
-                                ItemsImage::create([
-                                    'item_id' => $save_item->id,
-                                    'image_path' => $itemImages,
-                                    'created_at' => Carbon::now(),
-                                ]);
-                            }
-                        }
+            if (!$validator->passes()) {
+                return response()->json(['error' => $validator->getMessageBag()->toArray()]);
+            }
 
-                        // FEATURES
-                        if(!empty($request->key_feature)){
-                            foreach ($request->key_feature as $feature) {
-                                ItemsFeature::create([
-                                    'item_id' => $save_item->id,
-                                    'key_feature' =>$feature,
-                                    'created_at' => Carbon::now(),
-                                ]);
-                            }
-                        }
+            $isUpdate = $request->has('item_id') && $request->item_id != "0";
+            $item = $isUpdate ? Items::find($request->item_id) : new Items();
 
-                        // TAGS
-                        if(!empty($request->tag)){
-                            foreach ($request->tag as $tag) {
-                                ItemsTag::create([
-                                    'item_id' => $save_item->id,
-                                    'tag_name' =>$tag,
-                                    'created_at' => Carbon::now(),
-                                ]);
-                            }
-                        }
+            $thumbnail = $request->hasFile('item_thumbnail') ? $this->uploadFile($request->item_thumbnail) : ($isUpdate ? $item->thumbnail_image : null);
+            $mainFile = $request->hasFile('item_main_file') ? $this->uploadFile($request->item_main_file) : ($isUpdate ? $item->main_file_zip : null);
 
-                        // CATEGORY AND SUBCATEGORY
-                        if(isset($request->category_id) && isset($request->subcategory_id)){
-                            ItemsCategorySubcategory::create([
-                                'item_id' => $save_item->id,
-                                'category_id' =>$request->category_id,
-                                'subcategory_id' =>$request->subcategory_id,
-                                'created_at' => Carbon::now(),
-                            ]);
-                        }
+            $item->fill([
+                'name' => $request->name,
+                'html_description' => $request->html_description,
+                'thumbnail_image' => $thumbnail,
+                'main_file_zip' => $mainFile,
+                'preview_url' => $request->preview_url,
+                'status' => '1',
+                'sys_state' => '0',
+                $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
+            ])->save();
 
-                        // PRICING
-                        ItemsPricing::create([
-                            'item_id' => $save_item->id,
-                            'fixed_price' =>$request->fixed_price,
-                            'sale_price' =>$request->sale_price,
-                            'gst_percentage' =>$request->gst_percentage,
-                            'created_at' => Carbon::now(),
-                        ]);
-                    }else{
-                        return response()->json(['error'=> trans('custom.items_create_fail')]);
-                    }
-                    session()->flash('success', trans('custom.items_create_success'));
-                    return response()->json([
-                        'success' => trans('custom.items_create_success'),
-                        'title' => trans('custom.item_title'),
-                        'type' => 'create',
-                        'data' => $save_item
-                    ], Response::HTTP_OK);
-                }else{
-                    $item = Items::find($request->item_id);
+            if ($isUpdate) {
+                ItemsImage::where('item_id', $item->id)->delete();
+            }
 
-                    $thumbnail = $request->hasFile('item_thumbnail') ? $this->uploadFile($request->item_thumbnail) : $request->old_thumbnail_image;
-                    $mainFile = $request->hasFile('item_main_file') ? $this->uploadFile($request->item_main_file) : $request->old_main_file;
+            $oldImages = $request->old_image ?? [];
+            $newImages = $request->item_images ?? [];
+            foreach (array_merge($oldImages, $newImages) as $image) {
+                ItemsImage::create([
+                    'item_id' => $item->id,
+                    'image_path' => is_file($image) ? $this->uploadFile($image) : $image,
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
 
-                    $item->update([
-                        'name' => $request->name,
-                        'html_description' => $request->html_description,
-                        'thumbnail_image' => $thumbnail,
-                        'main_file_zip' => $mainFile,
-                        'preview_url' => $request->preview_url,
-                        'status' => $request->status,
-                        'sys_state' => '0',
-                        'updated_at' => Carbon::now(),
-                    ]);
-                    if ($item->id) {
-                        $item->tags()->delete();
-                        $item->features()->delete();
-                        $item->images()->delete();
+            if ($isUpdate) {
+                ItemsFeature::where('item_id', $item->id)->delete();
+            }
 
-                        // IMAGES
-                        $oldImages = $request->old_image ?? [];
-                        $newImages = $request->item_images ?? [];
+            foreach ($request->key_feature ?? [] as $feature) {
+                ItemsFeature::create([
+                    'item_id' => $item->id,
+                    'key_feature' => $feature,
+                    $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
+                ]);
+            }
 
-                        $mergedImages = [];
-                        $uniqueIndices = array_unique(array_merge(array_keys($oldImages), array_keys($newImages)));
+            if ($isUpdate) {
+                ItemsTag::where('item_id', $item->id)->delete();
+            }
 
-                        foreach ($uniqueIndices as $index) {
-                            if (isset($newImages[$index])) {
-                                $itemImages = $newImages[$index] ? $this->uploadFile($newImages[$index]) : null;
-                            } elseif (isset($oldImages[$index])) {
-                                $itemImages = $oldImages[$index];
-                            } else {
-                                continue;
-                            }
-
-                            $mergedImages[] = [
-                                'item_id' => $item->id,
-                                'image_path' => $itemImages,
-                                'updated_at' => Carbon::now(),
-                            ];
-                        }
-
-                        foreach ($mergedImages as $imageData) {
-                            ItemsImage::create($imageData);
-                        }
-
-                        // FEATURES
-                        if (!empty($request->key_feature)) {
-                            foreach ($request->key_feature as $feature) {
-                                ItemsFeature::create([
-                                    'item_id' => $item->id,
-                                    'key_feature' =>$feature,
-                                    'updated_at' => Carbon::now(),
-                                ]);
-                            }
-                        }
-
-                        // TAGS
-                        if(!empty($request->tag)){
-                            foreach ($request->tag as $tag) {
-                                if($tag != ''){
-                                    ItemsTag::create([
-                                        'item_id' => $item->id,
-                                        'tag_name' =>$tag,
-                                        'updated_at' => Carbon::now(),
-                                    ]);
-                                }
-                            }
-                        }
-
-                        // CATEGORY AND SUBCATEGORY
-                        if (isset($request->category_id) && isset($request->subcategory_id)) {
-                            $existingCategorySubcategory = ItemsCategorySubcategory::where('item_id', $item->id)->first();
-                        
-                            if ($existingCategorySubcategory) {
-                                $existingCategorySubcategory->update([
-                                    'category_id' => $request->category_id,
-                                    'subcategory_id' => $request->subcategory_id,
-                                    'updated_at' => Carbon::now(),
-                                ]);
-                            }
-                        }
-
-                        // PRICING
-                        $existingPricing = ItemsPricing::where('item_id', $item->id)->first();
-                        if ($existingPricing) {
-                            $existingPricing->update([
-                                'fixed_price' => $request->fixed_price,
-                                'sale_price' => $request->sale_price,
-                                'gst_percentage' => $request->gst_percentage,
-                                'updated_at' => Carbon::now(),
-                            ]);
-                        }
-                    }
-                    session()->flash('success', trans('custom.items_update_success'));
-                    return response()->json([
-                        'success' => trans('custom.items_update_success'),
-                        'title' => trans('custom.item_title'),
-                        'type' => 'update',
-                        'data' => $item
+            foreach ($request->tag ?? [] as $tag) {
+                if (!empty($tag)) {
+                    ItemsTag::create([
+                        'item_id' => $item->id,
+                        'tag_name' => $tag,
+                        $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
                     ]);
                 }
-            }else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             }
+
+            if (isset($request->category_id) && isset($request->subcategory_id)) {
+                ItemsCategorySubcategory::updateOrCreate(
+                    ['item_id' => $item->id],
+                    [
+                        'category_id' => $request->category_id,
+                        'subcategory_id' => $request->subcategory_id,
+                        'updated_at' => Carbon::now(),
+                    ]
+                );
+            }
+
+            if($request->item_type == 'one-time'){
+                if($request->licenseradio == 'lifetime'){
+                    $validity = 'Lifetime';
+                }else{
+                    $validity = '';
+                }
+            }else{
+                $validity = '';
+            }
+            ItemsPricing::updateOrCreate(
+                ['item_id' => $item->id],
+                [
+                    'fixed_price' => $request->fixed_price,
+                    'pricing_type' => $request->item_type,
+                    'sale_price' => $request->sale_price,
+                    'gst_percentage' => $request->gst_percentage,
+                    'validity'=>$validity,
+                    'billing_cycle'=>$request->itembillingcycle,
+                    'custom_cycle_days'=>$request->itembillingcycle=='custom' ? $request->custombillingcycle : null,
+                    'auto_renew' => $request->has('autorenewalcheckbox') ? '1' : '0',
+                    'grace_period'=>$request->graceperiod,
+                    'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : '',
+                    $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
+                ]
+            );
+
+            session()->flash('success', $isUpdate ? trans('custom.items_update_success') : trans('custom.items_create_success'));
+
+            return response()->json([
+                'success' => $isUpdate ? trans('custom.items_update_success') : trans('custom.items_create_success'),
+                'title' => trans('custom.item_title'),
+                'type' => $isUpdate ? 'update' : 'create',
+                'data' => $item,
+            ], Response::HTTP_OK);
         }
+    }
+
+
+    public function itemtypestore(Request $request){
+        $save_item = Items::create([
+            'name' => '',
+            'status' => '1',
+            'sys_state' => '0',
+            'created_at' => Carbon::now(),
+        ]);
+
+        if($request->item_type == 'one-time'){
+            $validity = 'Lifetime';
+        }else{
+            $validity = '';
+        }
+
+        ItemsPricing::create([
+            'item_id' => $save_item->id,
+            'pricing_type'=>$request->item_type,
+            'created_at' => Carbon::now(),
+            'validity'=>$validity,
+        ]);
+
+        return redirect()->route('items-edit', ['id' => $save_item->id,'id1'=>'new'])
+                     ->with('success', 'Item created successfully!');
     }
 
     private function validateRequest(Request $request)
@@ -243,7 +222,7 @@ class ItemsController extends Controller
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
-            'gst_percentage' => 'required|numeric'            
+            'gst_percentage' => 'required|numeric'
         ];
 
         if ($request->item_id == "0") {
@@ -257,7 +236,7 @@ class ItemsController extends Controller
             'category_id.required' => 'The category field is required.',
             'subcategory_id.required' => 'The subcategory field is required.'
         ];
-        
+
         return Validator::make($request->all(), $rules, $customMessages);
     }
 
