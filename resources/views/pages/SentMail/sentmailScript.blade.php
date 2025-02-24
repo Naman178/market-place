@@ -33,7 +33,7 @@
     });
     $(document).on('click', '.email-form-btn', function(e) {
         e.preventDefault();
-        let selectedEmails = $("#emailSelect").val() || []; // Ensure it's always an array
+        let selectedEmails = $("#emailSelect").val() || [];
         let manualEmail = $("#manualEmail").val().trim();
         let subject = $('#mailSubject').val().trim();
 
