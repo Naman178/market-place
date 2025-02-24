@@ -5,12 +5,13 @@
 @endphp
 @section('title')
     <title>{{$site["value"]["site_name"] ?? "Infinity"}} | {{ $item ? 'Edit: '.$item->id : 'New'}}</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!--  FOR LOCAL -->
    <!--  <script src="https://cdn.tiny.cloud/1/o7h5fdpvwna0iulbykb99xeh6i53zmtdyswqphxutmkecio6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
 
    <!--  FOR LIVE -->
     <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
+    {{-- <script>
         tinymce.init({
             selector: 'textarea#html_description',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes autocorrect inlinecss',
@@ -23,7 +24,7 @@
             });
             }
         });
-    </script>
+    </script> --}}
 @endsection
 @section('page-css')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -154,7 +155,8 @@
                                 </div>
                                 <div class="col-md-12 form-group mb-4">
                                     <label for="html_description_label">Description</label>
-                                    <textarea name="html_description"  id="html_description">{{ $item->html_description }}</textarea>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$item->html_description!!}</div>
+                                    <input type="hidden" name="html_description" id="html_description" value="{{$item->html_description}}">
                                     <div class="error" style="color:red;" id="description_error"></div>
                                 </div>
                                 <div class="col-md-12 form-group add-more-input">
@@ -365,7 +367,8 @@
                                 </div>
                                 <div class="col-md-12 form-group mb-4">
                                     <label for="html_description_label">Description</label>
-                                    <textarea name="html_description"  id="html_description"></textarea>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                                    <input type="hidden" name="html_description" id="html_description">
                                     <div class="error" style="color:red;" id="description_error"></div>
                                 </div>
                                 <div class="col-md-12 form-group add-more-input">
@@ -510,8 +513,32 @@
 <script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/tagging.min.js') }}"></script>
 <script src="{{ asset('assets/js/tagging.script.js') }}"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
     $(document).find('.tag_input').tagging();
+    $(document).ready(function () {
+        var quill = new Quill('#quill_editor', {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        quill.on('text-change', function () {
+            $('#html_description').val(quill.root.innerHTML);
+        });
+    });
+
     $(document).ready(function() {
         $('.select2').select2();
         $('.itembillingcycle').select2();
@@ -550,7 +577,6 @@
             }
         });
     });
-
 </script>
 @endsection
 @section('bottom-js')
