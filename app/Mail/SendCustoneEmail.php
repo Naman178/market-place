@@ -36,7 +36,7 @@ class SendCustoneEmail extends Mailable
         }
 
         if ($this->mailData['template'] == 'template_v3') {
-            dd($this);
+            // dd($this);
             $brochure = $this->view('Email.SendCustomEmailV3')
                 ->with('mailData', $this->mailData)
                 ->subject($this->mailData['subject']);
