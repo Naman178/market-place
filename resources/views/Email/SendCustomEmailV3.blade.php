@@ -5,17 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <!--[if !mso]><!-- -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--<![endif]-->
-    <!--[if gte mso 9]><xml>
-    <o:OfficeDocumentSettings>
-    <o:AllowPNG/>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
-    </o:OfficeDocumentSettings>
-    </xml><![endif]-->
-
-
     <style>
         h1,
         .h1 {
@@ -218,27 +208,18 @@
             display: none !important
         }
     </style>
-    @php
-        dd(1);
-    @endphp
     <table width="100%" border="0" cellpadding="0" cellspacing="0"
         style="background-color:#d6d6d5;border:0;border-collapse:collapse;border-spacing:0;mso-table-lspace:0;mso-table-rspace:0"
         bgcolor="#d6d6d5" class="">
         <tbody>
             <tr>
                 <td align="center" style="display: block;">
-                    <!--[if (gte mso 9)|(IE)]>
-    <table width="700" align="center" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-    <td>
-    <![endif]-->
                     <table width="100%" border="0" cellpadding="0" cellspacing="0"
                         style="border:0;border-collapse:collapse;border-spacing:0;max-width:700px;mso-table-lspace:0;mso-table-rspace:0"
                         class="">
                         <tbody>
                             <tr>
                                 <td style="background-color:#ffffff">
-                                    <!-- Logo  mt_2019/10/23  -->
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"
                                         style="border: none; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0; mso-table-rspace: 0; width: 100%;"
                                         data-blockuuid="bb61e9fc-ef96-4b2d-8311-5e8804baa199">
@@ -253,14 +234,6 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td align="center">
-
-
-
-                                                                    <!--[if (gte mso 9)|(IE)]>
-    <table width="560" align="center" cellpadding="0" cellspacing="0" border="0">
-       <tr>
-          <td>
-             <![endif]-->
                                                                     <table border="0" cellpadding="0"
                                                                         cellspacing="0" class="10of12" align="center"
                                                                         style="border: none; border-collapse: collapse; border-spacing: 0; max-width: 560px; mso-table-lspace: 0; mso-table-rspace: 0; width: 100%;">
@@ -292,12 +265,6 @@
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
-                                                                    <!--[if (gte mso 9)|(IE)]>
-          </td>
-       </tr>
-    </table>
-    <![endif]-->
-
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -307,11 +274,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <!-- close logo -->
 
-
-
-                                    <!-- mod1  mt_2019/10/23  -->
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"
                                         style="border: none; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0; mso-table-rspace: 0; width: 100%;"
                                         data-blockuuid="bb61e9fc-ef96-4b2d-8311-5e8804baa199">
@@ -329,25 +292,13 @@
                                                                     bgcolor="#000000"
                                                                     style="background-image:url('https://s3-us-west-2.amazonaws.com/uber-common-public/svc-ugdb/82bac177-a494-410c-a1e7-35abca6689e2_HDGIF2_700x260.gif');background-color: #000000; background-size: contain; background-position: bottom right; background-repeat: no-repeat;"
                                                                     align="center" height="180">
-                                                                    <!--[if gte mso 9]>
-                    <v:image xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style=" border: 0;display: inline-block; width: 700px; height: 240px;" src="https://s3-us-west-2.amazonaws.com/uber-common-public/svc-ugdb/82bac177-a494-410c-a1e7-35abca6689e2_HDGIF2_700x260.gif" />
-                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style=" border: 0;display: inline-block;position: absolute; width: 700px; height: 260px;">
-                      <v:fill  opacity="0%" color="#000000"  />
-                      <v:textbox inset="0,0,0,0">
-                        <![endif]-->
                                                                     <div>
-
-
-
-                                                                        <!-- content  mt_2019/10/23  -->
                                                                         <table width="100%" border="0"
                                                                             cellpadding="0" cellspacing="0"
                                                                             style="border: none; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0; mso-table-rspace: 0; width: 100%;">
                                                                             <tbody>
                                                                                 <tr>
-
                                                                                     <td width="14">&nbsp;</td>
-
                                                                                     <td class="outsidegutter"
                                                                                         align="left"
                                                                                         style="direction:ltr;text-align:left;">
@@ -359,12 +310,6 @@
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td align="center">
-
-                                                                                                        <!--[if (gte mso 9)|(IE)]>
-    <table width="560" align="center" cellpadding="0" cellspacing="0" border="0">
-       <tr>
-          <td>
-             <![endif]-->
                                                                                                         <table
                                                                                                             border="0"
                                                                                                             cellpadding="0"
@@ -390,15 +335,7 @@
                                                                                                                             <tbody>
                                                                                                                                 <tr>
                                                                                                                                     <td
-                                                                                                                                        style="direction:ltr;text-align:left;">
-
-
-                                                                                                                                        <!--[if (gte mso 9)|(IE)]>
-    <table width="347" align="left" cellpadding="0" cellspacing="0" border="0">
-       <tr>
-          <td>
-             <![endif]-->
-                                                                                                                                        <table
+                                                                                                                                        style="direction:ltr;text-align:left;">  <table
                                                                                                                                             border="0"
                                                                                                                                             cellpadding="0"
                                                                                                                                             cellspacing="0"
@@ -429,21 +366,11 @@
                                                                                                                                                 </tr>
                                                                                                                                             </tbody>
                                                                                                                                         </table>
-                                                                                                                                        <!--[if (gte mso 9)|(IE)]>
-          </td>
-       </tr>
-    </table>
-    <![endif]-->
-
                                                                                                                                     </td>
                                                                                                                                 </tr>
-
                                                                                                                                 <tr>
                                                                                                                                     <td valign="top"
                                                                                                                                         style="direction:ltr;text-align:left;">
-
-
-                                                                                                                                        <!-- content  mt_2019/10/23  -->
                                                                                                                                         <table
                                                                                                                                             width="100%"
                                                                                                                                             border="0"
@@ -464,8 +391,6 @@
                                                                                                                                                 </tr>
                                                                                                                                             </tbody>
                                                                                                                                         </table>
-                                                                                                                                        <!-- close content -->
-
                                                                                                                                     </td>
                                                                                                                                 </tr>
 
@@ -479,36 +404,16 @@
                                                                                                                 </tr>
                                                                                                             </tbody>
                                                                                                         </table>
-                                                                                                        <!--[if (gte mso 9)|(IE)]>
-          </td>
-       </tr>
-    </table>
-    <![endif]-->
                                                                                                     </td>
-
-
                                                                                                 </tr>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </td>
-
                                                                                     <td width="14">&nbsp;</td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
-                                                                        <!-- close content -->
-
-
-
-
-
                                                                     </div>
-                                                                    <!--[if gte mso 9]>
-                      </v:textbox>
-                      </v:fill>
-                    </v:rect>
-                    </v:image>
-                    <![endif]-->
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -691,15 +596,6 @@
                                                                                                                                                                             </tr>
                                                                                                                                                                         </tbody>
                                                                                                                                                                     </table>
-                                                                                                                                                                    <!--[if (gte mso 9)|(IE)]>
-          </td>
-       </tr>
-    </table>
-    <![endif]-->
-
-
-
-
                                                                                                                                                                 </td>
                                                                                                                                                             </tr>
                                                                                                                                                         </tbody>
@@ -717,27 +613,14 @@
                                                                                                                                             border="0"
                                                                                                                                             alt="">
                                                                                                                                     </div>
-
-
-                                                                                                                                    <!-- close mod2 mt_2019/10/23  -->
                                                                                                                                 </td>
                                                                                                                             </tr>
                                                                                                                         </tbody>
                                                                                                                     </table>
-                                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </tbody>
                                                                                                     </table>
-                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
@@ -746,22 +629,14 @@
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
-                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <!-- END LIST-->
                                                 </td>
                                             </tr>
-                                            <!-- END BODY-->
                                         </tbody>
                                     </table>
-                                    <!-- footer update july 31 2019  cf    -->
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"
                                         style="background-color: #000000; border: none; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0; mso-table-rspace: 0; width: 100%;"
                                         data-blockuuid="be0d7749-5ff0-40a5-834d-5b24a842477c">
@@ -778,11 +653,6 @@
                                                             <tr>
                                                                 <td
                                                                     style="direction:ltr;text-align:left;padding-top: 30px; padding-bottom: 30px;">
-                                                                    <!--[if (gte mso 9)|(IE)]>
-    <table width="560" align="center" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-    <td>
-    <![endif]-->
                                                                     <table border="0" cellpadding="0"
                                                                         cellspacing="0" class="t10of12"
                                                                         align="center"
@@ -800,11 +670,6 @@
                                                                                             <tr>
                                                                                                 <td class="ignoreTd"
                                                                                                     style="font-size:0; text-align: left ">
-                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    <table width="560" align="left" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-    <td width="224">
-    <![endif]-->
                                                                                                     <table
                                                                                                         border="0"
                                                                                                         cellpadding="0"
@@ -826,11 +691,6 @@
                                                                                                                             <tr>
                                                                                                                                 <td
                                                                                                                                     style="direction:ltr;text-align:left;">
-
-
-
-
-
                                                                                                                                 </td>
                                                                                                                             </tr>
                                                                                                                         </tbody>
@@ -839,10 +699,6 @@
                                                                                                             </tr>
                                                                                                         </tbody>
                                                                                                     </table>
-                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    <td width="336">
-    <![endif]-->
                                                                                                     <table
                                                                                                         border="0"
                                                                                                         cellpadding="0"
@@ -864,11 +720,6 @@
                                                                                                                             <tr>
                                                                                                                                 <td
                                                                                                                                     style="direction:ltr;text-align:left;">
-                                                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    <table width="336" align="left" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-    <td width="168">
-    <![endif]-->
                                                                                                                                     <table
                                                                                                                                         border="0"
                                                                                                                                         cellpadding="0"
@@ -930,10 +781,6 @@
                                                                                                                                             </tr>
                                                                                                                                         </tbody>
                                                                                                                                     </table>
-                                                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    <td width="168">
-    <![endif]-->
                                                                                                                                     <table
                                                                                                                                         border="0"
                                                                                                                                         cellpadding="0"
@@ -977,11 +824,6 @@
                                                                                                                                             </tr>
                                                                                                                                         </tbody>
                                                                                                                                     </table>
-                                                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                                                                                 </td>
                                                                                                                             </tr>
                                                                                                                         </tbody>
@@ -1214,11 +1056,6 @@
                                                                                                             </tr>
                                                                                                         </tbody>
                                                                                                     </table>
-                                                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
@@ -1227,35 +1064,18 @@
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
-                                                                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                                                                 </td>
                                                             </tr>
-                                                            <!-- END bottom half -->
-
-
-
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
-
-
                                         </tbody>
                                     </table>
-                                    <!-- close footer update - ces -->
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
                 </td>
             </tr>
         </tbody>

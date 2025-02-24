@@ -41,6 +41,7 @@ class SendCustoneEmail extends Mailable
                 ->with('mailData', $this->mailData)
                 ->subject($this->mailData['subject']);
         }
+        dd( $brochure->from('no-reply@market-place-main.infinty-stage.com'));
         return $brochure->from('no-reply@market-place-main.infinty-stage.com');
     }
 }
