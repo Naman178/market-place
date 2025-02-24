@@ -21,7 +21,7 @@ class SentMailController extends Controller
     {
         $desc = $req->desc;
         $template = $req->template;
-        $email = $req->email;
+        $email = $req->email[0];
         $subject = $req->subject;
         $mailData = [
             'email' => $email,
@@ -36,17 +36,20 @@ class SentMailController extends Controller
     {
         $desc = $req->desc;
         $template = $req->template;
-        $email = $req->email;
+        $emails = $req->email;
         $subject = $req->subject;
-        $mailData = [
-            'email' => $email,
-            'desc' => $desc,
-            'template' => $template,
-            'subject' => $subject,
-            'title' => 'Dear ' . " " .$email,
-        ];
-        // Mail
-        Mail::to($email)->send(new SendCustoneEmail($mailData));
-        return response()->json(['messasge' => "mail sent successfully"]);
+
+        foreach ($emails as $email) {
+            $mailData = [
+                'email' => $email,
+                'desc' => $desc,
+                'template' => $template,
+                'subject' => $subject,
+                'title' => 'Dear ' . " " .$email,
+            ];
+            // Mail
+            Mail::to($email)->send(new SendCustoneEmail($mailData));
+        }
+        return response()->json(['message' => "mails sent successfully"]);
     }
 }
