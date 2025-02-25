@@ -701,7 +701,6 @@
             var submitUrl = $('#item_form').attr("data-url");
             var item_id = $('#item_id').val();
             var formData = new FormData($('#item_form')[0]);
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -765,7 +764,6 @@
                     }
                 });
             }
-
         });
 
         $(document).on('click', '#saverecurringcardbtn', function (e) {
@@ -790,12 +788,33 @@
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    success: function () {
-                        console.log('Success');
+                    success: function (response) {
+                        window.location.reload();
                     }
                 });
             }
         });
+
+        $(document).on('click', '.removerecurringmaincardbtn', function() {
+            var sub_id = $(this).data('subid');
+            var item_id = $('#item_id').val();
+
+            $.ajax({
+                url: "{{ route('recurring.card.remove') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    item_id: item_id,
+                    sub_id: sub_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+
 
         // For Blog Category
         $(document).on("click", ".erp-Blog_category-form", function (e) {

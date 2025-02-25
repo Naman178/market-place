@@ -134,7 +134,12 @@
 
         $(document).on('click', '#add-image', function(e) {
             var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
-            $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+            $val = $(this).data('id');
+            if($val == 'recurring'){
+                $(this).closest('.card').find('.image-input-wrapper').append(newImageField);
+            }else{
+                $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+            }
         });
 
         $(document).on('click', '.delete-btn', function(e) {
@@ -218,15 +223,141 @@
         }
 
         $(document).on('blur', '.price-input', function (e) {
-            var gst = parseFloat($(document).find('#item_gst_percentage').val());
-            var fixed_price = parseFloat($(document).find('#item_fixed_price').val());
-            var sale_price = parseFloat($(document).find('#item_sale_price').val());
+            var gst = parseFloat($(this).closest('#item_form').find('#item_gst_percentage').val());
+            var fixed_price = parseFloat($(this).closest('#item_form').find('#item_fixed_price').val());
+            var sale_price = parseFloat($(this).closest('#item_form').find('#item_sale_price').val());
             if (!(isNaN(gst))) {
                 if (!isNaN(sale_price)) {
                     var gst_amount = (sale_price * gst) / 100;
-                    $(document).find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
+                    $(this).closest('#item_form').find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
                 }
             }
+        });
+
+        $(document).on('click','#addrecurringcardbtn',function(e){
+            $val = $('#addrecurringcardoption .card').length;
+            var html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form class="erp-item-submit" id="item_form" data-url="{{route('items-subitem-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
+                            <input type="hidden" name="sub_id" value=${$val}>
+                            <div class="col-md-12 form-group add-more-input">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h5 for="key_feature_label">Features</h5>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                    </div>
+                                </div>
+                                <div class="add-more-wrapper feature-input-wrapper">
+                                    <div class="row input-row feature-input-row" data-order='1'>
+                                        <div class="col-9">
+                                            {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="error" style="color:red;" id="feature_error"></div>
+                            </div>
+
+                            <div class="col-md-12 form-group input-file-col add-more-input">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h5>Images</h5>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-info" id="add-image">Add more</button>
+                                    </div>
+                                </div>
+                                <div class="add-more-wrapper image-input-wrapper">
+                                    <div class="row input-row image-input-row" data-order='1'>
+                                        <div class="col-9">
+                                            <label class="form-control filelabel mb-3 image-input-label">
+                                                <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
+                                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                                <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
+                                                <span class="title" id="item_images_title" data-title="title"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group billingcyclecontainer" id="billingcyclecontainer">
+                                <h5>Billing Cycle</h5>
+                                <select name="itembillingcycle" id="itembillingcycle" class="form-control itembillingcycle select2" style="width: 100%;">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="yearly">Yearly</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12 form-group customBillingCycleContainer" id="customBillingCycleContainer" style="display:none;">
+                                <h5>Custom Billing Cycle</h5>
+                                <input type="text" name="custombillingcycle" id="custombillingcycle" placeholder="Enter Custom Billing Cycle" class="form-control custombillingcycle">
+                            </div>
+
+                            <div class="col-md-12 col-12 form-group autorenewalcontainer" id="autorenewalcontainer">
+                                <h5>Auto Renewal</h5>
+                                <label class="switch switch-primary me-3">
+                                    <input type="checkbox" checked="" name="autorenewalcheckbox" id="autorenewalcheckbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-12 col-12 form-group graceperiodcontianer" id="graceperiodcontianer">
+                                <h5>Grace Period</h5>
+                                <input type="text" name="graceperiod" id="graceperiod" class="form-control">
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <h5>Pricing</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
+                                        <div class="error" style="color:red;" id="fixed_price_error"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
+                                        <div class="error" style="color:red;" id="sale_price_error"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
+                                        <div class="error" style="color:red;" id="gst_percentage_error"></div>
+                                        <div class="gst-amount" id="gst_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="col-md-12 form-group text-right">
+                                <button type="button" class="btn btn-outline-primary removerecurringcardbtn" id="removerecurringcardbtn">Remove card</button>
+                                <button type="submit" class="btn btn-outline-primary saverecurringcardbtn" id="saverecurringcardbtn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            $('#addrecurringcardoption').append(html);
+        });
+
+        $(document).on('click','#removerecurringcardbtn',function(){
+            $(this).closest('.card').remove()
+        });
+
+        $(document).on('change','#item_type',function () {
+            $.ajax({
+                url: "{{ route('update.item.pricing') }}",
+                type: 'POST',
+                data: {
+                    item_id: $('#item_id').val(),
+                    pricing_type: $(this).val(),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function () {
+                    window.location.reload();
+                },
+            });
         });
     }) ;
 </script>
