@@ -101,8 +101,8 @@
                         <div class="mb-3">
                             <label for="item_type" class="form-label">Item Type Selection</label>
                             <select class="form-control select2" id="item_type" name="item_type" required>
-                                <option value="one-time">One-Time</option>
-                                <option value="recurring">Recurring</option>
+                                <option value="one-time">One-Time Payment</option>
+                                <option value="recurring">Recurring Payment</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -117,8 +117,8 @@
                                 <div class="col-12 form-group">
                                     <label for="item_type" class="form-label">Item Type Selection</label>
                                     <select class="form-control select2" id="item_type" name="item_type" required>
-                                        <option value="one-time" {{$type=='one-time' ? 'selected' : ''}}>One-Time</option>
-                                        <option value="recurring" {{$type=='recurring' ? 'selected' : ''}}>Recurring</option>
+                                        <option value="one-time" {{$type=='one-time' ? 'selected' : ''}}>One-Time Payment</option>
+                                        <option value="recurring" {{$type=='recurring' ? 'selected' : ''}}>Recurring Payment</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 form-group">
@@ -332,8 +332,8 @@
                                 <div class="col-12 form-group">
                                     <label for="item_type" class="form-label">Item Type Selection</label>
                                     <select class="form-control select2" id="item_type" name="item_type" required>
-                                        <option value="one-time" {{$type=='one-time' ? 'selected' : ''}}>One-Time</option>
-                                        <option value="recurring" {{$type=='recurring' ? 'selected' : ''}}>Recurring</option>
+                                        <option value="one-time" {{$type=='one-time' ? 'selected' : ''}}>One-Time Payment</option>
+                                        <option value="recurring" {{$type=='recurring' ? 'selected' : ''}}>Recurring Payment</option>
                                     </select>
                                 </div>
                                 <div class="col-6 form-group">

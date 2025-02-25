@@ -393,7 +393,7 @@
             var data_name = $(this).attr("data-name");
             var data_email = $(this).attr("data-email");
             var data_pass = $(this).attr("data-pass");
-            
+
             $.ajax({
                 url: submit_url,
                 type:"POST",
@@ -527,7 +527,7 @@
                     }
                 });
             }
-           
+
         });
 
         // For Term Condition
@@ -568,7 +568,7 @@
                     }
                 });
             }
-           
+
         });
 
         // For Privacy Policy
@@ -609,7 +609,7 @@
                     }
                 });
             }
-           
+
         });
 
         // For SEO
@@ -650,7 +650,7 @@
                     }
                 });
             }
-           
+
         });
 
         // For FAQ
@@ -691,13 +691,13 @@
                     }
                 });
             }
-           
+
         });
 
 
         $(document).on("click", ".erp-item-form", function (e) {
             e.preventDefault();
-            tinymce.activeEditor.save();
+            // tinymce.activeEditor.save();
             var submitUrl = $('#item_form').attr("data-url");
             var item_id = $('#item_id').val();
             var formData = new FormData($('#item_form')[0]);
@@ -756,7 +756,7 @@
                             $('#item_gst_percentage').addClass(response.error['gst_percentage']?'is-invalid':'');
                             $('#item_thumbnail_label').addClass(response.error['item_thumbnail']?'is-invalid':'');
                             $('#item_main_file_label').addClass(response.error['item_main_file']?'is-invalid':'');
-                            
+
                         }
                     },
                     error: function (error) {
@@ -765,7 +765,36 @@
                     }
                 });
             }
-           
+
+        });
+
+        $(document).on('click', '#saverecurringcardbtn', function (e) {
+            e.preventDefault();
+            var submitUrl = $(this).closest('#item_form').attr("data-url");
+            var item_id = $('#item_id').val();
+            var formData = new FormData($(this).closest('#item_form')[0]);
+            formData.append('item_id', item_id);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function () {
+                        console.log('Success');
+                    }
+                });
+            }
         });
 
         // For Blog Category
@@ -806,12 +835,12 @@
                     }
                 });
             }
-           
+
         });
-        // For Blog 
+        // For Blog
         $(document).on("click", ".erp-Blog-form", function (e) {
             e.preventDefault();
-            tinymce.triggerSave(); 
+            tinymce.triggerSave();
             var submitUrl = $('#Blog_form').attr("data-url");
             var data_id = $('#Blog_form').attr("data-id");
             var formData = new FormData($('#Blog_form')[0]);
@@ -847,16 +876,16 @@
                     }
                 });
             }
-           
+
         });
-        
+
         function handleFormErrors(errors) {
             $('#name_error').text(errors['name'] || '');
             $('#image_error').text(errors['image'] || '');
             $('#status_error').text(errors['status'] || '');
             $('#parent_category_error').text(errors['parent_category_id'] || '');
             $('#description_error').text(errors['description'] || '');
-            
+
             $('#category_name').addClass(errors['name']?'is-invalid':'');
             $('#sub_category_name').addClass(errors['name']?'is-invalid':'');
             $('#parent_category').addClass(errors['parent_category_id']?'is-invalid':'');
@@ -866,13 +895,13 @@
 
     document.getElementById('edit_content_type').addEventListener('change', function() {
         var contentType = this.value;
-        
+
         // Hide all content options
         var contentOptions = document.querySelectorAll('.content-option');
         contentOptions.forEach(function(option) {
             option.style.display = 'none';
         });
-        
+
         // Show the selected content option based on the selected value
         if (contentType === 'heading-description-image') {
             document.getElementById('content-option-1').style.display = 'block';
