@@ -790,6 +790,7 @@
             });
 
             if (!$('.form-control').hasClass('is-invalid')) {
+                $('.error-message').remove();
                 $("#preloader").show();
                 $.ajax({
                     url: submitUrl,
@@ -800,6 +801,9 @@
                     dataType: 'json',
                     success: function (response) {
                         window.location.reload();
+                    },
+                    error: function (xhr) {
+                        $("#preloader").hide();
                     }
                 });
             }
