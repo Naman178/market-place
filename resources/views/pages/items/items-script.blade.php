@@ -133,12 +133,23 @@
         });
 
         $(document).on('click', '#add-image', function(e) {
-            var newImageField = '<div class="row input-row image-input-row"><div class="col-11"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div></div>';
-            $val = $(this).data('id');
-            if($val == 'recurring'){
-                $(this).closest('.card').find('.image-input-wrapper').append(newImageField);
+            $val = $(this).data('value');
+            if($val == 'one-time'){
+                var newImageField = '<div class="row input-row image-input-row"><div class="col-11"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div></div>';
+                $val = $(this).data('id');
+                if($val == 'recurring'){
+                    $(this).closest('.card').find('.image-input-wrapper').append(newImageField);
+                }else{
+                    $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+                }
             }else{
-                $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+                var newImageField = '<div class="row input-row image-input-row"><div class="col-10"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-2"><div class="btn btn-outline-primary remove-btn">Delete</div></div></div>';
+                $val = $(this).data('id');
+                if($val == 'recurring'){
+                    $(this).closest('.card').find('.image-input-wrapper').append(newImageField);
+                }else{
+                    $(this).closest('#item_form').find('.image-input-wrapper').append(newImageField);
+                }
             }
         });
 
@@ -161,20 +172,36 @@
         });
 
         $(document).on('click', '#add-feature', function(e) {
-            var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
-            var newFeatureFiled = `
-                <div class="row input-row feature-input-row">
-                    <div class="col-11">
-                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
-                    </div>
-                    <div class="col-1">
-                        <div class="btn btn-outline-primary remove-btn">
-                            Delete
+            $val = $(this).data('value');
+            if($val == 'one-time'){
+                var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
+                var newFeatureFiled = `
+                    <div class="row input-row feature-input-row">
+                        <div class="col-11">
+                            {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
+                        </div>
+                        <div class="col-1">
+                            <div class="btn btn-outline-primary remove-btn">
+                                Delete
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-
+                `;
+            }else{
+                var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
+                var newFeatureFiled = `
+                    <div class="row input-row feature-input-row">
+                        <div class="col-10">
+                            {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
+                        </div>
+                        <div class="col-2">
+                            <div class="btn btn-outline-primary remove-btn">
+                                Delete
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
             featureWrapper.append(newFeatureFiled);
         });
 
@@ -247,6 +274,8 @@
         $(document).on('click','#addrecurringcardbtn',function(e){
             $val = $('#addrecurringcardoption .card').length;
             var html = `
+            <div class="error-message"></div>
+            <div class="col-lg-4 col-12">
                 <div class="card mb-3">
                     <div class="card-body">
                         <form class="erp-item-submit" id="item_form" data-url="{{route('items-subitem-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
@@ -257,12 +286,12 @@
                                         <h5 for="key_feature_label">Features</h5>
                                     </div>
                                     <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
+                                    <button type="button" class="btn btn-outline-primary" id="add-feature" data-value="recurring">Add Feature</button>
                                     </div>
                                 </div>
                                 <div class="add-more-wrapper feature-input-wrapper">
-                                    <div class="row input-row feature-input-row" data-order='1'>
-                                        <div class="col-9">
+                                    <div class="row input-row feature-input-row mt-3" data-order='1'>
+                                        <div class="col-12">
                                             {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                                         </div>
                                     </div>
@@ -276,12 +305,12 @@
                                         <h5>Images</h5>
                                     </div>
                                     <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-outline-primary" id="add-image">Add Image</button>
+                                        <button type="button" class="btn btn-outline-primary" id="add-image" data-value="recurring">Add Image</button>
                                     </div>
                                 </div>
                                 <div class="add-more-wrapper image-input-wrapper">
-                                    <div class="row input-row image-input-row" data-order='1'>
-                                        <div class="col-9">
+                                    <div class="row input-row image-input-row mt-3" data-order='1'>
+                                        <div class="col-12">
                                             <label class="form-control filelabel mb-3 image-input-label">
                                                 <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
                                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -324,16 +353,16 @@
                             <div class="col-md-12 form-group">
                                 <h5>Pricing</h5>
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
+                                    <div class="col-md-12  mt-2 mb-2">
+                                        {!! Form::number('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
                                         <div class="error" style="color:red;" id="fixed_price_error"></div>
                                     </div>
-                                    <div class="col-md-4">
-                                        {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
+                                    <div class="col-md-12  mt-2 mb-2">
+                                        {!! Form::number('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
                                         <div class="error" style="color:red;" id="sale_price_error"></div>
                                     </div>
-                                    <div class="col-md-4">
-                                        {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
+                                    <div class="col-md-12  mt-2 mb-2">
+                                        {!! Form::number('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
                                         <div class="error" style="color:red;" id="gst_percentage_error"></div>
                                         <div class="gst-amount" id="gst_amount"></div>
                                     </div>
@@ -347,6 +376,7 @@
                         </form>
                     </div>
                 </div>
+            </div>
             `;
             $('#addrecurringcardoption').append(html);
         });

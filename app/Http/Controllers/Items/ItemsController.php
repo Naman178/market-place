@@ -188,6 +188,27 @@ class ItemsController extends Controller
     }
 
     public function storesubitem(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'item_id' => 'required|integer|exists:items__tbl,id',
+            'sub_id' => 'required|integer',
+            'fixed_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
+            'gst_percentage' => 'nullable|numeric|min:0|max:100',
+            'itembillingcycle' => 'required|string',
+            'custombillingcycle' => 'nullable|integer|min:1',
+            'expiryDate' => 'nullable|date',
+            'key_feature' => 'nullable|array',
+            'key_feature.*' => 'string|max:255',
+            'item_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'graceperiod'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
         $isUpdate = ItemsPricing::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->exists();
 
         ItemsImage::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->delete();
