@@ -855,8 +855,8 @@
                                     @php
                                     $fixed_price = isset($subproduct->fixed_price) ? floatval($subproduct->fixed_price) : 0;
                                     $sale_price = isset($subproduct->sale_price) ? floatval($subproduct->sale_price) : 0;
-                                    $gst_percentage = isset($subproduct->gst_percentage) ? floatval($subproduct->gst_percentage) : 0
-                                    $gst_amount = ($sale_price * $gst_percentage) / 100
+                                    $gst_percentage = isset($subproduct->gst_percentage) ? floatval($subproduct->gst_percentage) : 0;
+                                    $gst_amount = ($sale_price * $gst_percentage) / 100;
                                     $gst_amount_formatted = number_format($gst_amount, 2);
                                     @endphp
                                     <div class="col-md-12 mt-2 mb-2">
