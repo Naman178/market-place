@@ -700,7 +700,17 @@
             // tinymce.activeEditor.save();
             var submitUrl = $('#item_form').attr("data-url");
             var item_id = $('#item_id').val();
+            var item_type = $('#item_type').val();
             var formData = new FormData($('#item_form')[0]);
+            var formData1 = new FormData($('#item_form1')[0]);
+            var formData2 = new FormData($('#item_form2')[0]);
+            formData.append('item_type', item_type);
+            formData1.forEach(function(value, key) {
+                formData.append(key, value);
+            });
+            formData2.forEach(function(value, key) {
+                formData.append(key, value);
+            });
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

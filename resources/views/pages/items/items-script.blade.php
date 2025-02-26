@@ -133,7 +133,7 @@
         });
 
         $(document).on('click', '#add-image', function(e) {
-            var newImageField = '<div class="row input-row image-input-row"><div class="col-9"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div></div>';
+            var newImageField = '<div class="row input-row image-input-row"><div class="col-11"><label class="form-control filelabel mb-3 image-input-label"><input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error"><span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span><img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls"><span class="title" id="item_images_title" data-title="title"></span></label></div><div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div></div>';
             $val = $(this).data('id');
             if($val == 'recurring'){
                 $(this).closest('.card').find('.image-input-wrapper').append(newImageField);
@@ -164,12 +164,12 @@
             var featureWrapper = $(this).closest('.add-more-input').find('.feature-input-wrapper');
             var newFeatureFiled = `
                 <div class="row input-row feature-input-row">
-                    <div class="col-9">
+                    <div class="col-11">
                         {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                     </div>
-                    <div class="col-3">
-                        <div class="remove-btn">
-                            <span class="close-icon" aria-hidden="true">&times;</span>
+                    <div class="col-1">
+                        <div class="btn btn-outline-primary remove-btn">
+                            Delete
                         </div>
                     </div>
                 </div>
@@ -223,13 +223,23 @@
         }
 
         $(document).on('blur', '.price-input', function (e) {
-            var gst = parseFloat($(this).closest('#item_form').find('#item_gst_percentage').val());
-            var fixed_price = parseFloat($(this).closest('#item_form').find('#item_fixed_price').val());
-            var sale_price = parseFloat($(this).closest('#item_form').find('#item_sale_price').val());
+            // var gst = parseFloat($(this).closest('#item_form').find('#item_gst_percentage').val());
+            // var fixed_price = parseFloat($(this).closest('#item_form').find('#item_fixed_price').val());
+            // var sale_price = parseFloat($(this).closest('#item_form').find('#item_sale_price').val());
+            // if (!(isNaN(gst))) {
+            //     if (!isNaN(sale_price)) {
+            //         var gst_amount = (sale_price * gst) / 100;
+            //         $(this).closest('#item_form').find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
+            //     }
+            // }
+
+            var gst = parseFloat($(this).closest('.card').find('#item_gst_percentage').val());
+            var fixed_price = parseFloat($(this).closest('.card').find('#item_fixed_price').val());
+            var sale_price = parseFloat($(this).closest('.card').find('#item_sale_price').val());
             if (!(isNaN(gst))) {
                 if (!isNaN(sale_price)) {
                     var gst_amount = (sale_price * gst) / 100;
-                    $(this).closest('#item_form').find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
+                    $(this).closest('.card').find('#gst_amount').html("GST Amount: <strong><span>" + gst_amount.toFixed(2) + "</span></strong>");
                 }
             }
         });
@@ -247,7 +257,7 @@
                                         <h5 for="key_feature_label">Features</h5>
                                     </div>
                                     <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                    <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
                                     </div>
                                 </div>
                                 <div class="add-more-wrapper feature-input-wrapper">
@@ -266,7 +276,7 @@
                                         <h5>Images</h5>
                                     </div>
                                     <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-info" id="add-image">Add more</button>
+                                        <button type="button" class="btn btn-outline-primary" id="add-image">Add Image</button>
                                     </div>
                                 </div>
                                 <div class="add-more-wrapper image-input-wrapper">
@@ -329,7 +339,7 @@
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="col-md-12 form-group text-right">
                                 <button type="button" class="btn btn-outline-primary removerecurringcardbtn" id="removerecurringcardbtn">Remove card</button>
                                 <button type="submit" class="btn btn-outline-primary saverecurringcardbtn" id="saverecurringcardbtn">Save</button>

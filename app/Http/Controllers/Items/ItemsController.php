@@ -189,20 +189,20 @@ class ItemsController extends Controller
 
     public function storesubitem(Request $request) {
         $isUpdate = ItemsPricing::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->exists();
-    
+
         ItemsImage::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->delete();
-    
+
         $oldImages = $request->old_image ?? [];
         $newImages = $request->item_images ?? [];
-        
+
         foreach (array_merge($oldImages, $newImages) as $image) {
             $imagePath = is_file($image) ? $this->uploadFile($image) : $image;
-        
+
             $existingImage = ItemsImage::where('item_id', $request->item_id)
                 ->where('sub_id', $request->sub_id)
                 ->where('image_path', $imagePath)
                 ->first();
-        
+
             if ($existingImage) {
                 $existingImage->update([
                     'image_path' => $imagePath,
@@ -218,7 +218,7 @@ class ItemsController extends Controller
                 ]);
             }
         }
-    
+
         if ($isUpdate) {
             ItemsFeature::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->delete();
         }
@@ -234,14 +234,14 @@ class ItemsController extends Controller
             ]
             );
         }
-    
+
         $validity = '';
         if ($request->item_type == 'one-time') {
             if (($request->licenseradio ?? '') === 'lifetime' || ($request->radio ?? '') === 'lifetime') {
                 $validity = 'Lifetime';
             }
         }
-    
+
         ItemsPricing::updateOrCreate(
             ['item_id' => $request->item_id,'sub_id'=>$request->sub_id],
             [
@@ -270,20 +270,20 @@ class ItemsController extends Controller
                 'sys_state' => '0',
                 'created_at' => Carbon::now(),
             ]);
-    
+
             if($request->item_type == 'one-time'){
                 $validity = 'Lifetime';
             }else{
                 $validity = '';
             }
-    
+
             ItemsPricing::create([
                 'item_id' => $save_item->id,
                 'pricing_type'=>$request->item_type,
                 'created_at' => Carbon::now(),
                 'validity'=>$validity,
             ]);
-    
+
             return redirect()->route('items-edit', ['id' => $save_item->id,'id1'=>'new'])
                          ->with('success', 'Item created successfully!');
         }
@@ -305,9 +305,9 @@ class ItemsController extends Controller
             ItemsFeature::where('item_id',$request->item_id)->whereNotNull('sub_id')->delete();
             ItemsImage::where('item_id',$request->item_id)->whereNotNull('sub_id')->delete();
         }
-    
+
         ItemsPricing::where('item_id', $request->item_id)->update(['pricing_type' => $request->pricing_type,'validity'=>$validity]);
-    
+
         return response()->json(['message' => 'Item pricing updated successfully!']);
     }
 
@@ -384,7 +384,7 @@ class ItemsController extends Controller
     public function getSubCategory(Request $request){
         $subcategories = SubCategory::where('sys_state', '0')->where('category_id', $request->category_id)->get(['id', 'name', 'category_id']);
         return response()->json($subcategories);
-    } 
+    }
 
     public function removerecurringcard(Request $request)
     {
