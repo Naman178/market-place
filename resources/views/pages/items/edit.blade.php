@@ -52,7 +52,7 @@
     .previewImgCls{
         display: none;
     }
-    .remove-btn {
+    /* .remove-btn {
         background-color: rgb(244, 67, 54);
         color: #fff;
         font-size: 27px;
@@ -63,7 +63,7 @@
         padding: 16px 0;
         margin-left: 30px;
         cursor: pointer;
-    }
+    } */
 
     .select2-container .select2-selection--single {
         padding-bottom: 2px;
@@ -124,348 +124,318 @@
     @endif
     <div class="col-md-8">
         @if ($isshow == false)
-            <div class="card">
-                <div class="card-body mb-3">
-                    <h4 class="heading-color">Item</h4>
-                    @if($item)
-                            <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
-                                <input type="hidden" id="item_id" class="erp-id" value="{{$itemid}}" name="item_id" />
-                                <input type="hidden" id="item_id_type" class="erp-id" value="old" name="item_id_type" />
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="name">Name</label>
-                                        <input placeholder="Enter Item Name" class="form-control input-error" id="item_name" name="name" type="text" value="{{ $item->name }}">
-                                        <div class="error" style="color:red;" id="name_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group">
-                                        <label>Preview URL</label>
-                                        <input placeholder="Include http:// or https:// in the URL" class="form-control" id="item_preview_url" name="preview_url" type="url" value="{{ $item->preview_url }}" pattern= 'https?://.*'>
-                                        <div class="error" style="color:red;" id="preview_url_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group input-file-col">
-                                        <label>Item Thumbnail</label>
-                                        <?php $showImagePrev = (!empty($item->thumbnail_image)) ? 'display:inline-block' : ''; ?>
-                                        <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
-                                            <input type="hidden" name="old_thumbnail_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
-                                            <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
-                                            <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                            <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($item->thumbnail_image)){{asset('storage/items_files/'.$item->thumbnail_image)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
-                                            <span class="title" id="item_thumbnail_title" data-title="title">{{ $item->thumbnail_image ??  ''}}</span>
-                                        </label>
-                                        <div class="error" style="color:red;" id="item_thumbnail_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group input-file-col">
-                                        <label>Main file</label>
-                                        <label id="item_main_file_label" class="form-control filelabel file-input-label">
-                                            <input type="hidden" name="old_main_file" value="@if(!empty($item->main_file_zip)){{$item->main_file_zip}}@endif">
-                                            <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
-                                            <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                            <span class="title" id="item_files_title"  data-title="title">{{ $item->main_file_zip ??  ''}}</span>
-                                        </label>
-                                        <div class="error" style="color:red;" id="zip_file_error"></div>
-                                    </div>
-                                    <div class="col-md-12 form-group mb-4">
-                                        <label>Description</label>
-                                        <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$item->html_description!!}</div>
-                                        <input type="hidden" name="html_description" id="html_description" value="{{$item->html_description}}">
-                                        <div class="error" style="color:red;" id="description_error"></div>
-                                    </div>
-                                    @if ($type !== 'recurring')
-                                        <div class="col-md-12 form-group add-more-input">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label for="key_feature_label">Features</label>
-                                                </div>
-                                                <div class="col-6 text-right">
-                                                <button type="button" class="btn btn-info" id="add-feature">Add more</button>
-                                                </div>
-                                            </div>
-                                            <div class="add-more-wrapper feature-input-wrapper">
-                                                @foreach($item->features as $feature)
-                                                    <div class="row input-row feature-input-row">
-                                                        <div class="col-9">
-                                                            <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
-                                                        </div>
-                                                        <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="error" style="color:red;" id="feature_error"></div>
-                                        </div>
-                                        <div class="col-md-12 form-group input-file-col add-more-input">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label>Images</label>
-                                                </div>
-                                                <div class="col-6 text-right">
-                                                    <button type="button" class="btn btn-info" id="add-image">Add more</button>
-                                                </div>
-                                            </div>
-                                            <div class="add-more-wrapper image-input-wrapper">
-                                                @foreach($item->images as $image)
-                                                    <?php $showImagePrev = (!empty($image->image_path)) ? 'display:inline-block' : ''; ?>
-                                                    <div class="row input-row image-input-row">
-                                                        <div class="col-9">
-                                                            <label class="form-control filelabel mb-3 image-input-label">
-                                                                <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
-                                                                <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
-                                                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                                                <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($image->image_path)){{asset('storage/items_files/'.$image->image_path)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
-                                                                <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="error" style="color:red;" id="image_error"></div>
-                                        </div>
-                                    @endif
-                                    
-                                    <div class="col-md-12 form-group">
-                                        <label for="tags_label">Tags</label>
-                                        <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input">
-                                            @foreach($item->tags as $index => $tag)
-                                            @if($index > 0) \n @endif{{ $tag->tag_name }}
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="category_label">Category</label>
-                                        {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
-                                        <div class="error" style="color:red;" id="category_error"></div>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="subcategory_label">Sub category</label>
-                                        <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
-                                            <option value="">Select sub category</option>
-                                            @foreach($subcategories as $subcategory)
-                                                @if($subcategory->category_id == $item->categorySubcategory->category_id)
-                                                    <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" {{ $item->categorySubcategory->subcategory_id == $subcategory->id ? 'selected' : '' }}>{{ $subcategory->name }}</option>
-                                                @else
-                                                    <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        <div class="error" style="color:red;" id="subcategories_error"></div>
-                                    </div>
-                                    <div class="col-md-12 col-12 form-group licensevaliditycontainer" id="licensevaliditycontainer" style="display: none;">
-                                        <label for="">License Validity</label>
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="licenseradio" [value]="1" formcontrolname="radio" id="licensevalidityradio" value="lifetime" {{$item->pricing->validity == 'Lifetime' ? 'checked' : ''}}>
-                                            <span>Lifetime</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="licenseradio" [value]="1" formcontrolname="radio" id="licensevalidityradio" value="expirydate" {{$item->pricing->validity != 'Lifetime' ? 'checked' : ''}}>
-                                            <span>Expiry Date</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <div id="expirydatecontainer" @if($item->pricing->validity == 'Lifetime') style="display: none;" @endif>
-                                            <label for="expiryDate">Select Expiry Date</label>
-                                            <input type="date" class="form-control" name="expiryDate" id="expiryDate" value="{{ $item->pricing->expiry_date }}">
-                                        </div>
-                                        <input type="text" name="licensevaluetext" class="licensevaluetext" style="display:none">
-                                    </div>
-                                    @if ($type !== 'recurring')
-                                        <div class="col-md-12 form-group">
-                                            <label for="pricing_label">Pricing</label>
-                                            <div class="row">
-                                                @php
-                                                $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
-                                                $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
-                                                $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
-
-                                                $gst_amount = ($sale_price * $gst_percentage) / 100;
-
-                                                $gst_amount_formatted = number_format($gst_amount, 2);
-                                                @endphp
-                                                <div class="col-md-4">
-                                                    {!! Form::text('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price')) !!}
-                                                    <div class="error" style="color:red;" id="fixed_price_error"></div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::text('sale_price', $item->pricing->sale_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error price-input' , 'id' => 'item_sale_price')) !!}
-                                                    <div class="error" style="color:red;" id="sale_price_error"></div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error price-input' , 'id' => 'item_gst_percentage')) !!}
-                                                    <div class="error" style="color:red;" id="gst_percentage_error"></div>
-                                                    <div class="gst-amount" id="gst_amount">GST Amount: <strong><span>{{ $gst_amount_formatted }}</span></strong></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                    <div class="form-group col-md-12">
-                                        <label for="item_status" class="">Item status:</label>
-                                        <div class="ul-form__radio-inline">
-                                            <label class=" ul-radio__position radio radio-primary form-check-inline">
-                                                <input type="radio" name="status" value="1" <?php if($item->status == 1){echo 'checked="checked"';} ?>>
-                                                <span class="ul-form__radio-font">Active</span>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <label class="ul-radio__position radio radio-primary">
-                                                <input type="radio" name="status" value="0" <?php if($item->status == 0){echo 'checked="checked"';} ?>>
-                                                <span class="ul-form__radio-font">Inactive</span>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                        <div class="error" style="color:red;" id="status_error"></div>
-                                    </div>
+            @if($item)
+                <div class="card">
+                    <div class="card-body mb-3">
+                        <h4 class="heading-color">Item</h4>
+                        <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
+                            <input type="hidden" id="item_id" class="erp-id" value="{{$itemid}}" name="item_id" />
+                            <input type="hidden" id="item_id_type" class="erp-id" value="old" name="item_id_type" />
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="name">Name</label>
+                                    <input placeholder="Enter Item Name" class="form-control input-error" id="item_name" name="name" type="text" value="{{ $item->name }}">
+                                    <div class="error" style="color:red;" id="name_error"></div>
                                 </div>
-                            @if ($type == 'one-time')
-                            </form>
-                            @endif
-                    @else
-                            <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="item_id">
-                                {{-- <input type="hidden" id="item_id" class="erp-id" name="item_id" value="0" /> --}}
-                                <input type="hidden" id="item_id" class="erp-id" value="{{$itemid}}" name="item_id" />
-                                <input type="hidden" id="item_id_type" class="erp-id" value="new" name="item_id_type" />
-                                <input type="hidden" name="status" value="1">
-                                <div class="row">
-                                    <div class="col-6 form-group">
-                                        <label for="name_label">Name</label>
-                                        {!! Form::text('name', null, array('placeholder' => 'Enter Item Name','class' => 'form-control input-error' , 'id' => 'name')) !!}
-                                        <div class="error" style="color:red;" id="name_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group">
-                                        <label for="preview_url_label">Preview URL</label>
-                                        {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
-                                        <div class="error" style="color:red;" id="preview_url_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group input-file-col">
-                                        <label for="item_thumbnail_label">Item Thumbnail</label>
-                                        <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
-                                            <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
-                                            <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                            <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
-                                            <span class="title" id="item_thumbnail_title" data-title="title"></span>
-                                        </label>
-                                        <div class="error" style="color:red;" id="item_thumbnail_error"></div>
-                                    </div>
-                                    <div class="col-6 form-group input-file-col">
-                                        <label for="item_main_file_label">Main file</label>
-                                        <label id="item_main_file_label"  class="form-control filelabel file-input-label">
-                                            <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
-                                            <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                            <span class="title" id="item_files_title"  data-title="title"></span>
-                                        </label>
-                                        <div class="error" style="color:red;" id="zip_file_error"></div>
-                                    </div>
-                                    <div class="col-md-12 form-group mb-4">
-                                        <label for="html_description_label">Description</label>
-                                        <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
-                                        <input type="hidden" name="html_description" id="html_description">
-                                        <div class="error" style="color:red;" id="description_error"></div>
-                                    </div>
-                                    @if ($type !== 'recurring')
-                                        <div class="col-md-12 form-group add-more-input">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label for="key_feature_label">Features</label>
-                                                </div>
-                                                <div class="col-6 text-right">
-                                                <button type="button" class="btn btn-info" id="add-feature">Add more</button>
-                                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Preview URL</label>
+                                    <input placeholder="Include http:// or https:// in the URL" class="form-control" id="item_preview_url" name="preview_url" type="url" value="{{ $item->preview_url }}" pattern= 'https?://.*'>
+                                    <div class="error" style="color:red;" id="preview_url_error"></div>
+                                </div>
+                                <div class="col-6 form-group input-file-col">
+                                    <label>Item Thumbnail</label>
+                                    <?php $showImagePrev = (!empty($item->thumbnail_image)) ? 'display:inline-block' : ''; ?>
+                                    <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
+                                        <input type="hidden" name="old_thumbnail_image" value="@if(!empty($item->thumbnail_image)){{$item->thumbnail_image}}@endif">
+                                        <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
+                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                        <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($item->thumbnail_image)){{asset('storage/items_files/'.$item->thumbnail_image)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
+                                        <span class="title" id="item_thumbnail_title" data-title="title">{{ $item->thumbnail_image ??  ''}}</span>
+                                    </label>
+                                    <div class="error" style="color:red;" id="item_thumbnail_error"></div>
+                                </div>
+                                <div class="col-6 form-group input-file-col">
+                                    <label>Main file</label>
+                                    <label id="item_main_file_label" class="form-control filelabel file-input-label">
+                                        <input type="hidden" name="old_main_file" value="@if(!empty($item->main_file_zip)){{$item->main_file_zip}}@endif">
+                                        <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
+                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                        <span class="title" id="item_files_title"  data-title="title">{{ $item->main_file_zip ??  ''}}</span>
+                                    </label>
+                                    <div class="error" style="color:red;" id="zip_file_error"></div>
+                                </div>
+                                <div class="col-md-12 form-group mb-4">
+                                    <label>Description</label>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$item->html_description!!}</div>
+                                    <input type="hidden" name="html_description" id="html_description" value="{{$item->html_description}}">
+                                    <div class="error" style="color:red;" id="description_error"></div>
+                                </div>
+                                @if ($type !== 'recurring')
+                                    <div class="col-md-12 form-group add-more-input">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label for="key_feature_label">Features</label>
                                             </div>
-                                            <div class="add-more-wrapper feature-input-wrapper">
-                                                <div class="row input-row feature-input-row" data-order='1'>
-                                                    <div class="col-9">
-                                                        {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
-                                                    </div>
-                                                </div>
+                                            <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
                                             </div>
-                                            <div class="error" style="color:red;" id="feature_error"></div>
                                         </div>
-                                        <div class="col-md-12 form-group input-file-col add-more-input">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label for="item_images_label">Images</label>
+                                        <div class="add-more-wrapper feature-input-wrapper">
+                                            @foreach($item->features as $feature)
+                                                <div class="row input-row feature-input-row {{ $loop->first ? 'mt-3' : '' }}">
+                                                    <div class="col-11">
+                                                        <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
+                                                    </div>
+                                                    <div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                                 </div>
-                                                <div class="col-6 text-right">
-                                                    <button type="button" class="btn btn-info" id="add-image">Add more</button>
-                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="error" style="color:red;" id="feature_error"></div>
+                                    </div>
+                                    <div class="col-md-12 form-group input-file-col add-more-input">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label>Images</label>
                                             </div>
-                                            <div class="add-more-wrapper image-input-wrapper">
-                                                <div class="row input-row image-input-row" data-order='1'>
-                                                    <div class="col-9">
+                                            <div class="col-6 text-right">
+                                                <button type="button" class="btn btn-outline-primary" id="add-image">Add Image</button>
+                                            </div>
+                                        </div>
+                                        <div class="add-more-wrapper image-input-wrapper">
+                                            @foreach($item->images as $image)
+                                                <?php $showImagePrev = (!empty($image->image_path)) ? 'display:inline-block' : ''; ?>
+                                                <div class="row input-row image-input-row {{ $loop->first ? 'mt-3' : '' }}">
+                                                    <div class="col-11">
                                                         <label class="form-control filelabel mb-3 image-input-label">
-                                                            <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
+                                                            <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
+                                                            <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
                                                             <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                                            <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
-                                                            <span class="title" id="item_images_title" data-title="title"></span>
+                                                            <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($image->image_path)){{asset('storage/items_files/'.$image->image_path)}}@endif" data-title="previewImgCls" style="{{$showImagePrev}}">
+                                                            <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
                                                         </label>
                                                     </div>
+                                                    <div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                    @endif
-                                    <div class="col-md-12 form-group">
-                                        <label for="tags_label">Tags</label>
-                                        <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input"></div>
+                                        <div class="error" style="color:red;" id="image_error"></div>
                                     </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="category_label">Category</label>
-                                        {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
-                                        <div class="error" style="color:red;" id="category_error"></div>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="subcategory_label">Sub category</label>
-                                        <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
-                                            <option value="">Select sub category</option>
-                                        <!--  @foreach($subcategories as $subcategory)
-                                                <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
-                                            @endforeach -->
-                                        </select>
-                                        <div class="error" style="color:red;" id="subcategories_error"></div>
-                                    </div>
+                                @endif
 
-                                    <div class="col-md-12 col-12 form-group licensevaliditycontainer" id="licensevaliditycontainer" style="display: none;">
-                                        <label for="">License Validity</label>
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="radio" formcontrolname="radio" id="licensevalidityradio" value="lifetime">
-                                            <span>Lifetime</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="radio" formcontrolname="radio" id="licensevalidityradio" value="expirydate">
-                                            <span>Expiry Date</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <div id="expirydatecontainer" style="display: none;">
-                                            <label for="expiryDate">Select Expiry Date</label>
-                                            <input type="date" class="form-control" name="expiryDate" id="expiryDate">
-                                        </div>
-                                        <input type="text" name="licensevaluetext" class="licensevaluetext" style="display:none">
+                                <div class="col-md-12 col-12 form-group licensevaliditycontainer" id="licensevaliditycontainer" style="display: none;">
+                                    <label for="">License Validity</label>
+                                    <label class="radio radio-primary">
+                                        <input type="radio" name="licenseradio" [value]="1" formcontrolname="radio" id="licensevalidityradio" value="lifetime" {{$item->pricing->validity == 'Lifetime' ? 'checked' : ''}}>
+                                        <span>Lifetime</span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio radio-primary">
+                                        <input type="radio" name="licenseradio" [value]="1" formcontrolname="radio" id="licensevalidityradio" value="expirydate" {{$item->pricing->validity != 'Lifetime' ? 'checked' : ''}}>
+                                        <span>Expiry Date</span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <div id="expirydatecontainer" @if($item->pricing->validity == 'Lifetime') style="display: none;" @endif>
+                                        <label for="expiryDate">Select Expiry Date</label>
+                                        <input type="date" class="form-control" name="expiryDate" id="expiryDate" value="{{ $item->pricing->expiry_date }}">
                                     </div>
-
-                                    @if ($type !== 'recurring')
-                                        <div class="col-md-12 form-group">
-                                            <label for="pricing_label">Pricing</label>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
-                                                    <div class="error" style="color:red;" id="fixed_price_error"></div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
-                                                    <div class="error" style="color:red;" id="sale_price_error"></div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
-                                                    <div class="error" style="color:red;" id="gst_percentage_error"></div>
-                                                    <div class="gst-amount" id="gst_amount"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
+                                    <input type="text" name="licensevaluetext" class="licensevaluetext" style="display:none">
                                 </div>
-                            @if ($type == 'one-time')
-                            </form>
-                            @endif
-                    @endif
+                                <div class="form-group col-md-12">
+                                    <label for="item_status" class="">Item status:</label>
+                                    <div class="ul-form__radio-inline">
+                                        <label class=" ul-radio__position radio radio-primary form-check-inline">
+                                            <input type="radio" name="status" value="1" <?php if($item->status == 1){echo 'checked="checked"';} ?>>
+                                            <span class="ul-form__radio-font">Active</span>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="ul-radio__position radio radio-primary">
+                                            <input type="radio" name="status" value="0" <?php if($item->status == 0){echo 'checked="checked"';} ?>>
+                                            <span class="ul-form__radio-font">Inactive</span>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="error" style="color:red;" id="status_error"></div>
+                                </div>
+                            </div>
+                    </div>
                 </div>
-            </div>
+
+                @if ($type !== 'recurring')
+                    <div class="card mt-3 mb-3">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <h5>Pricing</h5>
+                                <div class="row">
+                                    @php
+                                    $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
+                                    $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
+                                    $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
+
+                                    $gst_amount = ($sale_price * $gst_percentage) / 100;
+
+                                    $gst_amount_formatted = number_format($gst_amount, 2);
+                                    @endphp
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="fixed_price">Enter fixed price</label>
+                                        {!! Form::text('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price')) !!}
+                                        <div class="error" style="color:red;" id="fixed_price_error"></div>
+                                    </div>
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="sale_price">Enter Sale Price</label>
+                                        {!! Form::text('sale_price', $item->pricing->sale_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error price-input' , 'id' => 'item_sale_price')) !!}
+                                        <div class="error" style="color:red;" id="sale_price_error"></div>
+                                    </div>
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="gst_percentage">Enter GST %</label>
+                                        {!! Form::text('gst_percentage', $item->pricing->gst_percentage, array('placeholder' => 'Enter GST %','class' => 'form-control input-error price-input' , 'id' => 'item_gst_percentage')) !!}
+                                        <div class="error" style="color:red;" id="gst_percentage_error"></div>
+                                        <div class="gst-amount" id="gst_amount">GST Amount: <strong><span>{{ $gst_amount_formatted }}</span></strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                    </form>
+            @else
+                <div class="card">
+                    <div class="card-body mb-3">
+                        <form class="erp-item-submit" id="item_form" data-url="{{route('items-store')}}" data-id="item_id">
+                            {{-- <input type="hidden" id="item_id" class="erp-id" name="item_id" value="0" /> --}}
+                            <input type="hidden" id="item_id" class="erp-id" value="{{$itemid}}" name="item_id" />
+                            <input type="hidden" id="item_id_type" class="erp-id" value="new" name="item_id_type" />
+                            <input type="hidden" name="status" value="1">
+                            <div class="row">
+                                <div class="col-6 form-group">
+                                    <label for="name_label">Name</label>
+                                    {!! Form::text('name', null, array('placeholder' => 'Enter Item Name','class' => 'form-control input-error' , 'id' => 'name')) !!}
+                                    <div class="error" style="color:red;" id="name_error"></div>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="preview_url_label">Preview URL</label>
+                                    {!! Form::url('preview_url', null, ['placeholder' => 'Include http:// or https:// in the URL', 'class' => 'form-control', 'id' => 'item_preview_url', 'title' => 'Include http:// or https:// in the URL', 'pattern' => 'https?://.*']) !!}
+                                    <div class="error" style="color:red;" id="preview_url_error"></div>
+                                </div>
+                                <div class="col-6 form-group input-file-col">
+                                    <label for="item_thumbnail_label">Item Thumbnail</label>
+                                    <label id="item_thumbnail_label" class="form-control filelabel image-input-label">
+                                        <input type="file" name="item_thumbnail" id="item_thumbnail"  class="image-input form-control input-error">
+                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                        <img id="item_thumbnail_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
+                                        <span class="title" id="item_thumbnail_title" data-title="title"></span>
+                                    </label>
+                                    <div class="error" style="color:red;" id="item_thumbnail_error"></div>
+                                </div>
+                                <div class="col-6 form-group input-file-col">
+                                    <label for="item_main_file_label">Main file</label>
+                                    <label id="item_main_file_label"  class="form-control filelabel file-input-label">
+                                        <input type="file" name="item_main_file" id="item_main_file"  accept=".zip"  class="form-control file-input">
+                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                        <span class="title" id="item_files_title"  data-title="title"></span>
+                                    </label>
+                                    <div class="error" style="color:red;" id="zip_file_error"></div>
+                                </div>
+                                <div class="col-md-12 form-group mb-4">
+                                    <label for="html_description_label">Description</label>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                                    <input type="hidden" name="html_description" id="html_description">
+                                    <div class="error" style="color:red;" id="description_error"></div>
+                                </div>
+                                @if ($type !== 'recurring')
+                                    <div class="col-md-12 form-group add-more-input">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label for="key_feature_label">Features</label>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
+                                            </div>
+                                        </div>
+                                        <div class="add-more-wrapper feature-input-wrapper">
+                                            <div class="row input-row feature-input-row mt-3" data-order='1'>
+                                                <div class="col-12">
+                                                    {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="error" style="color:red;" id="feature_error"></div>
+                                    </div>
+                                    <div class="col-md-12 form-group input-file-col add-more-input">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label for="item_images_label">Images</label>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <button type="button" class="btn btn-outline-primary" id="add-image">Add Image</button>
+                                            </div>
+                                        </div>
+                                        <div class="add-more-wrapper image-input-wrapper">
+                                            <div class="row input-row image-input-row mt-3" data-order='1'>
+                                                <div class="col-12">
+                                                    <label class="form-control filelabel mb-3 image-input-label">
+                                                        <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
+                                                        <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                                        <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
+                                                        <span class="title" id="item_images_title" data-title="title"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="col-md-12 col-12 form-group licensevaliditycontainer" id="licensevaliditycontainer" style="display: none;">
+                                    <label for="">License Validity</label>
+                                    <label class="radio radio-primary">
+                                        <input type="radio" name="radio" formcontrolname="radio" id="licensevalidityradio" value="lifetime">
+                                        <span>Lifetime</span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio radio-primary">
+                                        <input type="radio" name="radio" formcontrolname="radio" id="licensevalidityradio" value="expirydate">
+                                        <span>Expiry Date</span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <div id="expirydatecontainer" style="display: none;">
+                                        <label for="expiryDate">Select Expiry Date</label>
+                                        <input type="date" class="form-control" name="expiryDate" id="expiryDate">
+                                    </div>
+                                    <input type="text" name="licensevaluetext" class="licensevaluetext" style="display:none">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                @if ($type !== 'recurring')
+                    <div class="card mt-3 mb-3">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <h5>Pricing</h5>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="fixed_price">Enter Fixed Price</label>
+                                        {!! Form::text('fixed_price', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price')) !!}
+                                        <div class="error" style="color:red;" id="fixed_price_error"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="sale_price">Enter Sale Price</label>
+                                        {!! Form::text('sale_price', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price')) !!}
+                                        <div class="error" style="color:red;" id="sale_price_error"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="gst_percentage">Enter GST %</label>
+                                        {!! Form::text('gst_percentage', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage')) !!}
+                                        <div class="error" style="color:red;" id="gst_percentage_error"></div>
+                                        <div class="gst-amount" id="gst_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                    </form>
+            @endif
         @endif
         @php
             use App\Models\ItemsPricing;
@@ -476,10 +446,11 @@
             $subimage = ItemsImage::where('item_id',$itemid)->where('sub_id','!=',null)->get();
         @endphp
         @if ($isshow == false && $type == 'recurring')
+        <form class="erp-item-submit" id="item_form2" data-url="{{route('items-store')}}" data-id="item_id">
             <div class="addrecurringcardoption" id="addrecurringcardoption" style="display: none;">
                 <div class="row mt-2">
                     <div class="col-md-12 form-group text-right">
-                        <button type="button" class="btn btn-outline-primary addrecurringcardbtn" id="addrecurringcardbtn">Add more card</button>
+                        <button type="button" class="btn btn-outline-primary addrecurringcardbtn" id="addrecurringcardbtn">Add Billing Card</button>
                     </div>
                 </div>
                 <div class="card mb-3">
@@ -490,7 +461,7 @@
                                     <h5>Features</h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
                                 </div>
                             </div>
 
@@ -498,20 +469,20 @@
                                 @if (!empty($item) && count($item->features ?? []) != 0)
                                     @foreach($item->features as $feature)
                                         @if ($feature->sub_id == null)
-                                            <div class="row input-row feature-input-row">
-                                                <div class="col-9">
+                                            <div class="row input-row feature-input-row {{ $loop->first ? 'mt-3' : '' }}">
+                                                <div class="col-11">
                                                     <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
                                                 </div>
-                                                <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                                <div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                             </div>
                                         @endif
                                     @endforeach
                                 @else
-                                    <div class="row input-row feature-input-row" data-order='1'>
-                                        <div class="col-9">
+                                    <div class="row input-row feature-input-row mt-3" data-order='1'>
+                                        <div class="col-12">
                                             {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                                         </div>
-                                    </div>    
+                                    </div>
                                 @endif
                             </div>
                             <div class="error" style="color:red;" id="feature_error"></div>
@@ -522,7 +493,7 @@
                                     <h5>Images</h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-info" id="add-image" data-id="recurring">Add more</button>
+                                    <button type="button" class="btn btn-outline-primary" id="add-image" data-id="recurring">Add Image</button>
                                 </div>
                             </div>
                             <div class="add-more-wrapper image-input-wrapper">
@@ -530,8 +501,8 @@
                                     @foreach($item->images as $image)
                                         @if ($image->sub_id == null)
                                             <?php $showImagePrev = (!empty($image->image_path)) ? 'display:inline-block' : ''; ?>
-                                            <div class="row input-row image-input-row">
-                                                <div class="col-9">
+                                            <div class="row input-row image-input-row {{ $loop->first ? 'mt-3' : '' }}">
+                                                <div class="col-11">
                                                     <label class="form-control filelabel mb-3 image-input-label">
                                                         <input type="hidden" name="old_image[]" value="@if(!empty($image->image_path)){{$image->image_path}}@endif">
                                                         <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control">
@@ -540,13 +511,13 @@
                                                         <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                                <div class="col-1"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                             </div>
                                         @endif
                                     @endforeach
                                 @else
-                                    <div class="row input-row image-input-row" data-order='1'>
-                                        <div class="col-9">
+                                    <div class="row input-row image-input-row mt-3" data-order='1'>
+                                        <div class="col-12">
                                             <label class="form-control filelabel mb-3 image-input-label">
                                                 <input type="file" name="item_images[]" id="item_images"  class=" image-input form-control input-error">
                                                 <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
@@ -637,7 +608,7 @@
                     </div>
                 </div>
                 </form>
-        
+
                 @foreach ($subItem as $subproduct)
                     @if ($subproduct->sub_id !==null)
                         <div class="card mb-3">
@@ -650,7 +621,7 @@
                                                 <h5>Features</h5>
                                             </div>
                                             <div class="col-6 text-right">
-                                            <button type="button" class="btn btn-info" id="add-feature">Add more</button>
+                                            <button type="button" class="btn btn-outline-primary" id="add-feature">Add Feature</button>
                                             </div>
                                         </div>
                                         <div class="add-more-wrapper feature-input-wrapper">
@@ -661,7 +632,7 @@
                                                             <div class="col-9">
                                                                 <input placeholder="Enter key feature" class="form-control mb-3" id="key_feature" name="key_feature[]" type="text" value="{{ $feature->key_feature }}">
                                                             </div>
-                                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                                            <div class="col-3"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                                         </div>
                                                     @endif
                                                 @endforeach
@@ -670,7 +641,7 @@
                                                     <div class="col-9">
                                                         {!! Form::text('key_feature[]', null, array('placeholder' => 'Enter key feature','class' => 'form-control mb-3' , 'id' => 'key_feature')) !!}
                                                     </div>
-                                                </div>    
+                                                </div>
                                             @endif
                                         </div>
                                         <div class="error" style="color:red;" id="feature_error"></div>
@@ -681,7 +652,7 @@
                                                 <h5>Images</h5>
                                             </div>
                                             <div class="col-6 text-right">
-                                                <button type="button" class="btn btn-info" id="add-image">Add more</button>
+                                                <button type="button" class="btn btn-outline-primary" id="add-image">Add Image</button>
                                             </div>
                                         </div>
                                         <div class="add-more-wrapper image-input-wrapper">
@@ -699,7 +670,7 @@
                                                                     <span class="title" id="item_images_title" data-title="title">{{ $image->image_path ??  ''}}</span>
                                                                 </label>
                                                             </div>
-                                                            <div class="col-3"><div class="remove-btn"><span class="close-icon" aria-hidden="true">&times;</span></div></div>
+                                                            <div class="col-3"><div class="btn btn-outline-primary remove-btn">Delete</div></div>
                                                         </div>
                                                     @endif
                                                 @endforeach
@@ -753,7 +724,7 @@
                                     </div>
 
                                     <div class="col-md-12 form-group">
-                                        <h5 for="pricing_label">Pricing</h5>
+                                        <h5>Pricing</h5>
                                         @if ($subproduct->fixed_price)
                                             <div class="row">
                                                 @php
@@ -808,6 +779,7 @@
                     @endif
                 @endforeach
             </div>
+        </form>
         @endif
     </div>
     @if ($isshow == false)
@@ -834,6 +806,44 @@
                         </div>
                     </div>
                 </div>
+                <form class="erp-item-submit" id="item_form1" data-url="{{route('items-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="tags_label">Tags</label>
+                                <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input">
+                                    @foreach($item->tags as $index => $tag)
+                                    @if($index > 0) \n @endif{{ $tag->tag_name }}
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="row p-4">
+                            <div class="col-md-12 form-group">
+                                <label for="category_label">Category</label>
+                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
+                                <div class="error" style="color:red;" id="category_error"></div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label for="subcategory_label">Sub category</label>
+                                <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
+                                    <option value="">Select sub category</option>
+                                    @foreach($subcategories as $subcategory)
+                                        @if($subcategory->category_id == $item->categorySubcategory->category_id)
+                                            <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" {{ $item->categorySubcategory->subcategory_id == $subcategory->id ? 'selected' : '' }}>{{ $subcategory->name }}</option>
+                                        @else
+                                            <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                <div class="error" style="color:red;" id="subcategories_error"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             @else
                 <div class="card">
                     <div class="card-body" style="padding-bottom: 0px;">
@@ -856,6 +866,38 @@
                         </div>
                     </div>
                 </div>
+                <form class="erp-item-submit" id="item_form1" data-url="{{route('items-store')}}" data-id="uid" data-name="name" data-email="email" data-pass="password">
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="tags_label">Tags</label>
+                                <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="row p-4">
+                                <div class="col-md-6 form-group">
+                                    <label for="category_label">Category</label>
+                                    {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
+                                    <div class="error" style="color:red;" id="category_error"></div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="subcategory_label">Sub category</label>
+                                    <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
+                                        <option value="">Select sub category</option>
+                                    <!--  @foreach($subcategories as $subcategory)
+                                            <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
+                                        @endforeach -->
+                                    </select>
+                                    <div class="error" style="color:red;" id="subcategories_error"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             @endif
         </div>
     @endif
