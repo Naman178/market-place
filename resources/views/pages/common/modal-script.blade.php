@@ -753,6 +753,8 @@
                             $('#gst_percentage_error').text(response.error['gst_percentage'] || '');
                             $('#subcategories_error').text(response.error['subcategory_id'] || '');
                             $('#category_error').text(response.error['category_id'] || '');
+                            $('#category_error').text(response.error['category_id'] || '');
+                            $('#image_error').text(response.error['item_images'] || '');
 
                             $('#name').addClass(response.error['name']?'is-invalid':'');
                             $('#item_preview_url').addClass(response.error['preview_url']?'is-invalid':'');
@@ -764,8 +766,7 @@
                             $('#item_sale_price').addClass(response.error['sale_price']?'is-invalid':'');
                             $('#item_gst_percentage').addClass(response.error['gst_percentage']?'is-invalid':'');
                             $('#item_thumbnail_label').addClass(response.error['item_thumbnail']?'is-invalid':'');
-                            $('#item_main_file_label').addClass(response.error['item_main_file']?'is-invalid':'');
-
+                            $('#item_images').addClass(response.error['item_images'] ? 'is-invalid' : '');
                         }
                     },
                     error: function (error) {
@@ -792,6 +793,7 @@
             if (!$('.form-control').hasClass('is-invalid')) {
                 $('.error-message').remove();
                 $("#preloader").show();
+                var button = $(this);
                 $.ajax({
                     url: submitUrl,
                     type: "POST",
@@ -800,10 +802,36 @@
                     processData: false,
                     dataType: 'json',
                     success: function (response) {
-                        window.location.reload();
+                        if (response.success == true) {
+                            window.location.reload();
+                        } else if (response.error) {
+                            console.log($(this).closest('.card'));
+                            $(this).closest('.card').find('#image_error').text(response.error['item_images'] || '');
+                        }
                     },
                     error: function (xhr) {
                         $("#preloader").hide();
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.error;
+                            $.each(errors, function (key, value) {
+                                var inputField;
+
+                                if (key.startsWith('key_feature')) {
+                                    inputField = button.closest('.card').find('[name="key_feature[]"]');
+                                } else if (key.startsWith('item_images')) {
+                                    inputField = button.closest('.card').find('#image_error');
+                                } else {
+                                    inputField = button.closest('.card').find('[name="' + key + '"]');
+                                }
+
+                                if (inputField.length > 0) {
+                                    inputField.addClass('is-invalid');
+                                    inputField.after('<span class="error-message text-danger">' + value[0] + '</span>');
+                                } else {
+                                    button.closest('.card').append('<div class="error-message text-danger">' + value[0] + '</div>');
+                                }
+                            });
+                        }
                     }
                 });
             }

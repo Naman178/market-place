@@ -126,36 +126,36 @@ class StripePaymentController extends Controller
             
             $transaction_id = $tran->id;
 
-            $existingOrder = Order::where('user_id', $user['id'])->first();
-            if ($existingOrder) {
-                $order_id = $existingOrder->id;
+            // $existingOrder = Order::where('user_id', $user['id'])->first();
+            // if ($existingOrder) {
+            //     $order_id = $existingOrder->id;
 
-                $wallet = Wallet::where('user_id', $user['id'])->first();
-                $update_order = Order::where('id', $order_id)->first();
+            //     $wallet = Wallet::where('user_id', $user['id'])->first();
+            //     $update_order = Order::where('id', $order_id)->first();
 
-                $wallet_amount = $wallet->wallet_amount;
-                $total_order = $wallet->total_order;
-                $remaining_order = $wallet->remaining_order;
+            //     $wallet_amount = $wallet->wallet_amount;
+            //     $total_order = $wallet->total_order;
+            //     $remaining_order = $wallet->remaining_order;
 
-                $new_total_order = intval($amount/$per_order_amount);
+            //     $new_total_order = intval($amount/$per_order_amount);
 
-                $update_wallet_amount = $amount + $wallet_amount;
-                $update_total_order = $total_order + $new_total_order;
-                $update_remaining_order = $remaining_order + $new_total_order;
+            //     $update_wallet_amount = $amount + $wallet_amount;
+            //     $update_total_order = $total_order + $new_total_order;
+            //     $update_remaining_order = $remaining_order + $new_total_order;
 
-                $wallet->update([
-                    'product_id' => $product_id,
-                    'wallet_amount' => $update_wallet_amount,
-                    'total_order' => $update_total_order,
-                    'remaining_order' => $update_remaining_order,
-                ]);
+            //     $wallet->update([
+            //         'product_id' => $product_id,
+            //         'wallet_amount' => $update_wallet_amount,
+            //         'total_order' => $update_total_order,
+            //         'remaining_order' => $update_remaining_order,
+            //     ]);
 
-                $update_order->update([
-                    'product_id'=> $product_id,
-                ]);
-
-            }
-            else{
+            //     $update_order->update([
+            //         'product_id'=> $product_id,
+            //     ]);
+            //     // dd(1 , $update_order);
+            // }
+            // else{
                 // add data to order id
                 $order = Order::create([
                     'product_id'=> $product_id,
@@ -193,7 +193,8 @@ class StripePaymentController extends Controller
                     'creared_at' => Carbon::now(),
                     'expire_at' => $oneYearLater
                 ]);
-            }
+                // dd(2,$order , $keytbl);
+            // }
 
             $wallet_mail = Wallet::where('user_id', $user['id'])->first();
             $order_mail = Order::where('user_id', $user['id'])->first();

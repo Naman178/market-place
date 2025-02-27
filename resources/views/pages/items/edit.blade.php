@@ -364,6 +364,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
+                                                <div class="error" style="color:red;" id="image_error"></div>
                                             </div>
                                     </div>
                                 @endif
@@ -643,6 +644,7 @@
                                         </div>
                                     @endif
                                 @endforeach
+                                <div class="error" style="color:red;" id="image_error"></div>
                             @else
                                 <div class="row input-row image-input-row mt-3" data-order='1'>
                                     <div class="col-12">
@@ -652,6 +654,7 @@
                                             <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
                                             <span class="title" id="item_images_title" data-title="title"></span>
                                         </label>
+                                        <div class="error" style="color:red;" id="image_error"></div>
                                     </div>
                                 </div>
                             @endif
@@ -982,6 +985,12 @@
                 $('#expirydatecontainer').hide();
             }
         });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var expiryDateInput = document.getElementById("expiryDate");
+        var today = new Date().toISOString().split("T")[0];
+        expiryDateInput.setAttribute("min", today);
     });
 </script>
 @endsection

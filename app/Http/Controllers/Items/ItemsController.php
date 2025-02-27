@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use App\helper\helper;
+use Illuminate\Contracts\Validation\Rule;
+
 class ItemsController extends Controller
 {
     function __construct()
@@ -188,25 +190,37 @@ class ItemsController extends Controller
     }
 
     public function storesubitem(Request $request) {
-        $validator = Validator::make($request->all(), [
+        $customMessages = [
+            'key_feature.*.required' => 'At least one feature is required.',
+            'item_images.*.required_without_all'=>'At least one image is required.',
+            'item_images.required'=>'At least one image is required.',
+            'custombillingcycle.required_if'=>'The custom billing cycle is required.',
+        ];
+
+        $rules = [
             'item_id' => 'required|integer|exists:items__tbl,id',
             'sub_id' => 'required|integer',
-            'fixed_price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0',
-            'gst_percentage' => 'nullable|numeric|min:0|max:100',
-            'itembillingcycle' => 'required|string',
-            'custombillingcycle' => 'nullable|integer|min:1',
+            'fixed_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'gst_percentage' => 'required|numeric',
+            'itembillingcycle' => 'required',
+            'custombillingcycle' => 'required_if:itembillingcycle,custom',
             'expiryDate' => 'nullable|date',
-            'key_feature' => 'nullable|array',
-            'key_feature.*' => 'string|max:255',
-            'item_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'graceperiod'=>'required',
-        ]);
+            'key_feature' => 'required|array',
+            'key_feature.*' => 'required|string|min:1',
+            'item_images.*' => 'required_without_all:item_images',
+        ];
+
+        if (empty($request->old_image) || count($request->old_image) == 0) {
+            $rules['item_images'] = 'required|array';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'error' => $validator->errors()
             ], 422);
         }
         $isUpdate = ItemsPricing::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->exists();
@@ -340,6 +354,8 @@ class ItemsController extends Controller
             'html_description' => 'required',
             'key_feature' => 'required|array',
             'key_feature.*' => 'required_without_all: key_feature',
+            'item_images'=>'required|array',
+            'item_images.*'=>'required_without_all:item_images',
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
@@ -356,7 +372,9 @@ class ItemsController extends Controller
             'key_feature.*.required_without_all' => 'At least one feature is required.',
             'html_description.required' => 'The description field is required.',
             'category_id.required' => 'The category field is required.',
-            'subcategory_id.required' => 'The subcategory field is required.'
+            'subcategory_id.required' => 'The subcategory field is required.',
+            'item_images.*.required_without_all'=>'At least one image is required.',
+            'item_images.required'=>'At least one image is required.',
         ];
 
         return Validator::make($request->all(), $rules, $customMessages);
