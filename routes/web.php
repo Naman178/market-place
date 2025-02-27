@@ -27,6 +27,7 @@ use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
 use App\Http\Controllers\FrontEnd\Payment\PaymentController;
 use App\Http\Controllers\Auth\CutomForgotPasswordController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\UserProfile\UserProfileController;
 use App\Http\Controllers\Stripe\StripePaymentController;
 use App\Http\Controllers\Razorpay\RazorpayPaymentController;
@@ -123,6 +124,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
     Route::post("/items/get-subcategory", [ItemsController::class, "getSubCategory"])->name("get-subcategory");
     Route::post('/recurring-card/remove', [ItemsController::class, 'removerecurringcard'])->name('recurring.card.remove');
+
+    // Coupon module
+    Route::get('/coupon',[CouponController::class,'index'])->name('coupon-index');
+    Route::get('/coupon-edit/{id}',[CouponController::class,'edit'])->name('coupon-edit');
+    Route::get('/get-applicable-data', [CouponController::class, 'getApplicableData'])->name('get.applicable.data');
+    Route::post('/coupon/store',[CouponController::class,'store'])->name('coupons.store');
+    Route::get('/coupon/delete/{id}',[CouponController::class,'remove'])->name('coupon-delete');
 
     // Review module
     Route::get('/items-list', [ReviewsController::class,'items_list'])->name('items-list');

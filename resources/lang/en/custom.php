@@ -24,13 +24,22 @@ return [
     'items_create_fail' => 'Item create unsuccessfully!',
     'items_update_fail' => 'Item update unsuccessfully!',
 
+    // Coupon
+    'coupon_title' => 'Coupon',
+    'coupons_title' => 'Coupons',
+    'coupon_create_success' => 'Coupon created successfully!',
+    'coupon_update_success' => 'Coupon updated successfully!',
+    'coupon_delete_success' => 'Coupon deleted successfully!',
+    'coupon_create_fail' => 'Coupon create unsuccessfully!',
+    'coupon_update_fail' => 'Coupon update unsuccessfully!',
+
     // REVIEWS
     'review_title' => 'Review',
     'reviews_title' => 'Reviews',
     'reviews_accept_success' => 'Review accepted!',
     'reviews_rejected_success' => 'Review rejected!',
     'reviews_delete_success' => 'Review deleted successfully!',
-    
+
     // TERM & CONDITION
     'term_condition_title' => 'Terms & Condition',
     'term_condition_create_success' => 'Terms & Condition created successfully!',

@@ -35,6 +35,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('coupon-tab-show')
+                <li class="nav-item {{ request()->routeIs('coupon-index') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('coupon-index') }}">
+                        <i class="nav-icon i-Gift-Box"></i>
+                        <span class="nav-text">{{ trans('custom.coupon_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('reviews-tab-show')
                 <li class="nav-item {{ request()->routeIs('items-list') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('items-list') }}">
