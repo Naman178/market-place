@@ -317,6 +317,7 @@
                                                 <img id="item_images_prev" class="previewImgCls hidepreviewimg" src="" data-title="previewImgCls">
                                                 <span class="title" id="item_images_title" data-title="title"></span>
                                             </label>
+                                            <div class="error" style="color:red;" id="image_error"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -335,6 +336,7 @@
                             <div class="col-md-12 form-group customBillingCycleContainer" id="customBillingCycleContainer" style="display:none;">
                                 <h5>Custom Billing Cycle</h5>
                                 <input type="text" name="custombillingcycle" id="custombillingcycle" placeholder="Enter Custom Billing Cycle" class="form-control custombillingcycle">
+                                <div class="error" style="color:red;" id="custombillingcycle_error"></div>
                             </div>
 
                             <div class="col-md-12 col-12 form-group autorenewalcontainer" id="autorenewalcontainer">
