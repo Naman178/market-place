@@ -653,7 +653,7 @@
                             @if ($orders->count() > 0)
                                 <div class="accordion" id="accordionRightIcon">
                                     @foreach ($orders as $order)
-                                        <div class="card ">
+                                        <div class="card mt-4">
                                             <div class="card-header header-elements-inline">
                                                 <h6
                                                     class="card-title ul-collapse__icon--size ul-collapse__right-icon mb-0 w-100">
@@ -710,12 +710,16 @@
                                                                     <p>Product Key:</p>
                                                                 </div>
                                                                 <div class="w-75">
-                                                                    <p class="copy-text">{{ $order->key->key ?? '' }}
-                                                                        <button class="btn-copy"
+                                                                    <p class="copy-text">
+                                                                        {{ $order->key->key ?? '' }}
+                                                                        <button class="btn-copy" 
+                                                                            style="height: 30px; width: 100px; display: flex; align-items: center; justify-content: center; padding: 0; margin-top: 12px; cursor: pointer;" 
                                                                             onclick="copy('{{ $order->key->key ?? '' }}','#copy_button_{{ $order->id }}')"
-                                                                            id="copy_button_{{ $order->id }}"><img
-                                                                                src="{{ asset('storage/Logo_Settings/copy_pic.png') }}"
-                                                                                alt=""></button></p>
+                                                                            id="copy_button_{{ $order->id }}"
+                                                                            title="Click here to copy">
+                                                                            <img src="{{ asset('storage/Logo_Settings/copy_pic.png') }}" alt="Copy" style="max-width: 100%; max-height: 100%;">
+                                                                        </button>
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -90,4 +90,12 @@ class KeyController extends Controller
             ], 400);
         }
     }
+    protected function sendResponse($result, $message, $status = 200)
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => $result,
+            'message' => $message,
+        ], $status);
+    }
 }
