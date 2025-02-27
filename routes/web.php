@@ -115,11 +115,14 @@ Route::middleware(['auth'])->group(function () {
     // Items module
     Route::get('/items',[ItemsController::class,'index'])->name('items-index');
     Route::post('/items/store',[ItemsController::class,'store'])->name('items-store');
+    Route::post('/items/subitem/store',[ItemsController::class,'storesubitem'])->name('items-subitem-store');
     Route::post('/items-type/store',[ItemsController::class,'itemtypestore'])->name('items.type.store');
+    Route::post('/update-item-pricing', [ItemsController::class, 'updateItemPricing'])->name('update.item.pricing');
     Route::get('/items/edit/{id}/{id1?}', [ItemsController::class, 'edit'])->name('items-edit');
     Route::get('/items/delete/{id}', [ItemsController::class, 'remove'])->name('items-delete');
     Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
     Route::post("/items/get-subcategory", [ItemsController::class, "getSubCategory"])->name("get-subcategory");
+    Route::post('/recurring-card/remove', [ItemsController::class, 'removerecurringcard'])->name('recurring.card.remove');
 
     // Review module
     Route::get('/items-list', [ReviewsController::class,'items_list'])->name('items-list');

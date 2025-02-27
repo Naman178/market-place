@@ -9,7 +9,7 @@ class ItemsFeature extends Model
 {
     use HasFactory;
     protected $table = 'items_features__tbl';
-    protected $fillable = ['item_id', 'key_feature', 'created_at', 'updated_at'];
+    protected $fillable = ['item_id', 'key_feature','sub_id', 'created_at', 'updated_at'];
 
     public function item() {
         return $this->belongsTo(Items::class, 'item_id', 'id');

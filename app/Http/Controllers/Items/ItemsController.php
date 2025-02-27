@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use App\helper\helper;
+use Illuminate\Contracts\Validation\Rule;
+
 class ItemsController extends Controller
 {
     function __construct()
@@ -91,13 +93,13 @@ class ItemsController extends Controller
                 'thumbnail_image' => $thumbnail,
                 'main_file_zip' => $mainFile,
                 'preview_url' => $request->preview_url,
-                'status' => '1',
+                'status' => $request->status,
                 'sys_state' => '0',
                 $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
             ])->save();
 
             if ($isUpdate) {
-                ItemsImage::where('item_id', $item->id)->delete();
+                ItemsImage::where('item_id', $item->id)->where('sub_id','=',null)->delete();
             }
 
             $oldImages = $request->old_image ?? [];
@@ -111,7 +113,7 @@ class ItemsController extends Controller
             }
 
             if ($isUpdate) {
-                ItemsFeature::where('item_id', $item->id)->delete();
+                ItemsFeature::where('item_id', $item->id)->where('sub_id','=',null)->delete();
             }
 
             foreach ($request->key_feature ?? [] as $feature) {
@@ -147,15 +149,18 @@ class ItemsController extends Controller
                 );
             }
 
+            $validity = '';
             if($request->item_type == 'one-time'){
-                if($request->licenseradio == 'lifetime'){
+                if(isset($request->licenseradio) && $request->licenseradio == 'lifetime'){
                     $validity = 'Lifetime';
-                }else{
-                    $validity = '';
+                }
+                if(isset($request->radio) && $request->radio == 'lifetime'){
+                    $validity = 'Lifetime';
                 }
             }else{
                 $validity = '';
             }
+
             ItemsPricing::updateOrCreate(
                 ['item_id' => $item->id],
                 [
@@ -168,7 +173,7 @@ class ItemsController extends Controller
                     'custom_cycle_days'=>$request->itembillingcycle=='custom' ? $request->custombillingcycle : null,
                     'auto_renew' => $request->has('autorenewalcheckbox') ? '1' : '0',
                     'grace_period'=>$request->graceperiod,
-                    'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : '',
+                    'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : null,
                     $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
                 ]
             );
@@ -184,30 +189,161 @@ class ItemsController extends Controller
         }
     }
 
+    public function storesubitem(Request $request) {
+        $customMessages = [
+            'key_feature.*.required' => 'At least one feature is required.',
+            'item_images.*.required_without_all'=>'At least one image is required.',
+            'item_images.required'=>'At least one image is required.',
+            'custombillingcycle.required_if'=>'The custom billing cycle is required.',
+        ];
 
-    public function itemtypestore(Request $request){
-        $save_item = Items::create([
-            'name' => '',
-            'status' => '1',
-            'sys_state' => '0',
-            'created_at' => Carbon::now(),
-        ]);
+        $rules = [
+            'item_id' => 'required|integer|exists:items__tbl,id',
+            'sub_id' => 'required|integer',
+            'fixed_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'gst_percentage' => 'required|numeric',
+            'itembillingcycle' => 'required',
+            'custombillingcycle' => 'required_if:itembillingcycle,custom',
+            'expiryDate' => 'nullable|date',
+            'key_feature' => 'required|array',
+            'key_feature.*' => 'required|string|min:1',
+            'item_images.*' => 'required_without_all:item_images',
+        ];
 
-        if($request->item_type == 'one-time'){
-            $validity = 'Lifetime';
-        }else{
-            $validity = '';
+        if (empty($request->old_image) || count($request->old_image) == 0) {
+            $rules['item_images'] = 'required|array';
         }
 
-        ItemsPricing::create([
-            'item_id' => $save_item->id,
-            'pricing_type'=>$request->item_type,
-            'created_at' => Carbon::now(),
-            'validity'=>$validity,
+        $validator = Validator::make($request->all(), $rules, $customMessages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()
+            ], 422);
+        }
+        $isUpdate = ItemsPricing::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->exists();
+
+        ItemsImage::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->delete();
+
+        $oldImages = $request->old_image ?? [];
+        $newImages = $request->item_images ?? [];
+
+        foreach (array_merge($oldImages, $newImages) as $image) {
+            $imagePath = is_file($image) ? $this->uploadFile($image) : $image;
+
+            $existingImage = ItemsImage::where('item_id', $request->item_id)
+                ->where('sub_id', $request->sub_id)
+                ->where('image_path', $imagePath)
+                ->first();
+
+            if ($existingImage) {
+                $existingImage->update([
+                    'image_path' => $imagePath,
+                    'updated_at' => Carbon::now(),
+                ]);
+            } else {
+                ItemsImage::create([
+                    'item_id' => $request->item_id,
+                    'sub_id' => $request->sub_id,
+                    'image_path' => $imagePath,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+        }
+
+        if ($isUpdate) {
+            ItemsFeature::where('item_id', $request->item_id)->where('sub_id',$request->sub_id)->delete();
+        }
+
+        foreach ($request->key_feature ?? [] as $feature) {
+            ItemsFeature::updateOrCreate(
+            ['item_id' => $request->item_id,'sub_id'=>$request->sub_id,'key_feature'=>$feature],
+            [
+                'key_feature' => $feature,
+                'sub_id'=>$request->sub_id,
+
+                ($isUpdate ? 'updated_at' : 'created_at') => Carbon::now(),
+            ]
+            );
+        }
+
+        $validity = '';
+        if ($request->item_type == 'one-time') {
+            if (($request->licenseradio ?? '') === 'lifetime' || ($request->radio ?? '') === 'lifetime') {
+                $validity = 'Lifetime';
+            }
+        }
+
+        ItemsPricing::updateOrCreate(
+            ['item_id' => $request->item_id,'sub_id'=>$request->sub_id],
+            [
+                'fixed_price' => $request->fixed_price,
+                'pricing_type' => 'recurring',
+                'sale_price' => $request->sale_price,
+                'gst_percentage' => $request->gst_percentage,
+                'validity' => $validity,
+                'billing_cycle' => $request->itembillingcycle,
+                'custom_cycle_days' => $request->itembillingcycle == 'custom' ? $request->custombillingcycle : null,
+                'auto_renew' => $request->has('autorenewalcheckbox') ? '1' : '0',
+                'grace_period' => $request->graceperiod,
+                'sub_id'=>$request->sub_id,
+                'expiry_date' => ($request->item_type === 'one-time' && ($request->licenseradio ?? '') !== 'lifetime') ? $request->expiryDate : null,
+                ($isUpdate ? 'updated_at' : 'created_at') => Carbon::now(),
+            ]
+        );
+        return response()->json(['success'=>true]);
+    }
+
+    public function itemtypestore(Request $request){
+        if($request->item_type != ''){
+            $save_item = Items::create([
+                'name' => '',
+                'status' => '1',
+                'sys_state' => '0',
+                'created_at' => Carbon::now(),
+            ]);
+
+            if($request->item_type == 'one-time'){
+                $validity = 'Lifetime';
+            }else{
+                $validity = '';
+            }
+
+            ItemsPricing::create([
+                'item_id' => $save_item->id,
+                'pricing_type'=>$request->item_type,
+                'created_at' => Carbon::now(),
+                'validity'=>$validity,
+            ]);
+
+            return redirect()->route('items-edit', ['id' => $save_item->id,'id1'=>'new'])
+                         ->with('success', 'Item created successfully!');
+        }
+    }
+
+    public function updateItemPricing(Request $request){
+        $request->validate([
+            'item_id' => 'required|exists:items_pricing__tbl,item_id',
+            'pricing_type' => 'required|in:one-time,recurring'
         ]);
 
-        return redirect()->route('items-edit', ['id' => $save_item->id,'id1'=>'new'])
-                     ->with('success', 'Item created successfully!');
+        $validity = '';
+        if($request->pricing_type=='one-time'){
+            $validity = 'Lifetime';
+            ItemsPricing::where('item_id', $request->item_id)
+            ->whereNotNull('sub_id')
+            ->delete();
+
+            ItemsFeature::where('item_id',$request->item_id)->whereNotNull('sub_id')->delete();
+            ItemsImage::where('item_id',$request->item_id)->whereNotNull('sub_id')->delete();
+        }
+
+        ItemsPricing::where('item_id', $request->item_id)->update(['pricing_type' => $request->pricing_type,'validity'=>$validity]);
+
+        return response()->json(['message' => 'Item pricing updated successfully!']);
     }
 
     private function validateRequest(Request $request)
@@ -218,6 +354,8 @@ class ItemsController extends Controller
             'html_description' => 'required',
             'key_feature' => 'required|array',
             'key_feature.*' => 'required_without_all: key_feature',
+            'item_images'=>'required|array',
+            'item_images.*'=>'required_without_all:item_images',
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
@@ -234,7 +372,9 @@ class ItemsController extends Controller
             'key_feature.*.required_without_all' => 'At least one feature is required.',
             'html_description.required' => 'The description field is required.',
             'category_id.required' => 'The category field is required.',
-            'subcategory_id.required' => 'The subcategory field is required.'
+            'subcategory_id.required' => 'The subcategory field is required.',
+            'item_images.*.required_without_all'=>'At least one image is required.',
+            'item_images.required'=>'At least one image is required.',
         ];
 
         return Validator::make($request->all(), $rules, $customMessages);
@@ -284,4 +424,32 @@ class ItemsController extends Controller
         $subcategories = SubCategory::where('sys_state', '0')->where('category_id', $request->category_id)->get(['id', 'name', 'category_id']);
         return response()->json($subcategories);
     }
+
+    public function removerecurringcard(Request $request)
+    {
+        $subid = $request->sub_id;
+        $itemid = $request->item_id;
+
+        $imageDeleted = ItemsImage::where('item_id', $itemid)->where('sub_id', $subid)->exists();
+        $featureDeleted = ItemsFeature::where('item_id', $itemid)->where('sub_id', $subid)->exists();
+        $pricingDeleted = ItemsPricing::where('item_id', $itemid)->where('sub_id', $subid)->exists();
+
+        if ($imageDeleted) {
+            ItemsImage::where('item_id', $itemid)->where('sub_id', $subid)->delete();
+        }
+
+        if ($featureDeleted) {
+            ItemsFeature::where('item_id', $itemid)->where('sub_id', $subid)->delete();
+        }
+
+        if ($pricingDeleted) {
+            ItemsPricing::where('item_id', $itemid)->where('sub_id', $subid)->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Records deleted successfully',
+        ]);
+    }
+
 }
