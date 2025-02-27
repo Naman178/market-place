@@ -40,4 +40,8 @@ return [
         'sitekey' => env('RECAPTCHA_SITEKEY'),
         'secret' => env('RECAPTCHA_SECRET'),
     ],
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
 ];
