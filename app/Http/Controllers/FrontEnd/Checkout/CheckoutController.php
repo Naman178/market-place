@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FrontEnd\Checkout;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ContactsCountryEnum;
+use App\Models\Coupon;
 use App\Models\Items;
 use App\Models\ItemsFeature;
 use App\Models\ItemsImage;
@@ -20,7 +21,7 @@ class CheckoutController extends Controller
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
         $user = Auth::user();
-        return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user'));
+        $couponCodes = Coupon::where('status','active')->get();
+        return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user', 'couponCodes'));
     }
 }
-
