@@ -30,7 +30,7 @@ class ItemsController extends Controller
     }
     public function index()
     {
-        $items = Items::where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $items = Items::with(['pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         return view('pages.items.items',compact('items'));
     }
 
@@ -74,6 +74,7 @@ class ItemsController extends Controller
     }
 
     public function store(Request $request) {
+
         if ($request->ajax()) {
             $validator = $this->validateRequest($request);
 
@@ -354,8 +355,8 @@ class ItemsController extends Controller
             'html_description' => 'required',
             'key_feature' => 'required|array',
             'key_feature.*' => 'required_without_all: key_feature',
-            'item_images'=>'required|array',
-            'item_images.*'=>'required_without_all:item_images',
+            // 'item_images'=>'required|array',
+            // 'item_images.*'=>'required_without_all:item_images',
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
@@ -363,9 +364,14 @@ class ItemsController extends Controller
             'gst_percentage' => 'required|numeric'
         ];
 
-        if ($request->item_id == "0") {
+        if ($request->item_id == "0" || $request->item_id_type == 'new') {
             $rules['item_thumbnail'] = 'required';
             $rules['item_main_file'] = 'required';
+        }
+
+        if (empty($request->old_image) || count($request->old_image) == 0) {
+            $rules['item_images'] = 'required|array';
+            $rules['item_images.*'] = 'required_without_all:item_images';
         }
 
         $customMessages = [

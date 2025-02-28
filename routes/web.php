@@ -49,6 +49,7 @@ Route::get("/", [HomePageController::class, "index"]);
 Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get("/register", [RegisterController::class, "register"])->name("register");

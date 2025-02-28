@@ -61,6 +61,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Item Type</th>
                                     <th>Thumbnail</th>
                                     <th>Date Created</th>
                                     <th>Status</th>
@@ -73,6 +74,7 @@
                                     <tr>
                                         <td>{{ $count }}</td>
                                         <td>{{ $list->name }}</td>
+                                        <td>{{ $list->pricing->pricing_type }}</td>
                                         <td>
                                             <div class="image-prev">
                                                 <img id="items_image_prev" class="rounded-lg"
@@ -120,6 +122,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Item Type</th>
                                     <th>Thumbnail</th>
                                     <th>Date Created</th>
                                     <th>Status</th>
