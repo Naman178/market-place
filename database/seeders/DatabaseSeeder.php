@@ -15,9 +15,20 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminUserSeeder::class,
-            SubCategorySeeder::class,
+            BlogCategorySeeder::class,
+            BlogSeeder::class,
+            ContactCountrySeeder::class,
+            CouponSeeder::class,
+            FAQSeeder::class,
             ItemsSeeder::class,
-            ContactCountrySeeder::class
+            NewsletterSeeder::class,
+            PrivacyPolicySeeder::class,
+            ReviewsSeeder::class,
+            SentMailSeeder::class,
+            SEOSeeder::class,
+            SubCategorySeeder::class,
+            TermAndConditionSeeder::class,
+            UpdateContactCountySeeder::class,
         ]);
     }
 }
