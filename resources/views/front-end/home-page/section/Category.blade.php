@@ -8,14 +8,14 @@
                 <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found" style="margin-left: 1px;">
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
-                <a href="javascript:void(0)" role="button" data-slide="prev" id="categroy-left-arrow-btn"><span
+                {{-- <a href="javascript:void(0)" role="button" data-slide="prev" id="categroy-left-arrow-btn"><span
                         class="arrow left-arrow"></span></a>
                 <a href="javascript:void(0)" role="button" data-slide="next" id="category-right-arrow-btn"><span
-                        class="arrow right-arrow"></span></a>
+                        class="arrow right-arrow"></span></a> --}}
             </div>
         </div>
 
-        <div id="categoryCarousel" class="category-slider">
+        {{-- <div id="categoryCarousel" class="category-slider">
             @foreach ($category as $item)
                 <a href="{{ route('category.list', ['category' => $item->id]) }}">
                     <div class="category-slide" style="cursor: pointer;">
@@ -28,16 +28,32 @@
                                     <img src="{{ asset('public/storage/category_images/' . $item->image) }}" alt="" style="width: 100%; height:395px;">
                                 </div>
                             </div>
-                            {{-- <div style="display: flex; justify-content:space-between; align-items:center; position: absolute; top:0; bottom:0; width:100%;">
+                            <div style="display: flex; justify-content:space-between; align-items:center; position: absolute; top:0; bottom:0; width:100%;">
                                 <a href="#" class="category_know" style="width:100%; text-align:center;">
                                     <span style="background-color:#007ac1; color:white; padding:10px;">Know More</span>
                                 </a>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </a>
             @endforeach
+            </div>
+        </div> --}}
+        <div class="social_media pb_10">
+            <div class="container text-center category-slider pb_30">
+                @foreach ($category as $item)
+                    <div class="col-xl-6" style="width: 100%; display: inline-block;">
+                        <div class="wsus__categories_item_2">
+                            <div class="icon">
+                                <img src="{{ asset('public/storage/category_images/' . $item->image) }}" alt="category" class="img-fluid w-100">
+                            </div>
+                            <h3><a href="{{ route('category.list', ['category' => $item->id]) }}" tabindex="0">{{$item->name}}</a></h3>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
+
 <!-- category section end -->
