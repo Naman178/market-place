@@ -458,4 +458,14 @@ class ItemsController extends Controller
         ]);
     }
 
+    public function show($id){
+        $item = Items::with(['categorySubcategory', 'pricing'])
+        ->whereHas('categorySubcategory', function ($query) use ($id) {
+            $query->where('subcategory_id', $id);
+        })
+        ->where('sys_state', '=', '0')
+        ->get();
+
+        return view('front-end.product.product',compact('item'));
+    }
 }

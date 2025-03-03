@@ -13,6 +13,8 @@ use App\Models\FAQ;
 use App\Models\Blog;
 use App\Models\BlogContent;
 use App\Models\Blog_category;
+use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Mail;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +34,9 @@ class HomePageController extends Controller
             $blog->shares_count = Share::where('blog_id', $blog->blog_id)->count();
         }
         $seoData = SEO::where('page', 'home')->first();
-        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs'));
+        $category = Category::where('sys_state','=','0')->get();
+        $subcategory = SubCategory::where('sys_state','=','0')->get();
+        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory'));
     }
     public function newsletter(Request $request){
         $request->validate([

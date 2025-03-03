@@ -127,11 +127,11 @@ class CouponController extends Controller
     public function getApplicableData(Request $request)
     {
         if ($request->type == 'category') {
-            $data = Category::select('id', 'name')->get();
+            $data = Category::select('id', 'name')->where('sys_state','=','0')->get();
         } elseif ($request->type == 'sub-category') {
-            $data = SubCategory::select('category_id as id', 'name')->get();
+            $data = SubCategory::select('category_id as id', 'name')->where('sys_state','=','0')->get();
         } elseif ($request->type == 'product') {
-            $data = Items::select('id', 'name')->where('sys_state', '!=', '-1')->get();
+            $data = Items::select('id', 'name')->where('sys_state','=','0')->get();
         }
         return response()->json(['success' => true, 'data' => $data]);
     }
