@@ -141,11 +141,12 @@ class CouponController extends Controller
         $request->validate([
             'couponCode' => 'required|string',
         ]);
-
+        // dd($request->all());
         $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews"])->find($request->itemId);
         $fixedprice = $plan->pricing->fixed_price;
         $gst = $plan->pricing->gst_percentage;
         $finalTotal = $fixedprice + (($fixedprice * $gst) / 100);
+        $finalTotal = round($finalTotal);
         $coupon = Coupon::where('coupon_code', $request->couponCode)->exists();
         $user = Auth::user();
         $exist = null;
@@ -158,6 +159,7 @@ class CouponController extends Controller
                 if (now()->between($exist->valid_from, $exist->valid_until)) {
                     $validPeriod = true;
                     $couponusage = CouponUsages::where('user_id', $user->id)->where('coupon_id', $exist->id)->count();
+                    // dd((float)$exist->min_cart_amount , (float)$finalTotal , (float)$finalTotal >= (float)$exist->min_cart_amount);
                     $couponredeemptions = CouponUsages::where('coupon_id', $exist->id)->count();
                     if ($couponusage >= $exist->limit_per_user) {
                         return response()->json(['success' => false,'error' => "You have exceeded the usage limit for this coupon."], 400);
@@ -165,7 +167,7 @@ class CouponController extends Controller
                         if ($couponredeemptions >= $exist->total_redemptions) {
                             return response()->json(['success' => false,'error' => "This coupon has been redeemed the maximum number of times."], 400);
                         } else {
-                            if ($finalTotal <= $exist->min_cart_amount) {
+                            if ((float)$finalTotal >= (float)$exist->min_cart_amount) {
                                 $isValid = false;
                                 $applicableSelection = is_array($exist->applicable_selection)
                                     ? $exist->applicable_selection
@@ -184,7 +186,7 @@ class CouponController extends Controller
                                 if (!$isValid) {
                                     return response()->json(['success' => false,'error' => "This coupon is not applicable to the selected product."], 400);
                                 } else {
-                                    if ($exist->applicable_for === $plan->pricing->pricing_type) {
+                                    if ($exist->applicable_for === $plan->pricing->pricing_type || $exist->applicable_for == 'both') {
                                         $total = $finalTotal;
                                         $discount = 0;
 

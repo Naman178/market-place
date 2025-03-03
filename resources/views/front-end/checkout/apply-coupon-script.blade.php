@@ -61,6 +61,10 @@
                         let formattedTotal = new Intl.NumberFormat('en-IN').format(response.total);
                         let total = response.total;
                         let discount = response.discount;
+                        if(discount > 0){
+                            $(".discount_row").removeClass("d-none");
+                            $("#discount_amount").text("INR " + new Intl.NumberFormat('en-IN').format(discount));
+                        }
                         applyCoupon(couponId, couponCode, button, total, discount);
                         $('#final_total').text("INR " + formattedTotal);
                         $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(

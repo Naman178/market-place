@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Invoice\InvoiceController;
 use App\Http\Controllers\newsletter\NewsletterController;
 use App\Http\Controllers\SentMail\SentMailController;
 use Illuminate\Support\Facades\Route;
@@ -97,6 +98,11 @@ Route::middleware(['auth'])->group(function () {
     // front user dashboard
     Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
 
+    //invoice
+    Route::get('/invoicepreview/{id}',[InvoiceController::class,'preview'])->name('invoice-preview');
+    Route::get('invoice/download/{id}', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
+    Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice-list');
+    Route::get('/orderlist', [InvoiceController::class, 'viewOrder'])->name('order-list');
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');
     Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
