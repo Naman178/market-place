@@ -207,57 +207,103 @@
             ]
         });
 
+        // $('.category-slider').slick({
+        //     slidesToShow: 3,
+        //     slidesToScroll: 1,
+        //     infinite: true,
+        //     autoplay: false,
+        //     autoplaySpeed: 3000,
+        //     dots: false,
+        //     arrows: false,
+        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+        //     responsive: [
+        //         {
+        //             breakpoint: 1024,
+        //             settings: {
+        //                 slidesToShow: 2
+        //             }
+        //         },
+        //         {
+        //             breakpoint: 768,
+        //             settings: {
+        //                 slidesToShow: 1
+        //             }
+        //         }
+        //     ]
+        // });
         $('.category-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
             infinite: true,
-            autoplay: false,
-            autoplaySpeed: 3000,
-            dots: false,
+            slidesToShow: 6,
+            slidesToScroll: 1,
             arrows: false,
-            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
             responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 2
-                    }
-                },
                 {
                     breakpoint: 768,
                     settings: {
-                        slidesToShow: 1
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                    }
+                }
+            ]
+        });
+        $('.subcategory-slider').slick({
+            infinite: true,
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
                     }
                 }
             ]
         });
 
-        $('.subcategory-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            infinite: true,
-            autoplay: false,
-            autoplaySpeed: 3000,
-            dots: false,
-            arrows: false,
-            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 2
-                    }
-                },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1
-                    }
-                }
-            ]
-        });
+        // $('.subcategory-slider').slick({
+        //     slidesToShow: 3,
+        //     slidesToScroll: 1,
+        //     infinite: true,
+        //     autoplay: false,
+        //     autoplaySpeed: 3000,
+        //     dots: false,
+        //     arrows: false,
+        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+        //     responsive: [
+        //         {
+        //             breakpoint: 1024,
+        //             settings: {
+        //                 slidesToShow: 2
+        //             }
+        //         },
+        //         {
+        //             breakpoint: 768,
+        //             settings: {
+        //                 slidesToShow: 1
+        //             }
+        //         }
+        //     ]
+        // });
     });
 
     let currentIndex = 0;

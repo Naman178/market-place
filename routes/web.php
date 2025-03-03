@@ -50,7 +50,8 @@ Route::get("/", [HomePageController::class, "index"]);
 Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
 Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
-Route::get('/product/{subcategory}', [ItemsController::class, 'show'])->name('product.list');
+Route::get('/product/{subcategory}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/buynow/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
