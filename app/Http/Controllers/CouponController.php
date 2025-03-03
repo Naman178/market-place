@@ -146,6 +146,7 @@ class CouponController extends Controller
         $fixedprice = $plan->pricing->fixed_price;
         $gst = $plan->pricing->gst_percentage;
         $finalTotal = $fixedprice + (($fixedprice * $gst) / 100);
+        $finalTotal = round($finalTotal);
         $coupon = Coupon::where('coupon_code', $request->couponCode)->exists();
         $user = Auth::user();
         $exist = null;
