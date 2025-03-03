@@ -13,18 +13,20 @@ class CreateBlogContentTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_content', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('blog_id')->nullable();
-            $table->string('content_type')->nullable();
-            $table->string('content_heading')->nullable();
-            $table->string('content_image')->nullable();
-            $table->text('content_descriptipn_1')->nullable();
-            $table->text('content_descriptipn_2')->nullable();
-            $table->timestamps();
-            // Adding foreign keys
-            $table->foreign('blog_id')->references('blog_id')->on('blog')->onDelete('cascade');
-        });
+        if (!Schema::hasTable('blog_content')) {
+            Schema::create('blog_content', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('blog_id')->nullable();
+                $table->string('content_type')->nullable();
+                $table->string('content_heading')->nullable();
+                $table->string('content_image')->nullable();
+                $table->text('content_descriptipn_1')->nullable();
+                $table->text('content_descriptipn_2')->nullable();
+                $table->timestamps();
+                // Adding foreign keys
+                $table->foreign('blog_id')->references('blog_id')->on('blog')->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -34,6 +36,8 @@ class CreateBlogContentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blog_content');
+        if (Schema::hasTable('blog_content')) {
+            Schema::dropIfExists('blog_content');
+        }
     }
 }

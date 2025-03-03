@@ -29,8 +29,7 @@ class BlogController extends Controller
     }
     public function index()
     {
-        $Blog = Blog::orderBy('blog.blog_id', 'asc')
-                            ->get();
+        $Blog = Blog::orderBy('blog.blog_id', 'asc')->get();
         return view('pages.Blog.Blog',compact('Blog'));
     }
 

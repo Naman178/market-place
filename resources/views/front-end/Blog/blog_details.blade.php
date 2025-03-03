@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <!-- Latest Font Awesome CDN -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 @endsection
 @section('meta')
 <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
@@ -22,68 +23,44 @@
 <meta property="og:type" content="website">
 @endsection
 @section('content')
-<div class="blog_details">
+<div class="blog_details" style="background-color: #b1b1b11f;">
     <div class="container blog_padding">
         <div class="row">
-            <div class="col-md-8 border-right">
+            <div class="col-md-8 border-right blog-main-card">
                 <h2 class="text-capitalize">{{ $blog->title }} </h2>
                 <p>{!! $blog->short_description !!} </p>
                 <div class="row mb-4">
-                    <div class="col-md-10"> 
-                        Post by: <strong>{{ $blog->uploaded_by }} </strong> | 
+                    <div class="col-md-10">
+                        Post by: <strong>{{ $blog->uploaded_by }} </strong> |
                         {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
                     </div>
-                    <div class="col-md-2">
-                        <a href="#" class="social-share" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                    <div class="col-md-2 d-flex justify-content-end align-items-center">
+                        <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
                         </a>
                         <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
                         </a>
                     </div>
-                        
+
                 </div>
                 <div class="mb-5">
                     <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                 </div>
-                <p>{!! $blog->long_description !!} </p>
+                <div>
+                    <p>{!! $blog->long_description !!} </p>
+                </div>
                 @foreach ($Blogcontents as $content)
                     <h2 class="text-capitalize">{{ $content->content_heading }} </h2>
                     <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $content->content_image) }}" alt="not found">
                     <p>{!! $content->content_description_1 !!} </p>
                     <p>{!! $content->content_description_2 !!} </p>
                 @endforeach
-                <div class="comment border-primary  mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Comments</h5>
-                        <form class="comment-form" action="{{route('blog-comment-post', $blog->blog_id)}}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="comment">Comment</label>
-                                <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="pink-blue-grad-button d-inline-block border-0">Submit</button>
-                        </form>
-                    </div>
-                </div>
-                @if ($comments)
-                    @foreach ($comments as $comment)
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <p><strong>{{ $comment->user->name }}</strong></p>
-                                    <p>{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</p>
-                                </div>                                    
-                                <p>{!! $comment->description !!}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
             </div>
             <div class="col-md-4 ">
                 @if ($blog->related_blogs)
                     <div class="related_blogs sticky">
-                        <ul>
+                        <ul style="padding: 10px 17px 27px 18px; background: white; margin-top:10px; color: #4d4d4d; font-family: 'Work Sans';">
                             <li class="mt-2">  <h3>Related Blogs</h3></li>
                             @foreach ($blog->related_blogs as $relatedBlogId)
                                 @php
@@ -91,14 +68,52 @@
                                 @endphp
                                 @if ($relatedBlog)
                                     <li class="border-bottom mt-4">
-                                        <a href="{{ route('blog_details', $relatedBlog->blog_id) }}"> 
-                                            <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found"> 
-                                            <span class="related_blog_title text-capitalize"> {{ $relatedBlog->title }}</span>
+                                        <a href="{{ route('blog_details', $relatedBlog->blog_id) }}">
+                                            <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
+                                            <span class="related_blog_title text-capitalize" style="text-align: start; font-weight: 600; font-size: 14px; color: #4d4d4d; font-family: 'Work Sans';"> {{ $relatedBlog->title }}</span>
                                         </a>
                                     </li>
                                 @endif
                             @endforeach
                         </ul>
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-8" style="padding-right: 0px; padding-left:0px;">
+                <h1 class="card-title" style="margin-top:15px; margin-bottom:15px; font-size:1.5rem;">Comments</h1>
+            </div>
+            <div class="col-md-8" style="background-color:#ffffff;">
+                <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
+                    <div class="card-body" style="padding-top:15px;">
+                        <form class="comment-form" action="{{route('blog-comment-post', $blog->blog_id)}}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="comment">Comment</label>
+                                {{-- <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea> --}}
+                                <div id="quill-editor" style="height: 200px; background-color: white;"></div>
+                                <input type="hidden" name="comment" id="quill-content">
+                            </div>
+                            <button type="submit" class="pink-blue-grad-button d-inline-block border-0">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                @if ($comments)
+                    <div class="card" style="border: none;">
+                        @foreach ($comments as $comment)
+                                <div class="card-body d-flex justify-content-start align-items-center">
+                                    <img src="{{ asset('public/assets/images/user.png') }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <div style="margin-left: 10px; width: 100%;">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p style="margin-bottom: 2px;"><strong>{{ $comment->user->name }}</strong></p>
+                                            <p style="margin-bottom: 2px;">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</p>
+                                        </div>
+                                        <div class="blogcommentdescription">{!! $comment->description !!}</div>
+                                    </div>
+                                </div>
+                            @if (!$loop->last)
+                                <hr style="border: 1px solid #007ac1; width:96%; margin:auto;">
+                            @endif
+                        @endforeach
                     </div>
                 @endif
             </div>
@@ -108,6 +123,7 @@
 @endsection
 @section('scripts')
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
@@ -119,6 +135,29 @@
         toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
         height: 200
     });
+
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }]
+            ]
+        },
+        placeholder: 'Write your comment here...',
+    });
+
+    document.querySelector(".comment-form").addEventListener("submit", function(event) {
+        document.getElementById('quill-content').value = quill.root.innerHTML;
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.social-share').forEach(function(element) {
             element.addEventListener('click', function(event) {
@@ -127,7 +166,7 @@
                 var blogId = this.getAttribute('data-blog-id');
                 var userId = this.getAttribute('data-user-id');
                 var url;
-    
+
                 // Send AJAX request to store share data
                 fetch('{{ route("share.store") }}', {
                     method: 'POST',
@@ -147,19 +186,19 @@
                 }).catch(error => {
                     console.error('Error storing share data:', error);
                 });
-    
+
                 // Open the respective social media sharing or login page
                 if (platform === 'facebook') {
                     // Direct share URL
                     url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('blog_details', $blog->blog_id)) }}`;
-    
+
                     // Open Facebook sharing or login page
                     window.open(url, '_blank').focus();
                     window.open('https://www.facebook.com/', '_blank');
                 } else if (platform === 'twitter') {
                     // Direct share URL
                     url = `https://twitter.com/intent/tweet?url={{ urlencode(route('blog_details', $blog->blog_id)) }}&text={{ urlencode($blog->title) }}`;
-    
+
                     // Open Twitter sharing or login page
                     window.open(url, '_blank').focus();
                     window.open('https://x.com/i/flow/login', '_blank');

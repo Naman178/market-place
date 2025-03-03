@@ -16,25 +16,71 @@
             </div>
         </div>
         <hr>
-        <div class="accordion" id="accordionCouponCode">
-            <div class="card border-radius-none">
+        <div class="accordion" id="accordionCouponCode" style="position: relative;">
+            <div style="width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;">
+                <div style="text-align: center;">Coupon Codes({{$couponCodes->count()}})</div>
+            </div>
+            <div class="coupon-container card" style="box-shadow: none; border:1px dotted #0274b8;">
+                <div class="card-body mb-3" style="max-height: 580px; overflow-y: scroll;">
+                    @if ($couponCodes->count()!=0)
+                        @foreach ($couponCodes as $item)
+                            @php
+                                $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
+                            @endphp
+                            <div class="card mt-4" style="margin: auto; min-width: 93%;">
+                                <div class="card-body">
+                                    <h5 style="margin-top: 0px;">{{$val}}</h5>
+                                    <p>Same fee {{$val}} for all products in order</p>
+                                    <div class="card">
+                                        <div class="card-body" style="padding: 10px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="font-weight:600;">{{$item->coupon_code}}</div>
+                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn"
+                                                    type="button" id="topapplybtn"
+                                                    data-coupon-id="{{$item->id}}"
+                                                    data-coupon-code="{{$item->coupon_code}}">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="card mt-4" style="margin: auto; min-width: 93%;">
+                            <div class="card-body">
+                                <p>No Coupon Code Available For This Product</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+            <div class="card border-radius-none mt-3">
                 <h6 class="card-title mb-0 mt-0">
                     <a data-toggle="collapse" class="text-default" id="accordion_coupon_code" aria-expanded="false">
-                    Have Coupon Code ?
+                    You have a coupon code ?
                     </a>
                 </h6>
-                <div id="accordion_coupon_code_form" class="accordion-body" data-parent="#accordionCouponCode" style="display: none;">
-                    <div class="row mt-4">
-                        <div class="col-md-8">
+                <div id="accordion_coupon_code_form" class="accordion-body" data-parent="#accordionCouponCode" style="display: block;">
+                    <div class="row mt-2">
+                        <div class="col-md-9">
                         <div class="form-group mb-0">
-                            <input class="form-control" type="text" name="coupon_code" id="coupon_code" placeholder="Enter Your Promotional Code Here">
+                            <input class="form-control" type="text" name="coupon_code" id="coupon_code" placeholder="Enter Coupon Code...">
                             <p class="error" id="coupon_code_error"></p>
                         </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                         <button class="pink-blue-grad-button d-inline-block border-0 m-0" type="button" id="coupon_code_apply_btn">Apply</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <p class="coupon-error text-danger" style="color: red;"></p>
+            <div class="apply-coupon-code-container" style="display: none;">
+                <div class="alert alert-success" role="alert" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
+                    <div>Coupon Code : <span style="font-weight: 600;" class="applied-coupon-code"></span></div>
+                    <button type="button" class="btn pink-btn remove-applied-coupon" style="margin-bottom: 0px; background: white; border: 1px solid #007AC1; color: #007AC1; padding: 5px 19px; border-radius: 5px;">Remove</button>
                 </div>
             </div>
         </div>
@@ -77,10 +123,16 @@
         </ul>
         <div class="tab-content" id="paymentTabContent">
             <div class="tab-pane fade show active" id="stripePaymentForm" role="tabpanel" aria-labelledby="profile-icon-pill">
-                <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form"> 
-                <input type="hidden" id="stripeToken" name="stripeToken">
-                <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
-                <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">   
+                <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form">
+                    @csrf
+                    <input type="hidden" id="stripeToken" name="stripeToken">
+                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
+                    <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
+                    <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
+                    <input type="hidden" name="final_coupon_code" id="final_coupon_code" value="">
+                    <input type="hidden" name="discount_value" id="discount_value" value="">
+                    <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
+                    <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -89,7 +141,7 @@
                         <div class="error" id="name_on_card_error"></div>
                     </div>
                 </div>
-            
+
                 <!-- Card Number -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -98,7 +150,7 @@
                         <div class="error" id="card_number_error"></div>
                     </div>
                 </div>
-            
+
                 <!-- Expiration Month -->
                 <div class="form-row row">
                     <div class="col-xs-12 col-md-4 form-group expiration">
@@ -106,14 +158,14 @@
                         <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month" type="text" required="">
                         <div class="error" id="card_exp_month_error"></div>
                     </div>
-                    
+
                     <!-- Expiration Year -->
                     <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Expiration Year</label>
                         <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year" type="text" required="">
                         <div class="error" id="card_exp_year_error"></div>
                     </div>
-                    
+
                     <!-- CVC -->
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
@@ -121,7 +173,7 @@
                         <div class="error" id="card_cvc_error"></div>
                     </div>
                 </div>
-            
+
                 <p class="error" id="stripe_payment_error"></p>
                 <div class="row">
                     @php
@@ -129,7 +181,7 @@
                         $gst = ($plan->pricing->gst_percentage / 100) * $total;
                         $final_total = $total + $gst;
                     @endphp
-                    
+
                  @if(Auth::check())
                     <!--<div class="col-md-12">-->
                     <!--     <button-->
@@ -152,3 +204,5 @@
         </div>
     </div>
 </div>
+
+@include('front-end/checkout/apply-coupon-script')

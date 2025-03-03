@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\newsletter\NewsletterController;
+use App\Http\Controllers\SentMail\SentMailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +27,7 @@ use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
 use App\Http\Controllers\FrontEnd\Payment\PaymentController;
 use App\Http\Controllers\Auth\CutomForgotPasswordController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\UserProfile\UserProfileController;
 use App\Http\Controllers\Stripe\StripePaymentController;
 use App\Http\Controllers\Razorpay\RazorpayPaymentController;
@@ -43,14 +46,19 @@ use Illuminate\Support\Facades\Artisan;
 // Home Page
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
+Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
+Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.list');
+Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
+Route::get('/product/{subcategory}', [ItemsController::class, 'show'])->name('product.list');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get("/register", [RegisterController::class, "register"])->name("register");
 Route::post("/signup/store", [RegisterController::class, "register"])->name("registerUser");
 Route::get('/user-login', [LoginController::class, 'index'])->name('user-login');
-Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post'); 
+Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post');
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
@@ -95,6 +103,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/category/delete/{id}', [CategoryController::class, 'remove'])->name('category-delete');
     Route::post("/category/status/{id}", [CategoryController::class, "changeStatus"])->name("category-status");
 
+    //newsletter module
+    Route::get('/newsletter', [NewsletterController::class,'index'])->name('newsletter');
+
+    //email sent module
+    Route::get('/email' , [SentMailController::class , 'index'])->name('email');
+    Route::post('/email/preview', [SentMailController::class, 'preview'])->name('email-preview');
+    Route::post('/email/store', [SentMailController::class, 'store'])->name('email-store');
     // Sub Category module
     Route::get('/sub-category',[SubCategoryController::class,'index'])->name('sub-category-index');
     Route::post('/sub-category/store',[SubCategoryController::class,'store'])->name('sub-category-store');
@@ -105,10 +120,21 @@ Route::middleware(['auth'])->group(function () {
     // Items module
     Route::get('/items',[ItemsController::class,'index'])->name('items-index');
     Route::post('/items/store',[ItemsController::class,'store'])->name('items-store');
-    Route::get('/items/edit/{id}', [ItemsController::class, 'edit'])->name('items-edit');
+    Route::post('/items/subitem/store',[ItemsController::class,'storesubitem'])->name('items-subitem-store');
+    Route::post('/items-type/store',[ItemsController::class,'itemtypestore'])->name('items.type.store');
+    Route::post('/update-item-pricing', [ItemsController::class, 'updateItemPricing'])->name('update.item.pricing');
+    Route::get('/items/edit/{id}/{id1?}', [ItemsController::class, 'edit'])->name('items-edit');
     Route::get('/items/delete/{id}', [ItemsController::class, 'remove'])->name('items-delete');
     Route::post("/items/status/{id}", [ItemsController::class, "changeStatus"])->name("items-status");
     Route::post("/items/get-subcategory", [ItemsController::class, "getSubCategory"])->name("get-subcategory");
+    Route::post('/recurring-card/remove', [ItemsController::class, 'removerecurringcard'])->name('recurring.card.remove');
+
+    // Coupon module
+    Route::get('/coupon',[CouponController::class,'index'])->name('coupon-index');
+    Route::get('/coupon-edit/{id}',[CouponController::class,'edit'])->name('coupon-edit');
+    Route::get('/get-applicable-data', [CouponController::class, 'getApplicableData'])->name('get.applicable.data');
+    Route::post('/coupon/store',[CouponController::class,'store'])->name('coupons.store');
+    Route::get('/coupon/delete/{id}',[CouponController::class,'remove'])->name('coupon-delete');
 
     // Review module
     Route::get('/items-list', [ReviewsController::class,'items_list'])->name('items-list');
@@ -147,7 +173,7 @@ Route::middleware(['auth'])->group(function () {
     // stripe payment
     Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
-    
+
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
@@ -171,14 +197,14 @@ Route::middleware(['auth'])->group(function () {
 
 // forgot password
 Route::get('forget-password', [CutomForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget-password-get');
-Route::post('forget-password', [CutomForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget-password-post'); 
+Route::post('forget-password', [CutomForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget-password-post');
 Route::get('reset-password/{token}', [CutomForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password-get');
 Route::post('reset-password', [CutomForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset-password-post');
 
 
 // Contact us
-Route::get('/contact-us', function () { 
-    return view('pages.Home.Contact'); 
+Route::get('/contact-us', function () {
+    return view('pages.Home.Contact');
 })->name('contact-us');
 Route::post('/user/contact-us', [UserController::class, 'contactUs'])->name('contactUs-send');
 
@@ -200,7 +226,7 @@ Route::get('/user-price', [UserController::class,'user_price']
 
 // Blog Details
 Route::get('/blog-details/{blog_id}', [BlogController::class, 'blogDetails'])->name('blog_details');
-Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');   
+Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');
 Route::post('/share', [BlogController::class, 'sharedatastore'])->name('share.store');
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');

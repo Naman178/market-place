@@ -415,15 +415,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 border-top pt-4">
+                                {{-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 border-top pt-4">
                                     <h4 class="mb-4">Topup Your Wallet</h4>
                                     <?php
                                     $currency = $_COOKIE['currency'] ?? '';
                                     $plan = '';
-                                    $min_amount = '';
+                                    $min_amount = 1;
                                     if ($wallet) {
-                                        $plan = \App\Models\Plan::where('id', $wallet->product_id)->first();
-                                        $min_amount = $plan->yearly_price;
+                                        // $plan = \App\Models\Plan::where('id', $wallet->product_id)->first();
+                                        // $min_amount = $plan->yearly_price;
                                     }
                                     ?>
                                     @if ($wallet)
@@ -453,9 +453,9 @@
                                         </div>
                                         <h4 class="mb-3">Select Payment Method</h4>
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            {{--    <li class="nav-item">
+                                               <li class="nav-item">
                                                 <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
-                                            </li> --}}
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
                                                     href="#stripePayment" onclick="showTab(event, 'stripePayment')"
@@ -464,7 +464,7 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
-                                            {{--  <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
                                                 <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
                                                     @csrf
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -477,7 +477,7 @@
                                                     <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
                                                     <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
                                                 </form>
-                                            </div> --}}
+                                            </div>
                                             <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
                                                 aria-labelledby="profile-icon-pill">
                                                 <form role="form" action="{{ route('stripe-payment-store') }}"
@@ -561,9 +561,9 @@
                                         </div>
                                         <h4 class="mb-3">Select Payment Method</h4>
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            {{--  <li class="nav-item">
+                                             <li class="nav-item">
                                                 <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
-                                            </li> --}}
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
                                                     href="#stripePayment" role="tab" aria-controls="stripePayment"
@@ -571,7 +571,7 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
-                                            {{--  <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
                                                 <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
                                                     @csrf
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -584,7 +584,7 @@
                                                     <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
                                                     <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
                                                 </form>
-                                            </div> --}}
+                                            </div>
                                             <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
                                                 aria-labelledby="profile-icon-pill">
                                                 <form role="form" action="{{ route('stripe-payment-store') }}"
@@ -642,18 +642,18 @@
                                                 </form>
                                             </div>
                                         </div>
-                                </div>
-                                @endif
+                                </div> --}}
+                                {{-- @endif --}}
                             </div>
                         </div>
                         <!-- orders -->
                         <div class="tab-pane fade d-none" id="list-profile" role="tabpanel"
                             aria-labelledby="list-profile-list">
-                            <h4 class="mb-4">ALL Orders</h4>
+                            <h4 class="mb-4">ALL Orders</h4>                            
                             @if ($orders->count() > 0)
                                 <div class="accordion" id="accordionRightIcon">
                                     @foreach ($orders as $order)
-                                        <div class="card ">
+                                        <div class="card mt-4">
                                             <div class="card-header header-elements-inline">
                                                 <h6
                                                     class="card-title ul-collapse__icon--size ul-collapse__right-icon mb-0 w-100">
@@ -710,12 +710,16 @@
                                                                     <p>Product Key:</p>
                                                                 </div>
                                                                 <div class="w-75">
-                                                                    <p class="copy-text">{{ $order->key->key ?? '' }}
-                                                                        <button class="btn-copy"
+                                                                    <p class="copy-text">
+                                                                        {{ $order->key->key ?? '' }}
+                                                                        <button class="btn-copy" 
+                                                                            style="height: 30px; width: 100px; display: flex; align-items: center; justify-content: center; padding: 0; margin-top: 12px; cursor: pointer;" 
                                                                             onclick="copy('{{ $order->key->key ?? '' }}','#copy_button_{{ $order->id }}')"
-                                                                            id="copy_button_{{ $order->id }}"><img
-                                                                                src="{{ asset('storage/Logo_Settings/copy_pic.png') }}"
-                                                                                alt=""></button></p>
+                                                                            id="copy_button_{{ $order->id }}"
+                                                                            title="Click here to copy">
+                                                                            <img src="{{ asset('storage/Logo_Settings/copy_pic.png') }}" alt="Copy" style="max-width: 100%; max-height: 100%;">
+                                                                        </button>
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>

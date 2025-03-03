@@ -28,6 +28,11 @@
 </div>
 @include('front-end.home-page.section.Features')
 @include('front-end.home-page.section.Support')
+@if ($category->count()<=1)
+    @include('front-end.home-page.section.Subcategory')
+@else
+    @include('front-end.home-page.section.Category')
+@endif
 @include('front-end.home-page.section.items-grid')
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
@@ -81,21 +86,61 @@
             }
         ]
     });
+
     $(document).ready(function(){
-        $('.left-arrow').click(function() {
-            $('#integrationCarousel').carousel('prev');
+        $('.blog-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+    });
+    $(document).ready(function(){
+        $('#left-arrow-btn').on('click', function () {
+            $('#integrationCarousel').slick('slickPrev');
         });
 
-        $('.right-arrow').click(function() {
-            $('#integrationCarousel').carousel('next');
+        $('#right-arrow-btn').on('click', function () {
+            $('#integrationCarousel').slick('slickNext');
         });
 
-        $('.left-arrow').click(function() {
-            $('#blogCarousel').carousel('prev');
+        $('#categroy-left-arrow-btn').on('click', function () {
+            $('#categoryCarousel').slick('slickPrev');
         });
 
-        $('.right-arrow').click(function() {
-            $('#blogCarousel').carousel('next');
+        $('#category-right-arrow-btn').on('click', function () {
+            $('#categoryCarousel').slick('slickNext');
+        });
+
+        $('#subcategroy-left-arrow-btn').on('click', function () {
+            $('#subcategoryCarousel').slick('slickPrev');
+        });
+
+        $('#subcategroy-right-arrow-btn').on('click', function () {
+            $('#subcategoryCarousel').slick('slickNext');
+        });
+
+        $('#blog-left-arrow-btn').click(function() {
+            $('.blog-slider').slick('slickPrev');
+        });
+
+        $('#blog-right-arrow-btn').click(function() {
+            $('.blog-slider').slick('slickNext');
         });
 
         $('.left-arrow').click(function() {
@@ -110,18 +155,18 @@
             interval: false, // Disable auto-sliding
             wrap: true // Enable wrapping around from last to first slide
         });
-        
+
     });
     // for Social media
     $(document).ready(function () {
         $('.social_media_slider').slick({
             infinite: true,
-            slidesToShow: 6, 
-            slidesToScroll: 1, 
-            arrows: false, 
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: false,
             dots: false,
-            autoplay: true, 
-            autoplaySpeed: 2000, 
+            autoplay: true,
+            autoplaySpeed: 2000,
             responsive: [
                 {
                     breakpoint: 768,
@@ -130,88 +175,163 @@
                     }
                 },
                 {
-                    breakpoint: 480, 
+                    breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
                     }
                 }
             ]
         });
+
+        $('#integrationCarousel').slick({
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: false,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                    }
+                }
+            ]
+        });
+
+        $('.category-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 3000,
+            dots: false,
+            arrows: false,
+            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+        $('.subcategory-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 3000,
+            dots: false,
+            arrows: false,
+            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
     });
-    // For patient
-    document.addEventListener('DOMContentLoaded', function () {
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        const testimonialText = document.querySelector('.testimonial-text');
-        const patientName = document.querySelector('.patient-name');
-        const patientRole = document.querySelector('.patient-role');
-        const largeImage = document.getElementById('large-image');
 
-        const testimonials = [
-            {
-                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-                name: 'Joe Root',
-                role: 'Happy Patient',
-                image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
-            },
-            {
-                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-                name: 'Jane Doe',
-                role: 'Satisfied Patient',
-                image: '{{ asset("front-end/images/Group 5748.png") }}',
-            },
-            {
-                text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-                name: 'John Smith',
-                role: 'Grateful Patient',
-                image: '{{ asset("front-end/images/Group 5749.png") }}',
-            },
-        ];
+    let currentIndex = 0;
 
-        thumbnails.forEach((thumbnail, index) => {
-            thumbnail.addEventListener('click', () => {
-                // Update active thumbnail
-                document.querySelector('.thumbnail.active').classList.remove('active');
-                thumbnail.classList.add('active');
+    const testimonials = [
+        {
+            text: 'Facilisis pretium viverra varius tempus ligula natoque fermentum dictumst scelerisque vehicula euismod sed nam sapien rhoncus tristique eros erat nullam class venenatis hendrerit montes ut vestibulum integer orci luctus primis fringilla sem bibendum donec fames congue suscipit sociis turpis.',
+            name: 'Joe Root',
+            role: 'Happy Patient',
+            image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
+        },
+        {
+            text: 'Congue parturient interdum penatibus sem lacus ultricies mi varius nisi dictum fusce volutpat sociosqu vehicula ac nullam curae malesuada gravida id natoque tristique convallis porta scelerisque quam class senectus nisl auctor fermentum montes hendrerit tempor orci.',
+            name: 'Jane Doe',
+            role: 'Satisfied Patient',
+            image: '{{ asset("front-end/images/Group 5748.png") }}',
+        },
+        {
+            text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+            name: 'John Smith',
+            role: 'Grateful Patient',
+            image: '{{ asset("front-end/images/Group 5749.png") }}',
+        },
+    ];
 
-                // Update testimonial content
-                const testimonial = testimonials[index];
-                testimonialText.textContent = testimonial.text;
-                patientName.textContent = testimonial.name;
-                patientRole.textContent = testimonial.role;
+    function updateTestimonial(index) {
+        let selectedTestimonial = testimonials[index];
 
-                // Update the large image
-                largeImage.src = testimonial.image;
-            });
+        $(".patientsSlider").css({
+            "position": "relative",
+            "right": "-100%",
+            "opacity": "0"
+        }).animate({
+            "right": "0",
+            "opacity": "1"
+        }, 500);
+
+        $("#large-image").fadeOut(200, function () {
+            $(this).attr("src", selectedTestimonial.image).fadeIn(200);
         });
 
-        // Add slider buttons functionality
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        let currentIndex = 0;
-
-        function updateSlider(index) {
-            document.querySelector('.thumbnail.active').classList.remove('active');
-            thumbnails[index].classList.add('active');
-
-            const testimonial = testimonials[index];
-            testimonialText.textContent = testimonial.text;
-            patientName.textContent = testimonial.name;
-            patientRole.textContent = testimonial.role;
-
-            // Update the large image
-            largeImage.src = testimonial.image;
-        }
-
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex === 0) ? testimonials.length - 1 : currentIndex - 1;
-            updateSlider(currentIndex);
+        $(".testimonial-text").fadeOut(200, function () {
+            $(this).text(selectedTestimonial.text).fadeIn(200);
         });
 
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex === testimonials.length - 1) ? 0 : currentIndex + 1;
-            updateSlider(currentIndex);
+        $(".patient-name").fadeOut(200, function () {
+            $(this).text(selectedTestimonial.name).fadeIn(200);
+        });
+
+        $(".patient-role").fadeOut(200, function () {
+            $(this).text(selectedTestimonial.role).fadeIn(200);
+        });
+
+        $(".thumbnail").removeClass("active");
+        $(".thumbnail").eq(index).addClass("active");
+    }
+
+    $(document).ready(function () {
+        $(".thumbnail").click(function () {
+            currentIndex = $(this).index();
+            updateTestimonial(currentIndex);
+        });
+
+        $(".prev-btn").click(function () {
+            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+            updateTestimonial(currentIndex);
+        });
+
+        $(".next-btn").click(function () {
+            currentIndex = (currentIndex + 1) % testimonials.length;
+            updateTestimonial(currentIndex);
         });
     });
+
 
     // for FAQ
     window.onload = () => {
@@ -253,6 +373,47 @@
             icon.classList.toggle('rotate');
             question.classList.toggle('active');
         });
+    });
+
+    //newsletter
+    $(document).ready(function(){
+        $('.sign_up_btn').on('click',function(){
+            let email = $('.email_text').val();
+            let submit_url = $(this).attr('data-route');
+            console.log(submit_url);
+            $.ajax({
+                url: submit_url,
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    email: email
+                },
+                success: function(response) {
+                    $('.email_text').val('');
+                    $('.newsletter_success').text("Successfully subscribed!").css({"color": "green"}).fadeIn();
+                    setTimeout(function() {
+                        $('.newsletter_success').fadeOut();
+                    }, 5000);
+                },
+                error: function(xhr, status, error) {
+
+                    let errorMessage = "This email is already subscribed try another email id";
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        if (errors.email) {
+                            errorMessage = errors.email[0]
+                        }
+                    }
+
+                    $('.newsletter_success').text(errorMessage).css("color", "red").fadeIn();
+                    setTimeout(function() {
+                        $('.newsletter_success').fadeOut();
+                        $('.email_text').val('');
+                    }, 5000);
+                }
+            });
+        })
     });
 
 </script>

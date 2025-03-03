@@ -35,6 +35,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('coupon-tab-show')
+                <li class="nav-item {{ request()->routeIs('coupon-index') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('coupon-index') }}">
+                        <i class="nav-icon i-Gift-Box"></i>
+                        <span class="nav-text">{{ trans('custom.coupon_title') }}</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('reviews-tab-show')
                 <li class="nav-item {{ request()->routeIs('items-list') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('items-list') }}">
@@ -112,6 +121,24 @@
                     <a class="nav-item-hold" href="{{ route('roles.index') }}">
                         <i class="nav-icon i-Add-UserStar"></i>
                         <span class="nav-text">Roles</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('newsletter-tab-show')
+                <li class="nav-item {{ request()->is('newsletter*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('newsletter') }}">
+                        <i class="nav-icon i-Receipt"></i>
+                        <span class="nav-text">Newsletter</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
+            @can('email-tab-show')
+                <li class="nav-item {{ request()->is('email*') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('email') }}">
+                        <i class="nav-icon i-Receipt-3"></i>
+                        <span class="nav-text">Sent Mail</span>
                     </a>
                     <div class="triangle"></div>
                 </li>

@@ -2177,8 +2177,28 @@ select.form-control {
   list-style: none;
 }
 
+.blog-main-card{
+    background-color: #ffffff;
+    padding: 25px;
+    color: #4d4d4d;
+    font-family: 'Work Sans';
+}
+
+.blog-main-card p{
+    text-align: justify;
+    line-height: 25px;
+}
+
+.blogcommentdescription p{
+    margin-bottom: 0px;
+}
+
+div.ql-toolbar.ql-snow{
+    background-color: white;
+}
 .related_blog_img {
-  min-width: 82px !important;
+  /* min-width: 82px !important; */
+  min-width: 110px !important;
   height: 60px;
 }
 
@@ -2212,6 +2232,7 @@ select.form-control {
   margin-bottom: 0;
   background-color:#f5fdff;
   border-top : 3px solid #007ac1 !important;
+  border-bottom : 3px solid #007ac1 !important;
 }
 
 .pink-blue-grad-button {

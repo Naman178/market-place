@@ -13,12 +13,14 @@ class CreatePrivacyPolicyTable extends Migration
      */
     public function up()
     {
-        Schema::create('privacy_policy', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('privacy_policy')) {
+            Schema::create('privacy_policy', function (Blueprint $table) {
+                $table->id();
+                $table->string('title')->nullable();
+                $table->text('description')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -28,6 +30,8 @@ class CreatePrivacyPolicyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('privacy_policy');
+        if (Schema::hasTable('privacy_policy')) {
+            Schema::dropIfExists('privacy_policy');
+        }
     }
 }
