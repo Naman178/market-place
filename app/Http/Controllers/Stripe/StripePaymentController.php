@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Stripe;
 
 use App\Http\Controllers\Controller;
+use App\Models\InvoiceModel;
 use Illuminate\Http\Request;
 use Stripe;
 use Stripe\Customer;
@@ -28,6 +29,8 @@ class StripePaymentController extends Controller
         $amount = 0;
         $discount = $input['is_discount_applied'];
         $amount = $input['amount'];
+        $subtotal = $input['subtotal'];
+        $gst = $input['gst'];
         $discountvalue = $input['discount_value'] ?? '';
         $coupon_code = $input['final_coupon_code'] ?? '';
 
@@ -75,7 +78,7 @@ class StripePaymentController extends Controller
 
         $stripe_payment = $paymentIntent->confirm([
             'payment_method' => $paymentMethod->id,
-            'return_url' => route('stripe-payment-3d',['product_id' => $product_id, 'amount' => $amount, 'discount' => $discount,'coupon_code'=>$coupon_code,'discountvalue'=>$discountvalue]),
+            'return_url' => route('stripe-payment-3d',['product_id' => $product_id,'subtotal'=>$subtotal,'gst'=>$gst, 'amount' => $amount, 'discount' => $discount,'coupon_code'=>$coupon_code,'discountvalue'=>$discountvalue]),
         ]);
 
         // if ($paymentIntent->status === 'requires_action') {
@@ -101,6 +104,8 @@ class StripePaymentController extends Controller
         $old_amount = $amount;
         $coupon_code = $_GET['coupon_code'];
         $discountvalue = $_GET['discountvalue'];
+        $subtotal = $_GET['subtotal'];
+        $gst_percentage = $_GET['gst'];
 
         // $discount = $_GET['discount'];
         // if($discount == 'yes'){
@@ -159,7 +164,6 @@ class StripePaymentController extends Controller
             //     $update_order->update([
             //         'product_id'=> $product_id,
             //     ]);
-            //     // dd(1 , $update_order);
             // }
             // else{
                 // add data to order id
@@ -225,14 +229,34 @@ class StripePaymentController extends Controller
 
             Mail::to($user['email'])->send(new SendThankyou($mailData));
 
+            $today = now();
+            $invoicesRes = InvoiceModel::whereDate("created_at", $today->toDateString())->count();
+            $temp_inv_num = $invoicesRes + 1;
+            $formatted_temp_inv_num = str_pad($temp_inv_num, 2, "0", STR_PAD_LEFT);
+            $temp_date = date("d") . date("m") . date("y");
+            $invoiceNo ="INV" . $temp_date . $formatted_temp_inv_num;
+
+            $invoice = InvoiceModel::create([
+                'orderid' => $order_id,
+                'user_id' => $user['id'],
+                'transaction_id' => $transaction_id,
+                'invoice_number' => $invoiceNo,
+                'subtotal' => $subtotal,
+                'gst_percentage' => $gst_percentage,
+                'discount_type' => 'percentage',
+                'discount' => $discountvalue,
+                'applied_coupon' => $coupon_code,
+                'total' => $old_amount / 100,
+                'payment_method' => "Stripe",
+                'payment_status' => $stripe_payment_status,
+            ]);
+            
             $request->session()->forget('cart');
             $request->session()->forget('product_id');
             $request->session()->forget('amount');
 
             session()->flash('success', 'Payment Successfull!');
-            return redirect()->route('thankyou')->with([
-                'order_id' => $order_id,
-            ]);
+            return redirect()->route('invoice-preview', ['id' => $invoice->id]);
         }
         elseif($stripe_payment_status === 'requires_payment_method'){
 

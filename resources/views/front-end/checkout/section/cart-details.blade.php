@@ -133,6 +133,8 @@
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
+                    <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$plan->pricing->fixed_price}}">
+                    <input type="hidden" name="gst" id="gst" value="{{$plan->pricing->gst_percentage}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">

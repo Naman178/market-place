@@ -100,6 +100,34 @@
                                             <label for="site_name">Site Name</label>
                                             <input type="text" class="form-control" name="site_name" value="{{$site["value"]["site_name"] ?? ""}}">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="address1">Address 1</label>
+                                            <input type="text" class="form-control" name="address1" value="{{$site["value"]["address_1"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address2">Address 2</label>
+                                            <input type="text" class="form-control" name="address2" value="{{$site["value"]["address_2"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="city">City</label>
+                                            <input type="text" class="form-control" name="city" value="{{$site["value"]["city"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="state">State</label>
+                                            <input type="text" class="form-control" name="state" value="{{$site["value"]["state"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="country">Country</label>
+                                            <input type="text" class="form-control" name="country" value="{{$site["value"]["country"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pin">Pincode</label>
+                                            <input type="text" class="form-control" name="pin" value="{{$site["value"]["pin"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">GST No</label>
+                                            <input type="text" class="form-control" name="gst" value="{{$site["value"]["gst"] ?? ""}}">
+                                        </div>
                                         <div>
                                             <?php $showFavIcon = (!empty($site['value']['site_favicon'])) ? 'display:inline-block' : ''; ?>
                                             <label for="site_favicon">Favicon</label>

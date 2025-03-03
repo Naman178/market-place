@@ -45,6 +45,13 @@ class SettingsController extends Controller
 
             $finalArr = [];
             $finalArr['site_name'] = $request->site_name;
+            $finalArr['address_1'] = $request->address1;
+            $finalArr['address_2'] = $request->address2;
+            $finalArr['city'] = $request->city;
+            $finalArr['state'] = $request->state;
+            $finalArr['country'] = $request->country;
+            $finalArr['gst'] = $request->gst;
+            $finalArr['pin'] = $request->pin;
             $finalArr['logo_image'] = $logo_image;
             $finalArr['site_favicon'] = $site_favicon;
 
