@@ -143,4 +143,9 @@ class CategoryController extends Controller
             "data" => $category
         ]);
     }
+
+    public function show($id){
+        $subcategory = SubCategory::where('category_id',$id)->where('sys_state','=','0')->get();
+        return view('front-end.category.category',compact('subcategory'));
+    }
 }

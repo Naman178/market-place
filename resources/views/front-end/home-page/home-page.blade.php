@@ -28,6 +28,11 @@
 </div>
 @include('front-end.home-page.section.Features')
 @include('front-end.home-page.section.Support')
+@if ($category->count()<=1)
+    @include('front-end.home-page.section.Subcategory')
+@else
+    @include('front-end.home-page.section.Category')
+@endif
 @include('front-end.home-page.section.items-grid')
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
@@ -114,6 +119,22 @@
             $('#integrationCarousel').slick('slickNext');
         });
 
+        $('#categroy-left-arrow-btn').on('click', function () {
+            $('#categoryCarousel').slick('slickPrev');
+        });
+
+        $('#category-right-arrow-btn').on('click', function () {
+            $('#categoryCarousel').slick('slickNext');
+        });
+
+        $('#subcategroy-left-arrow-btn').on('click', function () {
+            $('#subcategoryCarousel').slick('slickPrev');
+        });
+
+        $('#subcategroy-right-arrow-btn').on('click', function () {
+            $('#subcategoryCarousel').slick('slickNext');
+        });
+
         $('#blog-left-arrow-btn').click(function() {
             $('.blog-slider').slick('slickPrev');
         });
@@ -181,6 +202,58 @@
                     breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
+                    }
+                }
+            ]
+        });
+
+        $('.category-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 3000,
+            dots: false,
+            arrows: false,
+            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+        $('.subcategory-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 3000,
+            dots: false,
+            arrows: false,
+            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
                     }
                 }
             ]
