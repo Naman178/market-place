@@ -99,6 +99,7 @@ return array(
     'App\\Models\\UserCustomer' => $baseDir . '/app/Models/UserCustomer.php',
     'App\\Models\\UserInquiry' => $baseDir . '/app/Models/UserInquiry.php',
     'App\\Models\\Wallet' => $baseDir . '/app/Models/Wallet.php',
+    'App\\Models\\Wishlist' => $baseDir . '/app/Models/Wishlist.php',
     'App\\Models\\WoocommerceOrderHistory' => $baseDir . '/app/Models/WoocommerceOrderHistory.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

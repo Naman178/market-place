@@ -757,6 +757,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Models\\UserCustomer' => __DIR__ . '/../..' . '/app/Models/UserCustomer.php',
         'App\\Models\\UserInquiry' => __DIR__ . '/../..' . '/app/Models/UserInquiry.php',
         'App\\Models\\Wallet' => __DIR__ . '/../..' . '/app/Models/Wallet.php',
+        'App\\Models\\Wishlist' => __DIR__ . '/../..' . '/app/Models/Wishlist.php',
         'App\\Models\\WoocommerceOrderHistory' => __DIR__ . '/../..' . '/app/Models/WoocommerceOrderHistory.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
