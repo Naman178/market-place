@@ -27,6 +27,7 @@ class CouponController extends Controller
 
     public function index()
     {
+        $update = Coupon::where('valid_until', '<', now())->update(['status' => 'inactive']);
         $coupons = Coupon::all();
         return view('pages.coupon.coupon', compact('coupons'));
     }
