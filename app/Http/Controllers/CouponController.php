@@ -149,79 +149,85 @@ class CouponController extends Controller
         $finalTotal = round($finalTotal);
         $coupon = Coupon::where('coupon_code', $request->couponCode)->exists();
         $user = Auth::user();
+        // dd($user);
         $exist = null;
         $validPeriod = null;
         $errorMessage = null;
-
-        if ($coupon) {
-            $exist = Coupon::where('coupon_code', $request->couponCode)->where('status', 'active')->first();
-            if ($exist) {
-                if (now()->between($exist->valid_from, $exist->valid_until)) {
-                    $validPeriod = true;
-                    $couponusage = CouponUsages::where('user_id', $user->id)->where('coupon_id', $exist->id)->count();
-                    // dd((float)$exist->min_cart_amount , (float)$finalTotal , (float)$finalTotal >= (float)$exist->min_cart_amount);
-                    $couponredeemptions = CouponUsages::where('coupon_id', $exist->id)->count();
-                    if ($couponusage >= $exist->limit_per_user) {
-                        return response()->json(['success' => false,'error' => "You have exceeded the usage limit for this coupon."], 400);
-                    } else {
-                        if ($couponredeemptions >= $exist->total_redemptions) {
-                            return response()->json(['success' => false,'error' => "This coupon has been redeemed the maximum number of times."], 400);
+        if($user){
+            if ($coupon) {
+                $exist = Coupon::where('coupon_code', $request->couponCode)->where('status', 'active')->first();
+                if ($exist) {
+                    if (now()->between($exist->valid_from, $exist->valid_until)) {
+                        $validPeriod = true;
+                        $couponusage = CouponUsages::where('user_id', $user->id)->where('coupon_id', $exist->id)->count();
+                        // dd((float)$exist->min_cart_amount , (float)$finalTotal , (float)$finalTotal >= (float)$exist->min_cart_amount);
+                        $couponredeemptions = CouponUsages::where('coupon_id', $exist->id)->count();
+                        if ($couponusage >= $exist->limit_per_user) {
+                            return response()->json(['success' => false,'error' => "You have exceeded the usage limit for this coupon."], 400);
                         } else {
-                            if ((float)$finalTotal >= (float)$exist->min_cart_amount) {
-                                $isValid = false;
-                                $applicableSelection = is_array($exist->applicable_selection)
-                                    ? $exist->applicable_selection
-                                    : json_decode($exist->applicable_selection, true);
-
-                                if ($exist->applicable_type === 'all') {
-                                    $isValid = true;
-                                } elseif ($exist->applicable_type === 'category' && in_array($plan->categorySubcategory->category_id, $applicableSelection)) {
-                                    $isValid = true;
-                                } elseif ($exist->applicable_type === 'sub-category' && in_array($plan->categorySubcategory->subcategory_id, $applicableSelection)) {
-                                    $isValid = true;
-                                } elseif ($exist->applicable_type === 'product' && in_array($plan->id, $applicableSelection)) {
-                                    $isValid = true;
-                                }
-
-                                if (!$isValid) {
-                                    return response()->json(['success' => false,'error' => "This coupon is not applicable to the selected product."], 400);
-                                } else {
-                                    if ($exist->applicable_for === $plan->pricing->pricing_type || $exist->applicable_for == 'both') {
-                                        $total = $finalTotal;
-                                        $discount = 0;
-
-                                        if ($exist->discount_type === 'flat') {
-                                            $discount = min($exist->discount_value, $exist->max_discount);
-                                        } elseif ($exist->discount_type === 'percentage') {
-                                            $discount = ($total * $exist->discount_value) / 100;
-                                            $discount = min($discount, $exist->max_discount);
-                                        }
-
-                                        $total -= $discount;
-                                        return response()->json([
-                                            'success' => true,
-                                            'message' => "Coupon applied successfully.",
-                                            'total' => $total,
-                                            'discount' => $discount,
-                                            'id'=>$exist->id,
-                                        ]);
-                                    } else {
-                                        return response()->json(['success' => false,'error' => "This coupon is not applicable for this product."], 400);
-                                    }
-                                }
+                            if ($couponredeemptions >= $exist->total_redemptions) {
+                                return response()->json(['success' => false,'error' => "This coupon has been redeemed the maximum number of times."], 400);
                             } else {
-                                return response()->json(['success' => false,'error' => "The minimum cart amount for this coupon is not met."], 400);
+                                if ((float)$finalTotal >= (float)$exist->min_cart_amount) {
+                                    $isValid = false;
+                                    $applicableSelection = is_array($exist->applicable_selection)
+                                        ? $exist->applicable_selection
+                                        : json_decode($exist->applicable_selection, true);
+    
+                                    if ($exist->applicable_type === 'all') {
+                                        $isValid = true;
+                                    } elseif ($exist->applicable_type === 'category' && in_array($plan->categorySubcategory->category_id, $applicableSelection)) {
+                                        $isValid = true;
+                                    } elseif ($exist->applicable_type === 'sub-category' && in_array($plan->categorySubcategory->subcategory_id, $applicableSelection)) {
+                                        $isValid = true;
+                                    } elseif ($exist->applicable_type === 'product' && in_array($plan->id, $applicableSelection)) {
+                                        $isValid = true;
+                                    }
+    
+                                    if (!$isValid) {
+                                        return response()->json(['success' => false,'error' => "This coupon is not applicable to the selected product."], 400);
+                                    } else {
+                                        if ($exist->applicable_for === $plan->pricing->pricing_type || $exist->applicable_for == 'both') {
+                                            $total = $finalTotal;
+                                            $discount = 0;
+    
+                                            if ($exist->discount_type === 'flat') {
+                                                $discount = min($exist->discount_value, $exist->max_discount);
+                                            } elseif ($exist->discount_type === 'percentage') {
+                                                $discount = ($total * $exist->discount_value) / 100;
+                                                $discount = min($discount, $exist->max_discount);
+                                            }
+    
+                                            $total -= $discount;
+                                            return response()->json([
+                                                'success' => true,
+                                                'message' => "Coupon applied successfully.",
+                                                'total' => $total,
+                                                'discount' => $discount,
+                                                'id'=>$exist->id,
+                                            ]);
+                                        } else {
+                                            return response()->json(['success' => false,'error' => "This coupon is not applicable for this product."], 400);
+                                        }
+                                    }
+                                } else {
+                                    return response()->json(['success' => false,'error' => "The minimum cart amount for this coupon is not met."], 400);
+                                }
                             }
                         }
+                    } else {
+                        return response()->json(['success' => false,'error' => "Coupon is not valid within the validity period from "], 400);
                     }
                 } else {
-                    return response()->json(['success' => false,'error' => "Coupon is not valid within the validity period from "], 400);
+                    return response()->json(['success' => false,'error' => "Coupon is inactive"], 400);
                 }
             } else {
-                return response()->json(['success' => false,'error' => "Coupon is inactive"], 400);
+                return response()->json(['success' => false,'error' => "Coupon is not found"], 400);
             }
-        } else {
-            return response()->json(['success' => false,'error' => "Coupon is not found"], 400);
+        }else{
+            return response()->json(['success' => false,'error' => "Please login to apply coupon"], 400);
         }
+
+        
     }
 }
