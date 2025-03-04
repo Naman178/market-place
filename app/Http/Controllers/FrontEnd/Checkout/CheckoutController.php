@@ -21,7 +21,13 @@ class CheckoutController extends Controller
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
         $user = Auth::user();
-        $couponCodes = Coupon::where('status','active')->get();
+        $couponCodes = Coupon::where('status', 'active')
+            ->withCount('usage')
+            ->get()
+            ->filter(function ($coupon) {
+                return $coupon->usage_count < $coupon->total_redemptions
+                && $coupon->valid_until > now();
+            });
         return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user', 'couponCodes'));
     }
 }

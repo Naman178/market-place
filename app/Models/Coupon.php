@@ -34,4 +34,7 @@ class Coupon extends Model
         'valid_until' => 'datetime',
         'applicable_selection' => 'array',
     ];
+    public function usage(){
+        return $this->hasMany(CouponUsages::class,'coupon_id','id');
+    }
 }

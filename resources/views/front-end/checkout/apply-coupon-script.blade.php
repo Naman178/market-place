@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function() {
         var itemId = "{{ $plan->id }}";
+        console.log("{{ $plan->pricing->fixed_price}}")
         var storeid = localStorage.getItem("itemId");
         if (itemId != storeid) {
             localStorage.removeItem("selectedCouponId");
@@ -26,6 +27,20 @@
             let selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');
             applyCouponStyle(selectedBtn);
             selectedBtn.text("Remove").addClass("remove-btn").prop("disabled", false);
+            showAppliedCouponSection(selectedCouponCode);
+        }
+
+        let autoApplyCouponId = "{{ isset($autoApplyCoupon) ? $autoApplyCoupon->id : '' }}";
+        let autoApplyCouponCode = "{{ isset($autoApplyCoupon) ? $autoApplyCoupon->coupon_code : '' }}";
+        if (!selectedCouponId && autoApplyCouponId) {
+            // No coupon selected, apply auto-apply coupon
+            let $autoApplyBtn = $(".coupon-btn[data-coupon-id='" + autoApplyCouponId + "']");
+            validateAndApplyCoupon(autoApplyCouponId, autoApplyCouponCode, $autoApplyBtn);
+        } else if (selectedCouponId) {
+            // Restore previous coupon selection
+            let $selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');
+            applyCouponStyle($selectedBtn);
+            $selectedBtn.text("Remove").addClass("remove-btn").prop("disabled", false);
             showAppliedCouponSection(selectedCouponCode);
         }
 
@@ -115,8 +130,31 @@
                 removeCouponStyle($(this));
             });
 
-            window.location.reload();
             hideAppliedCouponSection();
+
+            // Calculate the total price including GST
+            let fixedPrice = parseFloat("{{ $plan->pricing->fixed_price }}");
+            let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
+            let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
+            let roundedAmount = Math.round(totalWithGst);
+
+            // Format the total
+            let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
+
+            // Update the UI with the new final total
+            $('#final_total').text("INR " + formattedTotal);
+            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
+                "Proceed To Pay INR " + formattedTotal
+            );
+
+            $('[name="amount"]').val(roundedAmount * 100);
+            $('[name="discount_value"]').val(0);
+            $('[name="final_coupon_code"]').val('');
+
+            $(".discount_row").addClass("d-none");
+            $("#discount_amount").text("");
+
+            $(".coupon-error").text("");
         }
 
         function applyCouponStyle(button) {

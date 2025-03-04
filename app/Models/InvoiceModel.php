@@ -31,5 +31,8 @@ class InvoiceModel extends Model
     {
         return $this->belongsTo(Order::class, 'orderid');
     }
+    public function coupon(){
+        return $this->hasOne(Coupon::class,'id' , 'applied_coupon');
+    }
 
 }

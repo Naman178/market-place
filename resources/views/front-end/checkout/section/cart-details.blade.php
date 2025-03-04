@@ -27,10 +27,21 @@
             </div>
             <div class="coupon-container card cart-doted-border">
                 <div class="card-body mb-3" style="max-height: 580px; overflow-y: scroll;">
-                    @if ($couponCodes->count()!=0)
+                    @if ($couponCodes->count() != 0)
+                        @php
+                            // Filter auto-apply coupons
+                            $autoApplyCoupons = $couponCodes->filter(function ($c) {
+                                return $c->auto_apply == 'yes';
+                            });
+                    
+                            // Select the coupon with the minimum discount value
+                            $autoApplyCoupon = $autoApplyCoupons->sortBy('discount_value')->first();
+                        @endphp
+
                         @foreach ($couponCodes as $item)
                             @php
                                 $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
+                                $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
                             @endphp
                             <div class="card mt-4" style="margin: auto; min-width: 93%;">
                                 <div class="card-body">
@@ -40,11 +51,12 @@
                                         <div class="card-body" style="padding: 10px;">
                                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                                 <div style="font-weight:600;">{{$item->coupon_code}}</div>
-                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn"
+                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
+                                                    {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
                                                     data-coupon-id="{{$item->id}}"
                                                     data-coupon-code="{{$item->coupon_code}}">
-                                                    Apply
+                                                    {{ $isAutoApplied ? 'Remove' : 'Apply' }}
                                                 </button>
                                             </div>
                                         </div>
@@ -131,6 +143,9 @@
                 <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form">
                     @csrf
                     <input type="hidden" id="stripeToken" name="stripeToken">
+                    <input type="hidden" id="plan_type" name="plan_type" value="{{$plan->pricing->pricing_type}}">
+                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$plan->pricing->billing_cycle}}">
+                    <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
