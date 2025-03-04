@@ -232,7 +232,7 @@
       </div>
    </div>
 </div>
-@include("front-end.checkout.checkout-script");
+@include("front-end.checkout.checkout-script")
 @endsection
 @section('scripts')
    <script src="{{ asset('front-end/js/checkout.js') }}"></script>
