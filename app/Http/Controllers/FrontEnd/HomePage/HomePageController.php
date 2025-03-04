@@ -36,6 +36,7 @@ class HomePageController extends Controller
         $seoData = SEO::where('page', 'home')->first();
         $category = Category::where('sys_state','=','0')->get();
         $subcategory = SubCategory::where('sys_state','=','0')->get();
+    
         return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory'));
     }
     public function newsletter(Request $request){
@@ -55,4 +56,26 @@ class HomePageController extends Controller
         Mail::to($email)->send(new NewsletterMail($email , $appName));
         return response()->json(['message' => 'Successfully subscribed!'], 200);
     }
+    public function show($id){
+        $item = Items::with(['categorySubcategory', 'pricing'])
+        ->whereHas('categorySubcategory', function ($query) use ($id) {
+            $query->where('subcategory_id', $id);
+        })
+        ->where('sys_state', '=', '0')
+        ->get();
+
+        return view('front-end.product.product',compact('item'));
+    }
+    public function buynow($id)
+    {
+        $item = Items::with(['categorySubcategory', 'pricing'])
+            ->where('id', $id) 
+            ->where('sys_state', '0') 
+            ->first();
+        if (!$item) {
+            return redirect()->back()->with('error', 'Item not found.');
+        }
+        return view('front-end.product.buy_now', compact('item'));
+    }
+    
 }

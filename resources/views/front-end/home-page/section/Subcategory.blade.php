@@ -8,14 +8,14 @@
                 <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found" style="margin-left: 1px;">
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
-                <a href="javascript:void(0)" role="button" data-slide="prev" id="subcategroy-left-arrow-btn"><span
+                {{-- <a href="javascript:void(0)" role="button" data-slide="prev" id="subcategroy-left-arrow-btn"><span
                         class="arrow left-arrow"></span></a>
                 <a href="javascript:void(0)" role="button" data-slide="next" id="subcategroy-right-arrow-btn"><span
-                        class="arrow right-arrow"></span></a>
+                        class="arrow right-arrow"></span></a> --}}
             </div>
         </div>
 
-        <div id="subcategoryCarousel" class="subcategory-slider">
+        {{-- <div id="subcategoryCarousel" class="subcategory-slider">
             @foreach ($subcategory as $item)
             <a href="{{ route('product.list', ['subcategory' => $item->id]) }}">
                 <div class="subcategory-slide" style="cursor: pointer;">
@@ -28,15 +28,29 @@
                                 <img src="{{ asset('public/storage/sub_category_images/' . $item->image) }}" alt="" style="width: 100%; height:395px;">
                             </div>
                         </div>
-                        {{-- <div style="display: flex; justify-content:space-between; align-items:center; position: absolute; top:0; bottom:0; width:100%;">
+                        <div style="display: flex; justify-content:space-between; align-items:center; position: absolute; top:0; bottom:0; width:100%;">
                             <a href="#" class="subcategory_know" style="width:100%; text-align:center;">
                                 <span style="background-color:#007ac1; color:white; padding:10px;">Know More</span>
                             </a>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
             </a>
             @endforeach
+        </div> --}}
+        <div class="social_media pb_10">
+            <div class="container text-center subcategory-slider pb_30">
+                @foreach ($subcategory as $item)
+                    <div class="col-xl-6" style="width: 100%; display: inline-block;">
+                        <div class="wsus__categories_item_2">
+                            <div class="icon">
+                                <img src="{{ asset('public/storage/sub_category_images/' . $item->image) }}" alt="Sub category" class="img-fluid w-100">
+                            </div>
+                            <h3><a href="{{ route('product.list', ['subcategory' => $item->id]) }}" tabindex="0">{{$item->name}}</a></h3>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
