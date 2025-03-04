@@ -425,6 +425,25 @@
                 placeholder: "Select Applicable For",
                 allowClear: true
             });
+
+            $('#discount_value').on('input', function() {
+                validateDiscount();
+            });
+
+            $('#discount_type').on('change', function() {
+                validateDiscount();
+            });
+            function validateDiscount() {
+                var discountType = $('#discount_type').val();
+                var discountValue = parseFloat($('#discount_value').val());
+
+                if (discountType === 'percentage' && discountValue > 100) {
+                    $('#discount_value').val(100);
+                    $('#discount_value_error').text("Percentage discount cannot exceed 100.");
+                } else {
+                    $('#discount_value_error').text("");
+                }
+            }
         });
 
         $(document).ready(function() {

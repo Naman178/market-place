@@ -184,6 +184,27 @@
                         <td> Rs {{ isset($taxAmount) ? number_format($taxAmount, 2) : 0 }}</td>
                     </tr>
                 @endif
+                @if ($invoice->discount > 0)
+                    @php
+                        $text = '';
+                        $amount = 0;
+                        if($invoice->coupon->discount_type == 'percentage'){
+                            $amount = intval($invoice->coupon->discount_value) . '%';
+                            $text = 'upto ' . $invoice->coupon->max_discount;
+                        }else{
+                            $amount = $invoice->discount;
+                            $text = 'flat';
+                        }
+                    @endphp
+                    <tr>
+                        <td colspan="3">Applied coupon: </td>
+                        <td> {{ $invoice->coupon->coupon_code }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Discount ({{ $amount }})({{$text}})(-): </td>
+                        <td> Rs {{ round($invoice->discount, 2) ?? '' }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td colspan="3">Total Amount</td>
                     <td> Rs. {{ round($invoice->total, 2) ?? '' }}
