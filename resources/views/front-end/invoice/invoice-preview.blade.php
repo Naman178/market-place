@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                
                     <hr class="m-0" />
 
                     <div class="card-body">
@@ -99,6 +99,21 @@
                                         @if ($invoice->gst_percentage > 0)
                                             <p class="mb-2">GST ({{ intval($invoice->gst_percentage) }}%)(+):</p>
                                         @endif
+                                        @if ($invoice->discount > 0)
+                                            @php
+                                                $text = '';
+                                                $amount = 0;
+                                                if($invoice->coupon->discount_type == 'percentage'){
+                                                    $amount = intval($invoice->coupon->discount_value) . '%';
+                                                    $text = 'upto ' . $invoice->coupon->max_discount;
+                                                }else{
+                                                    $amount = $invoice->discount;
+                                                    $text = 'flat';
+                                                }
+                                            @endphp
+                                            <p class="mb-2">Applied coupon:</p>
+                                            <p class="mb-2">Discount ({{ $amount }})({{$text}})(-):</p>
+                                        @endif                                        
                                         <p class="mb-0 pb-3">Total:</p>
 
                                     <td class="ps-3 py-4">
@@ -106,8 +121,13 @@
                                         @if ($invoice->gst_percentage > 0)
                                             @php
                                                 $taxAmount = ($invoice->subtotal * $invoice->gst_percentage) / 100;
+                                                $taxAmount = round($taxAmount);
                                             @endphp
                                             <p class="fw-semibold mb-2 text-start">₹ {{ round($taxAmount, 2) ?? '' }}</p>
+                                        @endif
+                                        @if ($invoice->discount > 0)
+                                            <p class="fw-semibold mb-2 text-start">{{ $invoice->coupon->coupon_code }}</p>
+                                            <p class="fw-semibold mb-2 text-start">₹ {{ round($invoice->discount, 2) ?? '' }}</p>
                                         @endif
                                         <p class="fw-semibold mb-0 pb-3 text-start">₹ {{ round($invoice->total, 2) ?? '' }}</p>
                                 </tr>

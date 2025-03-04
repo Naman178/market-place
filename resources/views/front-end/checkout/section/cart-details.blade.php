@@ -22,10 +22,21 @@
             </div>
             <div class="coupon-container card" style="box-shadow: none; border:1px dotted #0274b8;">
                 <div class="card-body mb-3" style="max-height: 580px; overflow-y: scroll;">
-                    @if ($couponCodes->count()!=0)
+                    @if ($couponCodes->count() != 0)
+                        @php
+                            // Filter auto-apply coupons
+                            $autoApplyCoupons = $couponCodes->filter(function ($c) {
+                                return $c->auto_apply == 'yes';
+                            });
+                    
+                            // Select the coupon with the minimum discount value
+                            $autoApplyCoupon = $autoApplyCoupons->sortBy('discount_value')->first();
+                        @endphp
+
                         @foreach ($couponCodes as $item)
                             @php
                                 $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
+                                $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
                             @endphp
                             <div class="card mt-4" style="margin: auto; min-width: 93%;">
                                 <div class="card-body">
@@ -35,11 +46,12 @@
                                         <div class="card-body" style="padding: 10px;">
                                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                                 <div style="font-weight:600;">{{$item->coupon_code}}</div>
-                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn"
+                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
+                                                    {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
                                                     data-coupon-id="{{$item->id}}"
                                                     data-coupon-code="{{$item->coupon_code}}">
-                                                    Apply
+                                                    {{ $isAutoApplied ? 'Remove' : 'Apply' }}
                                                 </button>
                                             </div>
                                         </div>
