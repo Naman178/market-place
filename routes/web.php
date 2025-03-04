@@ -180,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
     // stripe payment
     Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
+    Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
 
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');

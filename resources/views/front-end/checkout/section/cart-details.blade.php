@@ -138,6 +138,9 @@
                 <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form">
                     @csrf
                     <input type="hidden" id="stripeToken" name="stripeToken">
+                    <input type="hidden" id="plan_type" name="plan_type" value="{{$plan->pricing->pricing_type}}">
+                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$plan->pricing->billing_cycle}}">
+                    <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">

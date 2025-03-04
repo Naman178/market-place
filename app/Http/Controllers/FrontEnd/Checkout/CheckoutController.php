@@ -25,7 +25,8 @@ class CheckoutController extends Controller
             ->withCount('usage')
             ->get()
             ->filter(function ($coupon) {
-                return $coupon->usage_count < $coupon->total_redemptions; // Filter only coupons with available redemptions
+                return $coupon->usage_count < $coupon->total_redemptions
+                && $coupon->valid_until > now();
             });
         return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user', 'couponCodes'));
     }
