@@ -11,11 +11,15 @@ use App\Models\Items;
 use App\Models\SEO;
 use App\Models\FAQ;
 use App\Models\Blog;
-use App\Models\BlogContent;
+use App\Models\ItemsFeature;
 use App\Models\Blog_category;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Reviews;
+use App\Models\Wishlist;
+use App\Models\ItemsPricing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Mail;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
@@ -75,7 +79,106 @@ class HomePageController extends Controller
         if (!$item) {
             return redirect()->back()->with('error', 'Item not found.');
         }
-        return view('front-end.product.buy_now', compact('item'));
+        $userCommentsCount = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        ->count();
+
+        $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        ->with('user') 
+        ->get();
+
+        $userReviewsCount = Reviews::where('user_id', Auth::id())->where('item_id', $id)
+            ->count();
+
+        $reviews = Reviews::where('user_id', Auth::id())->where('item_id', $id)
+            ->with('user') 
+            ->get();
+        $pricingData = ItemsPricing::where('item_id', $id)->get(); 
+        $featureData = ItemsFeature::where('item_id', $id)->get();
+        
+        // Initialize an array to hold the filtered feature data
+        $filteredFeatures = [];
+        
+        // Loop through each pricing data to check for matching sub_id in feature data
+        foreach ($pricingData as $pricing) {
+            // Filter feature data where sub_id matches
+            $matchingFeatures = $featureData->filter(function($feature) use ($pricing) {
+                return $feature->sub_id == $pricing->sub_id;
+            });
+        
+            // If matching features are found, add them to the filtered list
+            if ($matchingFeatures->isNotEmpty()) {
+                $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
+            }
+        }
+        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'comments', 'userReviewsCount', 'reviews', 'filteredFeatures'));
+    }
+
+    public function commentPost(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect()->route('user-login')->with('error', 'You need to be logged in to submit a comment.');
+        }
+        $data = $request->all();
+        $comment = new Comments();
+        $comment->item_id = $data['item_id'];
+        $comment->user_id = $data['user_id'];
+        $comment->description = $data['comment'];
+        $comment->save();
+        return redirect()->back()->with('success', 'Your comment has been posted.');
+    }
+
+    public function reviewPost(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect()->route('user-login')->with('error', 'You need to be logged in to submit a comment.');
+        }
+        $data = $request->all();
+        $review = new Reviews();
+        $review->item_id = $data['item_id'];
+        $review->user_id = $data['user_id'];
+        $review->rating = $data['rating'];
+        $review->review = $data['review'];
+        $review->save();
+        return redirect()->back()->with('success', 'Your review has been posted.');
     }
     
+    public function addToWishlist(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Please log in to add items to the wishlist.']);
+        }
+
+        $wishlist = Wishlist::where('user_id', $user->id)
+                    ->where('product_id', $request->item_id)
+                    ->first();
+
+        if ($wishlist) {
+            // Remove from wishlist if already added
+            $wishlist->delete();
+            return response()->json(['success' => true, 'message' => 'Removed from Wishlist']);
+        } else {
+            // Add to wishlist
+            Wishlist::create([
+                'user_id' => $user->id,
+                'product_id' => $request->item_id
+            ]);
+            return response()->json(['success' => true, 'message' => 'Added to Wishlist']);
+        }
+    }
+
+    public function getUserWishlist()
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Please log in to view your wishlist.']);
+        }
+
+        // Fetch user's wishlist items
+        $wishlistItems = Wishlist::where('user_id', $user->id)->pluck('product_id')->toArray();
+
+        return response()->json(['success' => true, 'wishlistItems' => $wishlistItems]);
+    }
+
 }

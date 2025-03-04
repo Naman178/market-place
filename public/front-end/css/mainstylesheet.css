@@ -959,7 +959,7 @@ hr {
 }
 
 .form-group label {
-  font-size: 12px;
+  font-size: 14px;
   color: #70657b;
   margin-bottom: 4px;
 }
@@ -2660,7 +2660,7 @@ div.ql-toolbar.ql-snow{
 }
 
 .wsus__sidebar_licence h2 {
-  font-size: 60px;
+  font-size: 58px;
   color: #ffffff;
   margin-top: 5px;
   overflow: hidden;
@@ -2803,7 +2803,7 @@ div.ql-toolbar.ql-snow{
 }
 .wsus__comment_single_input {
   background: #fff;
-  margin-bottom: 25px;
+  margin-bottom: 17px;
 }
 
 .wsus__comment_single_input fieldset {
@@ -2829,4 +2829,101 @@ div.ql-toolbar.ql-snow{
   padding-top: 6px;
   border-radius: 5px;
   width: 100%;
+}
+
+.nav {
+  display: flex;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.nav-item {
+  list-style: none;
+  margin-right: 10px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  transition: 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #007bff;
+  border-bottom: 3px solid #007bff;
+}
+
+.tab-content {
+  display: none;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.cust-page-padding {
+  padding: 2rem 10rem 5rem;
+}
+
+.mt_30 {
+  margin-top: 30px !important;
+}
+
+.comment_img{
+  border-radius: 9999px;
+  width: 4%;
+  margin-top: 12px;
+}
+
+.d-flex{
+  display: flex;
+}
+
+.text-warning{
+  color: #FFC107 !important;
+}
+
+.product_details .cust-page-padding{
+  padding: 0rem 0 5rem;
+  margin-bottom: 0;
+}
+
+.form-icon {
+  margin-right: 10px;
+}
+
+.cart-items .cart-item {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Remove border from the last cart item */
+.cart-items .cart-item:last-child {
+  border-bottom: none;
+}
+
+.price-slick-slider {
+  width: 100%;
+}
+
+.price-slide {
+  padding: 10px; /* Add padding to each slide to avoid content from sticking to the edges */
+}
+
+.price-slide ul li{
+  text-align: left;
+}
+.price-slide ul li i{
+background-color: white; color: #007AC1; padding: 3px; border-radius: 50%;
+margin-right: 10px;
 }

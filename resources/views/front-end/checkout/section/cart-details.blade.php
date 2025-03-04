@@ -1,26 +1,31 @@
 {{-- @php $item = $data["item"]; @endphp --}}
-<div class="card">
-    <div class="card-body">
-        <h4 class="mb-3">Wallet Summary</h4>
-        <hr>
-        <div class="row mb-1">
-            <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <div class="cart-item-image">
-                    <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif" alt="{{ $plan->name }}" class="h-100 w-100">
+<div class="card cart-doted-border">
+    <div class="card-body"  style="position: relative;">
+        <div class="mb-3 cart-item-border text-center">Wallet Summary</div>
+        <div class="cart-items mt-3">
+            <div class="row mb-3 pb-3 cart-item">
+                <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
+                    <div class="cart-item-image">
+                        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif" 
+                             alt="{{ $plan->name }}" 
+                             class="h-100 w-100">
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
+                    <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
+                    <h5 class="mt-0 mb-2 cart-item-pri">
+                        INR {{ number_format((int) $plan->pricing->fixed_price ) }} </h5>
+                    <h5 class="mt-0 mb-2 cart-item-pri">
+                        Quantity: 1
+                    </h5>
                 </div>
             </div>
-            <div class="col-lg-8 col-sm-8 col-8 cart-detail-product align-content-center">
-                <h3 class="mt-0 mb-2">{{ $plan->name }}</h3>
-                {{-- <h5 class="mt-0 mb-2">INR {{ (int) $plan->pricing->fixed_price }} Quantity: 1</h5> --}}
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->fixed_price ) }} Quantity: 1</h5>
-            </div>
         </div>
-        <hr>
         <div class="accordion" id="accordionCouponCode" style="position: relative;">
-            <div style="width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;">
+            <div class="cart-item-border">
                 <div style="text-align: center;">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
-            <div class="coupon-container card" style="box-shadow: none; border:1px dotted #0274b8;">
+            <div class="coupon-container card cart-doted-border">
                 <div class="card-body mb-3" style="max-height: 580px; overflow-y: scroll;">
                     @if ($couponCodes->count() != 0)
                         @php
