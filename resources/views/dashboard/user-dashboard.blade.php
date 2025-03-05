@@ -356,7 +356,13 @@
                         <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
                             href="#wooUser" role="tab" aria-controls="list-profile"
                             onclick="showTab(event, 'wooUser')"aria-selected="false">WooCommerce Users</a>
-                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#invoice" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'invoice')"aria-selected="false">Invoice</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#subscription" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'subscription')"aria-selected="false">Subscription</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
                             href="#list-settings" role="tab" aria-controls="list-settings"
                             onclick="showTab(event, 'list-settings')"aria-selected="false">Profile Settings</a>
                         <a class="list-group-item list-group-item-action" href="{{ route('logout') }}"
@@ -979,6 +985,93 @@
                                 </div>
                                 <button type="submit" class="btn dark-blue-btn my-4"> Update Password</button>
                             </form>
+                        </div>
+                        <!-- Invoice -->
+                        <div class="tab-pane fade d-none" id="invoice" role="tabpanel"
+                            aria-labelledby="list-settings-list">
+                            <h4 class="mb-4">User Invoice</h4>
+                            <table class="display table table-striped table-bordered transacion_history_tbl data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Invoice Number</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($invoice)
+                                        @foreach ($invoice as $key => $inv)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td>
+                                                    <a href="{{ route('invoice-preview', $inv->id) }}" target="_blank" class="text-primary">
+                                                        {{ $inv->invoice_number }}
+                                                    </a>
+                                                </td> 
+                                                <td> Rs. {{ $inv->total ?? '' }}</td>
+                                                <td> {{$inv->created_at}} </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Invoice Number</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Subscription -->
+                        <div class="tab-pane fade d-none" id="subscription" role="tabpanel"
+                            aria-labelledby="list-settings-list">
+                            <h4 class="mb-4">User Invoice</h4>
+                            <table class="display table table-striped table-bordered transacion_history_tbl data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Subscription start date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($subscription)
+                                        @foreach ($subscription as $key => $sub)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td> 
+                                                <td> {{ $sub->product->name ?? '' }}</td>
+                                                <td> {{$sub->created_at}} </td>
+                                                <td>{{$sub->status}}</td>
+                                                <td>
+                                                    @if ($sub->status === 'active')
+                                                        <a href="{{ route('subscription.cancel', ['id' => $sub->subscription_id]) }}" 
+                                                           class="btn btn-danger btn-sm"
+                                                           onclick="return confirm('Are you sure you want to cancel this subscription?');">
+                                                           Stop
+                                                        </a>
+                                                    @else
+                                                        <span class="text-danger">Subscription Already Canceled</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>                                
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Subscription start date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
