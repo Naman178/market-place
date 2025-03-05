@@ -129,26 +129,40 @@ class HomePageController extends Controller
 
     public function reviewPost(Request $request)
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect()->route('user-login')->with('error', 'You need to be logged in to submit a comment.');
         }
-        $data = $request->all();
+    
+        $userId = Auth::id(); // Get logged-in user's ID
+        $itemId = $request->item_id;
+    
+        // Check if the user already reviewed this item
+        $existingReview = Reviews::where('user_id', $userId)
+                                ->where('item_id', $itemId)
+                                ->first();
+    
+        if ($existingReview) {
+            return redirect()->back()->with('error', 'You have already reviewed this item.');
+        }
+    
+        // If no review exists, create a new one
         $review = new Reviews();
-        $review->item_id = $data['item_id'];
-        $review->user_id = $data['user_id'];
-        $review->rating = $data['rating'];
-        $review->review = $data['review'];
+        $review->item_id = $itemId;
+        $review->user_id = $userId;
+        $review->rating = $request->rating;
+        $review->review = $request->review;
         $review->save();
+    
         return redirect()->back()->with('success', 'Your review has been posted.');
     }
     
     public function addToWishlist(Request $request)
     {
-        $user = auth()->user();
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'Please log in to add items to the wishlist.']);
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'redirect' => route('user-login'), 'message' => 'You need to be logged in to add to Wishlist.']);
         }
 
+        $user = auth()->user();
         $wishlist = Wishlist::where('user_id', $user->id)
                     ->where('product_id', $request->item_id)
                     ->first();
@@ -170,10 +184,6 @@ class HomePageController extends Controller
     public function getUserWishlist()
     {
         $user = auth()->user();
-
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'Please log in to view your wishlist.']);
-        }
 
         // Fetch user's wishlist items
         $wishlistItems = Wishlist::where('user_id', $user->id)->pluck('product_id')->toArray();

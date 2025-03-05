@@ -61,24 +61,37 @@
                                 {{ $items->pricing['fixed_price'] ?? 0 }}
                             </p>
                             <a class="title"
-                                href="{{ route('buynow.list', ['id' => $items->id]) }}">Construction
+                                href="{{ route('buynow.list', ['id' => $items->id]) }}">
                                 {{ $items->name }}</a>
-                            
-                            <ul class="d-flex flex-wrap justify-content-between">
-                                <li>
-                                    <p>
-                                        <i class="far fa-star" aria-hidden="true"></i>
-                                        <i class="far fa-star" aria-hidden="true"></i>
-                                        <i class="far fa-star" aria-hidden="true"></i>
-                                        <i class="far fa-star" aria-hidden="true"></i>
-                                        <i class="far fa-star" aria-hidden="true"></i>
-                                        <span>({{ $items->reviews['rating'] ?? 0 }})</span>
-                                    </p>
-                                </li>
-                                <li>
-                                    <span class="download"><i class="far fa-download" aria-hidden="true"></i> 0 Sale</span>
-                                </li>
-                            </ul>
+                                <ul class="d-flex flex-wrap justify-content-between">
+                                    <li>
+                                        <p>
+                                            @php
+                                                $rating = round($items->reviews->avg('rating') ?? 0, 1); 
+                                                $fullStars = floor($rating); 
+                                                $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0; 
+                                                $emptyStars = 5 - ($fullStars + $halfStar);
+                                            @endphp
+
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fas fa-star text-warning"></i>
+                                            @endfor
+                                
+                                            @if ($halfStar)
+                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                            @endif
+                                
+                                            @for ($i = 0; $i < $emptyStars; $i++)
+                                                <i class="far fa-star text-warning"></i>
+                                            @endfor
+                                            <span>({{$rating ?? 0 }})</span>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <span class="download"><i class="far fa-download" aria-hidden="true"></i> 0 Sale</span>
+                                    </li>
+                                </ul>
+                                
                         </div>
                     </div>
                 </div>
