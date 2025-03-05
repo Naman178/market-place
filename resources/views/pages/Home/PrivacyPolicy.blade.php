@@ -29,7 +29,7 @@
             color: #182433;
             margin: 80px 0 85px;
         }
-        hr{
+      .terms-and-condition  hr{
             border: none;
             border-bottom: 1px solid #007ac1;
         }
@@ -41,8 +41,8 @@
             <div class="title">
                 <h3><span class="txt-black">Privacy </span><span class="color-blue underline-text"> Policy</span></h3>
             </div> 
-            <div class="row justify-content-center"> 
-                <div class="terms-and-condition cust-page-padding">          
+            <div class="row"> 
+                <div class="terms-and-condition cust-page-padding w-100">          
                     {{-- <h1 class="text-center feature_heading">Privacy Policy</h1> --}}
                     @foreach ($privacy_policies as  $privacy_policy)
                         <h4>{{ $privacy_policy->title ?? '' }}</h4>        
