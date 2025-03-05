@@ -617,7 +617,7 @@
 
 .know_arrow {
     margin-left: 5px;
-    margin-top: -9px;
+    margin-top: 6px;
 }
 
 .frame_img{
@@ -1007,9 +1007,9 @@ div#integrationCarousel .col-4{
     margin: 0 auto;
 }
 
-.wsus__categories_item_2 a{
+.wsus__categories_item_2 h3{
   color: #007AC1;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 

@@ -1,6 +1,6 @@
 @php $name = optional($user)->name ? explode(" ", $user->name) : ['', ''];  @endphp
 <div class="col-md-12 p-4 card cart-doted-border">
-    <p class="mb-0" style="position: relative;">
+    <p class="mb-0 mt-3" style="position: relative;">
         @auth
            <!--  Billing Details of {{ Auth::user()->name }} -->
         @else
@@ -15,7 +15,7 @@
             </div>
         @endauth
     <div class="mb-5 cart-item-border text-center">Billing Details</div>
-    <div class="row mt-3">
+    <div class="row mt-2">
         <!-- First Name -->
         <div class="col-md-6">
             <div class="form-group">

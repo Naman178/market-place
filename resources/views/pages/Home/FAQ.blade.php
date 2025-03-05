@@ -143,7 +143,7 @@
             <div class="title">
                 <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline-text"> Questions</span></h3>
             </div> 
-            <div class="d-flex flex-wrap justify-content-between">
+            <div class="d-flex flex-wrap">
                 <div class="faq-heading-row">
                     {{-- <h1 class="text-center faq_heading">Frequently Asked Questions</h1> --}}
                     <div class="faq-button_n_text d-lg-block d-none">
@@ -154,7 +154,7 @@
                                 alt="arrow"></a>
                     </div>
                 </div>
-                <div class="faq-faq-row">
+                <div class="faq-faq-row w-100">
 
                     <div class="accordion" id="faqAccordian">
                         <!-- First Accordion Item -->
