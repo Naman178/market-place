@@ -13,8 +13,11 @@
                 </div>
                 <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
                     <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
-                    <h5 class="mt-0 mb-2 cart-item-pri">
-                        INR {{ number_format((int) $plan->pricing->fixed_price ) }} </h5>
+                    @if($selectedPricing)
+                        <h5 class="mt-0 mb-2 cart-item-pri">
+                            <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
+                        </h5>
+                    @endif
                     <h5 class="mt-0 mb-2 cart-item-pri">
                         Quantity: 1
                     </h5>
@@ -107,7 +110,7 @@
                 <h5 class="mt-0 mb-2">Subtotal</h5>
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $plan->pricing->fixed_price ) }}</h5>
+                <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing->fixed_price ) }}</h5>
             </div>
         </div>
         <div class="row mb-1 discount_row d-none">
@@ -115,7 +118,7 @@
                 <h5 class="mt-0 mb-2">Discount</h5>
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $plan->pricing->fixed_price }}</h5>
+                <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5>
             </div>
         </div>
         <div class="row mb-4">
@@ -124,8 +127,8 @@
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
                 @php
-                    $total = (int)$plan->pricing->fixed_price;
-                    $gst = ($plan->pricing->gst_percentage/100) * $total;
+                    $total = (int)$selectedPricing->fixed_price;
+                    $gst = ($selectedPricing->gst_percentage/100) * $total;
                     $final_total = $total + $gst;
                 @endphp
                 <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
@@ -143,8 +146,8 @@
                 <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form">
                     @csrf
                     <input type="hidden" id="stripeToken" name="stripeToken">
-                    <input type="hidden" id="plan_type" name="plan_type" value="{{$plan->pricing->pricing_type}}">
-                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$plan->pricing->billing_cycle}}">
+                    <input type="hidden" id="plan_type" name="plan_type" value="{{$selectedPricing->pricing_type}}">
+                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$selectedPricing->billing_cycle}}">
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
@@ -153,8 +156,8 @@
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
-                    <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$plan->pricing->fixed_price}}">
-                    <input type="hidden" name="gst" id="gst" value="{{$plan->pricing->gst_percentage}}">
+                    <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$selectedPricing->fixed_price}}">
+                    <input type="hidden" name="gst" id="gst" value="{{$selectedPricing->gst_percentage}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -199,8 +202,8 @@
                 <p class="error" id="stripe_payment_error"></p>
                 <div class="row">
                     @php
-                        $total = (int)$plan->pricing->fixed_price;
-                        $gst = ($plan->pricing->gst_percentage / 100) * $total;
+                        $total = (int)$selectedPricing->fixed_price;
+                        $gst = ($selectedPricing->gst_percentage / 100) * $total;
                         $final_total = $total + $gst;
                     @endphp
 

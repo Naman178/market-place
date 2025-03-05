@@ -60,6 +60,17 @@ class HomePageController extends Controller
         Mail::to($email)->send(new NewsletterMail($email , $appName));
         return response()->json(['message' => 'Successfully subscribed!'], 200);
     }
+    public function Categoryshow($id){
+        $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
+
+        $item = Items::with(['categorySubcategory', 'pricing'])
+                  ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                      $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+                  })
+                  ->where('sys_state', '=', '0')
+                  ->get();
+        return view('front-end.category.category',compact('item'));
+    }
     public function show($id){
         $item = Items::with(['categorySubcategory', 'pricing'])
         ->whereHas('categorySubcategory', function ($query) use ($id) {

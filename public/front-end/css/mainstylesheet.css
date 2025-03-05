@@ -2720,6 +2720,10 @@ div.ql-toolbar.ql-snow{
   -ms-transition: all linear .3s;
   -o-transition: all linear .3s;
 }
+.wsus__sidebar_licence .live:hover {
+  background: #ffffff;
+  color: #333333;
+}
 
 .wsus__sidebar_licence .common_btn {
   background: #ffffff;
@@ -2728,6 +2732,11 @@ div.ql-toolbar.ql-snow{
   border: 1px solid #ffffff;
   top: 15px;
   border-radius: 5px;
+}
+
+.wsus__sidebar_licence .common_btn:hover {
+  background: transparent;
+  color: #ffffff;
 }
 .common_btn {
   background-image: linear-gradient(to right, #007ac1, #007ac1, #2B2842);

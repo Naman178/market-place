@@ -273,7 +273,9 @@
                                                 <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
                                             </li>
                                             <li class="ml-3">
-                                                <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id)]) }}" target="_blank">Add to Cart</a>
+                                                <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">
+                                                    Add to Cart
+                                                </a>
                                             </li>
                                         </ul>
                                         {{-- <ul class="sell_rating mt_20 d-flex flex-wrap justify-content-between">
