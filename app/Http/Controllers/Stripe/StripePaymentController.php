@@ -76,7 +76,7 @@ class StripePaymentController extends Controller
             $price = \Stripe\Price::create([
                 'unit_amount' => $amount,
                 'currency' => $currency,
-                'recurring' => ['interval' => 'month'],
+                'recurring' => ['interval' => 'Daily'],
                 'product' => $product->id,
             ]);
 
