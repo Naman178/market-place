@@ -93,7 +93,6 @@ return array(
     'App\\Models\\Settings' => $baseDir . '/app/Models/Settings.php',
     'App\\Models\\Share' => $baseDir . '/app/Models/Share.php',
     'App\\Models\\SubCategory' => $baseDir . '/app/Models/SubCategory.php',
-    'App\\Models\\Subscription' => $baseDir . '/app/Models/Subscription.php',
     'App\\Models\\TermCondition' => $baseDir . '/app/Models/TermCondition.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
