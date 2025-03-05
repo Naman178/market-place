@@ -194,8 +194,10 @@
             $(".apply-coupon-code-container").hide();
         }
 
-        if (!selectedCouponCode) {
+        // if (!selectedCouponCode) {
+            console.log('no coupon is selected');
             $('#coupon_code_apply_btn').on('click', function() {
+                console.log('btn clicked');
                 let couponCode = $('#coupon_code').val().trim();
                 if (couponCode === "") {
                     $('#coupon_code_error').text('Coupon code is required!').css('color', 'red');
@@ -260,6 +262,6 @@
                     });
                 }
             });
-        }
+        // }
     });
 </script>
