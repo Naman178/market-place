@@ -113,26 +113,11 @@
                 <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing->fixed_price ) }}</h5>
             </div>
         </div>
-        <div class="row mb-1">
+        <div class="row mb-1 discount_row d-none">
             <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <h5 class="mt-0 mb-2">GST(+)</h5>
-            </div>
-            @php
-                $total = (int)$plan->pricing->fixed_price;
-                $gst = ($plan->pricing->gst_percentage/100) * $total;
-            @endphp
-            <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $gst ) }}</h5>
-            </div>
-        </div>
-        <div class="row mb-1 discount_row">
-            <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <h5 class="mt-0 mb-2">Discount(-)</h5>
+                <h5 class="mt-0 mb-2">Discount</h5>
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-
-                <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-
                 <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5>
             </div>
         </div>

@@ -76,7 +76,7 @@ class StripePaymentController extends Controller
             $price = \Stripe\Price::create([
                 'unit_amount' => $amount,
                 'currency' => $currency,
-                'recurring' => ['interval' => 'month'],
+                'recurring' => ['interval' => 'Daily'],
                 'product' => $product->id,
             ]);
 
@@ -274,7 +274,6 @@ class StripePaymentController extends Controller
                         'subscription_id' => $subscription_id,
                         'product_id' => $product_id,
                         'status' => 'active',
-                        'key_id' => $keytbl->id
                     ]);
                 }
             }
@@ -406,35 +405,5 @@ class StripePaymentController extends Controller
             'payment_method' => "Stripe",
             'payment_status' => $status,
         ]);
-    }
-    public function cancelSubscription($id)
-    {
-        try {
-            Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-            // Retrieve and cancel subscription from Stripe
-            $subscription = \Stripe\Subscription::retrieve($id);
-            $subscription->cancel();
-
-            // Update the database subscription status
-            $userSubscription = Subscription::where('subscription_id', $id)->first();
-            if ($userSubscription) {
-                $userSubscription->update(['status' => 'canceled']);
-            }
-            $key_id = $userSubscription->key_id;
-            if ($key_id) {
-                $key = Key::find($key_id);
-                if ($key) {
-                    $key->update([
-                        'expire_at' => now(),
-                        'sys_state' => '1',
-                    ]);
-                }
-            }
-            return redirect()->back()->with('success', 'Subscription canceled successfully.');
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect()->back()->with('error', 'Error canceling subscription: ' . $e->getMessage());
-        }
     }
 }

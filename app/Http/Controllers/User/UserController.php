@@ -4,9 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\helper\helper;
 use App\Http\Controllers\Controller;
-use App\Models\InvoiceModel;
 use App\Models\Items;
-use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -273,10 +271,8 @@ class UserController extends Controller
         $order_history = WoocommerceOrderHistory::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
         $woo_user = UserCustomer::where('register_under_user_id',$user['id'])->get();
         $allplan = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
-        $invoice = InvoiceModel::where('user_id',$user['id'])->get();
-        $subscription = Subscription::where('user_id',$user['id'])->with('product')->get();
 
-        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','subscription','invoice','order_history','allplan','woo_user'));
+        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','order_history','allplan','woo_user'));
     }
     public function user_price()
     {

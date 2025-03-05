@@ -37,7 +37,7 @@ class RegisterController extends Controller
             'address_line2' => 'nullable',
             'city' => 'required',
             'postal_code' => 'required',
-            // 'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $user = new User();
