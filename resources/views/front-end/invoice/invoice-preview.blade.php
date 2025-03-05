@@ -63,10 +63,10 @@
                         <div class="row p-4">
                             <div class="col-md-6">
                                 <h6 class="fw-bold">Pay To:</h6>
-                                <p>{{$setting->value['site_name']}}</p>
-                                <p>{{$setting->value['address_1']}} ,</p>
-                                <p>{{$setting->value['address_2']}}</p>
-                                <p>{{$setting->value['city']}}, {{$setting->value['state']}}, {{$setting->value['pin']}}</p>
+                                <p>{{$setting->value['site_name'] ?? ''}}</p>
+                                <p>{{$setting->value['address_1'] ?? ''}} ,</p>
+                                <p>{{$setting->value['address_2'] ?? ''}}</p>
+                                <p>{{$setting->value['city'] ?? ''}}, {{$setting->value['state'] ?? ''}}, {{$setting->value['pin'] ?? ''}}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6 class="fw-bold">Invoice To:</h6>
