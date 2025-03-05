@@ -266,8 +266,6 @@ class StripePaymentController extends Controller
                 'remaining_order' => $wallet_mail->remaining_order,
                 'wallet_amount' => $wallet_mail->wallet_amount,
             ];
-
-            Mail::to($user['email'])->send(new SendThankyou($mailData));
             if ($plan_type === 'recurring') {
                 $subscription_id = $_GET['subscription_id'] ?? null;
                 if ($subscription_id) {
@@ -301,7 +299,7 @@ class StripePaymentController extends Controller
                 'payment_method' => "Stripe",
                 'payment_status' => $stripe_payment_status,
             ]);
-            
+            // Mail::to($user['email'])->send(new SendThankyou($mailData));
             $request->session()->forget('cart');
             $request->session()->forget('product_id');
             $request->session()->forget('amount');
