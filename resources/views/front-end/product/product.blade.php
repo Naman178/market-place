@@ -84,11 +84,11 @@
                                             @for ($i = 0; $i < $emptyStars; $i++)
                                                 <i class="far fa-star text-warning"></i>
                                             @endfor
-                                            <span>({{$rating ?? 0 }})</span>
+                                            <span>({{ $items->reviews->count() ?? 0 }})</span>
                                         </p>
                                     </li>
                                     <li>
-                                        <span class="download"><i class="far fa-download" aria-hidden="true"></i> 0 Sale</span>
+                                        <span class="download"><i class="fa fa-download" aria-hidden="true"></i> 0 Sale</span>
                                     </li>
                                 </ul>
                                 
