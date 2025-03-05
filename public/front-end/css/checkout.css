@@ -133,9 +133,29 @@
 }
 
 .cart-item-image img {
-  border-radius: 50%;
+  /* border-radius: 50%; */
+  border-radius: 5px;
   object-fit: cover;
   object-position: center center;
+}
+
+.cart-item-name {
+  font-size: 23px; 
+  font-weight: 600;
+}
+
+.cart-item-price {
+  font-size: 18px;
+  font-weight: 600; 
+  color: #555;
+}
+
+.cart-item-border{
+  width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
+}
+
+.cart-doted-border{
+  box-shadow: none; border:1px dotted #0274b8;
 }
 
 .google-btn {

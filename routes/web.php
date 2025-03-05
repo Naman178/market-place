@@ -51,7 +51,11 @@ Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('new
 Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/product/{subcategory}', [HomePageController::class, 'show'])->name('product.list');
-Route::get('/buynow/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
+Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
+Route::post('/product-comment-post', [HomePageController::class, 'commentPost'])->name('product-comment-post');
+Route::post('/product-review-post', [HomePageController::class, 'reviewPost'])->name('product-review-post');
+Route::post('/wishlist/add', [HomePageController::class, 'addToWishlist'])->name('wishlist.add');
+Route::get('/get-wishlist', [HomePageController::class, 'getUserWishlist'])->name('get_wishlist');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
