@@ -133,7 +133,7 @@
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
                 <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5>
+                {{-- <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5> --}}
             </div>
         </div>
         <div class="row mb-4">
