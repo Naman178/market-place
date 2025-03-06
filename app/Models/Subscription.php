@@ -13,10 +13,6 @@ class Subscription extends Model
         'user_id',
         'subscription_id',
         'product_id',
-        'status',
-        'key_id'
+        'status'
     ];
-    public function product(){
-        return $this->hasOne(Items::class,'id','product_id');
-    }
 }
