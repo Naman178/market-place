@@ -285,4 +285,38 @@ class UserController extends Controller
         return view('pages.Home.Price',compact('data','seoData'));
     }
 
+    public function orders() {
+        $orders = Order::where('user_id', auth()->id())->get();
+        return view('dashboard.orders', compact('orders'));
+    }
+
+    public function downloads() {
+        $orders = Order::where('user_id', auth()->id())->get();
+        return view('dashboard.downloads', compact('orders'));
+    }
+
+    public function support() {
+        $wallet = Wallet::where('user_id',auth()->id())->first();
+        return view('dashboard.support',compact('wallet'));
+    }
+
+    public function transactions() {
+        $transactions = Transaction::where('user_id', auth()->id())->get();
+        return view('dashboard.transactions', compact('transactions'));
+    }
+
+    public function invoice() {
+        $invoice = InvoiceModel::where('user_id',auth()->id())->get();
+        return view('dashboard.invoice',compact('invoice'));
+    }
+
+    public function subscription() {
+        $subscription = Subscription::where('user_id',auth()->id())->with('product')->get();
+        return view('dashboard.subscription',compact('subscription'));
+    }
+
+    public function settings() {
+        return view('dashboard.settings');
+    }
+
 }

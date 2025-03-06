@@ -1,0 +1,47 @@
+@extends('dashboard.dashboard_layout')
+@section('content')
+<!-- downloads -->
+<div class="tab-pane fade mb-5" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="wsus__profile_overview">
+                <h4 class="mb-4">Downloads</h4>
+                @if ($orders->count() > 0)
+                    <table class="display table table-striped table-bordered dataTable data-table"
+                        style="width:100%" role="grid" aria-describedby="zero_configuration_table_info">
+                        <thead>
+                            <tr role="row">
+                                <th>Order Id</th>
+                                <th>Product Key</th>
+                                <th>Product File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($orders as $order)
+                                <tr role="row">
+                                    <td>#{{ $order->id ?? '' }}</td>
+                                    <td>{{ $order->key->key ?? '' }}</td>
+                                    <td><a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
+                                            download="{{ $order->product->product_name ?? '' }}">Download</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr role="row">
+                                <th>Order Id</th>
+                                <th>Product Key</th>
+                                <th>Product File</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                @else
+                    <p class="d-inline-block mr-4">No Downloads Found</p>
+                    <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
+                            class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Browse Products</a>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

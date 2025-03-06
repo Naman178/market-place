@@ -3,28 +3,58 @@
     <div class="card-body"  style="position: relative;">
         <div class="mb-3 cart-item-border text-center">Wallet Summary</div>
         <div class="cart-items mt-3">
-            <div class="row mb-3 pb-3 cart-item">
-                <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
-                    <div class="cart-item-image">
-                        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif" 
-                             alt="{{ $plan->name }}" 
-                             class="h-100 w-100">
+                @if (!empty($mergedPricing))
+                    @foreach ($mergedPricing as $key => $selectedPricing)
+                        <div class="row mb-3 pb-3 cart-item border-bottom" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
+                            <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
+                                <div class="cart-item-image">
+                                    <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif" 
+                                        alt="{{ $plan->name }}" 
+                                        class="h-100 w-100">
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
+                                <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
+                                @if($selectedPricing)
+                                    <h5 class="mt-0 mb-2 cart-item-pri">
+                                        <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong> {{ $selectedPricing['billing_cycle'] ?? '' }}</span>
+                                    </h5>
+                                @endif
+                                <h5 class="mt-0 mb-2 cart-item-pri">
+                                    Quantity: 1
+                                </h5>
+                                @if ((int) $selectedPricing['id'] > 1)
+                                    <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item" 
+                                        data-plan-id="{{ $plan->id }}" 
+                                        data-pricing-id="{{ $selectedPricing['id'] }}">
+                                        Remove
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="row mb-3 pb-3 cart-item border-bottom">
+                        <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
+                            <div class="cart-item-image">
+                                <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif" 
+                                    alt="{{ $plan->name }}" 
+                                    class="h-100 w-100">
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
+                            <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
+                            @if($selectedPricing)
+                                <h5 class="mt-0 mb-2 cart-item-pri">
+                                    <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
+                                </h5>
+                            @endif
+                            <h5 class="mt-0 mb-2 cart-item-pri">
+                                Quantity: 1
+                            </h5>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
-                    <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
-                    @if($selectedPricing)
-                        <h5 class="mt-0 mb-2 cart-item-pri">
-                            <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
-                        </h5>
-                    @endif
-                    <h5 class="mt-0 mb-2 cart-item-pri">
-                        INR {{ number_format((int) $plan->pricing->fixed_price ) }} </h5>
-                    <h5 class="mt-0 mb-2 cart-item-pri">
-                        Quantity: 1
-                    </h5>
-                </div>
-            </div>
+                @endif
         </div>
         <div class="accordion" id="accordionCouponCode" style="position: relative;">
             <div class="cart-item-border">
@@ -107,33 +137,56 @@
             </div>
         </div>
         <hr>
-        <div class="row mb-1">
+        {{-- <div class="row mb-1">
             <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
                 <h5 class="mt-0 mb-2">Subtotal</h5>
             </div>
+            @if (!empty($mergedPricing))
+                @foreach ($mergedPricing as $key => $selectedPricing)
+                    <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing['sale_price'] ) }}</h5>
+                    </div>
+                @endforeach
+            @else
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $selectedPricing->fixed_price ) }}</h5>
+                <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing->sale_price ) }}</h5>
             </div>
+            @endif
         </div>
         <div class="row mb-1">
             <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
                 <h5 class="mt-0 mb-2">GST(+)</h5>
             </div>
             @php
-                $total = (int)$selectedPricing->fixed_price;
-                $gst = ($selectedPricing->gst_percentage/100) * $total;
+                if(!empty($mergedPricing)){
+                    foreach($mergedPricing as $key => $selectedPricing){
+                        $total = (int)$selectedPricing['sale_price'];
+                        $gst = ($selectedPricing['gst_percentage']/100) * $total;
+                    }
+                }
+                else{
+                    $total = (int)$selectedPricing->sale_price;
+                    $gst = ($selectedPricing->gst_percentage/100) * $total;
+                }
             @endphp
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
                 <h5 class="mt-0 mb-2">INR {{ number_format((int) $gst ) }}</h5>
             </div>
         </div>
-        <div class="row mb-1 discount_row d-none">
+        <div class="row mb-1 discount_row">
             <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <h5 class="mt-0 mb-2">Discount</h5>
+                <h5 class="mt-0 mb-2">Discount(-)</h5>
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+
                 <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                {{-- <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5> --}}
+                @if (!empty($mergedPricing))
+                    @foreach ($mergedPricing as $key => $selectedPricing)
+                        <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing['fixed_price'] }}</h5>
+                    @endforeach
+                @else
+                 <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5>
+                @endif
             </div>
         </div>
         <div class="row mb-4">
@@ -142,13 +195,127 @@
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
                 @php
-                    $total = (int)$selectedPricing->fixed_price;
-                    $gst = ($selectedPricing->gst_percentage/100) * $total;
-                    $final_total = $total + $gst;
+                    if(!empty($mergedPricing)){
+                        foreach($mergedPricing as $key => $selectedPricing){
+                            $total = (int)$selectedPricing['fixed_price'];
+                            $gst = ($selectedPricing['gst_percentage']/100) * $total;
+                            $final_total = $total + $gst;
+                        }
+                    }else{
+                        $total = (int)$selectedPricing->fixed_price;
+                        $gst = ($selectedPricing->gst_percentage/100) * $total;
+                        $final_total = $total + $gst;
+                    }
                 @endphp
                 <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
              </div>
-        </div>
+        </div> --}}
+        @php
+            $totalSubtotal = 0;
+            $totalGST = 0;
+            $totalDiscount = 0;
+        @endphp
+
+        @if (!empty($mergedPricing))
+            @foreach ($mergedPricing as $key => $selectedPricing)
+                @php
+                    $itemPrice = (int) $selectedPricing['sale_price'];
+                    $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
+                    $discount = (int) $selectedPricing['sale_price']  ?? 0;
+
+                    $totalSubtotal += $itemPrice;
+                    $totalGST += $gst;
+                    $totalDiscount += $discount;
+                @endphp
+            @endforeach
+
+            <div class="row mb-1">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Subtotal</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    <h5 class="mt-0 mb-2">INR {{ number_format($totalSubtotal) }}</h5>
+                </div>
+            </div>
+
+            <div class="row mb-1">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">GST (+)</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    <h5 class="mt-0 mb-2">INR {{ number_format($totalGST) }}</h5>
+                </div>
+            </div>
+            <div class="row mb-1 discount_row">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Discount(-)</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+    
+                    <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
+                    <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $totalSubtotal }}</h5>
+                       
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Total</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    @php
+                      $final_total = $totalSubtotal + $totalGST;
+                    @endphp
+                    <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                </div>
+            </div>
+
+        @else
+            @php
+                $itemPrice = (int) $selectedPricing->sale_price;
+                $gst = ($selectedPricing->gst_percentage / 100) * $itemPrice;
+                $discount = (int) ($selectedPricing->discount ?? 0);
+            @endphp
+            <div class="row mb-1">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Subtotal</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    <h5 class="mt-0 mb-2">INR {{ number_format($selectedPricing->sale_price) }}</h5>
+                </div>
+            </div>
+            
+            <div class="row mb-1">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">GST (+)</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    <h5 class="mt-0 mb-2">INR {{ number_format($gst) }}</h5>
+                </div>
+            </div>
+            
+            <div class="row mb-1 discount_row">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Discount(-)</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+    
+                    <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
+                     <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->sale_price }}</h5>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                    <h5 class="mt-0 mb-2">Total</h5>
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                    @php
+                        $final_total = $itemPrice + $gst;
+                    @endphp
+                      <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                </div>
+            </div>
+        @endif
         <hr>
         <h4 class="mb-3">Select Payment Method</h4>
         <ul class="nav nav-tabs" id="paymentTab" role="tablist">
@@ -161,8 +328,20 @@
                 <form role="form" action="{{ route('stripe-payment-store') }}"  method="post"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="stripe-form">
                     @csrf
                     <input type="hidden" id="stripeToken" name="stripeToken">
-                    <input type="hidden" id="plan_type" name="plan_type" value="{{$selectedPricing->pricing_type}}">
-                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$selectedPricing->billing_cycle}}">
+                    @if (!empty($mergedPricing))
+                        @foreach ($mergedPricing as $key => $selectedPricing)
+                            <input type="hidden" id="plan_type" name="plan_type" value="{{$selectedPricing['pricing_type']}}">
+                            <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$selectedPricing['billing_cycle']}}">
+                            <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$selectedPricing['sale_price']}}">
+                            <input type="hidden" name="gst" id="gst" value="{{$selectedPricing['gst_percentage']}}">
+                        @endforeach
+                    @else
+                        <input type="hidden" id="plan_type" name="plan_type" value="{{$selectedPricing->pricing_type}}">
+                        <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{$selectedPricing->billing_cycle}}">
+
+                        <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$selectedPricing->sale_price}}">
+                        <input type="hidden" name="gst" id="gst" value="{{$selectedPricing->gst_percentage}}">
+                    @endif
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
@@ -171,8 +350,6 @@
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
-                    <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$selectedPricing->fixed_price}}">
-                    <input type="hidden" name="gst" id="gst" value="{{$selectedPricing->gst_percentage}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -217,9 +394,17 @@
                 <p class="error" id="stripe_payment_error"></p>
                 <div class="row">
                     @php
-                        $total = (int)$selectedPricing->fixed_price;
-                        $gst = ($selectedPricing->gst_percentage / 100) * $total;
-                        $final_total = $total + $gst;
+                        if(!empty($mergedPricing)){
+                            foreach($mergedPricing as $pricing){
+                                $total = (int)$pricing['fixed_price'];
+                                $gst = ($pricing['gst_percentage']/100) * $total;
+                                $final_total = $total + $gst;
+                            }
+                        }else{
+                            $total = (int)$selectedPricing->fixed_price;
+                            $gst = ($selectedPricing->gst_percentage / 100) * $total;
+                            $final_total = $total + $gst;
+                        }
                     @endphp
 
                  @if(Auth::check())

@@ -56,10 +56,16 @@ class UserProfileController extends Controller
                 'company_website.required' => 'Please enter a valid URL for the company website.',
                 'company_website.url' => 'Please enter a valid company website URL.',
             ]);
+            $imageName = $request->old_photo;
+            if ($request->profile_pic) {
+                $imageName = time().'.'.$request->profile_pic->extension();  
+                $request->profile_pic->move(public_path('assets/images/faces'), $imageName);
+            }
             if ($validator->passes()){
                 if($user){
                     $user->update([
                         "name" => $request->firstname. ' '. $request->lastname,
+                        'profile_pic' => $imageName,
                         "email" => $request->email,
                         "country_code" => $request->country_code,
                         "contact_number" => $request->contact,

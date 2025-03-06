@@ -31,10 +31,11 @@
                         @php $name = optional($user)->name ? explode(" ", $user->name) : ['', ''];  @endphp
                         <div class="col-md-12 border p-4 card">
                             {{-- <h4 class="mb-5 txt-white">Profile Details</h4> --}}
-                            <form method="POST" class="erp-profile-submit" id="profile_form"
+                            <form method="POST" class="erp-profile-submit" id="profile_form" enctype="multipart/form-data"
                                 data-url="{{ route('store-user-profile') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+                                <input type="hidden" name="old_photo" value="{{ $user->profile_pic }}">         
                                 <div class="row">
                                     <div class="col-md-6">
 
@@ -60,6 +61,20 @@
                                                 placeholder="Enter Email" value="{{ optional($user)->email }}">
                                             <div class="error" id="email_error"></div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="profile_pic">Profile Picture</label>
+                                            <input style="padding: 12px;" type="file" name="profile_pic" id="profile_pic" class="form-control"
+                                                placeholder="Enter Profile Picture">
+                                            <div class="error" id="profile_pic_error"></div>
+                                        </div>
+                                        @if ($user->profile_pic)
+                                            <img class="mb-3" src="{{asset('assets/images/faces/' . $user->profile_pic) }}" alt="photo" width="100" height="100">
+                                        @endif
+                                        @if ($errors->has('profile_pic'))
+                                            <div class="text-red-500 text-sm">{{ $errors->first('profile_pic') }}</div>
+                                        @endif
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
