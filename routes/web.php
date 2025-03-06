@@ -58,6 +58,7 @@ Route::post('/wishlist/add', [HomePageController::class, 'addToWishlist'])->name
 Route::get('/get-wishlist', [HomePageController::class, 'getUserWishlist'])->name('get_wishlist');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
+Route::post('/checkout/remove', [CheckoutController::class, 'removeItem'])->name('cart.remove');
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
@@ -101,6 +102,13 @@ Route::middleware(['auth'])->group(function () {
 
     // front user dashboard
     Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
+    Route::get('/orders', [UserController::class, 'orders'])->name('orders');
+    Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    Route::get('/support', [UserController::class, 'support'])->name('support');
+    Route::get('/transactions', [UserController::class, 'transactions'])->name('transactions');
+    Route::get('/invoice', [UserController::class, 'invoice'])->name('invoice');
+    Route::get('/subscription', [UserController::class, 'subscription'])->name('subscription');
+    Route::get('/settings', [UserController::class, 'settings'])->name('settings');
 
     //invoice
     Route::get('/invoicepreview/{id}',[InvoiceController::class,'preview'])->name('invoice-preview');
@@ -185,7 +193,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
     Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
-    Route::get('/subscription/cancel/{id}', [StripePaymentController::class, 'cancelSubscription'])->name('subscription.cancel');
+
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');

@@ -1,0 +1,755 @@
+ <div class="user-dashboard cust-page-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                    <div class="list-group user-dashboard-list-grp" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active show" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="list-home" aria-selected="true"
+                            onclick="showTab(event, 'list-home')">Dashboard</a>
+                        {{-- <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#wallet" role="tab" aria-controls="list-profile" aria-selected="false">Wallet</a> --}}
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#wallet" role="tab" aria-controls="list-profile" aria-selected="false"
+                            onclick="showTab(event, 'wallet')">Wallet</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#list-profile" role="tab" onclick="showTab(event, 'list-profile')"
+                            aria-controls="list-profile" aria-selected="false">Orders</a>
+                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
+                            href="#list-messages" role="tab" aria-controls="list-messages"
+                            onclick="showTab(event, 'list-messages')"aria-selected="false">Downloads</a>
+                        <a class="list-group-item list-group-item-action" id="list-support-list" data-toggle="list"
+                            href="#list-support" role="tab" aria-controls="list-support"
+                            onclick="showTab(event, 'list-support')"aria-selected="false">Support</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#transaction" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'transaction')"aria-selected="false">Transaction History</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#wooOrderHistory" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'wooOrderHistory')"aria-selected="false">WooCommerce Order History</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#wooUser" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'wooUser')"aria-selected="false">WooCommerce Users</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#invoice" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'invoice')"aria-selected="false">Invoice</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#subscription" role="tab" aria-controls="list-profile"
+                            onclick="showTab(event, 'subscription')"aria-selected="false">Subscription</a>
+                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+                            href="#list-settings" role="tab" aria-controls="list-settings"
+                            onclick="showTab(event, 'list-settings')"aria-selected="false">Profile Settings</a>
+                        <a class="list-group-item list-group-item-action" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    </div>
+                </div>
+                <div class="col-xl=8 col-lg-8 col-md-12 col-sm-12 col-12 dashboard-contect">
+                    <div class="tab-content border rounded" id="nav-tabContent">
+                        <!-- dashboard -->
+                        <div class="tab-pane fade active show" id="list-home" role="tabpanel"
+                            aria-labelledby="list-home-list">
+                            @php $name = $user['fname'] .' '. $user['lname']; @endphp
+                            <h4 class="mb-4">Hello {{ $name ?? '' }}</h4>
+                            <p>Not {{ $name ?? '' }} ? <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
+                            </p>
+                            <p>From your account dashboard you can view your recent orders, manage and download the key and
+                                files , and edit your password and account details.</p>
+                        </div>
+                        <!-- wallet -->
+                        <div class="tab-pane fade d-none" id="wallet" role="tabpanel"
+                            aria-labelledby="list-profile-list">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h4 class="mb-4">Wallet</h4>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-6 col-sm-6">
+                                            <div class="card card-icon mb-4">
+                                                <div class="card-body text-center">
+                                                    <i class="i-Money-2" style="font-weight: 500 !important;"></i>
+                                                    <p class="text-muted mt-2 mb-2">Current Wallet Amount</p>
+                                                    <p class="text-primary text-24 line-height-1 m-0">
+                                                        {{ $wallet->wallet_amount ?? '0' }} ₹</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 col-sm-6">
+                                            <div class="card card-icon mb-4">
+                                                <div class="card-body text-center">
+                                                    <i class="i-Checkout-Basket" style="font-weight: 500 !important;"></i>
+                                                    <p class="text-muted mt-2 mb-2">Total Orders</p>
+                                                    <p class="text-primary text-24 line-height-1 m-0">
+                                                        {{ $wallet->total_order ?? '0' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 col-sm-6">
+                                            <div class="card card-icon mb-4">
+                                                <div class="card-body text-center">
+                                                    <i class="i-Financial" style="font-weight: 500 !important;"></i>
+                                                    <p class="text-muted mt-2 mb-2">Remaining Orders</p>
+                                                    <p class="text-primary text-24 line-height-1 m-0">
+                                                        {{ $wallet->remaining_order ?? '0' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 border-top pt-4">
+                                    <h4 class="mb-4">Topup Your Wallet</h4>
+                                    <?php
+                                    $currency = $_COOKIE['currency'] ?? '';
+                                    $plan = '';
+                                    $min_amount = 1;
+                                    if ($wallet) {
+                                        // $plan = \App\Models\Plan::where('id', $wallet->product_id)->first();
+                                        // $min_amount = $plan->yearly_price;
+                                    }
+                                    ?>
+                                    @if ($wallet)
+                                        <div class="form-group">
+                                            <label for="plan">Select Plan</label>
+                                            <div class="plan_select_btn">
+                                                @if ($allplan)
+                                                    @foreach ($allplan as $key => $plan)
+                                                        <div class="wallet_plan_radio_button"
+                                                            style="@if (6 == $plan->id && 6 == $wallet->product_id) {{ 'display:block;' }} @endif ">
+                                                            <input type="radio" id="{{ $plan->product_name ?? '' }}"
+                                                                data-min-amount="{{ $plan->yearly_price ?? '' }}"
+                                                                name="product_ids" value="{{ $plan->id ?? '' }}"
+                                                                @if ($wallet->product_id == $plan->id) {{ 'checked' }} data-current="yes" @else data-current="no" @endif />
+                                                            <label for="starter">{{ $plan->product_name ?? '' }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                            <p id="plan_error" class="error"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Enter Amount for Recharge Wallet</label>
+                                            <input type="number" name="amount" id="amount" class="form-control"
+                                                placeholder="Enter Amount to Recharge Wallet" autocomplete="off">
+                                            <p class="error" id="amount_error"></p>
+                                        </div>
+                                        <h4 class="mb-3">Select Payment Method</h4>
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                               <li class="nav-item">
+                                                <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
+                                                    href="#stripePayment" onclick="showTab(event, 'stripePayment')"
+                                                    role="tab" aria-controls="stripePayment"
+                                                    aria-selected="false">Stripe</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="myTabContent">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                                <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" id="product_id" value="">
+                                                    <input type="hidden" name="name" id="username" value="{{ $user['name'] ?? '' }}">
+                                                    <input type="hidden" name="useremail" id="useremail" value="{{ $user['email'] ?? '' }}">
+                                                    <input type="hidden" name="usercontact" id="usercontact" value="{{ $user['contact'] ?? '' }}">
+                                                    <input type="hidden" name="userrazorpayid" id="userrazorpayid" value="{{ $user['razorpay_customer_id'] ?? '' }}">
+                                                    <input type="hidden" name="wallet_product_id" value="{{ $wallet->product_id ?? '' }}">
+                                                    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                                                    <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
+                                                    <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
+                                                aria-labelledby="profile-icon-pill">
+                                                <form role="form" action="{{ route('stripe-payment-store') }}"
+                                                    method="post" class="require-validation" data-cc-on-file="false"
+                                                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                                                    id="stripe-form">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="">
+                                                    <input type="hidden" name="amount" value=""
+                                                        id="stripe_amount">
+                                                    <input type="hidden" name="is_discount_applied"
+                                                        id="is_discount_applied" value="no">
+                                                    <div class='form-row row'>
+                                                        <div class='col-md-12 form-group'>
+                                                            <label class='control-label'>Name on Card</label>
+                                                            <input class='form-control' size='4' type='text'
+                                                                id="name_on_card" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-row row'>
+                                                        <div class='col-md-12 form-group'>
+                                                            <label class='control-label'>Card Number</label>
+                                                            <input autocomplete='off' class='form-control card-number'
+                                                                id="card_number" name="card_number" size='20'
+                                                                placeholder="xxxx xxxx xxxx xxxx" type='text' required>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-row row'>
+                                                        <div class='col-xs-12 col-md-4 form-group expiration'>
+                                                            <label class='control-label'>Expiration Month</label>
+                                                            <input class='form-control card-expiry-month' placeholder='MM'
+                                                                id="card_exp_month" size='2' name="card_month"
+                                                                type='text' required>
+                                                        </div>
+                                                        <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                            <label class='control-label'>Expiration Year</label>
+                                                            <input class='form-control card-expiry-year' placeholder='YY'
+                                                                id="card_exp_year" size='4' name="card_year"
+                                                                type='text' required>
+                                                        </div>
+                                                        <div class='col-xs-12 col-md-4 form-group cvc'>
+                                                            <label class='control-label'>CVC</label>
+                                                            <input autocomplete='off' class='form-control card-cvc'
+                                                                id="card_cvc" name="card_cvc" placeholder='ex. 311'
+                                                                size='4' type='text' required>
+                                                        </div>
+                                                    </div>
+                                                    <p class="error" id="stripe_payment_error"></p>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <button class="pink-blue-grad-button d-inline-block border-0"
+                                                                id="stripePayBtn" type="button">Proceed To Pay</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label for="plan">Select Plan</label>
+                                            <div class="plan_select_btn">
+                                                @if ($allplan)
+                                                    @foreach ($allplan as $key => $plan)
+                                                        <div class="wallet_plan_radio_button">
+                                                            <input type="radio" id="{{ $plan->product_name ?? '' }}"
+                                                                data-min-amount="{{ $plan->yearly_price ?? '' }}"
+                                                                name="product_ids" value="{{ $plan->id ?? '' }}"
+                                                                data-current="no" />
+                                                            <label for="starter">{{ $plan->product_name ?? '' }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                            <p id="plan_error" class="error"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Enter Amount for Recharge Wallet</label>
+                                            <input type="number" name="amount" id="amount" class="form-control"
+                                                placeholder="Enter Amount to Recharge Wallet" autocomplete="off">
+                                            <p class="error" id="amount_error"></p>
+                                        </div>
+                                        <h4 class="mb-3">Select Payment Method</h4>
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                             <li class="nav-item">
+                                                <a class="nav-link" id="home-basic-tab" data-toggle="tab" href="#razorpayPayment" role="tab" aria-controls="razorpayPayment" aria-selected="true">RazorPay</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link active show" id="profile-basic-tab" data-toggle="tab"
+                                                    href="#stripePayment" role="tab" aria-controls="stripePayment"
+                                                    aria-selected="false">Stripe</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="myTabContent">
+                                             <div class="tab-pane fade" id="razorpayPayment" role="tabpanel" aria-labelledby="home-icon-pill">
+                                                <form action="{{ route('razorpay-payment-store') }}" method="POST" class="razropay_form">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" id="product_id" value="">
+                                                    <input type="hidden" name="name" id="username" value="{{ $user['name'] ?? '' }}">
+                                                    <input type="hidden" name="useremail" id="useremail" value="{{ $user['email'] ?? '' }}">
+                                                    <input type="hidden" name="usercontact" id="usercontact" value="{{ $user['contact'] ?? '' }}">
+                                                    <input type="hidden" name="userrazorpayid" id="userrazorpayid" value="{{ $user['razorpay_customer_id'] ?? '' }}">
+                                                    <input type="hidden" name="wallet_product_id" value="{{ $wallet->product_id ?? '' }}">
+                                                    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                                                    <input type="hidden" name="currency" value="{{ $currency }}" id="currency">
+                                                    <button class="pink_blue_grad_button d-inline-block border-0" id="rzp-button1">Proceed To Pay</button>            
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane fade d-none" id="stripePayment" role="tabpanel"
+                                                aria-labelledby="profile-icon-pill">
+                                                <form role="form" action="{{ route('stripe-payment-store') }}"
+                                                    method="post" class="require-validation" data-cc-on-file="false"
+                                                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                                                    id="stripe-form">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="">
+                                                    <input type="hidden" name="amount" value=""
+                                                        id="stripe_amount">
+                                                    <input type="hidden" name="is_discount_applied"
+                                                        id="is_discount_applied" value="no">
+                                                    <div class='form-row row'>
+                                                        <div class='col-md-12 form-group'>
+                                                            <label class='control-label'>Name on Card</label>
+                                                            <input class='form-control' size='4' type='text'
+                                                                id="name_on_card" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-row row'>
+                                                        <div class='col-md-12 form-group'>
+                                                            <label class='control-label'>Card Number</label>
+                                                            <input autocomplete='off' class='form-control card-number'
+                                                                id="card_number" name="card_number" size='20'
+                                                                placeholder="xxxx xxxx xxxx xxxx" type='text' required>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-row row'>
+                                                        <div class='col-xs-12 col-md-4 form-group expiration'>
+                                                            <label class='control-label'>Expiration Month</label>
+                                                            <input class='form-control card-expiry-month' placeholder='MM'
+                                                                id="card_exp_month" size='2' name="card_month"
+                                                                type='text' required>
+                                                        </div>
+                                                        <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                            <label class='control-label'>Expiration Year</label>
+                                                            <input class='form-control card-expiry-year' placeholder='YY'
+                                                                id="card_exp_year" size='4' name="card_year"
+                                                                type='text' required>
+                                                        </div>
+                                                        <div class='col-xs-12 col-md-4 form-group cvc'>
+                                                            <label class='control-label'>CVC</label>
+                                                            <input autocomplete='off' class='form-control card-cvc'
+                                                                id="card_cvc" name="card_cvc" placeholder='ex. 311'
+                                                                size='4' type='text' required>
+                                                        </div>
+                                                    </div>
+                                                    <p class="error" id="stripe_payment_error"></p>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <button class="pink-blue-grad-button d-inline-block border-0"
+                                                                id="stripePayBtn" type="button">Proceed To Pay</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                </div> --}}
+                                {{-- @endif --}}
+                            </div>
+                        </div>
+                        <!-- orders -->
+                        <div class="tab-pane fade d-none" id="list-profile" role="tabpanel"
+                            aria-labelledby="list-profile-list">
+                            <h4 class="mb-4">ALL Orders</h4>
+                            @if ($orders->count() > 0)
+                                <div class="accordion" id="accordionRightIcon">
+                                    @foreach ($orders as $order)
+                                        <div class="card mt-4">
+                                            <div class="card-header header-elements-inline">
+                                                <h6
+                                                    class="card-title ul-collapse__icon--size ul-collapse__right-icon mb-0 w-100">
+                                                    <a data-toggle="collapse" class="text-default"
+                                                        href="#accordion-item-icon-right-{{ $order->id ?? '' }}"
+                                                        aria-expanded="false">
+                                                        <div class="d-flex">
+                                                            <div class="w-50 text-left text-white">
+                                                                {{ $order->product->product_name ?? '' }}</div>
+                                                            <div class="w-50 text-right mr-5 text-white">OrderId:
+                                                                #{{ $order->id ?? '' }}</div>
+                                                        </div>
+                                                    </a>
+                                                </h6>
+                                            </div>
+                                            <div id="accordion-item-icon-right-{{ $order->id ?? '' }}"
+                                                class="collapse show" data-parent="#accordionRightIcon" style="">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                            <div class="d-flex">
+                                                                <div class="w-25">
+                                                                    <p>Order Id:</p>
+                                                                </div>
+                                                                <div class="w-75">
+                                                                    <p>#{{ $order->id ?? '' }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <div class="w-25">
+                                                                    <p>Product:</p>
+                                                                </div>
+                                                                <div class="w-75">
+                                                                    <p> <img width="70px"
+                                                                            src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}"
+                                                                            alt="{{ $order->product->product_name ?? '' }}">
+                                                                        {{ $order->product->product_name ?? '' }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                            <div class="d-flex">
+                                                                <div class="w-25">
+                                                                    <p>Product File:</p>
+                                                                </div>
+                                                                <div class="w-75">
+                                                                    <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
+                                                                        download="{{ $order->product->product_name ?? '' }}">Click
+                                                                        Here To Download</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <div class="w-25">
+                                                                    <p>Product Key:</p>
+                                                                </div>
+                                                                <div class="w-75">
+                                                                    <p class="copy-text">
+                                                                        {{ $order->key->key ?? '' }}
+                                                                        <button class="btn-copy"
+                                                                            style="height: 30px; width: 100px; display: flex; align-items: center; justify-content: center; padding: 0; margin-top: 12px; cursor: pointer;"
+                                                                            onclick="copy('{{ $order->key->key ?? '' }}','#copy_button_{{ $order->id }}')"
+                                                                            id="copy_button_{{ $order->id }}"
+                                                                            title="Click here to copy">
+                                                                            <img src="{{ asset('storage/Logo_Settings/copy_pic.png') }}"
+                                                                                alt="Copy"
+                                                                                style="max-width: 100%; max-height: 100%;">
+                                                                        </button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="d-inline-block mr-4">No Orders Found</p>
+                                <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
+                                        class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Continue Shopping</a>
+                            @endif
+                        </div>
+                        <!-- downloads -->
+                        <div class="tab-pane fade d-none" id="list-messages" role="tabpanel"
+                            aria-labelledby="list-messages-list">
+                            <h4 class="mb-4">Downloads</h4>
+                            @if ($orders->count() > 0)
+                                <table class="display table table-striped table-bordered dataTable data-table"
+                                    style="width:100%" role="grid" aria-describedby="zero_configuration_table_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Order Id</th>
+                                            <th>Product Key</th>
+                                            <th>Product File</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orders as $order)
+                                            <tr role="row">
+                                                <td>#{{ $order->id ?? '' }}</td>
+                                                <td>{{ $order->key->key ?? '' }}</td>
+                                                <td><a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
+                                                        download="{{ $order->product->product_name ?? '' }}">Download</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th>Order Id</th>
+                                            <th>Product Key</th>
+                                            <th>Product File</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            @else
+                                <p class="d-inline-block mr-4">No Downloads Found</p>
+                                <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
+                                        class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Browse Products</a>
+                            @endif
+                        </div>
+                        <!-- support -->
+                        <div class="tab-pane fade d-none" id="list-support" role="tabpanel"
+                            aria-labelledby="list-support-list">
+                            <h4 class="mb-4">Support</h4>
+                            @if ($wallet)
+                                @if ($wallet->product_id && $wallet->product_id == 1)
+                                    <p>Need Support? Contact us at <a
+                                            href="mailto:support@skyfinity.co.in">support@skyfinity.co.in</a> for
+                                        assistance.
+                                    </p>
+                                @elseif($wallet->product_id && $wallet->product_id == 2)
+                                    <p>Feel free to reach out to us via email at <a href="mailto:support@skyfinity.co.in">
+                                            support@skyfinity.co.in </a> or give us a call at <a href="tel:+916359389818">
+                                            +91-6359389818 </a> . Our dedicated support team is ready to assist you.</p>
+                                    <p>Please note that the estimated waiting time for support is approximately 30 minutes.
+                                    </p>
+                                @elseif(($wallet->product_id && $wallet->product_id == 3) || ($wallet->product_id && $wallet->product_id == 6))
+                                    <p>Feel free to reach out to us via email at <a href="mailto:support@skyfinity.co.in">
+                                            support@skyfinity.co.in </a> or give us a call at <a href="tel:+916359389818">
+                                            +91-6359389818 </a> . Our dedicated support team is ready to assist you.</p>
+                                    <p>We are here to assist you promptly and provide immediate support without any waiting
+                                        time.</p>
+                                @endif
+                            @else
+                                <p class="d-inline-block mr-4">Please Topup Your Wallte For Suppot</p>
+                            @endif
+                        </div>
+                        <!-- transaction -->
+                        <div class="tab-pane fade d-none" id="transaction" role="tabpanel"
+                            aria-labelledby="list-profile-list">
+                            <h4 class="mb-4">Payment History</h4>
+                            <table class="display table table-striped table-bordered transacion_history_tbl data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Payment Status</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Plan</th>
+                                        <th>Payment Id</th>
+                                        <th>Payment Method</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($transactions)
+                                        @foreach ($transactions as $key => $tran)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td> {{ $tran->payment_status ? ($tran->payment_status == 'captured' ? 'Success' : $tran->payment_status) : '' }}
+                                                </td>
+                                                <td> {{ $tran->payment_amount ?? '' }} </td>
+                                                <td> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>
+                                                <td>{{ $tran->product->product_name ?? '' }}</td>
+                                                <td> {{ $tran->razorpay_payment_id ?? '' }} </td>
+                                                <td> {{ $tran->payment_method ?? '' }} </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Payment Status</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Plan</th>
+                                        <th>Payment Id</th>
+                                        <th>Payment Method</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Woo Order History -->
+                        <div class="tab-pane fade d-none" id="wooOrderHistory" role="tabpanel"
+                            aria-labelledby="list-profile-list">
+                            <h4 class="mb-4">WooCommerce Order History</h4>
+                            <table class="display table table-striped table-bordered data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order Id</th>
+                                        <th>Order Total</th>
+                                        <th>Order Date</th>
+                                        <th>Order URL</th>
+                                        <th>Per Order Charge</th>
+                                        <th>Remaining Amount Wallet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($order_history)
+                                        @foreach ($order_history as $key => $list)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td> {{ $list->woocommerce_order_id ?? '' }} </td>
+                                                <td> {{ $list->woocommerce_order_total ?? '' }} </td>
+                                                <td> {{ Helper::dateFormatForView($list->woocommerce_order_date) ?? '' }}
+                                                </td>
+                                                <td> {{ $list->woocommerce_order_url ?? '' }} </td>
+                                                <td> {{ $list->per_order_price ?? '' }} </td>
+                                                <td> {{ $list->remaining_wallet_amount ?? '' }} </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order Id</th>
+                                        <th>Order Total</th>
+                                        <th>Order Date</th>
+                                        <th>Order URL</th>
+                                        <th>Per Order Charge</th>
+                                        <th>Remaining Amount Wallet</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Woo user customer -->
+                        <div class="tab-pane fade d-none" id="wooUser" role="tabpanel"
+                            aria-labelledby="list-profile-list">
+                            <h4 class="mb-4">WooCommerce User</h4>
+                            <table class="display table table-striped table-bordered data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Site URL</th>
+                                        <th>Register Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($woo_user)
+                                        @foreach ($woo_user as $key => $list)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td> {{ $list->email ?? '' }} </td>
+                                                <td> {{ $list->contact_number ?? '' }} </td>
+                                                <td> {{ $list->site_url ?? '' }} </td>
+                                                <td> {{ Helper::dateFormatForView($list->created_at) ?? '' }} </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Site URL</th>
+                                        <th>Register Date</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- update password -->
+                        <div class="tab-pane fade d-none" id="list-settings" role="tabpanel"
+                            aria-labelledby="list-settings-list">
+                            <h4 class="mb-4">Update Password</h4>
+                            <form class="form-horizontal" method="POST" action="{{ route('changePasswordPost') }}">
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+                                @if ($errors)
+                                    @foreach ($errors->all() as $error)
+                                        <div class="alert alert-danger">{{ $error }}</div>
+                                    @endforeach
+                                @endif
+                                {{ csrf_field() }}
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label for="fname">Current Password</label>
+                                        <input id="current-password" type="password" class="form-control"
+                                            name="current-password" placeholder="Enter Current Password" required>
+                                        @if ($errors->has('current-password'))
+                                            <div class="error" style="color:red;">
+                                                {{ $errors->first('current-password') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label for="lname">New Password</label>
+                                        <input id="new-password" type="password" class="form-control"
+                                            name="new-password" placeholder="Enter New Password" required>
+                                        @if ($errors->has('new-password'))
+                                            <div class="error" style="color:red;">
+                                                {{ $errors->first('new-password') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label for="lname">Confirm New Password</label>
+                                        <input id="new-password-confirm" type="password" class="form-control"
+                                            name="new-password_confirmation" placeholder="Re-Enter New Password" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn dark-blue-btn my-4"> Update Password</button>
+                            </form>
+                        </div>
+                        <!-- Invoice -->
+                        <div class="tab-pane fade d-none" id="invoice" role="tabpanel"
+                            aria-labelledby="list-settings-list">
+                            <h4 class="mb-4">User Invoice</h4>
+                            <table class="display table table-striped table-bordered transacion_history_tbl data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Invoice Number</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($invoice)
+                                        @foreach ($invoice as $key => $inv)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td>
+                                                    <a href="{{ route('invoice-preview', $inv->id) }}" target="_blank"
+                                                        class="text-primary">
+                                                        {{ $inv->invoice_number }}
+                                                    </a>
+                                                </td>
+                                                <td> Rs. {{ $inv->total ?? '' }}</td>
+                                                <td> {{ $inv->created_at }} </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Invoice Number</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Subscription -->
+                        <div class="tab-pane fade d-none" id="subscription" role="tabpanel"
+                            aria-labelledby="list-settings-list">
+                            <h4 class="mb-4">User Invoice</h4>
+                            <table class="display table table-striped table-bordered transacion_history_tbl data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Subscription start date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($subscription)
+                                        @foreach ($subscription as $key => $sub)
+                                            <tr>
+                                                <td> {{ $key + 1 }} </td>
+                                                <td> {{ $sub->product->name ?? '' }}</td>
+                                                <td> {{ $sub->created_at }} </td>
+                                                <td>{{ $sub->status }}</td>
+                                                <td>
+                                                    @if ($sub->status === 'active')
+                                                        <a href="{{ route('subscription.cancel', ['id' => $sub->subscription_id]) }}"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to cancel this subscription?');">
+                                                            Stop
+                                                        </a>
+                                                    @else
+                                                        <span class="text-danger">Subscription Already Canceled</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Subscription start date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

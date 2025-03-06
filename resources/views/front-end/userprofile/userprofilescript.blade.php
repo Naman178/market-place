@@ -22,6 +22,7 @@ $(document).on("click", ".erp-profile-form", function(e) {
         $('#city_error').text(errors.city ? errors.city : '');
         $('#postal_error').text(errors.postal ? errors.postal : '');
         $('#address_line_one_error').text(errors.address_line_one ? errors.address_line_one : '');
+        $('#profile_pic_error').text(errors.profile_pic ? errors.profile_pic : '');
     }
 
 
@@ -39,6 +40,7 @@ $(document).on("click", ".erp-profile-form", function(e) {
                 $('.input-error').removeClass('is-invalid');
                 if (response.success) {
                     window.location.href = "{{ route('profile') }}";
+                    toastr.success(response.success);
                 } else if (response.error) {
                     handleErrorMessages(response.error); // Ensure this function handles validation errors correctly
                 }
