@@ -145,13 +145,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="confirm_password">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-                             @error('confirm_password')
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                            @error('password_confirmation')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div>                    
                     <div class="col-md-12 pt-3">
                         <div class="form-group">
                             <button type="submit" class="btn btn-block pink-btn mt-3">Register</button>
