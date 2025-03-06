@@ -15,6 +15,7 @@
         let selectedCouponCode = localStorage.getItem("selectedCouponCode");
         let selectedtotal = localStorage.getItem("selectedtotal");
         let selecteddiscount = localStorage.getItem("selecteddiscount");
+        $("#discount_amount").text("INR " + selecteddiscount);
 
         if (selectedCouponId) {
             let formattedTotal = new Intl.NumberFormat('en-IN').format(selectedtotal);
@@ -195,7 +196,6 @@
         }
 
         // if (!selectedCouponCode) {
-            console.log('no coupon is selected');
             $('#coupon_code_apply_btn').on('click', function() {
                 console.log('btn clicked');
                 let couponCode = $('#coupon_code').val().trim();
