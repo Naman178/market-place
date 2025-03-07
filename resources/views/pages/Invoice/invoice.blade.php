@@ -4,7 +4,7 @@
     $site = Settings::where('key', 'site_setting')->first();
 @endphp
 @section('title')
-    <title>{{ $site['value']['site_name'] ?? 'Infinity' }} | {{ trans('custom.Blog_title') }}</title>
+    <title>{{ $site['value']['site_name'] ?? 'Infinity' }} | Invoice</title>
 @endsection
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('assets/styles/vendor/datatables.min.css') }}">
@@ -21,6 +21,12 @@
         <div class="col-sm-12 col-md-6">
             <h4><a href="{{ route('dashboard') }}" class="text-uppercase">{{ $site['value']['site_name'] ?? 'Infinity' }}</a> | Invoice  </h4>
         </div>
+        @can('invoice-create')
+            <div class="col-sm-12 col-md-6">
+                <a href="{{ route('invoice-edit', 'new') }}"  class="btn btn-primary btn-sm"
+                    style="float: right !important;">Create Invoice</a>
+            </div>
+        @endcan
     </div>
     @can('invoice-list')
         <div class="separator-breadcrumb border-top"></div>

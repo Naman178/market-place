@@ -14,7 +14,9 @@ class AddKeyInSubscription extends Migration
     public function up()
     {
         Schema::table('subscription', function (Blueprint $table) {
-            $table->text('key_id')->after('status')->nullable();
+            if (!Schema::hasColumn('subscription', 'key_id')) {
+                $table->text('key_id')->after('status')->nullable();
+            }
         });
     }
 
