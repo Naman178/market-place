@@ -234,7 +234,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2">INR {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ number_format($totalSubtotal) }}</h5>
                 </div>
             </div>
 
@@ -243,7 +243,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2">INR {{ number_format($totalGST) }}</h5>
+                    <h5 class="mt-0 mb-2" id="gst_amount">INR {{ number_format($totalGST) }}</h5>
                 </div>
             </div>
             <div class="row mb-1 discount_row">
@@ -253,7 +253,7 @@
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
     
                     <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                    <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $totalSubtotal }}</h5>
+                    <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ (int) $totalSubtotal }}</h5>
                        
                 </div>
             </div>
@@ -280,7 +280,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2">INR {{ number_format($selectedPricing->sale_price) }}</h5>
+                    <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ number_format($selectedPricing->sale_price) }}</h5>
                 </div>
             </div>
             
@@ -289,7 +289,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2">INR {{ number_format($gst) }}</h5>
+                    <h5 class="mt-0 mb-2" id="gst_amount">INR {{ number_format($gst) }}</h5>
                 </div>
             </div>
             
@@ -300,7 +300,7 @@
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
     
                     <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                     <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->sale_price }}</h5>
+                     <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ (int) $selectedPricing->sale_price }}</h5>
                 </div>
             </div>
             

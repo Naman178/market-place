@@ -10,7 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
     <!-- Toastr CSS (Toast notifications) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     
@@ -29,9 +30,98 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <style>
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 20px 0 !important;
+            font-size: 14px !important;
+        }
+
+        table.dataTable th {
+            padding: 12px 15px !important;
+            text-align: left !important;
+        }
+        table.dataTable td{
+            padding: 12px 15px !important;
+            text-align: center !important ;
+        }
+        #DataTables_Table_0_info{
+            display: flex !important;
+            justify-content: space-between !important;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            float: right  !important;
+            text-align: right  !important;
+            padding-top: .25em !important;
+        }
+        #DataTables_Table_0_paginate{
+            display: flex !important;
+            align-items: center !important;
+            justify-content: end !important;
+        }
+        /* Table header styling */
+        table.dataTable th {
+            background-color: #0274b8 !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        /* Zebra striping for rows */
+        table.dataTable tr:nth-child(even) {
+            background-color: #f9f9f9 !important;
+        }
+
+        table.dataTable tr:hover {
+            background-color: #f1f1f1 !important;
+        }
+
+        /* Style search input */
+        .dataTables_filter input {
+            border: 1px solid #ccc !important;
+            padding: 5px 10px !important;
+            border-radius: 4px !important;
+            font-size: 14px !important;
+        }
+        .dataTables_filter label{
+            display: flex !important;
+            align-items: center !important;
+            justify-content: end !important;
+        }
+
+        /* Style pagination buttons */
+        .dataTables_paginate .paginate_button {
+            padding: 5px 10px !important;
+            margin: 0 2px !important;
+            background-color: #2b2842 !important;
+            color: white !important;
+            border-radius: 4px !important;
+            border: none !important;
+            cursor: pointer !important;
+        }
+
+        .dataTables_paginate .paginate_button:hover {
+            background-color: #0274b8 !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table.dataTable {
+                font-size: 12px !important;
+            }
+
+            table.dataTable th, table.dataTable td {
+                padding: 8px !important;
+            }
+
+            .dataTables_wrapper .dataTables_filter {
+                margin-top: 10px !important;
+            }
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{
+            color: white !important;
+        }
         .tip {
             background-color: #263646;
             padding: 0 14px;
@@ -534,9 +624,11 @@
             }
         }
         .wsus__profile_overview {
-            background: #F5F5F5;
-            border-radius: 5px;
-            padding: 1px 30px 30px 30px;
+            background: #ffffff;
+            border-radius: 8px; 
+            padding: 20px 30px; 
+            box-shadow: none; border:1px dotted #0274b8;
+            transition: all 0.3s ease; 
         }
 
         .wsus__profile_overview h2 {
@@ -602,7 +694,7 @@
                     <div class="wsus__profile_header_text">
                         <div class="img">
                             <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
-                                class="img-fluid w-100">
+                                class="img-fluid w-100 h-100">
                         </div>
                         <div class="text">
                             <h2>{{ auth()->user()->name }}</h2>
@@ -638,7 +730,7 @@
             <li><a href="{{ route('transactions') }}" class="{{ request()->is('transactions') ? 'active' : '' }}">Transactions</a></li>
             <li><a href="{{ route('invoice') }}" class="{{ request()->is('invoice') ? 'active' : '' }}">Invoice</a></li>
             <li><a href="{{ route('subscription') }}" class="{{ request()->is('subscription') ? 'active' : '' }}">Subscription</a></li>
-            <li><a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">Settings</a></li>
+            <li><a href="{{ route('profile-settings') }}" class="{{ request()->is('profile-settings') ? 'active' : '' }}">Settings</a></li>
             <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
         </ul>
     </div>
@@ -667,16 +759,22 @@
     <script src="{{ asset('assets/js/datatables.script.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="{{ asset('assets/js/vendor/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.script.js') }}"></script>
+    <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         $(document).ready(function() {
-            $('.data-table').DataTable();
+            $('.data-table').DataTable({
+                "responsive": true,  // Make table responsive
+                "lengthChange": false,  // Hide the length change dropdown
+                "searching": true,  // Enable the search bar
+                "paging": true,  // Enable paging
+                "info": true  // Show info like number of records
+            });
+            $('.dataTables_paginate .paginate_button').attr('style', 'color: white !important;');
         });
 
         function copy(text, target) {

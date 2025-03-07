@@ -16,6 +16,9 @@
        .text-danger{
            color:red;
        }
+       .form-control {
+            padding: 21px 15px !important;
+        }
    </style>
 @endsection
 @section('content')
@@ -29,7 +32,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="row  border p-3 pt-4 pb-4 border-radius-1">
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
                             <input type="text" class="form-control" id="first_name" name="first_name" required>
@@ -37,11 +40,19 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
+                            <label for="firstname" class="floating-label">First Name</label>
+                            <div class="error" id="firstname_error"></div>
+                        </div>
+                    </div>   
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{-- <label for="last_name">Last Name</label> --}}
+                            <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
+                            <label for="firstname" class="floating-label">Last Name</label>
                              @error('last_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -58,8 +69,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="country_code">Country Code</label>
-                            <input type="text" class="form-control" id="country_code" name="country_code">
+                            <select name="country_code" id="country_code" class="form-control select-input"
+                                required="required">
+                                <option value="">Select country code</option>
+                                @foreach ($countaries as $countery)
+                                    <option value="{{ $countery->id }}">
+                                        {{ $countery->country_code }}</option>
+                                @endforeach
+                            </select>
                            @error('country_code')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -94,8 +111,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="country">Country</label>
-                            <input type="text" class="form-control" id="country" name="country">
+                            <select name="country" id="country" class="form-control select-input">
+                                <option value="0">Select Country</option>
+                                @foreach ($countaries as $countery)
+                                    <option value="{{ $countery->id }}"
+                                        data-country-code="{{ $countery->ISOname }}">
+                                        {{ $countery->name }}</option>
+                                @endforeach
+                            </select>
                             @error('country')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -176,5 +199,98 @@
                 }
                 });
             });
+            // const firstnameInput = document.getElementById("firstname");
+            // const firstnameError = document.getElementById("firstname_error");
+
+            // firstnameInput.addEventListener("blur", () => {
+            //     if (!firstnameInput.value.trim()) {
+            //     firstnameError.textContent = "First Name is required!";
+            //     firstnameError.style.display = "block"; 
+            //     } else {
+            //     firstnameError.style.display = "none"; 
+            //     }
+            // });
+            // const floatingLabel = document.querySelector(".floating-label");
+
+            // window.addEventListener("DOMContentLoaded", () => {
+            //     if (firstnameInput.value.trim() !== "") {
+            //     floatingLabel.style.top = "50%";
+            //     floatingLabel.style.fontSize = "0.8rem";
+            //     }
+            // });
+
+            // firstnameInput.addEventListener("focus", () => {
+            //     floatingLabel.style.top = "-1%";
+            //     floatingLabel.style.fontSize = "0.8rem";
+            // });
+
+            // firstnameInput.addEventListener("blur", () => {
+            //     if (!firstnameInput.value.trim()) {
+            //     floatingLabel.style.top = "35%";
+            //     floatingLabel.style.fontSize = "1rem";
+            //     floatingLabel.style.color = "red";
+            //     firstnameInput.style.borderColor = "red";
+            //     }
+            //     else {  
+            //     floatingLabel.style.color = "#70657b";
+            //     firstnameInput.style.borderColor = "#ccc";
+            //     }
+            // });
+            document.addEventListener("DOMContentLoaded", function () {
+                const inputFields = document.querySelectorAll(".form-control");
+                
+                // Function to handle floating label
+                function updateFloatingLabel(input) {
+                    const label = input.nextElementSibling; // Get the corresponding label
+                    if (input.value.trim() !== "") {
+                        label.style.top = "-1%";
+                        label.style.fontSize = "0.8rem";
+                        label.style.color = "#70657b";
+                    } else if (input.value.trim() === "") {
+                        label.style.top = "35%";
+                        label.style.fontSize = "1rem";
+                        label.style.color = "red";
+                    } else {
+                        label.style.top = "50%";
+                        label.style.fontSize = "1rem";
+                        label.style.color = "#70657b";
+                    }
+                }
+
+                // Initialize labels on page load
+                inputFields.forEach(input => {
+                    updateFloatingLabel(input);
+
+                    // Blur event: Check if empty & show error
+                    input.addEventListener("blur", function () {
+                        const errorDiv = document.getElementById(input.id + "_error");
+                        if (!input.value.trim()) {
+                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                        } else {
+                            errorDiv.style.display = "none";
+                            input.style.borderColor = "#ccc";
+                        }
+                        updateFloatingLabel(input);
+                    });
+
+                    // Focus event: Float label
+                    input.addEventListener("focus", function () {
+                        const label = input.nextElementSibling;
+                        label.style.top = "-1%";
+                        label.style.fontSize = "0.8rem";
+                        if (input.value.trim() !== "") {
+                            label.style.color = "#70657b";
+                            input.style.borderColor = "#70657b";
+                        } else{
+                            label.style.color = "red";
+                            input.style.borderColor = "red";
+                        }
+                    });
+                });
+            });
+            $('#country').select2();
+            $('#country_code').select2();
     </script>
 @endsection

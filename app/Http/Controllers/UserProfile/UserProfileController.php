@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SEO;
 use App\Models\ContactsCountryEnum;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
@@ -31,7 +31,7 @@ class UserProfileController extends Controller
                 'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'email' => 'required|email',
                 'contact' => 'required|digits:10',
-                'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                 'city' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'postal' => 'required|digits_between:5,6',
                 'company_name' => 'required',
@@ -46,8 +46,8 @@ class UserProfileController extends Controller
                 'email.email' => 'Please enter a valid email address.',
                 'contact.required' => 'Please Add Your Contact Number.',
                 'contact.digits' => 'The Contact Number must be exactly 10 digits.',
-                'address_line_one.required' => 'Please Add Your Address.',
-                'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+                'address_line1.required' => 'Please Add Your Address.',
+                'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                 'city.required' => 'The City Is Required.',
                 'city.regex' => 'The City name should only contain letters and spaces.',
                 'postal.required' => 'The Postal Code Is Required.',
@@ -61,7 +61,9 @@ class UserProfileController extends Controller
                 $imageName = time().'.'.$request->profile_pic->extension();  
                 $request->profile_pic->move(public_path('assets/images/faces'), $imageName);
             }
-            if ($validator->passes()){
+            if ($validator->fails()){
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            } else{
                 if($user){
                     $user->update([
                         "name" => $request->firstname. ' '. $request->lastname,
@@ -72,8 +74,8 @@ class UserProfileController extends Controller
                         "company_website" => $request->company_website,
                         "company_name" => $request->company_name,
                         "country" => $request->country,
-                        "address_line1" => $request->address_line_one,
-                        "address_line2" => $request->address_line_two,
+                        "address_line1" => $request->address_line1,
+                        "address_line2" => $request->address_line2,
                         "city" => $request->city,
                         "postal_code" => $request->postal
                     ]);
@@ -87,9 +89,6 @@ class UserProfileController extends Controller
                     'type' => 'update',
                     'data' => $user
                 ]);
-            }
-            else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             }
         }
     }

@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="wsus__profile_overview">
-                <h2>About Me</h2>
+                <h3>About Me</h3>
                 <p>Hello, I’m {{ $user->name ?? '' }}</p>
 
                 <p><span>Joined:</span> {{ $user->created_at->format('M d, Y') ?? '' }}</p>

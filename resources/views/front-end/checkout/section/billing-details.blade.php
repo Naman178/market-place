@@ -16,11 +16,11 @@
         @endauth
     <div class="mb-5 cart-item-border text-center">Billing Details</div>
     <div class="row mt-2">
-        <!-- First Name -->
+         <!-- First Name -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="firstname" class="form-label"><i class="form-icon fa fa-user"></i>First Name</label>
-                <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter First Name" value="{{ $name[0] }}">
+                <input type="text" name="firstname" id="firstname" class="form-control" placeholder=" " value="{{ $name[0] }}" />
+                <label for="firstname" class="floating-label">First Name</label>
                 <div class="error" id="firstname_error"></div>
             </div>
         </div>
@@ -28,8 +28,8 @@
         <!-- Last Name -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="lastname" class="form-label"><i class="form-icon fa fa-user"></i>Last Name</label>
-                <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Last Name" value="{{ $name[1] }}">
+                <input type="text" name="lastname" id="lastname" class="form-control" placeholder=" " value="{{ $name[1] }}" />
+                <label for="lastname" class="floating-label">Last Name</label>
                 <div class="error" id="lastname_error"></div>
             </div>
         </div>
@@ -37,16 +37,15 @@
         <!-- Email -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="email" class="form-label"><i class="form-icon fa fa-envelope"></i>Email</label>
-                <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email" value="{{ optional($user)->email }}">
+                <input type="text" name="email" id="email" class="form-control" placeholder=" " value="{{ optional($user)->email }}" />
+                <label for="email" class="floating-label">Email</label>
                 <div class="error" id="email_error"></div>
             </div>
         </div>
-
+        
         <!-- Country Code -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="country_code" class="form-label"><i class='fa fa-globe form-icon'></i>Country Code</label>
                 <select name="country_code" id="country_code" class="form-control select-input" required="required">
                     <option value="">Select country code</option>
                     @foreach($countaries as $countery)
@@ -60,8 +59,8 @@
         <!-- Contact Number -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="contact" class="form-label"><i class="form-icon fa fa-phone"></i>Contact Number</label>
-                <input type="number" name="contact" id="contact" class="form-control" placeholder="Enter Contact Number" value="{{ optional($user)->contact_number }}">
+                <input type="number" name="contact" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
+                <label for="contact" class="floating-label">Contact Number</label>
                 <div class="error" id="contact_error"></div>
             </div>
         </div>
@@ -69,8 +68,8 @@
         <!-- Company Name -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="company_name" class="form-label"><i class="fa fa-building form-icon" aria-hidden="true"></i>Company Name</label>
-                <input type="text" name="company_name" id="company_name" class="form-control" placeholder="Enter Company Name" value="{{ optional($user)->company_name }}">
+                <input type="text" name="company_name" id="company_name" class="form-control" placeholder=" " value="{{ optional($user)->company_name }}" />
+                <label for="company_name" class="floating-label">Company Name</label>
                 <div class="error" id="company_name_error"></div>
             </div>
         </div>
@@ -78,16 +77,33 @@
         <!-- Company Website -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="company_website" class="form-label"><i class='fa fa-briefcase form-icon'></i>Company Website</label>
-                <input type="text" name="company_website" id="company_website" class="form-control" placeholder="Enter Company Website" value="{{ optional($user)->company_website }}">
+                <input type="text" name="company_website" id="company_website" class="form-control" placeholder=" " value="{{ optional($user)->company_website }}" />
+                <label for="company_website" class="floating-label">Company Website</label>
                 <div class="error" id="company_website_error"></div>
             </div>
         </div>
 
+        <!-- Address Line 1 -->
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="text" name="address_line_one" id="address_line_one" class="form-control" placeholder=" " value="{{ optional($user)->address_line1 }}" />
+                <label for="address_line_one" class="floating-label">Address Line 1</label>
+                <div class="error" id="address_line_one_error"></div>
+            </div>
+        </div>
+
+        <!-- Address Line 2 -->
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="text" name="address_line_two" id="address_line_two" class="form-control" placeholder=" " value="{{ optional($user)->address_line2 }}" />
+                <label for="address_line_two" class="floating-label">Address Line 2</label>
+                <div class="error" id="address_line_two_error"></div>
+            </div>
+        </div>
+        
         <!-- Country -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="country" class="form-label"><i class="fa fa-flag form-icon" aria-hidden="true"></i>Country</label>
                 <select name="country" id="country" class="form-control select-input">
                     <option value="0">Select Country</option>
                     @foreach($countaries as $countery)
@@ -98,29 +114,11 @@
             </div>
         </div>
 
-        <!-- Address Line 1 -->
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="address_line_one" class="form-label"><i class="fa fa-address-card form-icon" aria-hidden="true"></i> Address Line 1</label>
-                <input type="text" name="address_line_one" id="address_line_one" class="form-control" placeholder="Enter Address Line 1" value="{{ optional($user)->address_line1 }}">
-                <div class="error" id="address_line_one_error"></div>
-            </div>
-        </div>
-
-        <!-- Address Line 2 -->
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="address_line_two" class="form-label"><i class="fa fa-address-card form-icon" aria-hidden="true"></i> Address Line 2</label>
-                <input type="text" name="address_line_two" id="address_line_two" class="form-control" placeholder="Enter Address Line 2" value="{{ optional($user)->address_line2 }}">
-                <div class="error" id="address_line_two_error"></div>
-            </div>
-        </div>
-
         <!-- City -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="city" class="form-label"><i class="fa-solid fa-city form-icon"></i>City</label>
-                <input type="text" name="city" id="city" class="form-control" placeholder="Enter City Name" value="{{ optional($user)->city }}">
+                <input type="text" name="city" id="city" class="form-control" placeholder=" " value="{{ optional($user)->city }}" />
+                <label for="city" class="floating-label">City</label>
                 <div class="error" id="city_error"></div>
             </div>
         </div>
@@ -128,8 +126,8 @@
         <!-- Postal Code -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="postal" class="form-label"><i class="fas fa-map-marker-alt form-icon"></i>Zip / Postal Code</label>
-                <input type="text" name="postal" id="postal" class="form-control" placeholder="Enter Zip / Postal Code" value="{{ optional($user)->postal_code }}">
+                <input type="text" name="postal" id="postal" class="form-control" placeholder=" " value="{{ optional($user)->postal_code }}" />
+                <label for="postal" class="floating-label">Zip / Postal Code</label>
                 <div class="error" id="postal_error"></div>
             </div>
         </div>
