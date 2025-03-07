@@ -263,5 +263,32 @@
                 }
             });
         // }
+        
+        $(".remove-item").on("click", function () {
+            let planId = $(this).data("plan-id");
+            let pricingId = $(this).data("pricing-id");
+
+            $.ajax({
+                url: "{{ route('cart.remove') }}", 
+                type: "POST",
+                data: {
+                    plan_id: planId,
+                    pricing_id: pricingId,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#cart-item-" + planId + "-" + pricingId).fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        toastr.error('Error removing item');
+                    }
+                },
+                error: function () {
+                    toastr.error('Failed to remove item. Try again.');
+                }
+            });
+        });
     });
 </script>
