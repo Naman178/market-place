@@ -1,6 +1,12 @@
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Toastr JS (Toast notifications) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
+        $('#country').select2();
+        $('#country_code').select2();
        $(function() {  
            /* Stripe Payment Code */    
            var $form = $(".require-validation");     
@@ -68,6 +74,57 @@
                }
            }
        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputFields = document.querySelectorAll(".form-control");
+            
+            // Function to handle floating label
+            function updateFloatingLabel(input) {
+                const label = input.nextElementSibling; // Get the corresponding label
+                if (input.value.trim() !== "") {
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+                    label.style.color = "#70657b";
+                } else {
+                    label.style.top = "35%";
+                    label.style.fontSize = "1rem";
+                    label.style.color = "red";
+                }
+            }
+
+            // Initialize labels on page load
+            inputFields.forEach(input => {
+                updateFloatingLabel(input);
+
+                // Blur event: Check if empty & show error
+                input.addEventListener("blur", function () {
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    if (!input.value.trim()) {
+                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                    } else {
+                        errorDiv.style.display = "none";
+                        input.style.borderColor = "#ccc";
+                    }
+                    updateFloatingLabel(input);
+                });
+
+                // Focus event: Float label
+                input.addEventListener("focus", function () {
+                    const label = input.nextElementSibling;
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+                    if (input.value.trim() !== "") {
+                        label.style.color = "#70657b";
+                        input.style.borderColor = "#70657b";
+                    } else{
+                        label.style.color = "red";
+                        input.style.borderColor = "red";
+                    }
+                });
+            });
+        });
+
    </script>
    {{-- <script>
        $(document).ready(function() {

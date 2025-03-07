@@ -2980,3 +2980,53 @@ div.ql-toolbar.ql-snow{
 .product_details .new-price, .price-slide .new-price {
   font-size: 45px;
 }
+/* Form Group Styling */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Floating Label Styling */
+.floating-label {
+    position: absolute;
+    top: 50%; /* Default position at 50% */
+    left: 12px;
+    transform: translateY(-50%);
+    color: #999;
+    transition: all 0.3s ease-in-out;
+    background: white;
+    padding: 0 5px;
+    pointer-events: none;
+}
+
+/* Input Field Styling */
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+/* Focus Styling */
+.form-control:focus {
+    border-color: red;
+    outline: none;
+}
+
+/* When Input Is Focused or Filled */
+.form-control:focus + .floating-label,
+.form-control:not(:placeholder-shown) + .floating-label {
+    top: -1px;
+    font-size: 12px;
+    color: red;
+    padding: 0 5px;
+}
+
+/* Error Message Styling */
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none; /* Hidden by default */
+}
