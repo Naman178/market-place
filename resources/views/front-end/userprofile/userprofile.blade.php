@@ -136,7 +136,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="address_line_one">Address Line 1</label>
-                                            <input type="text" name="address_line_one" id="address_line_one"
+                                            <input type="text" name="address_line1" id="address_line_one"
                                                 class="form-control" placeholder="Enter Address Line 1"
                                                 value="{{ optional($user)->address_line1 }}">
                                             <div class="error" id="address_line_one_error"></div>
@@ -145,7 +145,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="address_line_two">Address Line 2</label>
-                                            <input type="text" name="address_line_two" id="address_line_two"
+                                            <input type="text" name="address_line2" id="address_line_two"
                                                 class="form-control" placeholder="Enter Address Line 2"
                                                 value="{{ optional($user)->address_line2 }}">
                                             <div class="error" id="address_line_two_error"></div>

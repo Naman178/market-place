@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/transactions', [UserController::class, 'transactions'])->name('transactions');
     Route::get('/invoice', [UserController::class, 'invoice'])->name('invoice');
     Route::get('/subscription', [UserController::class, 'subscription'])->name('subscription');
-    Route::get('/settings', [UserController::class, 'settings'])->name('settings');
+    Route::get('/profile-settings', [UserController::class, 'settings'])->name('profile-settings');
 
     //invoice
     Route::get('/invoicepreview/{id}',[InvoiceController::class,'preview'])->name('invoice-preview');
