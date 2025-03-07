@@ -115,6 +115,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('invoice/download/{id}', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
     Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice-list');
     Route::get('/orderlist', [InvoiceController::class, 'viewOrder'])->name('order-list');
+    Route::get('/invoice/edit/{id}/{id1?}', [InvoiceController::class, 'edit'])->name('invoice-edit');
+    Route::get('/fetch-subcategories', [InvoiceController::class, 'fetchSubcategories'])->name('fetch.subcategories');
+    Route::get('/fetch-products', [InvoiceController::class, 'fetchProducts'])->name('fetch.products');
+    Route::get('/fetch-coupon', [InvoiceController::class, 'fetchcoupon'])->name('fetch.coupon');
+    Route::post('/invoice/store',[InvoiceController::class,'store'])->name('invoice-store');
+
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');
     Route::post('/category/store',[CategoryController::class,'store'])->name('category-store');
@@ -193,7 +199,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
     Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
-
+    Route::get('/subscription/cancel/{id}', [StripePaymentController::class, 'cancelSubscription'])->name('subscription.cancel');
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
