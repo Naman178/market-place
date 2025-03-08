@@ -45,7 +45,8 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="description">Description</label>
-                                <textarea name="description"  class="form-control custom-textarea" id="description">{{ $privacy_policy->description }}</textarea>
+                                <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$privacy_policy->description!!}</div>
+                                <input type="hidden" name="description" id="description" value="{{$privacy_policy->description}}">
                                 <div class="error" style="color:red;" id="description_error"></div>
                             </div>
                         </div>
@@ -61,7 +62,8 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="description">Description</label>
-                            <textarea name="description" class="form-control custom-textarea" id="description"></textarea>
+                            <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                            <input type="hidden" name="description" id="description">
                             <div class="error" style="color:red;" id="description_error"></div>
                         </div>
                     </div>
@@ -81,6 +83,7 @@
 @section('page-js')
 <script src="{{ asset('assets/js/common-bundle-script.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 @endsection
 @section('bottom-js')
     @include('pages.common.modal-script')  

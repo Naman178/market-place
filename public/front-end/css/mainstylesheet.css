@@ -3017,9 +3017,7 @@ div.ql-toolbar.ql-snow{
 /* When Input Is Focused or Filled */
 .form-control:focus + .floating-label,
 .form-control:not(:placeholder-shown) + .floating-label {
-    top: -1px;
     font-size: 12px;
-    color: red;
     padding: 0 5px;
 }
 

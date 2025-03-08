@@ -45,7 +45,7 @@
                     <ul class="menu-vertical">
                         <li>Sign Up For Free</li>
                         <li>Free Log in</li>
-                        <li><a href="{{url('/user-dashboard#list-settings')}}" id="forgot-password-link">Forgot Password</a></li>
+                        <li><a href="{{url('/profile-settings')}}">Forgot Password</a></li>
                     </ul>
                 </div>
                 <div>
