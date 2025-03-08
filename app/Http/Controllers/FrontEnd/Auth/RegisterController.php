@@ -62,7 +62,7 @@ class RegisterController extends Controller
         $user->save();
 
         // Redirect to dashboard or login page
-        return redirect('/login')->with('success', 'Registration successful. You can now login.');
+        return redirect('/user-login')->with('success', 'Registration successful. You can now login.');
     }
 
     public function userCreateCheckout(Request $request){
