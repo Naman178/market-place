@@ -15,7 +15,7 @@ class BlogContent extends Model
         'content_type',
         'content_heading',
         'content_image',
-        'content_description_1',
-        'content_description_2',
+        'content_descriptipn_1',
+        'content_descriptipn_2',
     ];
 }

@@ -53,7 +53,8 @@
 
                             <div class="form-group col-md-12">
                                 <label for="description">Description</label>
-                                <textarea name="description"  class="form-control custom-textarea" id="description">{{ $Blog_category->description }}</textarea>
+                                <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$Blog_category->description!!}</div>
+                                <input type="hidden" name="description" id="description" value="{{$Blog_category->description}}">
                                 <div class="error" style="color:red;" id="description_error"></div>
                             </div>
                         </div>
@@ -78,7 +79,9 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="description">Description</label>
-                            <textarea name="description" class="form-control custom-textarea" id="description"></textarea>
+                            <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                            <input type="hidden" name="description" id="description">
+                            
                             <div class="error" style="color:red;" id="description_error"></div>
                         </div>
                     </div>

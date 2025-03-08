@@ -76,12 +76,14 @@
                                     <div class="error" style="color:red;" id="image_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label for="short-description">Short Description</label>
-                                    <textarea id="short-description" name="short_description">{{ $Blog->short_description }}</textarea>
+                                    <label for="short_description">Short Description</label>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$Blog->short_description!!}</div>
+                                    <input type="hidden" name="short_description" id="short_description" value="{{$Blog->short_description}}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="long-description">Long Description</label>
-                                    <textarea id="long-description" name="long_description">{{ $Blog->long_description }}</textarea>
+                                    <div id="long_quill_editor" class="long_quill_editor" style="height: 200px; width:100%;">{!!$Blog->long_description!!}</div>
+                                    <input type="hidden" name="long_description" id="long_description" value="{{$Blog->long_description}}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="related_blog">Related Blogs</label>
@@ -132,7 +134,7 @@
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea>
                                                                 </div>
                                                                 <div class="form-group image-field">
                                                                     <label for="image-{{ $index }}">Image</label>
@@ -153,7 +155,7 @@
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea>
                                                                 </div>
                                                             </div>
                                                             <!-- Image - Description - Heading -->
@@ -165,7 +167,7 @@
                                                                 </div>
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
-                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                    <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea>
                                                                 </div>
                                                                 <div class="form-group heading-field">
                                                                     <label for="heading-{{ $index }}">Heading</label>
@@ -181,7 +183,7 @@
                                                                 <div class="form-group description-field">
                                                                     <label for="description-{{ $index }}">Description</label>
                                                                     <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">
-                                                                        {{ old('description_' . $index, isset($BlogContent->content_description_1) ? $BlogContent->content_description_1 : '') }}
+                                                                        {{ old('description_' . $index, isset($BlogContent->content_descriptipn_1) ? $BlogContent->content_descriptipn_1 : '') }}
                                                                     </textarea>
                                                                 </div>
                                                                 
@@ -196,7 +198,7 @@
                                                                 <div class="form-group description-field">
                                                                     <label for="description2-{{ $index }}">Description</label>
                                                                     <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">
-                                                                        {{ old('description2_' . $index, isset($BlogContent->content_description_2) ? $BlogContent->content_description_2 : '') }}
+                                                                        {{ old('description2_' . $index, isset($BlogContent->content_descriptipn_2) ? $BlogContent->content_descriptipn_2 : '') }}
                                                                     </textarea>
                                                                 </div>
                                                             </div>
@@ -238,17 +240,21 @@
                                                                     </div>
                                                                     <div class="form-group description-field">
                                                                         <label for="description-{{ $index }}">Description</label>
-                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                        <div id="description-{{ $index }}" class="quill-editor" style="height: 200px; width:100%;">{!! old('description_' . $index, $BlogContent->content_descriptipn_1)!!}</div>
+                                                                        <input type="hidden" name="description-{{ $index }}" id="description_{{ $index }}" value="{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}">
+                                                                        {{-- <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea> --}}
                                                                     </div>
                                                                     <div class="form-group image-field">
                                                                         <label for="image-{{ $index }}">Image</label>
                                                                         <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
                                                                         <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
                                                                     </div>
-                                                                    @if($BlogContent->content_description_2)
+                                                                    @if($BlogContent->content_descriptipn_2)
                                                                         <div class="form-group description-field">
                                                                             <label for="description2-{{ $index }}">Description</label>
-                                                                            <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_description_2) !!}</textarea>
+                                                                            <div id="description2-{{ $index }}"  class="quill-editor" style="height: 200px; width:100%;">{!! old('description2_' . $index, $BlogContent->content_descriptipn_2)!!}</div>
+                                                                            <input type="hidden" name="description2-{{ $index }}" id="description2_{{ $index }}" value="{!! old('description2_' . $index, $BlogContent->content_descriptipn_2) !!}">
+                                                                            {{-- <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_descriptipn_2) !!}</textarea> --}}
                                                                         </div>
                                                                     @endif
                                                                 </div>
@@ -266,7 +272,9 @@
                                                                     </div>
                                                                     <div class="form-group description-field">
                                                                         <label for="description-{{ $index }}">Description</label>
-                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                        <div id="description-{{ $index }}" class="quill-editor" style="height: 200px; width:100%;">{!! old('description_' . $index, $BlogContent->content_descriptipn_1)!!}</div>
+                                                                        <input type="hidden" name="description-{{ $index }}" id="description_{{ $index }}" value="{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}">
+                                                                        {{-- <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea> --}}
                                                                     </div>
                                                                 </div>
                                                             @elseif($BlogContent->content_type == 'image-description-heading')
@@ -279,7 +287,9 @@
                                                                     </div>
                                                                     <div class="form-group description-field">
                                                                         <label for="description-{{ $index }}">Description</label>
-                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                        <div id="description-{{ $index }}" class="quill-editor" style="height: 200px; width:100%;">{!! old('description_' . $index, $BlogContent->content_descriptipn_1)!!}</div>
+                                                                        <input type="hidden" name="description-{{ $index }}" id="description_{{ $index }}" value="{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}">
+                                                                        {{-- <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea> --}}
                                                                     </div>
                                                                     <div class="form-group heading-field">
                                                                         <label for="heading-{{ $index }}">Heading</label>
@@ -295,17 +305,21 @@
                                                                     </div>
                                                                     <div class="form-group description-field">
                                                                         <label for="description-{{ $index }}">Description</label>
-                                                                        <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_description_1) !!}</textarea>
+                                                                        <div id="description-{{ $index }}" class="quill-editor" style="height: 200px; width:100%;">{!! old('description_' . $index, $BlogContent->content_descriptipn_1)!!}</div>
+                                                                        <input type="hidden" name="description-{{ $index }}" id="description_{{ $index }}" value="{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}">
+                                                                        {{-- <textarea class="form-control tinymce-textarea" id="description-{{ $index }}" name="description_{{ $index }}">{!! old('description_' . $index, $BlogContent->content_descriptipn_1) !!}</textarea> --}}
                                                                     </div>
                                                                     <div class="form-group image-field">
                                                                         <label for="image-{{ $index }}">Image</label>
                                                                         <input type="file" class="form-control" id="image-{{ $index }}" name="image_{{ $index }}">
                                                                         <img id="image-url-{{ $index }}" src="{{ old('image_' . $index, asset('storage/images/' . $BlogContent->content_image)) }}" alt="Image not found" width="100px">
                                                                     </div>
-                                                                    @if($BlogContent->content_description_2)
+                                                                    @if($BlogContent->content_descriptipn_2)
                                                                         <div class="form-group description-field">
                                                                             <label for="description2-{{ $index }}">Description</label>
-                                                                            <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_description_2) !!}</textarea>
+                                                                            <div id="description2-{{ $index }}"  class="quill-editor" style="height: 200px; width:100%;">{!! old('description2_' . $index, $BlogContent->content_descriptipn_2)!!}</div>
+                                                                            <input type="hidden" name="description2-{{ $index }}" id="description2_{{ $index }}" value="{!! old('description2_' . $index, $BlogContent->content_descriptipn_2) !!}">
+                                                                            {{-- <textarea class="form-control tinymce-textarea" id="description2-{{ $index }}" name="description2_{{ $index }}">{!! old('description2_' . $index, $BlogContent->content_descriptipn_2) !!}</textarea> --}}
                                                                         </div>
                                                                     @endif
                                                                 </div>
@@ -359,11 +373,15 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="short-description">Short Description</label>
-                                    <textarea id="short-description" name="short_description"></textarea>
+                                    <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                                    <input type="hidden" name="short_description" id="short_description">
+                                    {{-- <textarea id="short_description" name="short_description"></textarea> --}}
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="long-description">Long Description</label>
-                                    <textarea id="long-description" name="long_description"></textarea>
+                                    <div id="long_quill_editor" class="long_quill_editor" style="height: 200px; width:100%;"></div>
+                                    <input type="hidden" name="long_description" id="long_description">
+                                    {{-- <textarea id="long-description" name="long_description"></textarea> --}}
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="related_blog">Related Blogs</label>

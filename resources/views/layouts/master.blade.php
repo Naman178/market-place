@@ -98,9 +98,9 @@
             });
         </script>
         <script>
-            var quill = new Quill('textarea', {
-                theme: 'snow'
-            });   
+            // var quill = new Quill('textarea',() {
+            //     theme: 'snow'
+            // });  
         </script>
         @yield('bottom-js')
     </body>

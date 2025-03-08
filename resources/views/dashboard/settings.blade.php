@@ -25,30 +25,45 @@
                     @endif
                     {{ csrf_field() }}
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="fname">Current Password</label>
+                        <div class="col-md-12">
+                            <div class="form-group">
                             <input id="current-password" type="password" class="form-control"
-                                name="current-password" placeholder="Enter Current Password" required>
+                                name="current-password" placeholder="" required>
+                                <label for="fname" class="floating-label">Current Password</label>
                             @if ($errors->has('current-password'))
                                 <div class="error" style="color:red;">
                                     {{ $errors->first('current-password') }}
                                 </div>
                             @endif
+                            <div class="error" id="current-password_error"></div>
+                            </div>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <label for="lname">New Password</label>
+                        <div class="col-md-12">
+                            <div class="form-group">
                             <input id="new-password" type="password" class="form-control" name="new-password"
-                                placeholder="Enter New Password" required>
+                                placeholder="" required>
+                                <label for="lname" class="floating-label">New Password</label>
                             @if ($errors->has('new-password'))
                                 <div class="error" style="color:red;">
                                     {{ $errors->first('new-password') }}
                                 </div>
                             @endif
+                            <div class="error" id="new-password_error"></div>
+                            </div>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <label for="lname">Confirm New Password</label>
+                        <div class="col-md-12">
+                            <div class="form-group">
                             <input id="new-password-confirm" type="password" class="form-control"
-                                name="new-password_confirmation" placeholder="Re-Enter New Password" required>
+                                name="new-password_confirmation" placeholder="" required>
+                                
+                            <label for="lname" class="floating-label">Confirm New Password</label>
+                            @if ($errors->has('new-password_confirmation'))
+                                <div class="error" style="color:red;">
+                                    {{ $errors->first('new-password_confirmation') }}
+                                </div>
+                            @endif
+                            <div class="error" id="new-password-confirm_error"></div>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn dark-blue-btn my-4"> Update Password</button>
