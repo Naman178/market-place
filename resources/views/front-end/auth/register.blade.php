@@ -19,6 +19,15 @@
        .form-control {
             padding: 21px 15px !important;
         }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            padding-top: 7px;
+        }
+        .select2-container .select2-selection--single{
+            height: 43px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 40px !important;
+        }
    </style>
 @endsection
 @section('content')
@@ -32,20 +41,14 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="row  border p-3 pt-4 pb-4 border-radius-1">
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" required>
-                             @error('first_name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div> --}}
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
                             <label for="firstname" class="floating-label">First Name</label>
                             <div class="error" id="firstname_error"></div>
+                            @error('first_name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>   
                     <div class="col-md-6">
@@ -53,18 +56,20 @@
                             {{-- <label for="last_name">Last Name</label> --}}
                             <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
                             <label for="firstname" class="floating-label">Last Name</label>
-                             @error('last_name')
+                            @error('last_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="last_name_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control"  id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label for="email" class="floating-label">Email</label>
                             @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="email_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -84,29 +89,32 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="contact_number">Contact Number</label>
                             <input type="text" class="form-control" id="contact_number" name="contact_number">
-                           @error('contact_number')
+                            <label for="contact_number" class="floating-label">Contact Number</label>
+                            @error('contact_number')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="contact_number_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="company_name">Company Name</label>
-                            <input type="text" class="form-control" id="company_name" name="company_name">
-                             @error('company_name')
+                            <input type="text" name="company_name" id="company_name" class="form-control" placeholder=""/>
+                            <label for="company_name" class="floating-label">Company Name</label>
+                            @error('company_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="company_name_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="company_website">Company Website</label>
-                            <input type="url" class="form-control" id="company_website" name="company_website">
-                             @error('company_website')
+                            <input type="url" name="company_website" id="company_website" class="form-control" placeholder=""/>
+                            <label for="company_website" class="floating-label">Company Website</label>
+                            @error('company_website')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="company_website_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -126,53 +134,59 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="address_line1">Address Line 1</label>
-                            <input type="text" class="form-control" id="address_line1" name="address_line1">
+                            <input type="text" name="address_line1" id="address_line1" class="form-control" placeholder=""/>
+                            <label for="address_line1" class="floating-label">Address Line 1</label>
                             @error('address_line1')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="address_line1_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="address_line2">Address Line 2</label>
-                            <input type="text" class="form-control" id="address_line2" name="address_line2">
+                            <input type="text" name="address_line2" id="address_line2" class="form-control" placeholder=""/>
+                            <label for="address_line2" class="floating-label">Address Line 2</label>
+                            <div class="error" id="address_line2_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city">
-                         @error('city')
+                            <input type="text" name="city" id="city" class="form-control" placeholder=""/>
+                            <label for="city" class="floating-label">City</label>
+                            @error('city')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="city_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="postal_code">Zip / Postal Code</label>
-                            <input type="text" class="form-control" id="postal_code" name="postal_code">
+                            <input type="text" name="postal_code" id="postal_code" class="form-control" placeholder=""/>
+                            <label for="postal_code" class="floating-label">Zip / Postal Code</label>
                             @error('postal_code')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="postal_code_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
+                            <label for="password" class="floating-label">Password</label>
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="password_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="password_confirmation">Confirm Password</label>
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                            <label for="password_confirmation" class="floating-label">Confirm Password</label>
                             @error('password_confirmation')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            <div class="error" id="password_confirmation_error"></div>
                         </div>
                     </div>                    
                     <div class="col-md-12 pt-3">
@@ -191,14 +205,23 @@
     <!--Google Captcha-->
     <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
     <script>
-            grecaptcha.ready(function() {
-                grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}', {action: 'singup'}).then(function(token) {
+           grecaptcha.ready(function() {
+            grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}', { action: 'signup' }).then(function(token) {
                 if (token) {
-                    document.getElementById('recaptcha').value = token;
-                    document.getElementById('recaptcha1').value = token;
+                    let recaptchaField = document.getElementById('recaptcha');
+                    let recaptchaField1 = document.getElementById('recaptcha1');
+
+                    if (recaptchaField) {
+                        recaptchaField.value = token;
+                    }
+                    if (recaptchaField1) {
+                        recaptchaField1.value = token;
+                    }
                 }
-                });
+            }).catch(function(error) {
+                console.error("reCAPTCHA error:", error);
             });
+        });
             // const firstnameInput = document.getElementById("firstname");
             // const firstnameError = document.getElementById("firstname_error");
 
@@ -238,43 +261,53 @@
             // });
             document.addEventListener("DOMContentLoaded", function () {
                 const inputFields = document.querySelectorAll(".form-control");
-                
                 // Function to handle floating label
                 function updateFloatingLabel(input) {
                     const label = input.nextElementSibling; // Get the corresponding label
                     if (input.value.trim() !== "") {
-                        label.style.top = "-1%";
-                        label.style.fontSize = "0.8rem";
-                        label.style.color = "#70657b";
-                    } else if (input.value.trim() === "") {
-                        label.style.top = "35%";
-                        label.style.fontSize = "1rem";
-                        label.style.color = "red";
-                    } else {
                         label.style.top = "50%";
                         label.style.fontSize = "1rem";
                         label.style.color = "#70657b";
+                    } else {
+                        label.style.top = "50%";
+                        label.style.fontSize = "1rem";
+                        label.style.color = "#70657b"; // Ensure this style on initial load if empty
+                    }
+                }
+
+                function handleBlur(input) {
+                    const label = input.nextElementSibling;
+                    if (input.value.trim() === "") {
+                        label.style.color = "red"; // Set red when empty on blur
+                        label.style.top = "35%"; // Set label top position when empty on blur
                     }
                 }
 
                 // Initialize labels on page load
                 inputFields.forEach(input => {
                     updateFloatingLabel(input);
-
+                    const label = input.nextElementSibling;
                     // Blur event: Check if empty & show error
                     input.addEventListener("blur", function () {
-                        const errorDiv = document.getElementById(input.id + "_error");
-                        if (!input.value.trim()) {
+                    const errorDiv = document.getElementById(input.id + "_error");
+
+                    if (!input.value.trim()) {
+                        if (errorDiv) { // ✅ Check if errorDiv exists
                             errorDiv.textContent = input.name.replace("_", " ") + " is required!";
                             errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
                         }
-                        updateFloatingLabel(input);
-                    });
-
+                        input.style.borderColor = "red";
+                        label.style.top = "35%";
+                        label.style.fontSize = "1rem";
+                        label.style.color = "red";
+                    } else {
+                        if (errorDiv) {
+                            errorDiv.style.display = "none";
+                        }
+                        input.style.borderColor = "#ccc";
+                        label.style.color = "#70657b";
+                    }
+                });
                     // Focus event: Float label
                     input.addEventListener("focus", function () {
                         const label = input.nextElementSibling;
@@ -283,7 +316,7 @@
                         if (input.value.trim() !== "") {
                             label.style.color = "#70657b";
                             input.style.borderColor = "#70657b";
-                        } else{
+                        } else {
                             label.style.color = "red";
                             input.style.borderColor = "red";
                         }

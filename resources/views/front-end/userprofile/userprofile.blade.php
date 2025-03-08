@@ -13,9 +13,71 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
+    <style>
+        .text-danger{
+            color:red;
+        }
+        .form-control {
+             padding: 11px 15px !important;
+         }
+    </style>
 @endsection
 @section('scripts')
     <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+                 const inputFields = document.querySelectorAll(".form-control");
+                 
+                 // Function to handle floating label
+                 function updateFloatingLabel(input) {
+                     const label = input.nextElementSibling; // Get the corresponding label
+                     if (input.value.trim() !== "") {
+                         label.style.top = "-1%";
+                         label.style.fontSize = "0.8rem";
+                         label.style.color = "#70657b";
+                     } else {
+                         label.style.top = "35%";
+                         label.style.fontSize = "1rem";
+                         label.style.color = "red";
+                     }
+                 }
+     
+                 // Initialize labels on page load
+                 inputFields.forEach(input => {
+                     updateFloatingLabel(input);
+     
+                     // Blur event: Check if empty & show error
+                     input.addEventListener("blur", function () {
+                         const errorDiv = document.getElementById(input.id + "_error");
+                         if (!input.value.trim()) {
+                             errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                             errorDiv.style.display = "block";
+                             input.style.borderColor = "red";
+                         } else {
+                             errorDiv.style.display = "none";
+                             input.style.borderColor = "#ccc";
+                         }
+                         updateFloatingLabel(input);
+                     });
+     
+                     // Focus event: Float label
+                     input.addEventListener("focus", function () {
+                         const label = input.nextElementSibling;
+                         label.style.top = "-1%";
+                         label.style.fontSize = "0.8rem";
+                         if (input.value.trim() !== "") {
+                             label.style.color = "#70657b";
+                             input.style.borderColor = "#70657b";
+                         } else{
+                             label.style.color = "red";
+                             input.style.borderColor = "red";
+                         }
+                     });
+                 });
+             });
+         $('#country').select2();
+         $('#country_code').select2();
+     </script>
 @endsection
 @section('content')
     <div class="container">
@@ -40,33 +102,32 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group">
-                                            <label for="firstname">First Name</label>
                                             <input type="text" name="firstname" id="firstname" class="form-control"
-                                                placeholder="Enter First Name" value="{{ $name[0] }}">
+                                                placeholder="" value="{{ $name[0] }}">
+                                            <label for="firstname" class="floating-label">First Name</label>
                                             <div class="error" id="firstname_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="lastname">Last Name</label>
                                             <input type="text" name="lastname" id="lastname" class="form-control"
-                                                value="{{ $name[1] }}" placeholder="Enter Last Name">
+                                                value="{{ $name[1] }}" placeholder="">
+                                            <label for="lastname" class="floating-label">Last Name</label>
                                             <div class="error" id="lastname_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
                                             <input type="text" name="email" id="email" class="form-control"
-                                                placeholder="Enter Email" value="{{ optional($user)->email }}">
+                                                placeholder="" value="{{ optional($user)->email }}">
+                                                <label for="email" class="floating-label">Email</label>
                                             <div class="error" id="email_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="profile_pic">Profile Picture</label>
-                                            <input style="padding: 12px;" type="file" name="profile_pic" id="profile_pic" class="form-control"
-                                                placeholder="Enter Profile Picture">
+                                            <input  type="file" name="profile_pic" id="profile_pic" class="form-control"
+                                                placeholder="">
                                             <div class="error" id="profile_pic_error"></div>
                                         </div>
                                         @if ($user->profile_pic)
@@ -78,7 +139,6 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="country_code">Country Code</label>
                                             <select name="country_code" id="country_code" class="form-control select-input"
                                                 required="required">
                                                 <option value="">Select country code</option>
@@ -93,34 +153,33 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="contact">Contact Number</label>
                                             <input type="number" name="contact" id="contact" class="form-control"
-                                                placeholder="Enter Contact Number"
+                                                placeholder=""
                                                 value="{{ optional($user)->contact_number }}">
+                                            <label for="contact" class="floating-label">Contact Number</label>
                                             <div class="error" id="contact_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="company_name">Company Name</label>
                                             <input type="text" name="company_name" id="company_name" class="form-control"
-                                                placeholder="Enter Company Name"
+                                                placeholder=""
                                                 value="{{ optional($user)->company_name }}">
+                                                <label for="company_name" class="floating-label">Company Name</label>
                                             <div class="error" id="company_name_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="company_website">Company Website</label>
                                             <input type="text" name="company_website" id="company_website"
-                                                class="form-control" placeholder="Enter Company Website"
+                                                class="form-control" placeholder=""
                                                 value="{{ optional($user)->company_website }}">
+                                                <label for="company_website" class="floating-label">Company Website</label>
                                             <div class="error" id="company_website_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="company_name">Country</label>
                                             <select name="country" id="country" class="form-control select-input">
                                                 <option value="0">Select Country</option>
                                                 @foreach ($countaries as $countery)
@@ -135,36 +194,36 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="address_line_one">Address Line 1</label>
                                             <input type="text" name="address_line1" id="address_line_one"
-                                                class="form-control" placeholder="Enter Address Line 1"
+                                                class="form-control" placeholder=""
                                                 value="{{ optional($user)->address_line1 }}">
+                                                <label for="address_line_one" class="floating-label">Address Line 1</label>
                                             <div class="error" id="address_line_one_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="address_line_two">Address Line 2</label>
                                             <input type="text" name="address_line2" id="address_line_two"
-                                                class="form-control" placeholder="Enter Address Line 2"
+                                                class="form-control" placeholder=""
                                                 value="{{ optional($user)->address_line2 }}">
+                                                <label for="address_line_two" class="floating-label">Address Line 2</label>
                                             <div class="error" id="address_line_two_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="city">City</label>
                                             <input type="text" name="city" id="city" class="form-control"
-                                                placeholder="Enter City Name" value="{{ optional($user)->city }}">
+                                                placeholder="" value="{{ optional($user)->city }}">
+                                                <label for="city" class="floating-label">City</label>
                                             <div class="error" id="city_error"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="postal">Zip / Postal Code</label>
                                             <input type="text" name="postal" id="postal" class="form-control"
-                                                placeholder="Enter Zip / Postal Code"
+                                                placeholder=""
                                                 value="{{ optional($user)->postal_code }}">
+                                                <label for="postal" class="floating-label">Zip / Postal Code</label>
                                             <div class="error" id="postal_error"></div>
                                         </div>
                                     </div>

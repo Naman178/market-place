@@ -45,7 +45,8 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="answer">Answer</label>
-                                <textarea name="answer"  class="form-control custom-textarea" id="answer">{{ $FAQ->answer }}</textarea>
+                                <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$FAQ->answer!!}</div>
+                                <input type="hidden" name="answer" id="answer" value="{{$FAQ->answer}}">
                                 <div class="error" style="color:red;" id="answer_error"></div>
                             </div>
                         </div>
@@ -61,7 +62,8 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="answer">Answer</label>
-                            <textarea name="answer" class="form-control custom-textarea" id="answer"></textarea>
+                            <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;"></div>
+                            <input type="hidden" name="answer" id="answer">
                             <div class="error" style="color:red;" id="answer_error"></div>
                         </div>
                     </div>
