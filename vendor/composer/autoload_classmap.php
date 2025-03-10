@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\CreateInvoice' => $baseDir . '/app/Console/Commands/CreateInvoice.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\APIs\\AuthController' => $baseDir . '/app/Http/Controllers/APIs/AuthController.php',
@@ -94,6 +95,7 @@ return array(
     'App\\Models\\Share' => $baseDir . '/app/Models/Share.php',
     'App\\Models\\SubCategory' => $baseDir . '/app/Models/SubCategory.php',
     'App\\Models\\Subscription' => $baseDir . '/app/Models/Subscription.php',
+    'App\\Models\\SubscriptionRec' => $baseDir . '/app/Models/SubscriptionRec.php',
     'App\\Models\\TermCondition' => $baseDir . '/app/Models/TermCondition.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
