@@ -119,6 +119,7 @@
                     <select name="coupon" id="coupon" class="form-control" onchange="dynamicCalculation()">
                         <option value="0">Select product first</option>
                     </select>
+                    <div class="coupon_err" id="coupon_err"></div>
         
                     <!-- Row for Subtotal, GST, Discount, and Total -->
                     <div class="row mt-4">

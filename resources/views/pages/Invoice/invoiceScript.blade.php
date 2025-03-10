@@ -163,12 +163,19 @@
                 }
             },
             error: function (xhr) {
-                if (xhr.status === 422) {
+                if (xhr.status === 400) {
+                    let errorMessage = xhr.responseJSON.error;
+                    $('#coupon_err').text(errorMessage).css("color", "red");
+
+                    setTimeout(() => {
+                        $('#coupon_err').text("").css("color", "");
+                    }, 5000);
+                } else if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
                     if (errors.userid) {
-                        userError.text(errors.userid[0]);
+                        $('#user_error').text(errors.userid[0]);
                         setTimeout(() => {
-                            userError.text("");
+                            $('#user_error').text("");
                         }, 3000);
                     }
                 } else {

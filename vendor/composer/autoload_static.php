@@ -664,6 +664,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\CreateInvoice' => __DIR__ . '/../..' . '/app/Console/Commands/CreateInvoice.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\APIs\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIs/AuthController.php',
@@ -752,6 +753,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Models\\Share' => __DIR__ . '/../..' . '/app/Models/Share.php',
         'App\\Models\\SubCategory' => __DIR__ . '/../..' . '/app/Models/SubCategory.php',
         'App\\Models\\Subscription' => __DIR__ . '/../..' . '/app/Models/Subscription.php',
+        'App\\Models\\SubscriptionRec' => __DIR__ . '/../..' . '/app/Models/SubscriptionRec.php',
         'App\\Models\\TermCondition' => __DIR__ . '/../..' . '/app/Models/TermCondition.php',
         'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\InvoiceModel;
 use App\Models\Items;
 use App\Models\Subscription;
+use App\Models\SubscriptionRec;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -311,7 +312,7 @@ class UserController extends Controller
     }
 
     public function subscription() {
-        $subscription = Subscription::where('user_id',auth()->id())->with('product')->get();
+        $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
         return view('dashboard.subscription',compact('subscription'));
     }
 

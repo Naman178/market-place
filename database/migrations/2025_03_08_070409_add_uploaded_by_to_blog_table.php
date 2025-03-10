@@ -14,7 +14,9 @@ class AddUploadedByToBlogTable extends Migration
     public function up()
     {
         Schema::table('blog', function (Blueprint $table) {
-           $table->string('uploaded_by')->nullable();
+            if (!Schema::hasColumn('blog', 'uploaded_by')) {
+                $table->string('uploaded_by')->nullable();
+            }
         });
     }
 
@@ -26,7 +28,7 @@ class AddUploadedByToBlogTable extends Migration
     public function down()
     {
         Schema::table('blog', function (Blueprint $table) {
-            //
+            $table->dropColumn('uploaded_by');
         });
     }
 }

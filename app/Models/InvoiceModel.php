@@ -22,6 +22,7 @@ class InvoiceModel extends Model
         'total',
         'payment_method',
         'payment_status',
+        'product_id'
     ];
     public function user()
     {
@@ -33,6 +34,9 @@ class InvoiceModel extends Model
     }
     public function coupon(){
         return $this->hasOne(Coupon::class,'id' , 'applied_coupon');
+    }
+    public function product(){
+        return $this->hasOne(Items::class,'id','product_id');
     }
 
 }
