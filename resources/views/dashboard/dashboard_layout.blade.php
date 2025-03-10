@@ -43,9 +43,12 @@
             padding: 12px 15px !important;
             text-align: left !important;
         }
+        .dataTables_empty{
+            text-align: center !important;
+        }
         table.dataTable td{
             padding: 12px 15px !important;
-            text-align: center !important ;
+            text-align: left;
         }
         #DataTables_Table_0_info{
             display: flex !important;
@@ -94,15 +97,22 @@
         .dataTables_paginate .paginate_button {
             padding: 5px 10px !important;
             margin: 0 2px !important;
-            background-color: #2b2842 !important;
-            color: white !important;
             border-radius: 4px !important;
             border: none !important;
             cursor: pointer !important;
+            text-decoration: none !important;
+            font-size: 14px !important;
+            background-image: linear-gradient(to right, #2B2842, #007ac1, #2B2842, #007ac1) !important;
+            background-size: 300% 100% !important;
+            color: white !important;
+            transition: all 0.4s ease-in-out !important;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
         }
 
         .dataTables_paginate .paginate_button:hover {
-            background-color: #0274b8 !important;
+            color: #f4f4f4 !important;
+            background-position: 99% 0 !important;
+            transition: all 0.4s ease-in-out !important;
         }
 
         /* Responsive Design */
@@ -152,8 +162,7 @@
             animation-name: come_and_leave;
             animation-duration: 1s;
             animation-fill-mode: both;
-            bottom: -35px;
-            left: 2px
+            bottom: -7px;
         }
 
         .text-line {
@@ -630,14 +639,48 @@
             box-shadow: none; border:1px dotted #0274b8;
             transition: all 0.3s ease; 
         }
+        .wsus__profile_overview .accordion button{
+            color:#fff;
+            padding: 5px 10px;
+            background: #007ac1;
+            border: 1px solid #263646;
+        }
+        .wsus__profile_overview .accordion button:hover{
+            background: #2b2842;
+        }
+        .dot_border{
+            box-shadow: none; border:1px dotted #0274b8;
+        }
+        .accordion > .card{
+            overflow: visible !important;
+        }
+        .cart-item-border{
+            font-size: 15px;
+            width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
+        }
+        .badge-success {
+            color: #fff;
+            background-color: #28a745;
+        }
 
+        .badge {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+        }
         .wsus__profile_overview h2 {
             font-weight: 700;
             font-size: 30px;
             margin-top: 35px;
         }
 
-        .wsus__profile_overview p {
+       .over-view  .wsus__profile_overview p {
             margin-top: 25px;
         }
 
@@ -693,8 +736,13 @@
                 <div class="col-xl-12">
                     <div class="wsus__profile_header_text">
                         <div class="img">
-                            <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
-                                class="img-fluid w-100 h-100">
+                            @if (empty(auth()->user()->profile_pic) || auth()->user()->profile_pic == null)
+                                <img src="{{ asset('assets/images/faces/1.png') }}" alt="profile"
+                                    class="img-fluid w-100 h-100">
+                            @else
+                                <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
+                                    class="img-fluid w-100 h-100">
+                            @endif
                         </div>
                         <div class="text">
                             <h2>{{ auth()->user()->name }}</h2>

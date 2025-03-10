@@ -36,6 +36,8 @@
         let selectedEmails = $("#emailSelect").val() || [];
         let manualEmail = $("#manualEmail").val().trim();
         let subject = $('#mailSubject').val().trim();
+        let selectedAllUsers = $("#select_all").is(':checked');
+        let selectedAllNewsletter = $("#select_all_newsletter").is(':checked');
 
         if (manualEmail) {
             selectedEmails = Array.isArray(selectedEmails) ? [...selectedEmails, manualEmail] : [manualEmail];
@@ -51,7 +53,9 @@
                 "desc": desc,
                 'template': template,
                 'email' : selectedEmails,
-                'subject': subject
+                'subject': subject,
+                'all_users': selectedAllUsers ? 1 : 0,
+                'all_newsletter': selectedAllNewsletter ? 1 : 0
             },
             success: function(data) {
                 console.log(data);

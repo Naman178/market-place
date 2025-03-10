@@ -60,6 +60,14 @@ class HomePageController extends Controller
         Mail::to($email)->send(new NewsletterMail($email , $appName));
         return response()->json(['message' => 'Successfully subscribed!'], 200);
     }
+    public function deletenewsletter(Request $request, $id){
+        Newsletter::where('id', $id)->delete();
+        return redirect()->back()
+        ->with([
+            'success' => trans('custom.Newsletter_delete_success'),
+            'title' => trans('custom.Newsletter_title')
+        ]);
+    }
     public function Categoryshow($id){
         $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
 
