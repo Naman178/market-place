@@ -48,6 +48,7 @@ use Illuminate\Support\Facades\Artisan;
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
 Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
+Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->name('newsletter-delete');
 Route::get('/category/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/product/{subcategory}', [HomePageController::class, 'show'])->name('product.list');

@@ -4,7 +4,7 @@
     $user = auth()->user();
 @endphp
   <!-- dashboard -->
-  <div class="tab-pane fade active show mb-5" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+  <div class="tab-pane fade active show mb-5 over-view" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="wsus__profile_overview">

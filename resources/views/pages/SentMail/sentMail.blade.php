@@ -44,6 +44,11 @@
                         <div class="mb-3">
                             <label><input type="radio" name="emailOption" value="user" checked> User</label>
                             <label class="ms-3"><input type="radio" name="emailOption" value="manual"> Manual</label>
+                        </div>
+                        <div class="mb-3">
+                            <input class="mt-2" type="checkbox" id="select_all" name="select_all" value="1">
+                            <label for="select_all" class="ml-1 mb-0"> All users</label>
+                            <input type="checkbox" id="select_all_newsletter" name="select_all_newsletter" value="1"><label for="select_all_newsletter"  class="ml-2 mb-0"> All subscribers </label>
                         </div>                     
                         <div id="emailDropdown">
                             <label for="emailSelect">Select Email:</label>

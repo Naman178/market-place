@@ -20,7 +20,7 @@ class CutomForgotPasswordController extends Controller
     */
     public function showForgetPasswordForm()
     {
-        return view('Auth.forgetPassword');
+        return view('auth.forgetPassword');
     }
 
     /**

@@ -312,7 +312,8 @@ class UserController extends Controller
     }
 
     public function subscription() {
-        $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
+        $subscription = SubscriptionRec::get();
+        // $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
         return view('dashboard.subscription',compact('subscription'));
     }
 

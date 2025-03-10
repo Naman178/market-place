@@ -436,7 +436,11 @@
                 },
                 success: function(response) {
                     $('.email_text').val('');
-                    $('.newsletter_success').text("Successfully subscribed!").css({"color": "green"}).fadeIn();
+                    $('.newsletter_success').text("Successfully subscribed!").css({
+                        "color": "green",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
                     setTimeout(function() {
                         $('.newsletter_success').fadeOut();
                     }, 5000);
@@ -451,8 +455,11 @@
                             errorMessage = errors.email[0]
                         }
                     }
-
-                    $('.newsletter_success').text(errorMessage).css("color", "red").fadeIn();
+                    $('.newsletter_success').text(errorMessage).css({
+                        "color": "red",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
                     setTimeout(function() {
                         $('.newsletter_success').fadeOut();
                         $('.email_text').val('');

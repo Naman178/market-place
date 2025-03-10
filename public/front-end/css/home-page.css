@@ -705,6 +705,7 @@
   padding: 12px;
   color: #FFFFFF;
   margin-top: -9px;
+  cursor: pointer;
 }
 
 .sign_up_btn:hover{
