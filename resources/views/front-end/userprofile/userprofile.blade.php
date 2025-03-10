@@ -132,6 +132,8 @@
                                         </div>
                                         @if ($user->profile_pic)
                                             <img class="mb-3" src="{{asset('assets/images/faces/' . $user->profile_pic) }}" alt="photo" width="100" height="100">
+                                        @else
+                                            <img class="mb-3" src="{{asset('assets/images/faces/1.png') }}" alt="photo" width="100" height="100">
                                         @endif
                                         @if ($errors->has('profile_pic'))
                                             <div class="text-red-500 text-sm">{{ $errors->first('profile_pic') }}</div>

@@ -14,6 +14,7 @@
                             <th>Invoice Number</th>
                             <th>Payment Amount</th>
                             <th>Payment Date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +30,8 @@
                                     </td>
                                     <td> Rs. {{ $inv->total ?? '' }}</td>
                                     <td> {{ $inv->created_at }} </td>
+                                    <td> <a href="{{ route('invoice-preview', $inv->id) }}" target="_blank"
+                                            class="btn btn-primary">Preview</a> </td>
                                 </tr>
                             @endforeach
                         @endif
@@ -39,6 +42,7 @@
                             <th>Invoice Number</th>
                             <th>Payment Amount</th>
                             <th>Payment Date</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>

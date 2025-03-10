@@ -12,6 +12,15 @@
     .custom-textarea {
         height: auto !important;
     }
+    .form-control{
+        height: auto !important;
+    }
+    .form-group label {
+        font-size: 16px !important;
+    }
+    .image-input {
+        display: none;
+    }
 </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
@@ -44,12 +53,24 @@
                                 <input placeholder="Enter Name" class="form-control input-error" id="name" name="name" type="text" value="{{ $Blog_category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 input-file-col">
+                                <?php $showImagePrev = (!empty($Blog_category->image)) ? 'display:inline-block' : ''; ?>
+                                <label for="Blog_category_image_label">Upload Image</label>
+                                <label class="form-control filelabel image-input-wrapper">
+                                    <input type="hidden" name="old_image" value="@if(!empty($Blog_category->image)){{$Blog_category->image}}@endif">
+                                    <input type="file" name="image" id="Blog_category_image"  class="form-control input-error image-input">
+                                    <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                    <img id="Blog_category_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($Blog_category->image)){{asset('storage/images/'.$Blog_category->image)}}@endif" style="{{$showImagePrev}}">
+                                    <span class="title" id="category_image_title">{{ $Blog_category->image ??  ''}}</span>
+                                </label>
+                                <div class="error" style="color:red;" id="image_error"></div>
+                            </div>
+                            {{-- <div class="form-group col-md-6">
                                 <label for="image">Upload Image</label>
                                 <input type="file" class="form-control-file" id="image" name="image">
                                 <img class="mt-2" src="{{ asset('storage/images/' .$Blog_category->image) }}" width="100px" alt="not found">
                                 <div class="error" style="color:red;" id="image_error"></div>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group col-md-12">
                                 <label for="description">Description</label>
@@ -65,16 +86,27 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="title_label">Name</label>
-                            {!! Form::text('name', null, array('placeholder' => 'Enter Name','class' => 'form-control input-error' , 'id' => 'name')) !!}
+                            {!! Form::text('name', null, array('placeholder' => 'Enter Name','class' => 'form-control input-error filelabel image-input-wrapper' , 'id' => 'name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
                         </div>
-                        <div class="form-group col-md-6">
+                        {{-- <div class="form-group col-md-6">
                             <label for="image">Upload Image</label>
                             <input type="file" class="form-control-file" id="image" name="image">
                             
                             <div id="image-previews" class="mt-2">
                             </div>
                             
+                            <div class="error" style="color:red;" id="image_error"></div>
+                        </div> --}}
+                        <div class="form-group col-md-6 input-file-col">
+                            <label for="Blog_category_image_label">Upload Image</label>
+                            <label class="form-control filelabel image-input-wrapper">
+                                <input type="hidden" name="old_image" value="">
+                                <input type="file" name="image" id="Blog_category_image"  class="image-input form-control input-error">
+                                <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
+                                <img id="Blog_category_image_prev" class="previewImgCls hidepreviewimg" src="">
+                                <span class="title" id="Blog_category_image_title"></span>
+                            </label>
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div>
                         <div class="form-group col-md-12">

@@ -76,4 +76,10 @@ return [
     'Blog_category_create_success' => 'Blog Category created successfully!',
     'Blog_category_update_success' => 'Blog Category updated successfully!',
     'Blog_category_delete_success' => 'Blog Category deleted successfully!',
+
+    // Newsletter
+    'Newsletter_title' => 'Newsletter',
+    'Newsletter_create_success' => 'Newsletter created successfully!',
+    'Newsletter_update_success' => 'Newsletter updated successfully!',
+    'Newsletter_delete_success' => 'Newsletter deleted successfully!',
 ];
