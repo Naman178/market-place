@@ -20,10 +20,81 @@
         .form-control {
              padding: 11px 15px !important;
          }
+         /* Ensure dropdown and input are correctly aligned */
+        .iti {
+            width: 100% !important;
+        }
+
+        /* Proper spacing for country dropdown */
+        .iti--separate-dial-code .iti__selected-flag {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px 0 0 5px;
+            border: 1px solid #ced4da;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Prevent overlapping input */
+        .iti--allow-dropdown input {
+            padding-left: 100px !important;
+        }
+
+        /* Align phone number input field */
+        .iti input {
+            height: 45px !important;
+            border-radius: 0 5px 5px 0;
+        }
     </style>
+    
+    <style>
+        .filelabel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .filelabel input[type="file"] {
+            display: none;
+        }
+        
+        .btn-outline-primary {
+            background-color: #007AC1;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #292B46;
+        }
+        
+        .previewImgCls {
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            object-fit: cover;
+        }
+        
+        .hidepreviewimg {
+            display: none;
+        }
+    
+        .file-name {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
 @section('scripts')
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
                  const inputFields = document.querySelectorAll(".form-control");
@@ -75,9 +146,67 @@
                      });
                  });
              });
-         $('#country').select2();
-         $('#country_code').select2();
-     </script>
+        //  $('#country').select2();
+        //  $('#country_code').select2();
+    </script>
+    <script>
+        $(document).ready(function () {
+            var phoneInput = document.querySelector("#contact");
+    
+            // Initialize intl-tel-input
+            var iti = window.intlTelInput(phoneInput, {
+                separateDialCode: true,
+                preferredCountries: ["us", "gb", "in"], // Set preferred countries
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+            });
+    
+            // Get user's country code from Laravel (dial code expected)
+            var userDialCode = "{{ $user->country_code }}"; // Example: "97"
+    
+            // Map dial codes to ISO country codes
+            var dialCodeToISO = {
+                "97": "IN" ,  // UAE
+                "1": "US",
+            };
+    
+            // Get ISO country code (default to "IN" if not found)
+            var userISOCode = dialCodeToISO[userDialCode] || "IN";
+    
+            // Set pre-selected country
+            iti.setCountry(userISOCode);
+    
+            // Store country code in hidden input when user changes country
+            phoneInput.addEventListener("countrychange", function () {
+                var countryData = iti.getSelectedCountryData();
+                $("#country_code").val(countryData.dialCode); // ✅ Save only the dial code (e.g., "91")
+            });
+    
+            // Ensure country code is set before form submission
+            $("form").submit(function () {
+                var countryData = iti.getSelectedCountryData();
+                $("#country_code").val(countryData.dialCode); // ✅ Save only the dial code
+            });
+        });
+    </script>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            var fileInput = event.target;
+            var fileNameSpan = document.getElementById('file_name');
+            
+            reader.onload = function() {
+                var preview = document.getElementById('preview');
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+            
+            fileNameSpan.textContent = fileInput.files[0].name;
+        }
+    </script>
+    
+    
+    
 @endsection
 @section('content')
     <div class="container">
@@ -124,7 +253,20 @@
                                             <div class="error" id="email_error"></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <label for="category_image">Image</label>
+                                    <label class="form-control filelabel image-input-wrapper">
+                                        <input type="hidden" name="old_image" value="@if(!empty($user->profile_pic)){{$user->profile_pic}}@endif">
+                                        <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
+                                        <span class="btn btn-outline-primary">
+                                            <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
+                                        </span>
+                                        <img id="preview" class="previewImgCls hidepreviewimg" 
+                                             src="@if(!empty($user->profile_pic)){{asset('assets/images/faces/'.$user->profile_pic)}}@endif" 
+                                             style="{{$user->profile_pic ? 'display:block;' : 'display:none;'}}">
+                                        <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
+                                        <span id="file_name" class="file-name"></span>
+                                    </label>                                    
+                                    {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <input  type="file" name="profile_pic" id="profile_pic" class="form-control"
                                                 placeholder="">
@@ -138,10 +280,10 @@
                                         @if ($errors->has('profile_pic'))
                                             <div class="text-red-500 text-sm">{{ $errors->first('profile_pic') }}</div>
                                         @endif
-                                    </div>
-                                    <div class="col-md-4">
+                                    </div> --}}
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <select name="country_code" id="country_code" class="form-control select-input"
+                                            {{-- <select name="country_code" id="country_code" class="form-control select-input"
                                                 required="required">
                                                 <option value="">Select country code</option>
                                                 @foreach ($countaries as $countery)
@@ -149,19 +291,24 @@
                                                         {{ $user->country_code == $countery->id ? 'selected' : '' }}>
                                                         {{ $countery->country_code }}</option>
                                                 @endforeach
-                                            </select>
+                                            </select> --}}
+                                            <input type="tel" id="contact" name="contact" class="form-control" value="{{ optional($user)->contact_number }}">
+                                            <input type="hidden" name="country_code" id="country_code" value="{{ $user->country_code }}">
+                                            @error('country_code')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                             <div class="error" id="country_code_error"></div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-8">
+                                    </div>                           
+                                    {{-- <div class="col-md-8">
                                         <div class="form-group">
                                             <input type="number" name="contact" id="contact" class="form-control"
-                                                placeholder=""
+                                                placeholder="" 
                                                 value="{{ optional($user)->contact_number }}">
                                             <label for="contact" class="floating-label">Contact Number</label>
                                             <div class="error" id="contact_error"></div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" name="company_name" id="company_name" class="form-control"
@@ -233,7 +380,7 @@
 
                                 <div class="col-md-12">
                                     <button type="button"
-                                        class="btn btn-block pink-btn mt-3 erp-profile-form">Submit</button>
+                                        class="btn btn-block pink-btn mt-3 erp-profile-form" style="cursor: pointer;">Submit</button>
                                 </div>
                             </form>
                         </div>

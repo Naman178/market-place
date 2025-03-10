@@ -98,7 +98,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-block send-inquiry pink-btn mt-3">Send Inquiry</button>                                    
+                                    <button type="button" class="btn btn-block send-inquiry pink-btn mt-3" style="cursor: pointer;">Send Inquiry</button>                                    
                                 </div>
                             </div>
                         </form>                

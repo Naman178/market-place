@@ -24,6 +24,7 @@ class UserProfileController extends Controller
         ]);
     }
     public function store_user_profile(Request $request){
+        // dd($request->all());
         if($request->ajax()){
             $user = User::find($request->user_id);
             $validator = Validator::make($request->all(), [

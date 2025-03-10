@@ -310,7 +310,7 @@
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <button id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
+                        <button class="nav-link" id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
                             Wishlist</button>
                     </li>
 
