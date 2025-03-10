@@ -5,6 +5,7 @@ $(document).on("click", ".erp-profile-form", function(e) {
     e.preventDefault();
     var submitUrl = $('#profile_form').data("url");
     var formData = new FormData($('#profile_form')[0]);
+    // console.log(FormData);
 
     $.ajaxSetup({
         headers: {

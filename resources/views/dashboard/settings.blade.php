@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn pink-blue-grad-button my-4"> Update Password</button>
+                    <button type="submit" class="btn dark-blue-btn my-4" style="cursor: pointer;"> Update Password</button>
                 </form>
             </div>
         </div>

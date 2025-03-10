@@ -28,7 +28,27 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 40px !important;
         }
+        .iti {
+            width: 100%;
+        }
+
+        .iti--separate-dial-code .iti__selected-flag {
+            background-color: #f8f9fa; /* Light gray background */
+            padding: 5px;
+            border-radius: 5px 0 0 5px;
+            border: 1px solid #ced4da;
+        }
+
+        .iti--separate-dial-code .iti__flag-container {
+            padding-left: 0px;
+        }
+
+        .iti--allow-dropdown input {
+            padding-left: 100px !important; /* Adjust padding to start after country code */
+        }
+
    </style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
 @section('content')
 <div class="container pt-5 pb-5 register-container">
@@ -74,20 +94,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <select name="country_code" id="country_code" class="form-control select-input"
-                                required="required">
-                                <option value="">Select country code</option>
-                                @foreach ($countaries as $countery)
-                                    <option value="{{ $countery->id }}">
-                                        {{ $countery->country_code }}</option>
-                                @endforeach
-                            </select>
-                           @error('country_code')
+                            <input type="tel" id="phone" name="phone" class="form-control" required="required">
+                            <input type="hidden" name="country_code" id="country_code">
+                            @error('country_code')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div>                                                      
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="contact_number" name="contact_number">
                             <label for="contact_number" class="floating-label">Contact Number</label>
@@ -96,7 +110,7 @@
                             @enderror
                             <div class="error" id="contact_number_error"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" name="company_name" id="company_name" class="form-control" placeholder=""/>
@@ -324,6 +338,37 @@
                 });
             });
             $('#country').select2();
-            $('#country_code').select2();
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var phoneInput = document.querySelector("#phone");
+            var iti = window.intlTelInput(phoneInput, {
+                separateDialCode: true, // Ensures the country code is separate
+                initialCountry: "auto",
+                geoIpLookup: function(callback) {
+                    $.get("https://ipinfo.io?token=YOUR_TOKEN", function() {}, "jsonp").always(function(resp) {
+                        var countryCode = (resp && resp.country) ? resp.country : "us";
+                        callback(countryCode);
+                    });
+                },
+                preferredCountries: ["us", "gb", "in"], // Preferred countries
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+            });
+    
+            // Update hidden input with country code when user selects a country
+            phoneInput.addEventListener("countrychange", function () {
+                var countryData = iti.getSelectedCountryData();
+                $("#country_code").val(countryData.dialCode); // Set hidden input value 
+            });
+    
+            // Ensure country code is set before form submission
+            $("form").submit(function () {
+                var countryData = iti.getSelectedCountryData();
+                $("#country_code").val(countryData.dialCode);
+            });
+        });
+    </script>
+    
 @endsection
