@@ -26,7 +26,7 @@
                                     <td>{{ $sub->status }}</td>
                                     <td>
                                         @if ($sub->status === 'active')
-                                            <a href="{{ route('subscription.cancel', ['id' => $sub->subscription_id]) }}"
+                                            <a href="{{ route('subscription.cancel', ['id' => $sub->id]) }}"
                                                 class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to cancel this subscription?');">
                                                 Stop

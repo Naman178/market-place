@@ -14,6 +14,7 @@ use App\Models\Key;
 use App\Models\Order;
 use App\Models\Settings;
 use App\Models\SubCategory;
+use App\Models\SubscriptionRec;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
@@ -33,7 +34,7 @@ class InvoiceController extends Controller
         $user = User::find($invoice->user_id);
         $country = ContactsCountryEnum::find($user->country_code);
         $key = Key::where('order_id',$order->id)->first();
-        $validity = \Carbon\Carbon::parse($key->created_at)->format('d M Y') . ' - ' .  \Carbon\Carbon::parse($key->expire_at)->format('d M Y');
+        $validity = Carbon::parse($key->created_at)->format('d M Y') . ' - ' .  Carbon::parse($key->expire_at)->format('d M Y');
         
         return view('front-end.invoice.invoice-preview', compact('invoice' , 'setting','user','country','product','validity'));
     }
@@ -127,30 +128,53 @@ class InvoiceController extends Controller
         $discount = $request->discount;
         $fianlTotal = $request->fianlTotal;
 
+        $product_type = Items::with('pricing')->where('id' , $product_id)->first();
+        $billing_cycle = $product_type->pricing->billing_cycle;
+        // dd($product_type->pricing->billing_cycle);
+
         $request->validate([
-            'userid' => ['required', 'not_in:0'], // Ensure user_id is not 0
+            'userid' => ['required', 'not_in:0'],
         ], [
-            'userid.not_in' => 'Please select a valid user.', // Custom error message
+            'userid.not_in' => 'Please select a valid user.',
             'userid.required' => 'User selection is required.',
         ]);
+        if($coupon_id > 0){
+            $exist = Coupon::where('id', $coupon_id)->where('status', 'active')->first();
+            if($exist){
+                if(now()->between($exist->valid_from, $exist->valid_until)){
+                    $couponusage = CouponUsages::where('user_id', $user_id)->where('coupon_id', $coupon_id)->count();
+                    $couponredeemptions = CouponUsages::where('coupon_id', $coupon_id)->count();
+                    if($couponusage >= $exist->limit_per_user){
+                        return response()->json(['success' => false,'error' => "User have exceeded the usage limit for this coupon."], 400);
+                    }else{
+                        if($couponredeemptions >= $exist->total_redemptions){
+                            return response()->json(['success' => false,'error' => "This coupon has been redeemed the maximum number of times."], 400);
+                        }
+                    }        
+                }else{
+                    return response()->json(['success' => false,'error' => "Coupon is not valid within the validity period from "], 400);
+                }
+            }else{
+                return response()->json(['success' => false,'error' => "Coupon is inactive"], 400);
+            }
+        }
         //create entry in Transaction table
         $transaction = Transaction::create([
             'user_id' => $user_id,
             'product_id' => $product_id,
             'payment_status' => 'succeeded',
-            'payment_amount' => $fianlTotal * 100, //store in cent for other entry that's why amount * 100 
+            'payment_amount' => $fianlTotal * 100, 
             'razorpay_payment_id' => null,
             'payment_method' => 'manually paid',
-            'transaction_id' => null
+            'transaction_id ' => null
         ]);
-
 
         //create order
         $order = Order::create([
             'product_id'=> $product_id,
             'user_id' => $user_id,
             'payment_status' => 'succeeded',
-            'payment_amount' => $fianlTotal * 100, //store in cent for other entry that's why amount * 100 
+            'payment_amount' => $fianlTotal * 100, 
             'razorpay_payment_id' => null,
             'payment_method' => 'manually paid',
             'transaction_id' => $transaction->id,
@@ -178,7 +202,19 @@ class InvoiceController extends Controller
 
         $key = Str::random(50);
         $currentDateTime = Carbon::now();
-        $oneYearLater = $currentDateTime->addYear();
+
+        if ($billing_cycle === 'monthly') {
+            $currentDateTime->addMonth();
+        } elseif ($billing_cycle === 'quarterly') {
+            $currentDateTime->addMonths(3);
+        } elseif ($billing_cycle === 'semi-annually') {
+            $currentDateTime->addMonths(6);
+        } elseif ($billing_cycle === 'annually') {
+            $currentDateTime->addYear();
+        } else {
+            $currentDateTime->addYear();
+        }
+        $oneYearLater = $currentDateTime;
 
         $keytbl =  Key::create([
             'key'=> $key,
@@ -210,7 +246,19 @@ class InvoiceController extends Controller
             'total' => $fianlTotal,
             'payment_method' => "Stripe",
             'payment_status' => 'succeeded',
+            'product_id' => $product_id
         ]);
+
+        if($product_type->pricing->pricing_type === 'recurring'){
+            $subscription_rec = SubscriptionRec::create([
+                'user_id' => $user_id,
+                'product_id' => $product_id,
+                'order_id' => $order->id,
+                'invoice_id' => $invoice->id,
+                'key_id' => $keytbl->id,
+                'status' => 'active',
+            ]);
+        }
         return response()->json(['success' => true, 'invoice_id' => $invoice->id,'redirect_url' => route('invoice-preview', ['id' => $invoice->id])]);
     }
 }

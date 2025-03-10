@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stripe;
 use App\Http\Controllers\Controller;
 use App\Models\InvoiceModel;
 use App\Models\Subscription;
+use App\Models\SubscriptionRec;
 use Illuminate\Http\Request;
 use Stripe;
 use Stripe\Customer;
@@ -299,7 +300,18 @@ class StripePaymentController extends Controller
                 'total' => $old_amount / 100,
                 'payment_method' => "Stripe",
                 'payment_status' => $stripe_payment_status,
+                'product_id' => $product_id
             ]);
+            if($plan_type === 'recurring'){
+                $subscription_rec = SubscriptionRec::create([
+                    'user_id' => $user['id'],
+                    'product_id' => $product_id,
+                    'order_id' => $order_id,
+                    'invoice_id' => $invoice->id,
+                    'key_id' => $keytbl->id,
+                    'status' => 'active',
+                ]);
+            }
             // Mail::to($user['email'])->send(new SendThankyou($mailData));
             $request->session()->forget('cart');
             $request->session()->forget('product_id');
@@ -411,17 +423,24 @@ class StripePaymentController extends Controller
     {
         try {
             Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            $subscription = SubscriptionRec::find($id);
+            if($subscription){
+                $subscription->update(['status' => 'cancel']);
+                $stripeSubscription = Subscription::where('key_id',$subscription->key_id)->first();
+                if($stripeSubscription){
+                    $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
+                    if (!empty($subscriptionStripe) && isset($subscriptionStripe->id) && $subscriptionStripe->status !== 'canceled') {
+                        $subscriptionStripe->cancel();
+                    }
+                }
+            } 
 
-            // Retrieve and cancel subscription from Stripe
-            $subscription = \Stripe\Subscription::retrieve($id);
-            $subscription->cancel();
-
-            // Update the database subscription status
-            $userSubscription = Subscription::where('subscription_id', $id)->first();
+            $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
             if ($userSubscription) {
                 $userSubscription->update(['status' => 'canceled']);
             }
-            $key_id = $userSubscription->key_id;
+            
+            $key_id = $subscription->key_id;
             if ($key_id) {
                 $key = Key::find($key_id);
                 if ($key) {
