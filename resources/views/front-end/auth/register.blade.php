@@ -66,7 +66,7 @@
                             <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
                             <label for="firstname" class="floating-label">First Name</label>
                             <div class="error" id="firstname_error"></div>
-                            @error('first_name')
+                            @error('firstname')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -131,7 +131,7 @@
                             <div class="error" id="company_website_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <select name="country" id="country" class="form-control select-input">
                                 <option value="0">Select Country</option>
@@ -145,7 +145,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" name="address_line1" id="address_line1" class="form-control" placeholder=""/>
