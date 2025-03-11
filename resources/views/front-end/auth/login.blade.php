@@ -41,7 +41,17 @@
             <div class="row justify-content-center">
                 <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="card p-4 dark-blue-card">
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-1">
+                            <div class="text-center mt-2">
+                                <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex flex-wrap or_border">
+                            <div class="left_border"></div>
+                            <span class="p-1">or</span>
+                            <div class="left_border"></div>
+                        </div>
+                        <div class="col-md-12 mt-4">
                             <div class="form-group">
                                 {!! Form::text('email', null, [
                                     'placeholder' => '',
@@ -74,13 +84,18 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Sign In</button>
+                            <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button>
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                     href="{{ route('signup') }}"> Register </a> </p>
-                            <p class="text-center d-block text-white">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
-                            <div class="float_right mt-2">
-                                <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
-                            </div>
+                            <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
+                            <div class="bottom-border mb-3 mt-3"></div>
+                            <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
+                                href="{{ route('privacy-policy') }}" class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO"
+                                target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
+                                Policy</a> and <a href="{{ route('terms-and-condition') }}"
+                                class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO" target="_blank" rel="noopener noreferrer"
+                                data-testid="userTermsLink">Terms of Use</a>.
+                            </span>
                         </div>
                     </div>
                 </div>

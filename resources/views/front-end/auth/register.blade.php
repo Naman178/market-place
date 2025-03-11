@@ -46,7 +46,15 @@
         .iti--allow-dropdown input {
             padding-left: 100px !important; /* Adjust padding to start after country code */
         }
-
+        .btn-google{
+            background-position: 122px 12px !important;
+        }
+        .text-left{
+            text-align: left !important;
+        }
+        .w-4{
+            width: 4% !important;
+        }
    </style>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
@@ -59,11 +67,21 @@
        @csrf
        <input type="hidden" name="recaptcha" id="recaptcha">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="row  border p-3 pt-4 pb-4 border-radius-1">
-                    <div class="col-md-6">
+                    <div class="col-md-12 mb-1">
+                        <div class="text-center mt-2">
+                            <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex flex-wrap or_border">
+                        <div class="left_border"></div>
+                        <span class="p-1">or</span>
+                        <div class="left_border"></div>
+                    </div>
+                    <div class="col-md-12 mt-4">
                         <div class="form-group">
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="" required/>
                             <label for="firstname" class="floating-label">First Name</label>
                             <div class="error" id="firstname_error"></div>
                             @error('firstname')
@@ -71,7 +89,7 @@
                             @enderror
                         </div>
                     </div>   
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             {{-- <label for="last_name">Last Name</label> --}}
                             <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
@@ -82,7 +100,7 @@
                             <div class="error" id="last_name_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label for="email" class="floating-label">Email</label>
@@ -92,7 +110,35 @@
                             <div class="error" id="email_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
+                        <div class="form-group mb-1">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label for="password" class="floating-label">Password</label>
+                            @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            <div class="error" id="password_error"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group mb-1">
+                            <div class="d-flex flex-wrap">
+                                <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input w-4" checked>
+                                <span for="promotionsSubscriber" class="text-left d-block text-white mt-3 mb-2 ml-2 cursor-pointer">Send me tips, trends, freebies, updates & offers. <br> You can unsubscribe at any time.</span> 
+                            </div> 
+                            <button type="submit" class="btn btn-block pink-btn mt-3 mb-2" style="cursor: pointer;">Register</button>
+                          <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
+                        </div>
+                        <div class="bottom-border mb-3 mt-3"></div>
+                        <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
+                            href="{{ route('privacy-policy') }}" class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO"
+                            target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
+                            Policy</a> and <a href="{{ route('terms-and-condition') }}"
+                            class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO" target="_blank" rel="noopener noreferrer"
+                            data-testid="userTermsLink">Terms of Use</a>.
+                        </span>
+                    </div>
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <input type="tel" id="phone" name="phone" class="form-control" required="required">
                             <input type="hidden" name="country_code" id="country_code">
@@ -100,7 +146,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>                                                      
+                    </div> --}}
                     {{-- <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="contact_number" name="contact_number">
@@ -111,7 +157,7 @@
                             <div class="error" id="contact_number_error"></div>
                         </div>
                     </div> --}}
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" name="company_name" id="company_name" class="form-control" placeholder=""/>
                             <label for="company_name" class="floating-label">Company Name</label>
@@ -130,7 +176,7 @@
                             @enderror
                             <div class="error" id="company_website_error"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-md-6">
                         <div class="form-group">
                             <select name="country" id="country" class="form-control select-input">
@@ -146,7 +192,7 @@
                             @enderror
                         </div>
                     </div> --}}
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" name="address_line1" id="address_line1" class="form-control" placeholder=""/>
                             <label for="address_line1" class="floating-label">Address Line 1</label>
@@ -185,16 +231,6 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" name="password" required>
-                            <label for="password" class="floating-label">Password</label>
-                            @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="password_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                             <label for="password_confirmation" class="floating-label">Confirm Password</label>
                             @error('password_confirmation')
@@ -208,7 +244,7 @@
                             <button type="submit" class="btn btn-block pink-btn mt-3" style="cursor: pointer;">Register</button>
                           <p class="text-center d-block text-white mt-3">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div> 
@@ -236,43 +272,6 @@
                 console.error("reCAPTCHA error:", error);
             });
         });
-            // const firstnameInput = document.getElementById("firstname");
-            // const firstnameError = document.getElementById("firstname_error");
-
-            // firstnameInput.addEventListener("blur", () => {
-            //     if (!firstnameInput.value.trim()) {
-            //     firstnameError.textContent = "First Name is required!";
-            //     firstnameError.style.display = "block"; 
-            //     } else {
-            //     firstnameError.style.display = "none"; 
-            //     }
-            // });
-            // const floatingLabel = document.querySelector(".floating-label");
-
-            // window.addEventListener("DOMContentLoaded", () => {
-            //     if (firstnameInput.value.trim() !== "") {
-            //     floatingLabel.style.top = "50%";
-            //     floatingLabel.style.fontSize = "0.8rem";
-            //     }
-            // });
-
-            // firstnameInput.addEventListener("focus", () => {
-            //     floatingLabel.style.top = "-1%";
-            //     floatingLabel.style.fontSize = "0.8rem";
-            // });
-
-            // firstnameInput.addEventListener("blur", () => {
-            //     if (!firstnameInput.value.trim()) {
-            //     floatingLabel.style.top = "35%";
-            //     floatingLabel.style.fontSize = "1rem";
-            //     floatingLabel.style.color = "red";
-            //     firstnameInput.style.borderColor = "red";
-            //     }
-            //     else {  
-            //     floatingLabel.style.color = "#70657b";
-            //     firstnameInput.style.borderColor = "#ccc";
-            //     }
-            // });
             document.addEventListener("DOMContentLoaded", function () {
                 const inputFields = document.querySelectorAll(".form-control");
                 // Function to handle floating label

@@ -376,14 +376,14 @@ class RegisterController extends Controller
             'firstname' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users', // Check for unique email
-            'country_code' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'company_website' => 'nullable|url|max:255',
-            'address_line1' => 'required|string|max:255',
-            'address_line2' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'password' => 'required|string|min:8|confirmed', // Add confirmation rule if applicable
+            // 'country_code' => 'required|string',
+            // 'company_name' => 'required|string|max:255',
+            // 'company_website' => 'nullable|url|max:255',
+            // 'address_line1' => 'required|string|max:255',
+            // 'address_line2' => 'nullable|string|max:255',
+            // 'city' => 'required|string|max:255',
+            // 'postal_code' => 'required|string|max:20',
+            'password' => 'required|string|min:8', // Add confirmation rule if applicable
         ]);
         $countryname = '';
         $countaries = ContactsCountryEnum::orderBy('id')->get();
@@ -396,17 +396,18 @@ class RegisterController extends Controller
         $fname = $request->firstname;
         $lname = $request->last_name;
         $email = $request->email;
-        $country_code = $request->country_code;
-        $contact = $request->contact_number;
-        $mobile = '+'.$country_code.$contact;
-        $company_name = $request->company_name;
-        $company_website = $request->company_website;
-        $country = $countryname;
-        $address_line_one = $request->address_line1;
-        $address_line_two = $request->address_line2;
-        $city = $request->city;
-        $postal = $request->postal_code;
-        $gst = $request->gst;
+        $subscribeToPromotions = $request->has('promotionsSubscriber') ? 1 : 0;
+        // $country_code = $request->country_code;
+        // $contact = $request->contact_number;
+        // $mobile = '+'.$country_code.$contact;
+        // $company_name = $request->company_name;
+        // $company_website = $request->company_website;
+        // $country = $countryname;
+        // $address_line_one = $request->address_line1;
+        // $address_line_two = $request->address_line2;
+        // $city = $request->city;
+        // $postal = $request->postal_code;
+        // $gst = $request->gst;
         
         $password = Hash::make($request['password']);
         
@@ -415,18 +416,20 @@ class RegisterController extends Controller
             'email'=>$email , 
             'fname'=> $fname , 
             'lname'=>$lname , 
-            'country_code'=>$country_code, 
-           'contact_number'=>$contact , 
-            'company_name'=>$company_name, 
-            'company_website'=>$company_website,
-            'country'=>$country,
-            'address_line1'=>$address_line_one,
-            'address_line2'=>$address_line_two,
-            'city'=>$city,
-            'postal_code'=>$postal,
-            'gstin'=>$gst,
-            'password'=>$password
+        //     'country_code'=>$country_code, 
+        //    'contact_number'=>$contact , 
+        //     'company_name'=>$company_name, 
+        //     'company_website'=>$company_website,
+        //     'country'=>$country,
+        //     'address_line1'=>$address_line_one,
+        //     'address_line2'=>$address_line_two,
+        //     'city'=>$city,
+        //     'postal_code'=>$postal,
+        //     'gstin'=>$gst,
+            'password'=>$password,
+            'subscribe_to_promotions'=>$subscribeToPromotions
         ]);
+        
         // if($save_user){
 
         //     $razorpay_customer_id = '';
