@@ -46,6 +46,10 @@
             height: 45px !important;
             border-radius: 0 5px 5px 0;
         }
+        #profile_pic_title{
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
     </style>
     
     <style>
@@ -97,7 +101,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-                 const inputFields = document.querySelectorAll(".form-control ");
+                 const inputFields = document.querySelectorAll(".custom-css");
                  
                  // Function to handle floating label
                  function updateFloatingLabel(input) {
@@ -113,6 +117,15 @@
                             label.style.color = "red";
                         }
                     }
+                     if (input.value.trim() !== "") {
+                         label.style.top = "-1%";
+                         label.style.fontSize = "0.8rem";
+                         label.style.color = "#70657b";
+                     } else {
+                         label.style.top = "35%";
+                         label.style.fontSize = "1rem";
+                         label.style.color = "red";
+                     }
                  }
      
                  // Initialize labels on page load
@@ -233,7 +246,7 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group">
-                                            <input type="text" name="firstname" id="firstname" class="form-control"
+                                            <input type="text" name="firstname" id="firstname" class="form-control custom-css"
                                                 placeholder="" value="{{ $name[0] }}">
                                             <label for="firstname" class="floating-label">First Name</label>
                                             <div class="error" id="firstname_error"></div>
@@ -241,7 +254,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="lastname" id="lastname" class="form-control"
+                                            <input type="text" name="lastname" id="lastname" class="form-control custom-css"
                                                 value="{{ $name[1] }}" placeholder="">
                                             <label for="lastname" class="floating-label">Last Name</label>
                                             <div class="error" id="lastname_error"></div>
@@ -249,13 +262,13 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="text" name="email" id="email" class="form-control"
+                                            <input type="text" name="email" id="email" class="form-control custom-css"
                                                 placeholder="" value="{{ optional($user)->email }}">
                                                 <label for="email" class="floating-label">Email</label>
                                             <div class="error" id="email_error"></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <label for="category_image">Image</label>
                                         <label class="form-control filelabel image-input-wrapper">
                                             <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
@@ -268,7 +281,21 @@
                                             <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
                                             <span id="file_name" class="file-name"></span>
                                         </label>   
-                                    </div>                                 
+                                    </div>--}}
+                                    {{-- <label for="category_image">Image</label> --}}
+                                    <label class="form-control filelabel image-input-wrapper" style="margin: -4px 14px 14px 17px;">
+                                        <input type="hidden" name="old_image" value="@if(!empty($user->profile_pic)){{$user->profile_pic}}@endif">
+                                        <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
+                                        <span class="btn btn-outline-primary">
+                                            <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
+                                        </span>
+                                        <img id="preview" class="previewImgCls hidepreviewimg" 
+                                            src="@if(!empty($user->profile_pic)){{ asset('assets/images/faces/'.$user->profile_pic) }}@else{{ asset('assets/images/faces/default.png') }}@endif"
+                                            style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif">
+
+                                        <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
+                                        <span id="file_name" class="file-name"></span>
+                                    </label>
                                     {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <input  type="file" name="profile_pic" id="profile_pic" class="form-control"
@@ -314,7 +341,7 @@
                                     </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="company_name" id="company_name" class="form-control"
+                                            <input type="text" name="company_name" id="company_name" class="form-control custom-css"
                                                 placeholder=""
                                                 value="{{ optional($user)->company_name }}">
                                                 <label for="company_name" class="floating-label">Company Name</label>
@@ -324,7 +351,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" name="company_website" id="company_website"
-                                                class="form-control" placeholder=""
+                                                class="form-control custom-css" placeholder=""
                                                 value="{{ optional($user)->company_website }}">
                                                 <label for="company_website" class="floating-label">Company Website</label>
                                             <div class="error" id="company_website_error"></div>
@@ -332,7 +359,7 @@
                                     </div>
                                     {{-- <div class="col-md-12">
                                         <div class="form-group">
-                                            <select name="country" id="country" class="form-control select-input">
+                                            <select name="country" id="country" class="form-control custom-css select-input">
                                                 <option value="0">Select Country</option>
                                                 @foreach ($countaries as $countery)
                                                     <option value="{{ $countery->id }}"
@@ -347,7 +374,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="text" name="address_line1" id="address_line_one"
-                                                class="form-control" placeholder=""
+                                                class="form-control custom-css" placeholder=""
                                                 value="{{ optional($user)->address_line1 }}">
                                                 <label for="address_line_one" class="floating-label">Address Line 1</label>
                                             <div class="error" id="address_line_one_error"></div>
@@ -356,7 +383,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="text" name="address_line2" id="address_line_two"
-                                                class="form-control" placeholder=""
+                                                class="form-control custom-css" placeholder=""
                                                 value="{{ optional($user)->address_line2 }}">
                                                 <label for="address_line_two" class="floating-label">Address Line 2</label>
                                             <div class="error" id="address_line_two_error"></div>
@@ -364,7 +391,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="city" id="city" class="form-control"
+                                            <input type="text" name="city" id="city" class="form-control custom-css"
                                                 placeholder="" value="{{ optional($user)->city }}">
                                                 <label for="city" class="floating-label">City</label>
                                             <div class="error" id="city_error"></div>
@@ -372,7 +399,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="postal" id="postal" class="form-control"
+                                            <input type="text" name="postal" id="postal" class="form-control custom-css"
                                                 placeholder=""
                                                 value="{{ optional($user)->postal_code }}">
                                                 <label for="postal" class="floating-label">Zip / Postal Code</label>
