@@ -39,6 +39,7 @@ class User extends Authenticatable
         "city",
         "profile_pic",
         "subscribe_to_promotions",
+        'country_name',
     ];
 
     /**

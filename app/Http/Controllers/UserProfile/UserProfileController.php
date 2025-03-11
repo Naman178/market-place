@@ -17,10 +17,14 @@ class UserProfileController extends Controller
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         $seoData = SEO::where('page','profile')->first();
         $user = Auth::user();
+        $isoName = ContactsCountryEnum::where('country_code',$user->country_code)->first();
+        // dd($isoName->ISOname);
         return view('front-end.userprofile.userprofile')->with([            
             'countaries' => $countaries,
             'user' => $user,
             'seoData' => $seoData,
+            'isoName' => $user->country_name ?? 'IN',
+            // 'dialCode' => $isoName->ISOname,
         ]);
     }
     public function store_user_profile(Request $request){
@@ -82,7 +86,8 @@ class UserProfileController extends Controller
                         "address_line1" => $request->address_line1,
                         "address_line2" => $request->address_line2,
                         "city" => $request->city,
-                        "postal_code" => $request->postal
+                        "postal_code" => $request->postal,
+                        "country_name" => $request->country_name
                     ]);
                     
                     $user->save();
