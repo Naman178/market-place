@@ -1,6 +1,14 @@
  
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function () {
+        var successMessage = localStorage.getItem('successMessage');
+        if (successMessage) {
+            toastr.success(successMessage); // Show toastr notification
+            localStorage.removeItem('successMessage'); // Clear message after displaying
+        }
+    });
+
 $(document).on("click", ".erp-profile-form", function(e) {
     e.preventDefault();
     var submitUrl = $('#profile_form').data("url");
@@ -40,8 +48,9 @@ $(document).on("click", ".erp-profile-form", function(e) {
                 $("#preloader").hide();
                 $('.input-error').removeClass('is-invalid');
                 if (response.success) {
+                    localStorage.setItem('successMessage', response.success);
                     window.location.href = "{{ route('profile') }}";
-                    toastr.success(response.success);
+                    // toastr.success(response.success);
                 } else if (response.error) {
                     handleErrorMessages(response.error); // Ensure this function handles validation errors correctly
                 }
