@@ -164,6 +164,7 @@
         //  $('#country').select2();
         //  $('#country_code').select2();
     </script>
+    
     <script>
         $(document).ready(function () {
             var phoneInput = document.querySelector("#contact");
@@ -175,34 +176,30 @@
                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
             });
     
-            // Get user's country code from Laravel (dial code expected)
-            var userDialCode = "{{ $user->country_code }}"; // Example: "97"
+            // Retrieve stored country ISO code
+            var userISOCode = $("#country_name").val(); // e.g., "US"
     
-            // Map dial codes to ISO country codes
-            var dialCodeToISO = {
-                "97": "IN" ,  // UAE
-                "1": "US",
-            };
+            // Set the pre-selected country based on ISO code
+            if (userISOCode) {
+                iti.setCountry(userISOCode.toLowerCase()); // Convert to lowercase for intlTelInput
+            }
     
-            // Get ISO country code (default to "IN" if not found)
-            var userISOCode = dialCodeToISO[userDialCode] || "IN";
-    
-            // Set pre-selected country
-            iti.setCountry(userISOCode);
-    
-            // Store country code in hidden input when user changes country
+            // Listen for country changes and store both ISO code and dial code
             phoneInput.addEventListener("countrychange", function () {
                 var countryData = iti.getSelectedCountryData();
-                $("#country_code").val(countryData.dialCode); // ✅ Save only the dial code (e.g., "91")
+                $("#country_code").val(countryData.dialCode);  // ✅ Save dial code (e.g., "1")
+                $("#country_name").val(countryData.iso2.toUpperCase());  // ✅ Save ISO code (e.g., "US")
             });
     
-            // Ensure country code is set before form submission
+            // Ensure both country_code & country_name are stored before form submission
             $("form").submit(function () {
                 var countryData = iti.getSelectedCountryData();
-                $("#country_code").val(countryData.dialCode); // ✅ Save only the dial code
+                $("#country_code").val(countryData.dialCode);
+                $("#country_name").val(countryData.iso2.toUpperCase());
             });
         });
     </script>
+    
     <script>
         function previewImage(event) {
             var reader = new FileReader();
@@ -324,6 +321,8 @@
                                             </select> --}}
                                             <input type="tel" id="contact" name="contact" class="form-control" value="{{ optional($user)->contact_number }}">
                                             <input type="hidden" name="country_code" id="country_code" value="{{ $user->country_code }}">
+                                            {{-- <input type="hidden" name="country_code_name" id="country_code_name" value="{{ $dialCode }}"> --}}
+                                            <input type="hidden" name="country_name" id="country_name" value="{{$isoName}}">
                                             @error('country_code')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
