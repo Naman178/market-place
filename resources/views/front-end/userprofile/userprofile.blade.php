@@ -62,7 +62,7 @@
         
         .btn-outline-primary {
             background-color: #007AC1;
-            color: white;
+            color: white !important;
             padding: 8px 12px;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -97,20 +97,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-                 const inputFields = document.querySelectorAll(".form-control");
+                 const inputFields = document.querySelectorAll(".form-control ");
                  
                  // Function to handle floating label
                  function updateFloatingLabel(input) {
                      const label = input.nextElementSibling; // Get the corresponding label
-                     if (input.value.trim() !== "") {
-                         label.style.top = "-1%";
-                         label.style.fontSize = "0.8rem";
-                         label.style.color = "#70657b";
-                     } else {
-                         label.style.top = "35%";
-                         label.style.fontSize = "1rem";
-                         label.style.color = "red";
-                     }
+                     if (label) { 
+                        if (input.value && input.value.trim() !== "") {
+                            label.style.top = "-1%";
+                            label.style.fontSize = "0.8rem";
+                            label.style.color = "#70657b";
+                        } else {
+                            label.style.top = "35%";
+                            label.style.fontSize = "1rem";
+                            label.style.color = "red";
+                        }
+                    }
                  }
      
                  // Initialize labels on page load
@@ -253,19 +255,20 @@
                                             <div class="error" id="email_error"></div>
                                         </div>
                                     </div>
-                                    <label for="category_image">Image</label>
-                                    <label class="form-control filelabel image-input-wrapper">
-                                        <input type="hidden" name="old_image" value="@if(!empty($user->profile_pic)){{$user->profile_pic}}@endif">
-                                        <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
-                                        <span class="btn btn-outline-primary">
-                                            <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
-                                        </span>
-                                        <img id="preview" class="previewImgCls hidepreviewimg" 
-                                             src="@if(!empty($user->profile_pic)){{asset('assets/images/faces/'.$user->profile_pic)}}@endif" 
-                                             style="{{$user->profile_pic ? 'display:block;' : 'display:none;'}}">
-                                        <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
-                                        <span id="file_name" class="file-name"></span>
-                                    </label>                                    
+                                    <div class="col-md-12">
+                                        <label for="category_image">Image</label>
+                                        <label class="form-control filelabel image-input-wrapper">
+                                            <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
+                                            <span class="btn btn-outline-primary">
+                                                <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
+                                            </span>
+                                            <img id="preview" class="previewImgCls hidepreviewimg" 
+                                                src="@if(!empty($user->profile_pic)){{asset('assets/images/faces/'.$user->profile_pic)}}@endif" 
+                                                style="{{$user->profile_pic ? 'display:block;' : 'display:none;'}}">
+                                            <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
+                                            <span id="file_name" class="file-name"></span>
+                                        </label>   
+                                    </div>                                 
                                     {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <input  type="file" name="profile_pic" id="profile_pic" class="form-control"
@@ -327,7 +330,7 @@
                                             <div class="error" id="company_website_error"></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <select name="country" id="country" class="form-control select-input">
                                                 <option value="0">Select Country</option>
@@ -340,7 +343,7 @@
                                             </select>
                                             <div class="error" id="country_error"></div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="text" name="address_line1" id="address_line_one"

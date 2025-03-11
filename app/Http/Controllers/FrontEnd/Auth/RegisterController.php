@@ -373,22 +373,27 @@ class RegisterController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'first_name' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users', // Check for unique email
             'country_code' => 'required|string',
-            'contact_number' => 'required|string',
             'company_name' => 'required|string|max:255',
             'company_website' => 'nullable|url|max:255',
-            'country' => 'required|string',
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'city' => 'required|string|max:255',
             'postal_code' => 'required|string|max:20',
             'password' => 'required|string|min:8|confirmed', // Add confirmation rule if applicable
         ]);
-        $name = $request->first_name .' '.$request->last_name;
-        $fname = $request->first_name;
+        $countryname = '';
+        $countaries = ContactsCountryEnum::orderBy('id')->get();
+        foreach($countaries as $country){
+            if($country->country_code == $request->country_code){
+                $countryname = $country->name;
+            }
+        }
+        $name = $request->firstname .' '.$request->last_name;
+        $fname = $request->firstname;
         $lname = $request->last_name;
         $email = $request->email;
         $country_code = $request->country_code;
@@ -396,7 +401,7 @@ class RegisterController extends Controller
         $mobile = '+'.$country_code.$contact;
         $company_name = $request->company_name;
         $company_website = $request->company_website;
-        $country = $request->country;
+        $country = $countryname;
         $address_line_one = $request->address_line1;
         $address_line_two = $request->address_line2;
         $city = $request->city;
