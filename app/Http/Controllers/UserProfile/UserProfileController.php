@@ -31,7 +31,6 @@ class UserProfileController extends Controller
                 'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'email' => 'required|email',
-                'contact' => 'required|digits:10',
                 'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                 'city' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'postal' => 'required|digits_between:5,6',
@@ -45,8 +44,6 @@ class UserProfileController extends Controller
                 'lastname.regex' => 'The Last Name should only contain letters and spaces.',
                 'email.required' => 'The Email Is Required.',
                 'email.email' => 'Please enter a valid email address.',
-                'contact.required' => 'Please Add Your Contact Number.',
-                'contact.digits' => 'The Contact Number must be exactly 10 digits.',
                 'address_line1.required' => 'Please Add Your Address.',
                 'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                 'city.required' => 'The City Is Required.',
@@ -66,6 +63,13 @@ class UserProfileController extends Controller
                 return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             } else{
                 if($user){
+                    $countryname = '';
+                    $countaries = ContactsCountryEnum::orderBy('id')->get();
+                    foreach($countaries as $country){
+                        if($country->country_code == $request->country_code){
+                            $countryname = $country->name;
+                        }
+                    }
                     $user->update([
                         "name" => $request->firstname. ' '. $request->lastname,
                         'profile_pic' => $imageName,
@@ -74,7 +78,7 @@ class UserProfileController extends Controller
                         "contact_number" => $request->contact,
                         "company_website" => $request->company_website,
                         "company_name" => $request->company_name,
-                        "country" => $request->country,
+                        "country" => $countryname,
                         "address_line1" => $request->address_line1,
                         "address_line2" => $request->address_line2,
                         "city" => $request->city,
