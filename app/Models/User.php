@@ -38,6 +38,7 @@ class User extends Authenticatable
         "postal_code",
         "city",
         "profile_pic",
+        "subscribe_to_promotions",
     ];
 
     /**

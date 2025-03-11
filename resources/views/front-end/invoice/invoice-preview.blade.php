@@ -28,12 +28,15 @@
     thead {
         background-color: #ffffff;
     }
+    .checkout .container{
+        max-width: 1320px;
+    }
 </style>
 <div class="container checkout-container py-5">
    <div class="checkout">
       <div class="container">
          <div class="row justify-content-center">
-            <div class="col-xl-9 col-md-10 col-12">
+            <div class="col-xl-12 col-md-12 col-12">
                 <div class="card shadow-lg border-0">
                     <div class="card-body">
                         <div class="row p-4">
@@ -46,13 +49,15 @@
                             <div class="col-md-6 text-md-end">
                                 <p><strong>Invoice Date:</strong> {{ $invoice->created_at ? $invoice->created_at->format('d-m-Y') : '-' }}</p>
                                 <p><strong>Paid Date:</strong> {{ $invoice->created_at ? $invoice->created_at->format('d-m-Y') : '-' }}</p>
-                                <p><strong>Payment Status:</strong> 
+                                <p class="mb-4"><strong>Payment Status:</strong> 
                                     @if ($invoice->payment_status == 'succeeded')
                                         <span class="badge bg-success">{{ ucfirst($invoice->payment_status) }}</span>
                                     @elseif ($invoice->payment_status == 'cancelled')
                                         <span class="badge bg-danger">{{ ucfirst($invoice->payment_status) }}</span>
                                     @endif
                                 </p>
+                                <a href="{{ route('invoice.download', ['id' => $invoice->id]) }}" target="_blank"
+                                    class="btn btn-label-secondary pink-blue-grad-button d-grid w-100 mb-2"> <i class="fas fa-download me-2"></i>  Download Invoice</a>
                             </div>
                         </div>
                     </div>
@@ -136,14 +141,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-4 col-12 invoice-actions">
+            {{-- <div class="col-xl-3 col-md-4 col-12 invoice-actions">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('invoice.download', ['id' => $invoice->id]) }}" target="_blank"
-                            class="btn btn-label-secondary d-grid w-100 mb-2"> <i class="fas fa-download me-2"></i>  Download Invoice</a>
+                        
                     </div>
                 </div>
-            </div>
+            </div> --}}
          </div>
       </div>
    </div>
