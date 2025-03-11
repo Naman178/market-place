@@ -168,12 +168,14 @@
   background-color: transparent;
   border: 1px solid #ffffff;
   color: #fff;
+  transition: 0.5s;
 }
 
 .plans-slider .item:nth-child(odd) .btn a:hover{
   background-color: transparent;
   border: 1px solid #007AC1;
   color: #007AC1 !important;
+  transition: 0.5s;
 }
 
 .items-container .col {
@@ -253,6 +255,7 @@
 .white_btn:hover, .white_btn .btn_text:hover{
   background-color: transparent;
   color: #ffffff !important;
+  transition: 0.5s;
 }
 
 .setting_btn{
@@ -268,15 +271,18 @@
 .setting_btn:hover{
   color: #007AC1;
   background-color: #fff;
+  transition: 0.5s;
 }
 
 .signup_btn:hover{
   background-color: #007AC1;
   color: #fff;
+  transition: 0.5s;
 }
 
-.menu-container li a:hover, .signin-container li a:hover{
+.menu-container li a:hover, .signin-container li a .dropdown_label:hover{
   border-bottom: 3px solid #007AC1;
+  transition: 0.5s;
 }
 
 .mr-20 {
@@ -387,6 +393,7 @@
 
 .know_more:hover{
   color:#402060;
+  transition: 0.5s;
 }
 
 .wordpress_plugin_bg {
@@ -507,7 +514,7 @@
 }
 
 .wordpress_bg:hover {
-  transition: all 350ms ease-out;
+  transition: 0.5s;
   border: 3px solid #007AC1;
 }
 
@@ -535,6 +542,7 @@
 
 .wordpress_bg .integration_p p:hover {
     border-bottom: 3px solid #007AC1;
+    transition: 0.5s;
 }
 
 .click_img {
@@ -573,6 +581,7 @@
 
 .integration_know:hover {
     border-bottom: 3px solid #007AC1;
+    transition: 0.5s;
 }
 
 .plus_logo {
@@ -592,6 +601,7 @@
 .plus_img:hover {
     filter: brightness(0%);
     cursor: pointer;
+    transition: 0.5s;
 }
 
 .intig_p {
@@ -697,6 +707,7 @@
   background-color: #fff;
   border: 1px solid #007AC1;
   color: #007AC1;
+  transition: 0.5s;
 }
 
 
@@ -711,6 +722,7 @@
 .sign_up_btn:hover{
   background-color: #fff;
   color: #007AC1;
+  transition: 0.5s;
 }
 
 .mb-53{
@@ -958,6 +970,7 @@ div#integrationCarousel .col-4{
     background-color: #fff;
     border: 1px solid #007AC1;
     color: #007AC1;
+    transition: 0.5s;
 }
 
 .social_media .mr-7{
@@ -1133,7 +1146,7 @@ div#integrationCarousel .col-4{
   max-height: 0;
   overflow: hidden;
   padding: 0 15px;
-  transition: max-height 0.3s ease;
+  transition: 0.5s;
 }
 
 .faq-answer.open {
@@ -1201,6 +1214,7 @@ div#integrationCarousel .col-4{
 .banner .button:hover{
   background-color: #fff;
   color: #007AC1;
+  transition: 0.5s;
 }
 
 .pattern_img {

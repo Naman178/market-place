@@ -25,18 +25,18 @@
                     @auth
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Welcome, {{ Auth::user()->name }}
+                                <span class="dropdown_label">  Welcome, {{ Auth::user()->name }} </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="{{ route('user-dashboard') }}">
-                                    Dashboard
+                                    <span class="dropdown_label">  Dashboard </span>
                                 </a>
                                 <a class="dropdown-item" href="{{ route('profile') }}">
-                                    Profile Setting
+                                    <span class="dropdown_label">  Profile Setting </span>
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Logout
+                                    <span class="dropdown_label"> Logout </span>
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf

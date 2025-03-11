@@ -86,14 +86,14 @@
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button>
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
-                                    href="{{ route('signup') }}"> Register </a> </p>
-                            <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
+                                 class="a_color"   href="{{ route('signup') }}"> Register </a> </p>
+                            <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a class="a_color" href="{{ route('forget-password-get') }}"> Reset Password </a></p>
                             <div class="bottom-border mb-3 mt-3"></div>
                             <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
-                                href="{{ route('privacy-policy') }}" class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO"
+                                href="{{ route('privacy-policy') }}" class="a_color"
                                 target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
                                 Policy</a> and <a href="{{ route('terms-and-condition') }}"
-                                class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO" target="_blank" rel="noopener noreferrer"
+                                class="a_color" target="_blank" rel="noopener noreferrer"
                                 data-testid="userTermsLink">Terms of Use</a>.
                             </span>
                         </div>

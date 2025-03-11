@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Send Password Reset Link</button>
-                            <p class="text-center d-block text-white"><a href="{{ url('user-login') }}">Back to Login </a></p>
+                            <p class="text-center d-block text-white"><a class="a_color" href="{{ url('user-login') }}">Back to Login </a></p>
                         </div>
                     </form>
                 </div>
