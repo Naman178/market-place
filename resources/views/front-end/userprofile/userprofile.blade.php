@@ -46,6 +46,10 @@
             height: 45px !important;
             border-radius: 0 5px 5px 0;
         }
+        #profile_pic_title{
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
     </style>
     
     <style>
