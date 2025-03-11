@@ -371,6 +371,7 @@ class RegisterController extends Controller
     
     public function postRegistration(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
