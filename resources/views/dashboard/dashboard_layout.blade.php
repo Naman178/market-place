@@ -95,24 +95,15 @@
 
         /* Style pagination buttons */
         .dataTables_paginate .paginate_button {
-            padding: 5px 10px !important;
-            margin: 0 2px !important;
-            border-radius: 4px !important;
-            border: none !important;
-            cursor: pointer !important;
-            text-decoration: none !important;
-            font-size: 14px !important;
-            background-image: linear-gradient(to right, #2B2842, #007ac1, #2B2842, #007ac1) !important;
-            background-size: 300% 100% !important;
-            color: white !important;
-            transition: all 0.4s ease-in-out !important;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+            border: 1px solid #fff  !important;
+            color: #FFFFFF !important;
+            background: #007AC1 !important;
         }
-
         .dataTables_paginate .paginate_button:hover {
-            color: #f4f4f4 !important;
-            background-position: 99% 0 !important;
-            transition: all 0.4s ease-in-out !important;
+            color: #007AC1 !important;
+            background-color: #fff !important;
+            border: 1px solid #007AC1  !important;
+            transition: 0.5s !important;
         }
 
         /* Responsive Design */
@@ -129,8 +120,11 @@
                 margin-top: 10px !important;
             }
         }
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
             color: white !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
+            color: #007AC1 !important;
         }
         .tip {
             background-color: #263646;
@@ -643,6 +637,7 @@
             color:#fff;
             padding: 5px 10px;
             background: #007ac1;
+            cursor: pointer;
             border: 1px solid #263646;
         }
         .wsus__profile_overview .accordion button:hover{
@@ -814,15 +809,43 @@
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        $(document).ready(function() {
+      $(document).ready(function () {
             $('.data-table').DataTable({
-                "responsive": true,  // Make table responsive
-                "lengthChange": false,  // Hide the length change dropdown
-                "searching": true,  // Enable the search bar
-                "paging": true,  // Enable paging
-                "info": true  // Show info like number of records
+                "responsive": true,
+                "lengthChange": false,
+                "searching": true,
+                "paging": true,
+                "info": true
             });
-            $('.dataTables_paginate .paginate_button').attr('style', 'color: white !important;');
+
+            // Set initial color
+            $('.dataTables_paginate .paginate_button').css({
+                'color': 'white',
+                'border': '1px solid #fff',
+                'background': '#007AC1',
+                'cursor' : 'pointer'
+            });
+
+            // Add hover effect using jQuery
+            $('.dataTables_paginate .paginate_button').hover(
+                function () {
+                    // Mouse enters: Change hover styles
+                    $(this).css({
+                        'color': '#007AC1',
+                        'background-color': 'white',
+                        'border': '1px solid #007AC1',
+                        'transition': '0.5s'
+                    });
+                },
+                function () {
+                    // Mouse leaves: Restore original styles
+                    $(this).css({
+                        'color': 'white',
+                        'background': '#007AC1',
+                        'border': '1px solid #fff'
+                    });
+                }
+            );
         });
 
         function copy(text, target) {

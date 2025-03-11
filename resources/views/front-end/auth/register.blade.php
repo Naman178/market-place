@@ -51,9 +51,7 @@
         }
         .text-left{
             text-align: left !important;
-        }
-        .w-4{
-            width: 4% !important;
+            font-size: 15px;
         }
    </style>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
@@ -123,18 +121,18 @@
                     <div class="col-md-12">
                         <div class="form-group mb-1">
                             <div class="d-flex flex-wrap">
-                                <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input w-4" checked>
+                                <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input" checked>
                                 <span for="promotionsSubscriber" class="text-left d-block text-white mt-3 mb-2 ml-2 cursor-pointer">Send me tips, trends, freebies, updates & offers. <br> You can unsubscribe at any time.</span> 
                             </div> 
                             <button type="submit" class="btn btn-block pink-btn mt-3 mb-2" style="cursor: pointer;">Register</button>
-                          <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
+                          <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a class="a_color" href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                         <div class="bottom-border mb-3 mt-3"></div>
                         <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
-                            href="{{ route('privacy-policy') }}" class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO"
+                            href="{{ route('privacy-policy') }}" class="a_color"
                             target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
                             Policy</a> and <a href="{{ route('terms-and-condition') }}"
-                            class="sc-eiwqOE sc-gQJZgv bSAjUJ kRJRXO" target="_blank" rel="noopener noreferrer"
+                            class="a_color" target="_blank" rel="noopener noreferrer"
                             data-testid="userTermsLink">Terms of Use</a>.
                         </span>
                     </div>
