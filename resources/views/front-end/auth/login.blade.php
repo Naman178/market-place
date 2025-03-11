@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn">Sign In</button>
+                            <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Sign In</button>
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                     href="{{ route('signup') }}"> Register </a> </p>
                             <p class="text-center d-block text-white">Forgot Your Password..?<a href="{{ route('forget-password-get') }}"> Reset Password </a></p>
