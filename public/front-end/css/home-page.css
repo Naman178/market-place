@@ -492,7 +492,7 @@
     color: #4D4D4D;
     font-family: Work Sans;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 28px;
     letter-spacing: 0em;
     text-align: left;
@@ -519,21 +519,22 @@
 }
 
 .round_blue_img {
-    margin-top: 53px;
+    margin-top: 18px;
     margin-left: 53px;
 }
 
 .wordpress_white_logo {
-    /* margin-top: 66px;
-    margin-left: -54px;
-    margin-bottom: 15px; */
+    /* margin-top: 66px; */
+    margin-left: 0px;
+    left: 132px;
+    /* margin-bottom: 15px; */
     position: absolute;
     margin-left: -52px;
-    top: 67px;
+    top: 30px;
 }
 
 .mt-69 {
-    margin-top: 69px;
+    margin-top: 33px;
 }
 
 .ml-20 {
@@ -546,8 +547,8 @@
 }
 
 .click_img {
-    margin-top: 35px;
-    margin-left: 129px;
+    margin-top: 20px;
+    margin-left: 100px;
 }
 
 .int_p {
@@ -555,12 +556,12 @@
     margin-left: 40px;
     margin-top: 40px;
     font-family: Work Sans;
-    font-size: 26px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 450;
     line-height: 36px;
     letter-spacing: 0em;
     text-align: left;
-    margin-bottom: 63px;
+    margin-bottom: 70px;
 
 }
 
@@ -607,14 +608,14 @@
 .intig_p {
     color: #4D4D4D;
     font-family: Work Sans;
-    font-size: 26px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 450;
     line-height: 36px;
     letter-spacing: 0em;
     text-align: left;
     margin-left: 40px;
     margin-top: 22px;
-    margin-bottom: 45px;
+    margin-bottom: 91px;
 }
 
 .intig_p span {
