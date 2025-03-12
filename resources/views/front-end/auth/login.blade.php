@@ -44,6 +44,14 @@
                         <div class="col-md-12 mb-1">
                             <div class="text-center mt-2">
                                 <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
+
+                                <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
+                                    <i class="fab fa-github"></i> Sign in with GitHub
+                                </a>
+                                <a href="{{ route('linkedin.login') }}" class="btn btn-github mt-3">
+                                    Sign in with LinkedIn
+                                </a>
+                                
                             </div>
                         </div>
                         <div class="col-md-12 d-flex flex-wrap or_border">
