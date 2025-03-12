@@ -48,6 +48,7 @@ class CheckoutController extends Controller
                 'pricing' => [$selectedPricing]
             ];
         }
+        // dd($mergedPricing);
         session()->put('cart', $cart);
         $couponCodes = Coupon::where('status', 'active')
             ->withCount('usage')
