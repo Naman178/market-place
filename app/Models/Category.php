@@ -19,4 +19,8 @@ class Category extends Model
         'updated_at'
     ];
 
+    public function subcategories()
+    {
+        return $this->hasMany(SubCategory::class, 'category_id');
+    }
 }

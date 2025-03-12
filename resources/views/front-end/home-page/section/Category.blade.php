@@ -43,7 +43,7 @@
             <div class="container text-center category-slider pb_30">
                 @foreach ($category as $item)
                     <div class="col-xl-6" style="width: 100%; display: inline-block;">
-                        <a href="{{ route('category.list', ['category' => $item->id]) }}" tabindex="0">
+                        <a href="{{ route('product.list', ['categoryOrSubcategory' => $item->id]) }}" tabindex="0">
                         <div class="wsus__categories_item_2">
                             <div class="icon">
                                 <img src="{{ asset('public/storage/category_images/' . $item->image) }}" alt="category" class="img-fluid w-100">
