@@ -70,24 +70,76 @@ class HomePageController extends Controller
     }
     public function Categoryshow($id){
         $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
-
+        $categories = Category::where('sys_state', '!=', '-1')     ->withCount(['subcategories' => function ($query) {
+            $query->where('sys_state', '=', '0');
+        }])->get();
+    
         $item = Items::with(['categorySubcategory', 'pricing'])
                   ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                       $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                   })
                   ->where('sys_state', '=', '0')
                   ->get();
-        return view('front-end.category.category',compact('item'));
+        return view('front-end.category.category',compact('item','categories'));
     }
+    public function sortItems(Request $request)
+    {
+        $sortOption = $request->input('sort');
+        $subcategories = SubCategory::where('category_id', $request->item_id)
+            ->where('sys_state', '=', '0')
+            ->pluck('id'); // Get only the IDs for efficient querying
+    
+            $query = Items::with(['categorySubcategory', 'pricing', 'reviews'])
+            ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                $query->whereIn('subcategory_id', $subcategories);
+            })
+            ->where('sys_state', '=', '0')
+            ->leftJoin('items_pricing__tbl', function ($join) {
+                // Allow both 'one-time' and 'recurring' pricing types
+                $join->on('items__tbl.id', '=', 'items_pricing__tbl.item_id')
+                    ->whereIn('items_pricing__tbl.pricing_type', ['one-time', 'recurring']);
+            })
+            ->select('items__tbl.*')
+            ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price') // Get the first (lowest) recurring fixed price
+            ->groupBy('items__tbl.id');
+        if ($request->has('price')) {
+            $price = (int) $request->price;  
+            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [$price]);
+        }
+        // Sorting Logic
+        if ($sortOption == 1) {
+            $query->orderBy('fixed_price', 'asc'); // Low to High
+        } elseif ($sortOption == 2) {
+            $query->orderBy('fixed_price', 'desc'); // High to Low
+        } else {
+            $query->orderBy('items__tbl.created_at', 'asc');
+        }
+        $items = $query->get();
+        return response()->json($items);
+    }
+    
     public function show($id){
-        $item = Items::with(['categorySubcategory', 'pricing'])
-        ->whereHas('categorySubcategory', function ($query) use ($id) {
-            $query->where('subcategory_id', $id);
-        })
-        ->where('sys_state', '=', '0')
-        ->get();
-
-        return view('front-end.product.product',compact('item'));
+        $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
+        $categories = Category::where('sys_state', '!=', '-1')     ->withCount(['subcategories' => function ($query) {
+            $query->where('sys_state', '=', '0');
+        }])->get();
+        if($subcategories){
+            $item = Items::with(['categorySubcategory', 'pricing'])
+                    ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                        $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+                    })
+                    ->where('sys_state', '=', '0')
+                    ->get();
+        }
+        else{
+            $item = Items::with(['categorySubcategory', 'pricing'])
+            ->whereHas('categorySubcategory', function ($query) use ($id) {
+                $query->where('subcategory_id', $id);
+            })
+            ->where('sys_state', '=', '0')
+            ->get();
+        }
+        return view('front-end.product.product',compact('item','categories'));
     }
     public function buynow($id)
     {
