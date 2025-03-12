@@ -201,6 +201,7 @@
   display: flex;
 }
 
+
 .hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
   max-width: 1400px !important;
 }
@@ -378,6 +379,7 @@
     letter-spacing: 0em;
     text-align: left;
     color: #FFFFFF;
+    margin-right: 20px;
 }
 
 .know_more {
@@ -398,12 +400,7 @@
 
 .wordpress_plugin_bg {
     background-color: #007AC1;
-    width: 450px;
-    height: 327px;
-    top: 1200px;
-    left: 260px;
-    margin-right: 25px;
-    margin-bottom: 25px;
+    padding-bottom: 40px;
 }
 
 .round_img {
@@ -424,7 +421,7 @@
 }
 
 .ml-40 {
-    margin-left: 40px;
+    margin-left: 22px;
 }
 
 .mt-20 {
