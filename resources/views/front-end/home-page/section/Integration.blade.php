@@ -22,8 +22,8 @@
                 <div class="item wordpress_bg">
                     <div class="d-flex">
                         <div>
-                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png" alt="not found">
-                            {{-- <img class="wordpress_white_logo" src="front-end/images/thunder.png" alt="not found" style="margin-left:0px; left:83px;"> --}}
+                            <img class="round_blue_img" height="70" width="70" src="front-end/images/Ellipse 450.png" alt="not found">
+                            <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/thunder.png" alt="not found" style="margin-left:0px; left:83px;">
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Lightning-Fast Performance</p>
@@ -45,9 +45,8 @@
                 <div class="item wordpress_bg">
                     <div class="d-flex">
                         <div>
-                            <img class="round_blue_img" src="front-end/images/Ellipse 446.png" alt="not found">
-                            {{-- <img class="wordpress_white_logo" src="front-end/images/wrench.png" style="margin-left:0px; left:83px;"
-                                alt="not found"> --}}
+                            <img class="round_blue_img" src="front-end/images/Ellipse 446.png" height="70" width="70" alt="not found">
+                            <img class="wordpress_white_logo" src="front-end/images/wrench.png" height="50" width="50" alt="not found">
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Easy Setup & Integration</p>
@@ -66,8 +65,8 @@
                 <div class="item wordpress_bg">
                     <div class="d-flex">
                         <div>
-                            <img class="round_blue_img"  height="80" width="80" src="front-end/images/Ellipse 450.png" alt="not found">
-                            <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/tools.png" alt="not found" style="margin-left:0px; left:83px;">
+                            <img class="round_blue_img"  height="70" width="70" src="front-end/images/Ellipse 450.png" alt="not found">
+                            <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/tools.png" alt="not found">
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Regular Updates & Support</p>
@@ -86,9 +85,8 @@
                 <div class="item wordpress_bg">
                     <div class="d-flex">
                         <div>
-                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png" alt="not found">
-                            {{-- <img class="wordpress_white_logo" src="front-end/images/encrypted.png"
-                                alt="not found" style="margin-left:0px; left:83px;"> --}}
+                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png" height="70" width="70"  alt="not found">
+                            <img class="wordpress_white_logo" src="front-end/images/encrypted.png" height="50" width="50" alt="not found" >
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Secure & Reliable</p>
@@ -110,9 +108,8 @@
                 <div class="item wordpress_bg">
                     <div class="d-flex">
                         <div>
-                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png" alt="not found">
-                            {{-- <img class="wordpress_white_logo" src="front-end/images/international.png"
-                                alt="not found" style="margin-left:0px; left:83px;"> --}}
+                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png"height="70" width="70" alt="not found">
+                            <img class="wordpress_white_logo" src="front-end/images/international.png" height="50" width="50" alt="not found">
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Global Compatibility</p>
