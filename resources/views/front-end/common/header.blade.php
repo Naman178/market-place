@@ -3,7 +3,7 @@
         <div class="col">
             <div class="logo-container">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('front-end/images/header_logo.png') }}" alt="Logo">
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
                 </a>
             </div>
         </div>

@@ -42,11 +42,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-7 col-sm-12 col-12">
-                <h1><span>Stay in the tech loop.</span></h1>
+                <h1><span>Stay Updated with the Latest Innovations!</span></h1>
                 <div>
                     <p class="integra_p testimonial-text">
-                        Eget mi justo justo velit nam vestibulum a maecenas facilisis sem consectetur ad at hac
-                        himenaeos nisl gravida nulla augue.
+                        Subscribe to our newsletter and be the first to receive updates on new features, exclusive offers, and expert insights.
                     </p>
                 </div>
             </div>
