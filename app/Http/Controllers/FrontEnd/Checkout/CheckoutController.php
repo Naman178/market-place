@@ -35,14 +35,24 @@ class CheckoutController extends Controller
         }
         $mergedPricing = [];
         $cart = session()->get('cart', []);
+        
         if (isset($cart[$planId])) {
             $existingPricing = collect($cart[$planId]['pricing']);
             $newPricing = collect([$selectedPricing]);
     
             $mergedPricing = $existingPricing->merge($newPricing)->unique('id')->values()->toArray();
-            
+
+            $keyFeatures = $plan->features->pluck('key_feature')->toArray();
+            $mergedPricing = array_map(function ($pricing) use ($keyFeatures) {
+                return array_merge((array)$pricing, ['key_features' => $keyFeatures]);
+            }, $mergedPricing);
+
             $cart[$planId]['pricing'] = $mergedPricing;
         } else {
+            $keyFeatures = $plan->features->pluck('key_feature')->toArray();
+            $mergedPricing = array_map(function ($pricing) use ($keyFeatures) {
+                return array_merge((array)$pricing, ['key_features' => $keyFeatures]);
+            }, $mergedPricing);
             $cart[$planId] = [
                 'item' => $plan,
                 'pricing' => [$selectedPricing]

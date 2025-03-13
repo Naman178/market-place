@@ -134,7 +134,7 @@ class LoginController extends Controller
         try {
             $linkedinUser = Socialite::driver('linkedin-openid')->user();
             $user = User::updateOrCreate(
-                // ['linkedin_id' => $linkedinUser->id],
+                ['email' => $linkedinUser->email],
                 [
                     'name' => $linkedinUser->name,
                     'email' => $linkedinUser->email,
