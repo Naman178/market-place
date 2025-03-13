@@ -1,6 +1,6 @@
 {{-- @php $item = $data["item"]; @endphp --}}
 <div class="card cart-doted-border">
-    <div class="card-body"  style="position: relative;">
+    <div class="card-body position-relative">
         <div class="mb-3 cart-item-border text-center">Wallet Summary</div>
         <div class="cart-items mt-3">
                 @if (!empty($mergedPricing))
@@ -13,7 +13,7 @@
                                         class="h-100 w-100">
                                 </div>
                             </div>
-                            <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
+                            <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center ml-25">
                                 <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
                                 @if($selectedPricing)
                                     <h5 class="mt-0 mb-2 cart-item-pri">
@@ -42,7 +42,7 @@
                                     class="h-100 w-100">
                             </div>
                         </div>
-                        <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
+                        <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center ml-25">
                             <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
                             @if($selectedPricing)
                                 <h5 class="mt-0 mb-2 cart-item-pri">
@@ -56,12 +56,12 @@
                     </div>
                 @endif
         </div>
-        <div class="accordion" id="accordionCouponCode" style="position: relative;">
+        <div class="accordion position-relative" id="accordionCouponCode">
             <div class="cart-item-border">
-                <div style="text-align: center;">Coupon Codes({{$couponCodes->count()}})</div>
+                <div class="text-center">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
             <div class="coupon-container card cart-doted-border">
-                <div class="card-body mb-3" style="max-height: 580px; overflow-y: scroll;">
+                <div class="card-body mb-3 coupon-overflow">
                     @if ($couponCodes->count() != 0)
                         @php
                             // Filter auto-apply coupons
@@ -78,14 +78,14 @@
                                 $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
                                 $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
                             @endphp
-                            <div class="card mt-4" style="margin: auto; min-width: 93%;">
+                            <div class="card mt-4 coupon-max-width">
                                 <div class="card-body">
-                                    <h5 style="margin-top: 0px;">{{$val}}</h5>
+                                    <h5 class="mt-0">{{$val}}</h5>
                                     <p>Same fee {{$val}} for all products in order</p>
                                     <div class="card">
-                                        <div class="card-body" style="padding: 10px;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                <div style="font-weight:600;">{{$item->coupon_code}}</div>
+                                        <div class="card-body p-10">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="font_weight_600">{{$item->coupon_code}}</div>
                                                 <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
                                                     {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
@@ -100,7 +100,7 @@
                             </div>
                         @endforeach
                     @else
-                        <div class="card mt-4" style="margin: auto; min-width: 93%;">
+                        <div class="card mt-4 coupon_min_width">
                             <div class="card-body">
                                 <p>No Coupon Code Available For This Product</p>
                             </div>
@@ -114,7 +114,7 @@
                     You have a coupon code ?
                     </a>
                 </h6>
-                <div id="accordion_coupon_code_form" class="accordion-body" data-parent="#accordionCouponCode" style="display: block;">
+                <div id="accordion_coupon_code_form" class="accordion-body d-block" data-parent="#accordionCouponCode">
                     <div class="row mt-2">
                         <div class="col-md-9">
                         <div class="form-group mb-0">
@@ -128,11 +128,11 @@
                     </div>
                 </div>
             </div>
-            <p class="coupon-error text-danger" style="color: red;"></p>
-            <div class="apply-coupon-code-container" style="display: none;">
-                <div class="alert alert-success" role="alert" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
-                    <div>Coupon Code : <span style="font-weight: 600;" class="applied-coupon-code"></span></div>
-                    <button type="button" class="btn pink-btn remove-applied-coupon" style="margin-bottom: 0px; background: white; border: 1px solid #007AC1; color: #007AC1; padding: 5px 19px; border-radius: 5px;">Remove</button>
+            <p class="coupon-error text-danger"></p>
+            <div class="apply-coupon-code-container d-none">
+                <div class="alert alert-success d-flex justify-content-between align-items-center mb-0" role="alert">
+                    <div>Coupon Code : <span class="applied-coupon-code font_weight_600"></span></div>
+                    <button type="button" class="btn pink-btn remove-applied-coupon remove_coupon_btn">Remove</button>
                 </div>
             </div>
         </div>
@@ -245,7 +245,7 @@
                     <h5 class="mt-0 mb-2" id="gst_amount">INR {{ number_format($totalGST) }}</h5>
                 </div>
             </div>
-            <div class="row mb-1 discount_row" style="display: none;">
+            <div class="row mb-1 discount_row d-none">
                 <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
                     <h5 class="mt-0 mb-2">Discount(-)</h5>
                 </div>

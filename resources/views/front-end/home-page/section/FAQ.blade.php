@@ -29,7 +29,16 @@
             <img src="{{ asset('front-end/images/Rectangle 28.png') }}" alt="not found">
             <div class="banner">         
                 <h1>It takes less than a minute to get started</h1>
-                <a href="#" class="button mt-2">Get Your FREE API Key</a>
+                <li class="white_signup-wrapper mt-1">
+                    <a class="white_signup_btn" href="{{route('newsletter')}}">
+                      <svg viewBox="0 0 180 60">
+                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+                      </svg>
+                      <span>Get Your FREE API Key</span>
+                    </a>
+                  </li>                  
+                {{-- <a href="#" class="button mt-2">Get Your FREE API Key</a> --}}
              </div>
              <img class="pattern3_img" src="{{ asset('front-end/images/design2.png') }}" alt="not found">
              <img class="pattern4_img" src="{{ asset('front-end/images/design2.png') }}" alt="not found">
@@ -51,13 +60,19 @@
             </div>
             <div class="col-lg-5 col-sm-12 col-12 mt-13">
                 <div class="row">
-                    <div class="col-lg-9 col-sm-12 col-12">
+                    <div class="col-lg-8 col-sm-12 col-12">
                     <input type="text" class="email_text" value="" name="email" placeholder="Enter your email">
                     </div>
-                    <div class="col-lg-3 col-sm-12 col-12 mt-2 text-end">
-                        <div class="sign_up_btn" data-route="{{route('newsletter')}}">
+                    <div class="col-lg-4 col-sm-12 col-12 mt-2 text-end">
+                        {{-- <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
-                        </div>
+                        </div> --}}
+                        <li class="signup-wrapper mt-1"><a class="signup_btn" href="{{route('newsletter')}}"> 
+                            <svg width="112px" height="49px" viewBox="0 0 180 60" >
+                                <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+                                <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+                            </svg>
+                          </svg><span> Sign Up </span></a></li>
                     </div>
                     <span class="newsletter_success"></span>
                     <p class="integra_p testimonial-text small_text">By clicking Sign Up you're confirming that you agree with our Terms and Conditions.</p>

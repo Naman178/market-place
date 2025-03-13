@@ -40,7 +40,7 @@
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="cust_support_img" src="{{ asset('front-end/images/Rectangle 3998.png') }}" alt="not found">
             </div>
-            <a href="#" class="read_btn" style="width: 14%">
+            <a href="#" class="read_btn">
                 Get Lifetime Support <span>
                     <i class="fa-solid fa-greater-than"></i>
                 </span>

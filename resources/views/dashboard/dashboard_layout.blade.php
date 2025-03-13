@@ -30,7 +30,12 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
-
+    @php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+      $category = Category::where('sys_state','=','0')->first();
+      $subcategory = SubCategory::where('sys_state','=','0')->first();
+    @endphp
     <style>
         table.dataTable {
             width: 100% !important;

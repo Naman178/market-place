@@ -26,7 +26,7 @@
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
                         <span class="ml-2"><b>Regular Updates & Support</b> - Stay ahead with frequent updates and expert assistance.</span>
                     </div>
-                    <div class="mt-3 mb-53">
+                    <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
                         <span class="ml-2"><b>Optimized for Performance</b> - Lightweight, fast, and built for maximum efficiency.</span>
                     </div>

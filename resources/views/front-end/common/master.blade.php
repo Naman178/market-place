@@ -22,6 +22,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 </head>
 <body>
+    @php
+        use App\Models\Category;
+        use App\Models\SubCategory;
+        $category = Category::where('sys_state','=','0')->first();
+        $subcategory = SubCategory::where('sys_state','=','0')->first();
+    @endphp
     @include('front-end.common.header')
     <div class="main-content">
         @yield('content')

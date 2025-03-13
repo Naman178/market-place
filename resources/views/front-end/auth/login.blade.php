@@ -41,25 +41,25 @@
             <div class="row justify-content-center">
                 <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="card p-4 dark-blue-card">
-                        <div class="col-md-12 mb-1">
+                        <div class=" mb-1">
                             <div class="text-center mt-2">
                                 <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
 
                                 <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
-                                    <i class="fab fa-github"></i> Sign in with GitHub
+                                    Sign in with GitHub
                                 </a>
-                                <a href="{{ route('linkedin.login') }}" class="btn btn-github mt-3">
+                                <a href="{{ route('linkedin.login') }}" class="btn btn-linkedin mt-3">
                                     Sign in with LinkedIn
                                 </a>
                                 
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex flex-wrap or_border">
+                        <div class="d-flex flex-wrap or_border">
                             <div class="left_border"></div>
-                            <span class="p-1">or</span>
+                            <span class="mt-3">or</span>
                             <div class="left_border"></div>
-                        </div>
-                        <div class="col-md-12 mt-4">
+                          </div>                          
+                        <div class=" mt-4">
                             <div class="form-group">
                                 {!! Form::text('email', null, [
                                     'placeholder' => '',
@@ -76,7 +76,7 @@
                                 <div class="error" id="email_error"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="">
                             <div class="form-group">
                                 {!! Form::password('password', [
                                     'placeholder' => '',
@@ -91,13 +91,13 @@
                                 <div class="error" id="password_error"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="">
                             <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button>
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                  class="a_color"   href="{{ route('signup') }}"> Register </a> </p>
                             <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a class="a_color" href="{{ route('forget-password-get') }}"> Reset Password </a></p>
                             <div class="bottom-border mb-3 mt-3"></div>
-                            <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
+                            <span class="sc-FEMpB jDOPhs font-13">By continuing, you confirm you are 18 or over and agree to our <a
                                 href="{{ route('privacy-policy') }}" class="a_color"
                                 target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
                                 Policy</a> and <a href="{{ route('terms-and-condition') }}"
