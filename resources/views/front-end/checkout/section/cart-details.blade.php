@@ -1,7 +1,7 @@
 {{-- @php $item = $data["item"]; @endphp --}}
 <div class="card cart-doted-border">
     <div class="card-body position-relative">
-        <div class="mb-3 cart-item-border text-center">Wallet Summary</div>
+        {{-- <div class="mb-3 cart-item-border text-center">Wallet Summary</div>
         <div class="cart-items mt-3">
                 @if (!empty($mergedPricing))
                     @foreach ($mergedPricing as $key => $selectedPricing)
@@ -55,8 +55,8 @@
                         </div>
                     </div>
                 @endif
-        </div>
-        <div class="accordion position-relative" id="accordionCouponCode">
+        </div> --}}
+        {{-- <div class="accordion position-relative" id="accordionCouponCode"> --}}
             <div class="cart-item-border">
                 <div class="text-center">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
@@ -135,7 +135,7 @@
                     <button type="button" class="btn pink-btn remove-applied-coupon remove_coupon_btn">Remove</button>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
         <hr>
         {{-- <div class="row mb-1">
             <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
@@ -395,12 +395,12 @@
                     @php
                         if(!empty($mergedPricing)){
                             foreach($mergedPricing as $pricing){
-                                $total = (int)$pricing['fixed_price'];
+                                $total = (int)$pricing['sale_price'];
                                 $gst = ($pricing['gst_percentage']/100) * $total;
                                 $final_total = $total + $gst;
                             }
                         }else{
-                            $total = (int)$selectedPricing->fixed_price;
+                            $total = (int)$selectedPricing->sale_price;
                             $gst = ($selectedPricing->gst_percentage / 100) * $total;
                             $final_total = $total + $gst;
                         }

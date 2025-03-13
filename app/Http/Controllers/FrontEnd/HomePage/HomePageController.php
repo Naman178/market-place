@@ -124,7 +124,7 @@ class HomePageController extends Controller
             $query->where('sys_state', '=', '0');
         }])->get();
         if($subcategories){
-            $item = Items::with(['categorySubcategory', 'pricing'])
+            $item = Items::with(['categorySubcategory', 'pricing' , 'order'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                         $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                     })
@@ -132,7 +132,7 @@ class HomePageController extends Controller
                     ->get();
         }
         else{
-            $item = Items::with(['categorySubcategory', 'pricing'])
+            $item = Items::with(['categorySubcategory', 'pricing','order'])
             ->whereHas('categorySubcategory', function ($query) use ($id) {
                 $query->where('subcategory_id', $id);
             })
