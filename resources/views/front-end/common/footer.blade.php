@@ -34,7 +34,11 @@
                     <div class="title pb-2">General</div>
                     <ul class="menu-vertical list-style">
                         <li>Documentation</li>
-                        <li><a href="{{ route('user-price') }}">Pricing</a></li>
+                        @if ($category)
+                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                        @elseif ($subcategory)
+                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                        @endif
                         <li><a href="{{ route('user-faq') }}">FAQ</a></li>
                         <li>Sponsorship</li>
                         <li><a href="{{ route('contact-us') }}">Contact</a></li>

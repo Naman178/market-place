@@ -65,19 +65,26 @@
        @csrf
        <input type="hidden" name="recaptcha" id="recaptcha">
         <div class="row justify-content-center">
-            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
-                <div class="row  border p-3 pt-4 pb-4 border-radius-1">
-                    <div class="col-md-12 mb-1">
+            <d<div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="card p-4 dark-blue-card">
+                    <div class=" mb-1">
                         <div class="text-center mt-2">
                             <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
+                            
+                            <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
+                                Sign in with GitHub
+                            </a>
+                            <a href="{{ route('linkedin.login') }}" class="btn btn-linkedin mt-3">
+                                Sign in with LinkedIn
+                            </a>
                         </div>
                     </div>
-                    <div class="col-md-12 d-flex flex-wrap or_border">
+                    <div class=" d-flex flex-wrap or_border">
                         <div class="left_border"></div>
-                        <span class="p-1">or</span>
+                        <span class="mt-3">or</span>
                         <div class="left_border"></div>
                     </div>
-                    <div class="col-md-12 mt-4">
+                    <div class=" mt-4">
                         <div class="form-group">
                             <input type="text" name="firstname" id="firstname" class="form-control" placeholder="" required/>
                             <label for="firstname" class="floating-label">First Name</label>
@@ -87,7 +94,7 @@
                             @enderror
                         </div>
                     </div>   
-                    <div class="col-md-12">
+                    <div class="">
                         <div class="form-group">
                             {{-- <label for="last_name">Last Name</label> --}}
                             <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
@@ -98,7 +105,7 @@
                             <div class="error" id="last_name_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label for="email" class="floating-label">Email</label>
@@ -108,7 +115,7 @@
                             <div class="error" id="email_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="">
                         <div class="form-group mb-1">
                             <input type="password" class="form-control" id="password" name="password" required>
                             <label for="password" class="floating-label">Password</label>
@@ -118,7 +125,7 @@
                             <div class="error" id="password_error"></div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="">
                         <div class="form-group mb-1">
                             <div class="d-flex flex-wrap">
                                 <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input" checked>
@@ -128,7 +135,7 @@
                           <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a class="a_color" href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                         <div class="bottom-border mb-3 mt-3"></div>
-                        <span class="sc-FEMpB jDOPhs">By continuing, you confirm you are 18 or over and agree to our <a
+                        <span class="sc-FEMpB jDOPhs font-13">By continuing, you confirm you are 18 or over and agree to our <a
                             href="{{ route('privacy-policy') }}" class="a_color"
                             target="_blank" rel="noopener noreferrer" data-testid="privacyPolicyLink">Privacy
                             Policy</a> and <a href="{{ route('terms-and-condition') }}"
