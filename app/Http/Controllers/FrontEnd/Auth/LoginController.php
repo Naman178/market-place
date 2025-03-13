@@ -106,6 +106,7 @@ class LoginController extends Controller
 
             // Find or create user
             $user = User::updateOrCreate(
+                ['email' => $githubUser->email],
                 [
                     'name' => $githubUser->name ?? $githubUser->nickname,
                     'email' => $githubUser->email,
@@ -118,6 +119,7 @@ class LoginController extends Controller
 
             return redirect('/');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect('/login')->with('error', 'Authentication failed.');
         }
     }
