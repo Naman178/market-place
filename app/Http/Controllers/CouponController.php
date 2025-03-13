@@ -144,7 +144,7 @@ class CouponController extends Controller
         ]);
         // dd($request->all());
         $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews"])->find($request->itemId);
-        $fixedprice = $plan->pricing->fixed_price;
+        $fixedprice = $plan->pricing->sale_price;
         $gst = $plan->pricing->gst_percentage;
         $finalTotal = $fixedprice + (($fixedprice * $gst) / 100);
         $finalTotal = round($finalTotal);

@@ -71,6 +71,12 @@ Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('us
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
+Route::get('auth/github', [LoginController::class, 'redirectToGitHub'])->name('github.login');
+Route::get('auth/github/callback', [LoginController::class, 'handleGitHubCallback']);
+
+Route::get('auth/linkedin', [LoginController::class, 'redirectToLinkdin'])->name('linkedin.login');
+Route::get('auth/linkedin/callback', [LoginController::class, 'handleLinkdinCallback']);
+
 // user register
 Route::post('/post-registration', [RegisterController::class, 'postRegistration'])->name('user-register-post');
 Route::post('/user-create-checkout', [RegisterController::class, 'userCreateCheckout'])->name('user-create-checkout');

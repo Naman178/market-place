@@ -121,6 +121,7 @@
             $(".coupon-btn").text("Apply").removeClass("remove-btn").prop("disabled", true).each(function() {
                 removeCouponStyle($(this));
             });
+            $(".discount_row").removeClass("d-none");
 
             button.text("Remove").addClass("remove-btn").prop("disabled", false);
             applyCouponStyle(button);
@@ -141,7 +142,7 @@
             hideAppliedCouponSection();
 
             // Calculate the total price including GST
-            let fixedPrice = parseFloat("{{ $plan->pricing->fixed_price }}");
+            let fixedPrice = parseFloat("{{ $plan->pricing->sale_price }}");
             let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
             let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
             let roundedAmount = Math.round(totalWithGst);
@@ -195,6 +196,7 @@
 
         function showAppliedCouponSection(couponCode) {
             $(".apply-coupon-code-container").show();
+            $(".discount_row").show();
             $(".applied-coupon-code").text(couponCode);
         }
 
