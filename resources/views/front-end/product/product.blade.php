@@ -88,7 +88,7 @@
                             <p class="mt-2">Price: <span id="priceLabel">0</span></p>
                             @break
                         @endforeach    
-                        <button class="common_btn mt-3 w-100" onclick="filterByPrice()" type="submit">Filter</button>
+                        <button class="read_btn mt-3 w-100" onclick="filterByPrice()" type="submit">Filter</button>
                     </div>
                 </div>
             </div>

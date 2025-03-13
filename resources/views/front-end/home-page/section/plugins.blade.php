@@ -9,8 +9,9 @@
         </div>
 
         <!-- Ensure all cards are inside a single row -->
-        <div class="row g-3">
-            <div class="col-md-4 g-2">
+        {{-- <div class="row row_gap"> --}}
+        <div class="wordpress-plugin-grid">
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/store.png') }}" alt="not found">
@@ -18,8 +19,8 @@
                     <p class="plugin_p ml-40">Automatically fetch real-time gold, silver, and platinum prices to ensure accurate and up-to-date pricing for your WooCommerce store</p>
                     <a href="#" class="know_more ml-40">Learn More <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
-            <div class="col-md-4 g-2">
+           
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/cart.png') }}" alt="not found">
@@ -27,9 +28,9 @@
                     <p class="plugin_p ml-40">Fully compatible with WooCommerce, supporting both simple and variable products for effortless price automation.</p>
                     <a href="#" class="know_more ml-40">Explore Features<span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
+           
 
-            <div class="col-md-4 g-2">
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/plug.png') }}" alt="not found">
@@ -37,9 +38,9 @@
                     <p class="plugin_p ml-40">Easily integrate our plugin into your WordPress website with a hassle-free setup process and user-friendly controls.</p>
                     <a href="#" class="know_more ml-40">Learn More <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
+           
 
-            <div class="col-md-4 g-2">
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/dependable.png') }}" alt="not found">
@@ -47,9 +48,9 @@
                     <p class="plugin_p ml-40">No more manual updates! Our plugin calculates prices dynamically based on global rates and product weight.</p>
                     <a href="#" class="know_more ml-40">Learn How It Works<span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
+           
 
-            <div class="col-md-4 g-2">
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/money-management.png') }}" alt="not found">
@@ -57,9 +58,9 @@
                     <p class="plugin_p ml-40">Install, configure, and start selling in minutes with a user-friendly interface and easy customization options.</p>
                     <a href="#" class="know_more ml-40">Know More<span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
+           
 
-            <div class="col-md-4 g-2">
+           
                 <div class="wordpress_plugin_bg h-100">
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/customer-support.png') }}" alt="not found">
@@ -67,7 +68,7 @@
                     <p class="plugin_p ml-40">Built for speed, security, and reliability—ensuring smooth transactions and a seamless user experience.</p>
                     <a href="#" class="know_more ml-40">Know More<span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
-            </div>
+           
         </div>
     </div>
 </div>

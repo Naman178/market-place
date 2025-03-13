@@ -275,15 +275,53 @@
   transition: 0.5s;
 }
 
+.white_signup_btn {
+  position: relative;
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center;
+  padding: 12px 30px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.6); 
+  overflow: hidden;
+  width: 180px; 
+  height: 60px; 
+  white-space: nowrap;
+}
+
+.white_signup_btn span {
+  position: relative;
+  z-index: 2; 
+}
+
+.white_signup_btn svg {
+  position: absolute;
+  width: 180px;
+  height: 60px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-dasharray: 150 480;
+  stroke-dashoffset: 150;
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.white_signup_btn:hover svg {
+  stroke-dashoffset: -480;
+}
 
 /* Basic styles for the button */
 
 .signup_btn svg {
   position: absolute;
   left: 0;
-  top: 0;
+  top: -6px;
+  width: 158px;
+  height: 39px;
   fill: none;
-  stroke: #fff;
+  stroke: #007AC1;
   stroke-dasharray: 150 480;
   stroke-dashoffset: 150;
   transition: 1s ease-in-out;
@@ -291,16 +329,16 @@
 
 /* Background and hover line animation for the SVG */
 .signup_btn:hover {
-  background: #007AC1;
+  /* background: #007AC1; */
 }
 
 .signup_btn:hover svg {
   stroke-dashoffset: -480;
 }
 /* Optional: Change color or other effects when hovered */
-.signup_btn:hover span {
+/* .signup_btn:hover span {
   color: #fff;
-}
+} */
 /* .signup_btn:hover{
   background-color: #007AC1;
   color: #fff;
@@ -308,7 +346,7 @@
 } */
 .menu-container li a {
   position: relative;
-  padding: 4px 0;
+  padding: 7px 0;
 }
 
 .menu-container li a::before {
@@ -801,41 +839,49 @@
   padding: 12px;
   color: #FFFFFF !important;
   text-decoration: none;
-	transition: all 0.5s;
-	position: relative;
+  transition: all 0.5s;
+  position: relative;
+  border: none;
 }
 .read_btn::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-	background-color: rgba(255,255,255,0.1);
-	transition: all 0.3s;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s;
 }
 .read_btn:hover::before {
-	opacity: 0 ;
-	transform: scale(0.5,0.5);
+  opacity: 0;
+  transform: scale(0.5, 0.5);
 }
 .read_btn::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-	opacity: 0;
-	transition: all 0.3s;
-	border: 1px solid rgba(255,255,255,0.5);
-	transform: scale(1.2,1.2);
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border: 1px solid #007AC1;
+  transform: scale(1.2, 1.2);
 }
 .read_btn:hover::after {
-	opacity: 1;
-	transform: scale(1,1);
+  opacity: 1;
+  transform: scale(1, 1);
 }
+
+.read_btn:hover {
+  background-color: transparent;
+  color: #007AC1 !important;
+  transition: all 0.3s;
+}
+
 /* .read_btn{
   background-color: #007AC1;
   padding: 12px;
@@ -1355,8 +1401,9 @@ div#integrationCarousel .col-4{
 }
 
 .banner .button:hover{
-  background-color: #fff;
-  color: #007AC1;
+  /* background-color: #fff;
+  color: #007AC1; */
+
   transition: 0.5s;
 }
 
@@ -1446,4 +1493,13 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
     display: flex;
     flex-direction: column;
     transition: transform 0.5s ease-in-out;
+}
+.ml-30{
+  margin-left: -30px;
+}
+.wordpress-plugin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr)); /* 3 columns per row */
+  gap: 5px; /* Reduced gap */
+  padding: 20px;
 }

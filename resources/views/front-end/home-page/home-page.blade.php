@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <!-- Latest Font Awesome CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endsection
 @section('meta')
@@ -34,7 +34,7 @@
 @else
     @include('front-end.home-page.section.Category')
 @endif
-@include('front-end.home-page.section.items-grid')
+{{-- @include('front-end.home-page.section.items-grid') --}}
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
 </div>
