@@ -397,4 +397,64 @@
         });
     });
 
+    /* login register settings submit form event */
+    $(document).on("click", ".settings_stripe_register", function(){
+        $(".erp-form-submit-stripe").submit();
+        $("#preloader").show();
+    });
+
+    /*login register settings submit ajax event */
+    $(".erp-form-submit-stripe").submit(function (e){
+        e.preventDefault();
+        var obj = {};
+        var $value = new FormData(this);
+        $value.forEach((value, key) => obj[key] = value);
+        var json = JSON.stringify(obj);
+        $.ajax({
+            url: "{{url('/settings/store')}}",
+            type:"POST",
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: $value,
+            dataType: 'json',
+            processData: false,
+            success:function(response){
+                // toastr.info(response.success, response.title);
+                location.reload();
+            }
+        });
+    });
+
+    // login register settings submit form event 
+    $(document).on("click", ".settings_smtp_register", function(){
+        $(".erp-form-submit-smtp").submit();
+        $("#preloader").show();
+    });
+
+    /*login register settings submit ajax event */
+    $(".erp-form-submit-smtp").submit(function (e){
+        e.preventDefault();
+        var obj = {};
+        var $value = new FormData(this);
+        $value.forEach((value, key) => obj[key] = value);
+        var json = JSON.stringify(obj);
+        $.ajax({
+            url: "{{url('/settings/store')}}",
+            type:"POST",
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: $value,
+            dataType: 'json',
+            processData: false,
+            success:function(response){
+                // toastr.info(response.success, response.title);
+                location.reload();
+            }
+        });
+    });
+
 </script>

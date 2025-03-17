@@ -141,7 +141,7 @@
                                         </p>
                                     </li>
                                     <li>
-                                        <span class="download"><i class="fa fa-download" aria-hidden="true"></i> 0 Sale</span>
+                                        <span class="download"><i class="fa fa-download" aria-hidden="true"></i> {{ $items->order->count() ?? 0 }} Sale</span>
                                     </li>
                                 </ul>
                                 
