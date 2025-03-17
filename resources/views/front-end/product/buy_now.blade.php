@@ -77,7 +77,14 @@
                                             <textarea rows="7" name="comment" placeholder="Type here.." required></textarea>
                                         </fieldset>
                                     </div>
-                                    <button class="common_btn pink-blue-grad-button" id="submitBtn" type="submit">Submit Comment</button>
+                                    <button type="submit" class="blue_common_btn " id="submitBtn" >
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span> Submit Comment</span>
+                                    </button>
+                                    {{-- <button class="common_btn pink-blue-grad-button " id="submitBtn" type="submit">Submit Comment</button> --}}
                                     <button class="common_btn d-none" id="showSpain" type="submit"><i
                                             class="fas fa-spinner fa-spin" aria-hidden="true"></i></button>
                                 </div>
@@ -137,8 +144,14 @@
                                             <input type="hidden" id="ratingInput" name="rating" value="0"> <!-- Store Rating Here -->
                                         </fieldset>
                                     </div>
-                        
-                                    <button class="common_btn pink-blue-grad-button" id="reviewSubmitBtn" type="submit">Submit Review</button>
+                                    <button type="submit" class="blue_common_btn " id="reviewSubmitBtn" >
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span> Submit Review</span>
+                                    </button>
+                                    {{-- <button class="common_btn pink-blue-grad-button" id="reviewSubmitBtn" type="submit">Submit Review</button> --}}
                                     <button class="common_btn d-none" id="reviewShowSpain" type="submit">
                                         <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
                                     </button>
@@ -200,9 +213,18 @@
                             </ul>
                         @endforeach
                         <ul class="button_area mt_50 d-flex flex-wrap mb-0">
-                            <li><a class="live" target="__blank"
-                                    href="{{ $item->preview_url }}">Live Preview</a></li>
-                            <li><a class="common_btn" href="{{ route("checkout", ["id" => base64_encode($item->id)]) }}" target="_blank">add to cart</a></li>
+                            <li><a class="white_signup_btn" target="__blank"
+                                    href="{{ $item->preview_url }}">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span>  Live Preview </span></a></li>
+                            <li><a class="common_btn white_signup_btn" href="{{ route("checkout", ["id" => base64_encode($item->id)]) }}" target="_blank"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                            </svg>
+                            <span> add to cart </span></a></li>
                         </ul>
                         {{-- <ul class="sell_rating mt_20 d-flex flex-wrap justify-content-between">
                             <li><i class="far fa-comments" aria-hidden="true"></i> {{ $userCommentsCount ?? 0 }}</li>

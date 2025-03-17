@@ -45,9 +45,13 @@
                                                             <div class="text-muted"><strong>Product File:</strong></div>
                                                             <div class="ml-2">
                                                                 <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
-                                                                class="btn pink-blue-grad-button text-white" 
+                                                                class="btn blue_common_btn" 
                                                                 download="{{ $order->product->product_name ?? '' }}">
-                                                                    <i class="fas fa-download"></i> Download
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                              </svg>
+                                                                    <i class="fas fa-download"></i> <span class="ml-2">Download</span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -87,12 +91,21 @@
                                                                 <div class="mr-3 text-break" style="word-break: break-word; max-width: 100%;">
                                                                     <p class="mb-0">{{ $order->key->key ?? '' }}</p>
                                                                 </div>
-                                                                    <button class="btn btn-sm btn-outline-secondary"
+                                                                <button type="submit" class="blue_common_btn btn  btn-sm btn-outline-secondary"   onclick="copy('{{ $order->key->key ?? '' }}','#copy_button_{{ $order->id }}')"
+                                                                    id="copy_button_{{ $order->id }}"
+                                                                    title="Click here to copy">
+                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                    </svg>
+                                                                    <span>   <i class="fas fa-copy"></i></span>
+                                                                </button>
+                                                                    {{-- <button class="btn btn-sm btn-outline-secondary"
                                                                             onclick="copy('{{ $order->key->key ?? '' }}','#copy_button_{{ $order->id }}')"
                                                                             id="copy_button_{{ $order->id }}"
                                                                             title="Click here to copy">
                                                                         <i class="fas fa-copy"></i>
-                                                                    </button>
+                                                                    </button> --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -111,8 +124,13 @@
                     </div> <!-- Closing row -->
                 @else
                     <p class="d-inline-block mr-4">No Orders Found</p>
-                    <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
-                            class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Continue Shopping</a>
+                    {{-- <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
+                            class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Continue Shopping</a> --}}
+                    <a href="{{ url('/') }}"class="btn btn-linkedin blue_common_btn"> 
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Browse Products</span></a>
                 @endif
             </div>
         </div>

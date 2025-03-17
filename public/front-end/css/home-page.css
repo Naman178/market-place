@@ -198,7 +198,7 @@
 }
 
 .d-flex{
-  display: flex;
+  display: flex !important;
 }
 
 
@@ -275,7 +275,7 @@
   transition: 0.5s;
 }
 
-.white_signup_btn {
+/* .white_signup_btn {
   position: relative;
   display: inline-flex; 
   align-items: center;
@@ -310,7 +310,108 @@
 
 .white_signup_btn:hover svg {
   stroke-dashoffset: -480;
+} */
+.white_signup_btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 30px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  white-space: nowrap;
 }
+
+.white_signup_btn svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-dasharray: 300 1000; 
+  stroke-dashoffset: 300;
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.white_signup_btn:hover svg {
+  stroke-dashoffset: -480;
+}
+.blue_common_btn {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px 30px !important;
+  color: #007AC1;
+  text-decoration: none !important;
+  background-color: #fff !important;
+  font-size: 15px !important;
+  border: 1px solid #91C9FF !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+.signup .blue_common_btn svg {
+  width: 100% !important;
+}
+
+.blue_common_btn svg {
+  position: absolute;
+  /* width: 100%;
+  height: 100%; */
+  top: 0px;
+  position: absolute;
+  width: 102%;
+  height: 100%;
+  fill: none;
+  stroke: #007AC1;
+  /* stroke-width: 2; */
+  stroke-dasharray: 300 1000; 
+  stroke-dashoffset: 300;
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.blue_common_btn:hover svg {
+  stroke-dashoffset: -480;
+}
+
+/* .blue_common_btn {
+  position: relative  !important;
+  display: inline-flex !important;
+  align-items: center  !important;
+  justify-content: center !important;
+  padding: 12px 30px !important;
+  color: #ffffff;
+  text-decoration: none !important;
+  font-size: 15px;
+  font-weight: 600 ;
+  border: 1px solid #91C9FF !important;
+  overflow: hidden !important;
+  width: 180px !important;
+  height: 60px !important;
+  white-space: nowrap !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.blue_common_btn span {
+  position: relative;
+  z-index: 2;
+}
+
+.blue_common_btn svg {
+  position: absolute;
+  width: 180px;
+  height: 60px;
+  fill: none;
+  stroke: #007AC1;
+  stroke-width: 2;
+  stroke-dasharray: 150 480;
+  stroke-dashoffset: 150;
+  transition: stroke-dashoffset 1s ease-in-out;
+} */
 
 /* Basic styles for the button */
 
@@ -332,7 +433,7 @@
   /* background: #007AC1; */
 }
 
-.signup_btn:hover svg {
+.signup_btn:hover svg, .feature_btn:hover svg, .btn-google:hover svg{
   stroke-dashoffset: -480;
 }
 /* Optional: Change color or other effects when hovered */
@@ -425,6 +526,70 @@
   transform: scale3d(1, 1, 1)  !important;
   transform-origin: 0 50%  !important;
 }
+.dropdown-menu {
+  margin-top: 10rem !important;
+}
+.dropdown_label {
+  display: inline-block;
+  max-width: 230px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+}
+
+.dropdown_label[data-fullname]:hover::after {
+  content: attr(data-fullname);
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  top: 100%;
+  left: 0;
+  transform: translateY(5px);
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown_label[data-fullname]::after {
+  content: "";
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.header_image{
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.bg-gray-200{
+  background-color: #e5e7eb;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  margin-right: 5px;
+  color: #007AC1;
+  padding: 4px;
+  font-size: 13px;
+}
+
+.dashboard_initial{
+  border-radius: 0;
+  height: 25px;
+  width: 25px;
+  margin-right: 5px;
+  color: #007AC1;
+  padding: 91px;
+  font-size: 51px;
+}
+
 /* .menu-container li a:hover, .signin-container li a .dropdown_label:hover{
   border-bottom: 3px solid #007AC1;
   transition: 0.5s;

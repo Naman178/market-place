@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
     <style>
         .cust-page-padding {
-            padding: 2rem 58px 5rem;
+            padding: 2rem 10rem 5rem;
         }
         h1.feature_heading {
             margin-top: 0;
