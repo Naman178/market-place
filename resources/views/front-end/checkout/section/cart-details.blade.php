@@ -86,12 +86,22 @@
                                         <div class="card-body p-10">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="font_weight_600">{{$item->coupon_code}}</div>
-                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
+                                                {{-- <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
                                                     {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
                                                     data-coupon-id="{{$item->id}}"
                                                     data-coupon-code="{{$item->coupon_code}}">
                                                     {{ $isAutoApplied ? 'Remove' : 'Apply' }}
+                                                </button> --}}
+                                                <button class="blue_common_btn d-inline-block border-0 m-0 coupon-btn"  {{ $isAutoApplied ? 'remove-btn' : '' }}" 
+                                                    type="button" id="topapplybtn"
+                                                    data-coupon-id="{{$item->id}}"
+                                                    data-coupon-code="{{$item->coupon_code}}">
+                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                    </svg>
+                                                    <span>  {{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -123,7 +133,14 @@
                         </div>
                         </div>
                         <div class="col-md-3">
-                        <button class="pink-blue-grad-button d-inline-block border-0 m-0" type="button" id="coupon_code_apply_btn">Apply</button>
+                            <button type="button" class="blue_common_btn d-inline-block border-0 m-0"  id="coupon_code_apply_btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span> Apply</span>
+                            </button>
+                        {{-- <button class="pink-blue-grad-button d-inline-block border-0 m-0" type="button" id="coupon_code_apply_btn">Apply</button> --}}
                         </div>
                     </div>
                 </div>
@@ -132,7 +149,14 @@
             <div class="apply-coupon-code-container d-none">
                 <div class="alert alert-success d-flex justify-content-between align-items-center mb-0" role="alert">
                     <div>Coupon Code : <span class="applied-coupon-code font_weight_600"></span></div>
-                    <button type="button" class="btn pink-btn remove-applied-coupon remove_coupon_btn">Remove</button>
+                    <button type="button" class="blue_common_btn remove-applied-coupon remove_coupon_btn">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg>
+                        <span> Remove</span>
+                    </button>
+                    {{-- <button type="button" class="btn pink-btn remove-applied-coupon remove_coupon_btn">Remove</button> --}}
                 </div>
             </div>
         {{-- </div> --}}
@@ -416,10 +440,24 @@
                     <!--        Proceed To Pay {{ number_format((int) $final_total) }} INR-->
                     <!--    </button>-->
                     <!--</div>-->
-                     <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button>
+                    <button type="submit" class="blue_common_btn d-inline-block border-0 proced_to_pay_btn">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg>
+                        <span> Proceed To Pay {{ number_format((int) $final_total) }} INR</span>
+                    </button>
+                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
                 @else
                  <div class="col-md-12">
-                    <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} INR</button>
+                    <button type="submit" class="blue_common_btn d-inline-block border-0 proced_to_pay_btn">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg>
+                        <span> Proceed To Pay {{ number_format((int) $final_total) }} INR</span>
+                    </button>
+                    {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
                     </div>
                     @endif
                 </div>

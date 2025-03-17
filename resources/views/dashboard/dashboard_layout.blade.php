@@ -99,7 +99,7 @@
         }
 
         /* Style pagination buttons */
-        .dataTables_paginate .paginate_button {
+        /* .dataTables_paginate .paginate_button {
             border: 1px solid #fff  !important;
             color: #FFFFFF !important;
             background: #007AC1 !important;
@@ -109,8 +109,40 @@
             background-color: #fff !important;
             border: 1px solid #007AC1  !important;
             transition: 0.5s !important;
+        } */
+         /* Apply common button styles to pagination buttons */
+        .dataTables_paginate .paginate_button {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 8px 15px !important;
+            color: #007AC1 !important;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            border: 1px solid #91C9FF !important;
+            overflow: hidden !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+            transition: all 0.3s ease-in-out !important;
         }
 
+        /* SVG animation effect for pagination buttons */
+        .dataTables_paginate .paginate_button svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #007AC1;
+            stroke-width: 2;
+            stroke-dasharray: 150 480;
+            stroke-dashoffset: 150;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .dataTables_paginate .paginate_button:hover svg {
+            stroke-dashoffset: -480;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
             table.dataTable {
@@ -126,7 +158,7 @@
             }
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-            color: white !important;
+            color: #007AC1 !important;
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
             color: #007AC1 !important;
@@ -639,14 +671,11 @@
             transition: all 0.3s ease; 
         }
         .wsus__profile_overview .accordion button{
-            color:#fff;
-            padding: 5px 10px;
-            background: #007ac1;
+            /* color:#fff; */
+            padding: 5px 10px !important;
+            background: #fff;
             cursor: pointer;
-            border: 1px solid #263646;
-        }
-        .wsus__profile_overview .accordion button:hover{
-            background: #2b2842;
+            /* border: 1px solid #263646; */
         }
         .dot_border{
             box-shadow: none; border:1px dotted #0274b8;
@@ -737,12 +766,20 @@
                     <div class="wsus__profile_header_text">
                         <div class="img">
                             @if (empty(auth()->user()->profile_pic) || auth()->user()->profile_pic == null)
-                                <img src="{{ asset('assets/images/faces/1.png') }}" alt="profile"
-                                    class="img-fluid w-100 h-100">
+                                @php
+                                    $names = explode(' ', auth()->user()->name);
+                                    $initials = '';
+                                    foreach ($names as $name) {
+                                        $initials .= strtoupper(substr($name, 0, 1));
+                                    }
+                                @endphp
+                                <div class="rounded-full bg-gray-200 d-flex items-center justify-content-center text-gray-700 mr-2 w-100 h-100 dashboard_initial" title="{{ auth()->user()->name }}">
+                                    {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
+                                </div>
                             @else
                                 <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
-                                    class="img-fluid w-100 h-100">
-                            @endif
+                                    class="rounded-full w-100 h-100">
+                            @endif 
                         </div>
                         <div class="text">
                             <h2>{{ auth()->user()->name }}</h2>
@@ -814,44 +851,76 @@
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-      $(document).ready(function () {
-            $('.data-table').DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "searching": true,
-                "paging": true,
-                "info": true
-            });
+    //   $(document).ready(function () {
+    //         $('.data-table').DataTable({
+    //             "responsive": true,
+    //             "lengthChange": false,
+    //             "searching": true,
+    //             "paging": true,
+    //             "info": true
+    //         });
 
-            // Set initial color
-            $('.dataTables_paginate .paginate_button').css({
-                'color': 'white',
-                'border': '1px solid #fff',
-                'background': '#007AC1',
-                'cursor' : 'pointer'
-            });
+    //         // Set initial color
+    //         $('.dataTables_paginate .paginate_button').css({
+    //             'color': 'white',
+    //             'border': '1px solid #fff',
+    //             'background': '#007AC1',
+    //             'cursor' : 'pointer'
+    //         });
 
-            // Add hover effect using jQuery
-            $('.dataTables_paginate .paginate_button').hover(
-                function () {
-                    // Mouse enters: Change hover styles
-                    $(this).css({
-                        'color': '#007AC1',
-                        'background-color': 'white',
-                        'border': '1px solid #007AC1',
-                        'transition': '0.5s'
-                    });
-                },
-                function () {
-                    // Mouse leaves: Restore original styles
-                    $(this).css({
-                        'color': 'white',
-                        'background': '#007AC1',
-                        'border': '1px solid #fff'
-                    });
+    //         // Add hover effect using jQuery
+    //         $('.dataTables_paginate .paginate_button').hover(
+    //             function () {
+    //                 // Mouse enters: Change hover styles
+    //                 $(this).css({
+    //                     'color': '#007AC1',
+    //                     'background-color': 'white',
+    //                     'border': '1px solid #007AC1',
+    //                     'transition': '0.5s'
+    //                 });
+    //             },
+    //             function () {
+    //                 // Mouse leaves: Restore original styles
+    //                 $(this).css({
+    //                     'color': 'white',
+    //                     'background': '#007AC1',
+    //                     'border': '1px solid #fff'
+    //                 });
+    //             }
+    //         );
+    //     });
+    $(document).ready(function () {
+        // Initialize DataTables
+        var table = $('.data-table').DataTable();
+
+        // Modify pagination buttons after table is loaded
+        function modifyPaginationButtons() {
+            $(".dataTables_paginate .paginate_button").each(function () {
+                if (!$(this).hasClass("blue_common_btn")) {
+                    $(this).addClass("blue_common_btn");
+                    
+                    // Add SVG if it doesn't exist
+                    if ($(this).find("svg").length === 0) {
+                        $(this).html(`
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                            </svg>
+                            <span>${$(this).text()}</span>
+                        `);
+                    }
                 }
-            );
+            });
+        }
+
+        // Run function on DataTables draw event
+        table.on("draw", function () {
+            modifyPaginationButtons();
         });
+
+        // Run it initially after table is fully loaded
+        setTimeout(modifyPaginationButtons, 100);
+    });
 
         function copy(text, target) {
             setTimeout(function() {

@@ -46,9 +46,9 @@
         .iti--allow-dropdown input {
             padding-left: 100px !important; /* Adjust padding to start after country code */
         }
-        .btn-google{
+        /* .btn-google{
             background-position: 122px 12px !important;
-        }
+        } */
         .text-left{
             text-align: left !important;
             font-size: 15px;
@@ -69,14 +69,27 @@
                 <div class="card p-4 dark-blue-card">
                     <div class=" mb-1">
                         <div class="text-center mt-2">
-                            <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
-                            
-                            <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
-                                Sign in with GitHub
-                            </a>
-                            <a href="{{ route('linkedin.login') }}" class="btn btn-linkedin mt-3">
-                                Sign in with LinkedIn
-                            </a>
+                            <div class="google">
+                                <a href="{{ url('/user-login/google') }}" class="btn btn-google blue_common_btn"> 
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                              </svg><span class="ml-4">Continue with Google</span></a>
+                            </div>
+                            <div class="google mt-3">
+                                <a href="{{ route('github.login') }}"class="btn btn-github blue_common_btn"> 
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                              </svg><span class="ml-4"> Sign in with GitHub</span></a>
+                            </div>
+                            <div class="google mt-3">
+                                <a href="{{ route('linkedin.login') }}"class="btn btn-linkedin blue_common_btn"> 
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                              </svg><span class="ml-4"> Sign in with LinkedIn</span></a>
+                            </div>
                         </div>
                     </div>
                     <div class=" d-flex flex-wrap or_border">
@@ -131,7 +144,14 @@
                                 <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input" checked>
                                 <span for="promotionsSubscriber" class="text-left d-block text-white mt-3 mb-2 ml-2 cursor-pointer">Send me tips, trends, freebies, updates & offers. <br> You can unsubscribe at any time.</span> 
                             </div> 
-                            <button type="submit" class="btn btn-block pink-btn mt-3 mb-2" style="cursor: pointer;">Register</button>
+                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span class="ml-3">Register</span>
+                            </button>
+                            {{-- <button type="submit" class="btn btn-block pink-btn mt-3 mb-2" style="cursor: pointer;">Register</button> --}}
                           <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a class="a_color" href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                         <div class="bottom-border mb-3 mt-3"></div>

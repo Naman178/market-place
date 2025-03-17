@@ -49,6 +49,14 @@
         @elseif(Session::has('warning'))
             toastr.warning("{{ Session::get('warning') }}");
         @endif
+        document.addEventListener("DOMContentLoaded", function () {
+            let dropdownLabels = document.querySelectorAll(".dropdown_label");
+            
+            dropdownLabels.forEach(label => {
+                let fullName = label.getAttribute("data-fullname").trim();
+                label.setAttribute("title", fullName); // Ensure title is set for all elements
+            });
+        });
     </script>
 </body>
 </html>

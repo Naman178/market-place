@@ -87,8 +87,13 @@
                             <input type="range" id="priceRange" min="0" max="{{ $maxPrice ?? 100 }}" step="1" value="0" data-item-id="{{ $category->id }}"  oninput="updatePriceLabel(this.value)">
                             <p class="mt-2">Price: <span id="priceLabel">0</span></p>
                             @break
-                        @endforeach    
-                        <button class="read_btn mt-3 w-100" onclick="filterByPrice()" type="submit">Filter</button>
+                        @endforeach  
+                        <li class="signup-wrapper"><a class="blue_common_btn w-100" onclick="filterByPrice()"> 
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                          </svg><span> Filter</span></a></li>  
+                        {{-- <button class="read_btn mt-3 w-100" onclick="filterByPrice()" type="submit">Filter</button> --}}
                     </div>
                 </div>
             </div>

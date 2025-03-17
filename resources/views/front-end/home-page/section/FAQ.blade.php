@@ -31,11 +31,11 @@
                 <h1>It takes less than a minute to get started</h1>
                 <li class="white_signup-wrapper mt-1">
                     <a class="white_signup_btn" href="{{route('newsletter')}}">
-                      <svg viewBox="0 0 180 60">
-                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
-                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
-                      </svg>
-                      <span>Get Your FREE API Key</span>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg>
+                        <span>Get Your FREE API Key</span>
                     </a>
                   </li>                  
                 {{-- <a href="#" class="button mt-2">Get Your FREE API Key</a> --}}
@@ -63,15 +63,14 @@
                     <div class="col-lg-8 col-sm-12 col-12">
                     <input type="text" class="email_text" value="" name="email" placeholder="Enter your email">
                     </div>
-                    <div class="col-lg-4 col-sm-12 col-12 mt-2 text-end">
+                    <div class="col-lg-4 col-sm-12 col-12 text-end">
                         {{-- <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
                         </div> --}}
-                        <li class="signup-wrapper mt-1"><a class="signup_btn" href="{{route('newsletter')}}"> 
-                            <svg width="112px" height="49px" viewBox="0 0 180 60" >
-                                <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
-                                <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
-                            </svg>
+                        <li class="signup-wrapper signup"><a class="blue_common_btn w-100 h-100" href="{{route('newsletter')}}"> 
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                           </svg><span> Sign Up </span></a></li>
                     </div>
                     <span class="newsletter_success"></span>

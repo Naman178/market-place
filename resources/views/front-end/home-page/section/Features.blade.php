@@ -34,11 +34,16 @@
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
                         <span class="ml-2"><b>Secure & Trustworthy</b> - Industry-standard security to protect your business.</span>
                     </div>
-                    <a href="#" class="read_btn">
-                        Explore Our Products <span>
-                            <i class="fa-solid fa-greater-than"></i>
-                        </span>
-                    </a>
+                    <div class="signup-wrapper">
+                        <a href="#" class="blue_common_btn"> 
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                      </svg><span class="ml-3">Explore Our Products </span> <span class="ml-1 mr-3">
+                                <i class="fa-solid fa-greater-than"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
