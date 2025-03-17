@@ -22,7 +22,7 @@
     color: #28a745;
 }
 </style>
-<div class="col-md-12 p-4 card cart-doted-border" style="height: 200px; margin-bottom: 50px;">
+<div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
     <p class="mb-0 mt-3" style="position: relative;">
     <div class="mb-5 cart-item-border text-center">Product Details</div>
     <div class="cart-items mt-3">

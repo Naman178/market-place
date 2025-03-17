@@ -11,17 +11,33 @@
             <div class="menu-container menu-1 mt_15">
                 <ul>
                     @if ($category)
-                        <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
                     @elseif ($subcategory)
-                        <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
-                    <li><a href="{{ route('user-faq') }}">Faq</a></li>
-                    <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth
-                    <li class="dropdown">
+                    <li class="dropdown d-flex align-items-center justify-content-center">
                         <a href="#" class="dropdown-toggle welcome" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="dropdown_label">  Welcome, {{ Auth::user()->name }} </span>
+                            <span class="dropdown_label d-flex align-items-center justify-content-center" data-fullname="{{ Auth::user()->name }}">  
+                            @if (empty(auth()->user()->profile_pic) || auth()->user()->profile_pic == null)
+                                @php
+                                    $names = explode(' ', auth()->user()->name);
+                                    $initials = '';
+                                    foreach ($names as $name) {
+                                        $initials .= strtoupper(substr($name, 0, 1));
+                                    }
+                                @endphp
+                                  <div class="rounded-full bg-gray-200 d-flex items-center justify-content-center text-gray-700 mr-2" title="{{ auth()->user()->name }}">
+                                    {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
+                                </div>
+                            @else
+                                <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
+                                    class="rounded-full header_image">
+                            @endif 
+                             {{ Auth::user()->name }} </span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{ route('user-dashboard') }}">
@@ -40,8 +56,8 @@
                         </div>
                     </li>
                 @else
-                    <li><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
-                    <li><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
+                    <li class="dropdown d-flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
+                    <li class="dropdown d-flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
                 @endif
                 </ul>
             </div>

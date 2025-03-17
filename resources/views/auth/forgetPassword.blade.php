@@ -41,7 +41,14 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Send Password Reset Link</button>
+                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span class="ml-3">Send Password Reset Link</span>
+                            </button>
+                            {{-- <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Send Password Reset Link</button> --}}
                             <p class="text-center d-block text-white"><a class="a_color" href="{{ url('user-login') }}">Back to Login </a></p>
                         </div>
                     </form>

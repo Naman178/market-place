@@ -37,8 +37,13 @@
                     </table>
                 @else
                     <p class="d-inline-block mr-4">No Downloads Found</p>
-                    <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
-                            class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Browse Products</a>
+                    {{-- <a href="{{ url('/') }}" class="btn-dark-blue d-inline-block"><i
+                            class="nav-icon i-Left" aria-hidden="true"> </i> &nbsp; Browse Products</a> --}}
+                        <a href="{{ url('/') }}"class="btn btn-linkedin blue_common_btn"> 
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg><span>Browse Products</span></a>
                 @endif
             </div>
         </div>

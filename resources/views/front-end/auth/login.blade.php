@@ -43,14 +43,35 @@
                     <div class="card p-4 dark-blue-card">
                         <div class=" mb-1">
                             <div class="text-center mt-2">
-                                <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
+                                <div class="google">
+                                    <a href="{{ url('/user-login/google') }}" class="btn btn-google blue_common_btn"> 
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                  </svg><span class="ml-4">Continue with Google</span></a>
+                                </div>
+                                <div class="google mt-3">
+                                    <a href="{{ route('github.login') }}"class="btn btn-github blue_common_btn"> 
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                  </svg><span class="ml-4"> Sign in with GitHub</span></a>
+                                </div>
+                                <div class="google mt-3">
+                                    <a href="{{ route('linkedin.login') }}"class="btn btn-linkedin blue_common_btn"> 
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                  </svg><span class="ml-4"> Sign in with LinkedIn</span></a>
+                                </div>
+                                {{-- <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
 
                                 <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
                                     Sign in with GitHub
                                 </a>
                                 <a href="{{ route('linkedin.login') }}" class="btn btn-linkedin mt-3">
                                     Sign in with LinkedIn
-                                </a>
+                                </a> --}}
                                 
                             </div>
                         </div>
@@ -92,7 +113,14 @@
                             </div>
                         </div>
                         <div class="">
-                            <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button>
+                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span class="ml-3">Sign In</span>
+                            </button>
+                            {{-- <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button> --}}
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                  class="a_color"   href="{{ route('signup') }}"> Register </a> </p>
                             <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a class="a_color" href="{{ route('forget-password-get') }}"> Reset Password </a></p>

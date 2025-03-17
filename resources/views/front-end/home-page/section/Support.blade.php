@@ -40,11 +40,16 @@
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="cust_support_img" src="{{ asset('front-end/images/Rectangle 3998.png') }}" alt="not found">
             </div>
-            <a href="#" class="read_btn">
-                Get Lifetime Support <span>
-                    <i class="fa-solid fa-greater-than"></i>
-                </span>
-            </a>
+            <div class="signup-wrapper">
+                <a href="#" class="blue_common_btn">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                  </svg><spa class="ml-3"> Get Lifetime Support </span> <span class="ml-1 mr-3">
+                        <i class="fa-solid fa-greater-than"></i>
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
     <img class="circle_img text-right" src="{{ asset('front-end/images/Group 1000002962.png') }}" alt="not found">

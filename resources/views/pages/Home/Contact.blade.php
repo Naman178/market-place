@@ -98,7 +98,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-block send-inquiry pink-btn mt-3" style="cursor: pointer;">Send Inquiry</button>                                    
+                                    <a class="blue_common_btn btn-block pink-btn mt-3 send-inquiry" id="login-btn" > 
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                  </svg><span class="ml-3">Send Inquiry</span>
+                                    </a>
+                                    {{-- <button type="button" class="btn btn-block send-inquiry pink-btn mt-3" style="cursor: pointer;">Send Inquiry</button>                                     --}}
                                 </div>
                             </div>
                         </form>                
