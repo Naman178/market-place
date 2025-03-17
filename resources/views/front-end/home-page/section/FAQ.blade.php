@@ -67,7 +67,7 @@
                         {{-- <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
                         </div> --}}
-                        <li class="signup-wrapper signup"><a class="blue_common_btn w-100 h-100" href="{{route('newsletter')}}"> 
+                        <li class="signup-wrapper mt-1"><a class="signup_btn sign_up_btn"data-route="{{route('newsletter-add')}}"> 
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

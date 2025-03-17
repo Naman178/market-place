@@ -67,6 +67,7 @@ return array(
     'App\\Mail\\SendNewUserPassword' => $baseDir . '/app/Mail/SendNewUserPassword.php',
     'App\\Mail\\SendPassWordReset' => $baseDir . '/app/Mail/SendPassWordReset.php',
     'App\\Mail\\SendThankyou' => $baseDir . '/app/Mail/SendThankyou.php',
+    'App\\Mail\\TestCredentialMail' => $baseDir . '/app/Mail/TestCredentialMail.php',
     'App\\Mail\\WelcomeEmail' => $baseDir . '/app/Mail/WelcomeEmail.php',
     'App\\Models\\Addon' => $baseDir . '/app/Models/Addon.php',
     'App\\Models\\Blog' => $baseDir . '/app/Models/Blog.php',

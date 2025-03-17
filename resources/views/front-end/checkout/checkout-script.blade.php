@@ -31,8 +31,8 @@
                    $errorMessage.removeClass('hide');
                    e.preventDefault();
                }
-               });            
-               if (!$form.data('cc-on-file')) {               
+               });
+               if (!$form.data('cc-on-file')) {
                    e.preventDefault();
                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
                    document.getElementById('country').addEventListener('change', function() {
@@ -133,4 +133,52 @@
         toastr.warning('You need to log in first to proceed with payment.');
     });
 });
+</script>
+<script>
+    
+    $(document).ready(function () {
+        let quantity = 1;
+
+        $("#increment").click(function () {
+            quantity++;
+            $("#quantity").text(quantity);
+            $("#decrement").prop("disabled", quantity === 1);
+        });
+
+        $("#decrement").click(function () {
+            if (quantity > 1) {
+                quantity--;
+                $("#quantity").text(quantity);
+                $("#decrement").prop("disabled", quantity === 1);
+            }
+        });
+        
+    });
+
+    function dynamicCalculation() {
+        let quantity; 
+        let subTotalText = $("#subtotal_amount").data('amount');
+        let subTotal = parseInt(subTotalText.replace(/[^0-9]/g, ""));
+
+        setTimeout(function() {
+            quantity = parseInt($("#quantity").text());
+            continueCalculation(quantity, subTotal);
+        }, 1000);
+    }
+
+    function continueCalculation(quantity, subTotal) {
+        let finalTotal = quantity * subTotal;
+        let subTotalText = $("#subtotal_amount").text('INR ' + finalTotal);
+
+        let gstPr = $('#gst_amount').data('pr');
+        let gstAmount = (gstPr / 100) * finalTotal;
+        finalTotal += gstAmount;
+
+        let gst_text = $("#gst_amount").text('INR ' + gstAmount);
+        let final_text = $("#final_total").text('INR ' + finalTotal);
+        let final_text_btn = $(".final_btn_text").text(finalTotal);
+        let final_quantity = $("#final_quantity").val(quantity);
+        let amount = $("#amount").val(finalTotal * 100 );
+    }
+
 </script>
