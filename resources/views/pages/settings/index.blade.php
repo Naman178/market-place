@@ -54,6 +54,7 @@
         align-items: center;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
     <div class="loader spinner-bubble spinner-bubble-primary"></div>
@@ -226,6 +227,7 @@
                                 <h4 class="heading-color d-inline-block">SMTP Settings</h4>
                                 <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
                                 <button type="button" class="btn btn-outline-primary settings_smtp_register float-right">Save</button>
+                                <button type="button" class="btn btn-outline-primary float-right mr-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">Send Mail</button>
                             </div>
                             
                             <form class="erp-form-submit-smtp">
@@ -275,6 +277,28 @@
                                 </div>
                             </form>
                         </div>
+                        <!-- Bootstrap Modal -->
+                        <div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="sendMailModalLabel">Send Test Mail</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="sendMailForm">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="test_email" class="form-label">Enter Email</label>
+                                                <input type="email" class="form-control" id="test_email" name="test_email" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

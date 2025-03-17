@@ -22,7 +22,7 @@
     color: #28a745;
 }
 </style>
-<div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
+<div class="col-md-12 p-4 card cart-doted-border" style="height: 200px; margin-bottom: 50px;">
     <p class="mb-0 mt-3" style="position: relative;">
     <div class="mb-5 cart-item-border text-center">Product Details</div>
     <div class="cart-items mt-3">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             
-                <!-- Product Details Section (Reduced Width) -->
+                <!-- Product Details Section -->
                 <div class="col-lg-5 col-sm-8 col-8 cart-detail-product align-content-center">
                     <h3 class="mt-0 mb-2 cart-item-name" style="margin-top: -20px !important">{{ $plan->name }}</h3>
                     @if($selectedPricing)
@@ -47,33 +47,52 @@
                         </h5>
                     @endif
                     <h5 class="mt-0 mb-2 cart-item-pri">
-                        Quantity: 1
+                        Quantity: <span id="quantity">1</span>
                     </h5>
-                    @if ((int) $selectedPricing['id'] > 1)
+                    <button id="decrement" class="pink-blue-grad-button d-inline-block border-0 m-0" disabled onclick="dynamicCalculation()">-</button>
+                    <button id="increment" class="pink-blue-grad-button d-inline-block border-0 m-0" onclick="dynamicCalculation()">+</button>
+                    {{-- @if ((int) $selectedPricing['id'] > 1)
                         <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item" 
                             data-plan-id="{{ $plan->id }}" 
                             data-pricing-id="{{ $selectedPricing['id'] }}">
                             Remove
                         </button>
-                    @endif
+                    @endif --}}
                 </div>
 
-                <div class="cart-features">
-                    <div class="features-grid">
-                        @if (!empty($selectedPricing['key_features']))
-                            @foreach ($selectedPricing['key_features'] as $feature)
-                                <div class="feature-item">
-                                    {{ $feature }}
-                                </div>
-                            @endforeach
+                <!-- Cart Features Section (Two-column side by side) -->
+                @if (!empty($selectedPricing['key_features']))
+                    <div class="col-lg-4 col-sm-12 cart-features d-flex justify-content-between align-items-start">
+                        <div class="d-flex flex-wrap w-100" style="margin-left: -95px;">
+                            @php
+                                $half = ceil(count($selectedPricing['key_features']) / 2);
+                                $leftColumn = array_slice($selectedPricing['key_features'], 0, $half);
+                                $rightColumn = array_slice($selectedPricing['key_features'], $half);
+                            @endphp
+                            
+                            <div class="w-50">
+                                @foreach ($leftColumn as $feature)
+                                    <div class="mb-2">{{ $feature }}</div>
+                                @endforeach
+                            </div>
+
+                            <div class="w-50">
+                                @foreach ($rightColumn as $feature)
+                                    <div class="mb-2">{{ $feature }}</div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        @if ((int) $selectedPricing['id'] > 1)
+                            <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item"
+                                data-plan-id="{{ $plan->id }}" 
+                                data-pricing-id="{{ $selectedPricing['id'] }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         @endif
                     </div>
-                </div>
-
-                
+                @endif
             </div>
-            
-            
             @endforeach
         @else
             <div class="row mb-3 pb-3 cart-item">

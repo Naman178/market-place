@@ -725,6 +725,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Mail\\SendNewUserPassword' => __DIR__ . '/../..' . '/app/Mail/SendNewUserPassword.php',
         'App\\Mail\\SendPassWordReset' => __DIR__ . '/../..' . '/app/Mail/SendPassWordReset.php',
         'App\\Mail\\SendThankyou' => __DIR__ . '/../..' . '/app/Mail/SendThankyou.php',
+        'App\\Mail\\TestCredentialMail' => __DIR__ . '/../..' . '/app/Mail/TestCredentialMail.php',
         'App\\Mail\\WelcomeEmail' => __DIR__ . '/../..' . '/app/Mail/WelcomeEmail.php',
         'App\\Models\\Addon' => __DIR__ . '/../..' . '/app/Models/Addon.php',
         'App\\Models\\Blog' => __DIR__ . '/../..' . '/app/Models/Blog.php',

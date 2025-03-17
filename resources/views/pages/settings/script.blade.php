@@ -457,4 +457,26 @@
         });
     });
 
+    $("#sendMailForm").submit(function (e){
+        e.preventDefault();
+        let email = $('#test_email').val();
+        console.log(email);
+        $.ajax({
+            url: "{{url('/settings/mail')}}",
+            type:"POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                email: email
+            },
+            success:function(response){
+                toastr.info(response.message, response.message);
+                $('#test_email').val('');
+                $('#sendMailModal').modal('hide');
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    });
+
 </script>

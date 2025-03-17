@@ -47,7 +47,7 @@ use Illuminate\Support\Facades\Artisan;
 // Home Page
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
-Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
+Route::post("/newsletter-add", [HomePageController::class, "newsletter"])->name('newsletter-add');
 Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->name('newsletter-delete');
 // Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
@@ -107,6 +107,7 @@ Route::middleware(['auth'])->group(function () {
     //Settings Module
     Route::get('/settings',[SettingsController::class,'index'])->name('settings-index');
     Route::post('/settings/store',[SettingsController::class,'store'])->name('settings-store');
+    Route::post('/settings/mail',[SettingsController::class,'mail'])->name('settings-mail');
 
     // front user dashboard
     Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
