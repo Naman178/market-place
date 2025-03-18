@@ -98,12 +98,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <a class="blue_common_btn btn-block pink-btn mt-3 send-inquiry" id="login-btn" > 
+                                    <button type="button" class="blue_common_btn btn-block pink-btn mt-3 send-inquiry" id="submitBtn" >
                                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                  </svg><span class="ml-3">Send Inquiry</span>
-                                    </a>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span>Send Inquiry</span>
+                                    </button>
                                     {{-- <button type="button" class="btn btn-block send-inquiry pink-btn mt-3" style="cursor: pointer;">Send Inquiry</button>                                     --}}
                                 </div>
                             </div>
@@ -140,15 +141,13 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
+                        toastr.success(response.success);
                         location.reload();
-                        let user = response.user;
                     } else if (response.error) {
-                        $("#preloader").hide();
-                        response.error['full_name'] ? $('#full_name_error').text(response.error['full_name']) : $('#full_name_error').text('');
-                        response.error['email'] ? $('#email_error').text(response.error['email']) : $('#email_error').text('');
-                        response.error['contact_number'] ? $('#contact_number_error').text(response.error['contact_number']) : $('#contact_number_error').text('');    
-                        response.error['website_url'] ? $('#website_url_error').text(response.error['website_url']) : $('#website_url_error').text('');     
-                        response.error['message'] ? $('#message_error').text(response.error['message']) : $('#message_error').text('');                                                               
+                        // Show individual validation errors
+                        $.each(response.error, function(key, value) {
+                            toastr.error(value);
+                        });
                     }
                 }
             });            

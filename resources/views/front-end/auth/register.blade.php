@@ -33,10 +33,10 @@
         }
 
         .iti--separate-dial-code .iti__selected-flag {
-            background-color: #f8f9fa; /* Light gray background */
+            background-color: #ffffff !important; /* Light gray background */
             padding: 5px;
             border-radius: 5px 0 0 5px;
-            border: 1px solid #ced4da;
+            /* border: 1px solid #ced4da; */
         }
 
         .iti--separate-dial-code .iti__flag-container {

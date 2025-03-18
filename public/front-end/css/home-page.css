@@ -417,9 +417,9 @@
 
 .signup_btn svg {
   position: absolute;
-  left: 0;
+  left: 21px;
   top: -6px;
-  width: 158px;
+  width: 116px;
   height: 39px;
   fill: none;
   stroke: #007AC1;
@@ -1065,7 +1065,7 @@
 } */
 
 
-.sign_up_btn{
+/* .sign_up_btn{
   background-color: #007AC1;
   padding: 12px;
   color: #FFFFFF;
@@ -1077,7 +1077,7 @@
   background-color: #fff;
   color: #007AC1;
   transition: 0.5s;
-}
+} */
 
 .mb-53{
   margin-bottom: 53px;
