@@ -218,8 +218,10 @@ class UserController extends Controller
                 'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
                 'message.required' => 'Message is required.',
             ]);
-            if ($validator->passes()){
-
+            if ($validator->fails()){
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            }
+            else{
                 $full_name = $request->full_name;
                 $email = $request->email;
                 $contact_number = $request->contact_number;
@@ -252,15 +254,12 @@ class UserController extends Controller
 
                 session()->flash('success', 'ThankYou For Your Inquiry We Will Contact You Soon !');
                 return response()->json([
-                    'success' => 'inqury added successfully!',
+                    'success' => 'Inquiry added successfully!',
                     'title' => 'Inquiry',
                     'type' => 'Add',
                     'data' => $userinquiry
                 ]);
-            }   
-            else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-            }            
+            }        
         }
     }
     public function userDashboard(){

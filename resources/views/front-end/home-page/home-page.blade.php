@@ -113,43 +113,52 @@
         });
     });
     $(document).ready(function(){
-        $('#left-arrow-btn').on('click', function () {
+        $('#left-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#integrationCarousel').slick('slickPrev');
         });
 
-        $('#right-arrow-btn').on('click', function () {
+        $('#right-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#integrationCarousel').slick('slickNext');
         });
-
-        $('#categroy-left-arrow-btn').on('click', function () {
+        $('#categroy-left-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#categoryCarousel').slick('slickPrev');
         });
 
-        $('#category-right-arrow-btn').on('click', function () {
+        $('#category-right-arrow-btn').on('click', function (event) {
+            event.preventDefault();
             $('#categoryCarousel').slick('slickNext');
         });
 
-        $('#subcategroy-left-arrow-btn').on('click', function () {
+        $('#subcategroy-left-arrow-btn').on('click', function (event) {
+            event.preventDefault();
             $('#subcategoryCarousel').slick('slickPrev');
         });
 
-        $('#subcategroy-right-arrow-btn').on('click', function () {
+        $('#subcategroy-right-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#subcategoryCarousel').slick('slickNext');
         });
 
-        $('#blog-left-arrow-btn').click(function() {
+        $('#blog-left-arrow-btn').click(function(event) {
+            event.preventDefault(); 
             $('.blog-slider').slick('slickPrev');
         });
 
-        $('#blog-right-arrow-btn').click(function() {
+        $('#blog-right-arrow-btn').click(function(event) {
+            event.preventDefault(); 
             $('.blog-slider').slick('slickNext');
         });
 
-        $('.left-arrow').click(function() {
+        $('.left-arrow').click(function(event) {
+            event.preventDefault(); 
             $('#patientCarousel').carousel('prev');
         });
 
-        $('.right-arrow').click(function() {
+        $('.right-arrow').click(function(event) {
+            event.preventDefault(); 
             $('#patientCarousel').carousel('next');
         });
 
