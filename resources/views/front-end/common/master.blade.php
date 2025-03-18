@@ -53,8 +53,10 @@
             let dropdownLabels = document.querySelectorAll(".dropdown_label");
             
             dropdownLabels.forEach(label => {
-                let fullName = label.getAttribute("data-fullname").trim();
-                label.setAttribute("title", fullName); // Ensure title is set for all elements
+                let fullName = label.getAttribute("data-fullname");
+                if (fullName) {
+                    label.setAttribute("title", fullName.trim());
+                }
             });
         });
     </script>

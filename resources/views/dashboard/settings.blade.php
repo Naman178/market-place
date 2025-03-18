@@ -66,11 +66,13 @@
                             </div>
                         </div>
                     </div>
-                    <li class="signup-wrapper"><a class="blue_common_btn" href="{{ route('changePasswordPost') }}"> 
+                    <button type="submit" class="blue_common_btn btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                      </svg><span> Update Password</span></a></li> 
+                        </svg>
+                        <span>Update Password</span>
+                    </button>
                     {{-- <button type="submit" class="btn read_btn my-4" style="cursor: pointer;"> Update Password</button> --}}
                 </form>
             </div>

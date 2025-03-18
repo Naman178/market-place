@@ -27,10 +27,10 @@
 
         /* Proper spacing for country dropdown */
         .iti--separate-dial-code .iti__selected-flag {
-            background-color: #f8f9fa;
+            background-color: #ffffff !important; /* Light gray background */
             padding: 10px;
             border-radius: 5px 0 0 5px;
-            border: 1px solid #ced4da;
+            /* border: 1px solid #ced4da; */
             height: 100%;
             display: flex;
             align-items: center;
@@ -408,12 +408,13 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <a class="blue_common_btn btn-block pink-btn mt-3 erp-profile-form" id="login-btn" > 
-                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                  <button type="button" class="blue_common_btn btn btn-block pink-btn mt-3 erp-profile-form">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                  </svg><span class="ml-3">Submit</span>
-                                    </a>
+                                    </svg>
+                                    <span>Submit</span>
+                                </button>
                                     {{-- <button type="button"
                                         class="btn btn-block pink-btn mt-3 erp-profile-form" style="cursor: pointer;">Submit</button> --}}
                                 </div>

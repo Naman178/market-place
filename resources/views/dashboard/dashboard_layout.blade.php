@@ -163,6 +163,10 @@
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
             color: #007AC1 !important;
         }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+            background: #fff !important;
+            color: #007AC1 !important;
+        }
         .tip {
             background-color: #263646;
             padding: 0 14px;
@@ -569,7 +573,7 @@
         }
 
         .wsus__profile_header_text .header_button li {
-            background: #558CFF;
+            background: #679acb;
             border-radius: 5px;
             padding: 20px 40px;
             margin-left: 30px;
@@ -759,7 +763,7 @@
     @include('front-end.common.header')
 
     <!-- Profile Header -->
-    <div class="wsus__profile_header" style="background: url(front-end/images/profile_header_bg.jpg);">
+    <div class="wsus__profile_header" style="background: #0274b8;">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
