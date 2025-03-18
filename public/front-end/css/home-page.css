@@ -197,22 +197,24 @@
 
 }
 
-.d-flex{
-  display: flex !important;
+.d-flex, .d_flex{
+  display: flex;
 }
 
 
 .hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
   max-width: 1400px !important;
+  width: 100% !important;
 }
 
-.plugins , .int_bg , .features, .social_media, .testimonial-section{
+.plugins , .int_bg , .features, .social_media, .testimonial-section, .support{
   margin-bottom: 150px;
 }
 
 .real_time h1 {
     font-family: Work Sans;
-    font-size: 60px;
+    /* font-size: 60px; */
+    font-size: calc(46px + 6 * ((100vw - 320px) / 680));
     font-weight: 700;
     line-height: 72px;
     letter-spacing: -0.02em;
@@ -645,7 +647,8 @@
 
 .wordpress_plugin h1 {
     font-family: Work Sans;
-    font-size: 48px;
+    /* font-size: 48px; */
+    font-size: calc(46px + 6 * ((100vw - 320px) / 680));
     font-weight: 700;
     line-height: 48px;
     letter-spacing: 0em;
@@ -656,7 +659,8 @@
 
 .wordpress_plugin h1 span {
     font-family: Work Sans;
-    font-size: 48px;
+    /* font-size: 48px; */
+    font-size: calc(46px + 6 * ((100vw - 320px) / 680));
     font-weight: 700;
     line-height: 56px;
     letter-spacing: 0em;
@@ -666,7 +670,7 @@
 
 .vector_img {
     margin-top: -15px;
-    margin-left: 400px;
+    margin-left: 360px;
 }
 
 .plugin_h4 {
@@ -763,7 +767,8 @@
 
 .integration h1 {
   font-family: Work Sans;
-  font-size: 48px;
+  /* font-size: 48px; */
+  font-size: calc(25px + 6*((100vw - 320px) / 680));
   font-weight: 700;
   line-height: 48px;
   letter-spacing: 0em;
@@ -775,7 +780,8 @@
 
 .integration h1 span {
   font-family: Work Sans;
-  font-size: 48px;
+  /* font-size: 48px; */
+  font-size: calc(25px + 6*((100vw - 320px) / 680));
   font-weight: 700;
   line-height: 56px;
   letter-spacing: 0em;
@@ -940,6 +946,10 @@
 .frame_img{
   position: relative;
   top: 46rem;
+  left: 3rem;
+  transform: translateX(-50%);
+  width: auto; 
+  max-width: 200px; 
 }
 
 .slick-prev, .slick-next {
@@ -989,7 +999,7 @@
 
 .features .vector2_img {
   margin-top: -16px;
-  margin-left: 30rem;
+  margin-left: 0;
 }
 
 .features h1 , .support h1{
@@ -1088,22 +1098,33 @@
    align-items: center;
 }
 
-.circle_img{
-  position: relative;
-  left: 112em;
-  top: -32em;
+.circle_img {
+  position: absolute;
+  left: 97%;
+  top: 268rem;
+  transform: translateX(-50%);
+  width: auto; 
+  max-width: 200px; 
 }
 
 .support .vector2_img {
   margin-top: -16px;
   margin-left: 6rem;
 }
-
+/* 
 .cust_support_img{
   display: block;
   margin-left: 7rem;
   padding-left: 82px;
   padding-top: 65px;
+} */
+.cust_support_img {
+  display: block;
+  max-width: 130%;  
+  height: auto;      
+  margin: 0 auto;    
+  padding: 5vw 0;
+  padding-left:10vw;
 }
 
 .support .integra_p{
@@ -1289,7 +1310,8 @@ div#integrationCarousel .col-4{
 
 .blog h1 {
   font-family: Work Sans;
-  font-size: 48px;
+  /* font-size: 48px; */
+  font-size: calc(25px + 6 * ((100vw - 320px) / 680));
   font-weight: 700;
   line-height: 48px;
   letter-spacing: 0em;
@@ -1466,8 +1488,14 @@ div#integrationCarousel .col-4{
   text-align: center;
 }
 
-.faq-section h1 {
+/* .faq-section h1 {
   font-size: 2.5rem;
+  margin-bottom: 28px;
+  text-align: center;
+  position: relative;
+} */
+.faq-section h1 {
+  font-size: clamp(27px, 5vw, 27px);
   margin-bottom: 28px;
   text-align: center;
   position: relative;
@@ -1534,25 +1562,44 @@ div#integrationCarousel .col-4{
   color: #007AC1;
 }
 
-.faq-section .question_img{
-    left: -58rem;
-    position: relative;
-    top: 15rem;
+.faq-section .question_img,
+.faq-section .second_question_img {
+    position: absolute;
+    width: auto;
+    max-width: 200px;
+    /* transform: translate(-50%, -50%); */
 }
 
-.faq-section .second_question_img{
-  position: relative;
-  top: -17rem;
-  right: -58rem;
+.faq-section .question_img {
+  top: 437rem; 
+  left: clamp(0%, 0vw, 30%)    
+}
+
+.faq-section .second_question_img {
+  top: 430rem; 
+  right: clamp(0%, 0vw, 30%);   
 }
 
 .banner {
   position: absolute;
-  /* left: 35rem; */
+  left: clamp(10%, 50vw, 50%); 
+  top: clamp(446rem, 20vh, 40rem);
+  transform: translateX(-50%);
+  color: #fff;
+  width: 100%;
+}
+
+.rectangle_img{
+  width: 100%;
+}
+
+/* .banner {
+  position: absolute;
+  left: 35rem;
   left: 555px;
   margin-top: -12rem;
   color: #fff;
-}
+} */
 
 .banner .button {
   background-color: #007AC1;
@@ -1601,12 +1648,14 @@ div#integrationCarousel .col-4{
 }
 
 .api_section{
-  margin-top: -10rem !important;
+  margin-top: -13rem !important;
+  text-align: center;
 }
 
 .tech h1 span {
   font-family: Work Sans;
   font-size: 48px;
+  font-size: calc(25px + 6*((100vw - 320px) / 680));
   font-weight: 700;
   line-height: 56px;
   letter-spacing: 0em;
@@ -1643,12 +1692,6 @@ div#integrationCarousel .col-4{
 }
 
 
-@media (max-width: 1199px) {
-  .d-flex {
-      flex-wrap: wrap !important;
-  }
-}
-
 div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
     font-weight: 600 !important;
     font-style: italic;
@@ -1667,4 +1710,91 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
   grid-template-columns: repeat(3, minmax(300px, 1fr)); /* 3 columns per row */
   gap: 5px; /* Reduced gap */
   padding: 20px;
+}
+/* General Styles */
+.header-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.logo-container img {
+  max-width: 150px;
+}
+
+/* Menu Button for Mobile */
+.menu-toggle {
+  cursor: pointer;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Desktop Menu */
+.menu-container {
+  display: flex;
+}
+
+.menu-container ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-container ul li {
+  margin-right: 50px;
+}
+
+.menu-container ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  padding: 1rem;
+  background: #f9f9f9;
+}
+
+
+/* Show Mobile Menu */
+.mobile-menu.show {
+  display: block;
+}
+
+#mobile-menu {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  padding: 1rem;
+  background: #f9f9f9;
+}
+
+#mobile-menu:not(.d-none) {
+  display: block;
+  position: absolute;
+  left: 42rem;
+  top: 82px;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+#mobile-menu ul{
+  padding: 3px !important;
 }

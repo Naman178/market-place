@@ -75,7 +75,7 @@
                     <div class="title pb-3">Contact</div>
                     <ul class="menu-vertical">
                         <li>
-                            <p>Bhagwati Circle,</p><p>Opposite Annapurna</p><p>Dining Hall, Kaliyabid,</p><p>Bhavnagar - 364002,</p><p>Gujarat India</p>
+                            <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p>
                         </li>
                     </ul>
                 </div>

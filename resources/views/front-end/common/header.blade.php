@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="menu-container menu-1 mt_15">
+            <div class="menu-container menu-1">
                 <ul>
                     @if ($category)
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
@@ -19,9 +19,9 @@
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth
-                    <li class="dropdown d-flex align-items-center justify-content-center">
+                    <li class="dropdown d_flex align-items-center justify-content-center">
                         <a href="#" class="dropdown-toggle welcome" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="d-flex align-items-center justify-content-center">  
+                            <span class="d_flex align-items-center justify-content-center">  
                             @if (empty(auth()->user()->profile_pic) || auth()->user()->profile_pic == null)
                                 @php
                                     $names = explode(' ', auth()->user()->name);
@@ -30,7 +30,7 @@
                                         $initials .= strtoupper(substr($name, 0, 1));
                                     }
                                 @endphp
-                                  <div class="rounded-full bg-gray-200 d-flex items-center justify-content-center text-gray-700 mr-2" title="{{ auth()->user()->name }}">
+                                  <div class="rounded-full bg-gray-200 d_flex items-center justify-content-center text-gray-700 mr-2" title="{{ auth()->user()->name }}">
                                     {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
                                 </div>
                             @else
@@ -56,12 +56,90 @@
                         </div>
                     </li>
                 @else
-                    <li class="dropdown d-flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
-                    <li class="dropdown d-flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
+                    <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
+                    <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
                 @endif
                 </ul>
             </div>
         </div>
+
+        <div class="menu-toggle d-lg-none" id="menu-toggle">
+            <button class="menu-btn">
+                ☰
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="menu-container menu-1 d-none d-lg-block">
+            <ul>
+                @if ($category)
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                @elseif ($subcategory)
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                @endif
+                {{-- <li><a href="#">Documentation</a></li> --}}
+                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
+                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
+                @auth
+                <li class="dropdown d_flex align-items-center justify-content-center">
+                    <a href="#" class="dropdown-toggle welcome" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d_flex align-items-center justify-content-center">  
+                        @if (empty(auth()->user()->profile_pic) || auth()->user()->profile_pic == null)
+                            @php
+                                $names = explode(' ', auth()->user()->name);
+                                $initials = '';
+                                foreach ($names as $name) {
+                                    $initials .= strtoupper(substr($name, 0, 1));
+                                }
+                            @endphp
+                              <div class="rounded-full bg-gray-200 d_flex items-center justify-content-center text-gray-700 mr-2" title="{{ auth()->user()->name }}">
+                                {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
+                            </div>
+                        @else
+                            <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
+                                class="rounded-full header_image">
+                        @endif 
+                     <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{{ route('user-dashboard') }}">
+                            <span class="dropdown_label">  Dashboard </span>
+                        </a>
+                        <a class="dropdown-item" href="{{ route('profile') }}">
+                            <span class="dropdown_label">  Profile Setting </span>
+                        </a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <span class="dropdown_label"> Logout </span>
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            @else
+                <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
+                <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
+            @endif
+            </ul>
+        </div>
+    </div>
+    <!-- Mobile Navigation -->
+    <div class="mobile-menu d-none" id="mobile-menu">
+        <ul>
+            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+            <li><a href="{{ route('user-faq') }}">Faq</a></li>
+            <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
+            @auth
+                <li><a href="{{ route('user-dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ route('profile') }}">Profile Setting</a></li>
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+            @else
+                <li><a href="{{ url('/user-login') }}">Login</a></li>
+                <li><a href="{{ url('/signup') }}">Sign Up</a></li>
+            @endif
+        </ul>
+    </div>
         {{-- <div class="col ml-30">
             <div class="signin-container menu-1 mt_15">
                 <ul>

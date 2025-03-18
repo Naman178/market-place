@@ -180,7 +180,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 1199,
                     settings: {
                         slidesToShow: 2,
                     }
@@ -196,7 +196,7 @@
 
         $('#integrationCarousel').slick({
             infinite: true,
-            slidesToShow: 3,
+            slidesToShow: 2,
             slidesToScroll: 1,
             arrows: false,
             dots: false,
@@ -204,7 +204,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 1199,
                     settings: {
                         slidesToShow: 2,
                     }
@@ -253,7 +253,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 991,
                     settings: {
                         slidesToShow: 2,
                     }
@@ -276,7 +276,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 991,
                     settings: {
                         slidesToShow: 2,
                     }
