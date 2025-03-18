@@ -257,7 +257,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($totalSubtotal) }}" id="subtotal_amount">INR {{ number_format($totalSubtotal) }}</h5>
                 </div>
             </div>
 
@@ -266,7 +266,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="gst_amount">INR {{ number_format($totalGST) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing['gst_percentage'] ?? 0 }}" id="gst_amount">INR {{ number_format($totalGST) }}</h5>
                 </div>
             </div>
             <div class="row mb-1 discount_row d-none">
@@ -365,6 +365,7 @@
                         <input type="hidden" name="subtotal" id="subtotal" value="{{(int)$selectedPricing->sale_price}}">
                         <input type="hidden" name="gst" id="gst" value="{{$selectedPricing->gst_percentage}}">
                     @endif
+                    <input type="hidden" name="final_quantity" id="final_quantity" value="1">
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
                     <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
@@ -445,8 +446,9 @@
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                         </svg>
-                        <span> Proceed To Pay {{ number_format((int) $final_total) }} INR</span>
+                        <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  INR</span>
                     </button>
+                    {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  INR</button> --}}
                      {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
                 @else
                  <div class="col-md-12">

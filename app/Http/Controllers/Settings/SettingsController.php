@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TestCredentialMail;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 
 class SettingsController extends Controller
 {
@@ -225,5 +227,17 @@ class SettingsController extends Controller
                 'title' => 'Login Register Settings'
             ]);
         }
+    }
+    public function mail(Request $request){
+        // dd($request->all());
+        $email = $request->email;
+        // dd($email);
+        $details = [
+            'message' => 'This is a test email from your Laravel app.'
+        ];
+    
+        Mail::to($email)->send(new TestCredentialMail($details));
+    
+        return response()->json(['message' => 'Email sent successfully']);
     }
 }
