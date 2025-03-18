@@ -52,6 +52,9 @@ $(document).on("click", ".erp-profile-form", function(e) {
                     window.location.href = "{{ route('profile') }}";
                     // toastr.success(response.success);
                 } else if (response.error) {
+                    $.each(response.error, function(key, value) {
+                        toastr.error(value);
+                    });
                     handleErrorMessages(response.error); // Ensure this function handles validation errors correctly
                 }
             },

@@ -35,6 +35,10 @@
             display: flex;
             align-items: center;
         }
+        
+        .iti--separate-dial-code .iti__selected-flag:hover{
+            background-color: rgba(0, 0, 0, 0.05) !important; 
+        }
 
         /* Prevent overlapping input */
         .iti--allow-dropdown input {
@@ -44,7 +48,7 @@
         /* Align phone number input field */
         .iti input {
             height: 45px !important;
-            border-radius: 0 5px 5px 0;
+            border-radius: 5px !important;
         }
         #profile_pic_title{
             font-size: 12px;
@@ -405,18 +409,17 @@
                                             <div class="error" id="postal_error"></div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                  <button type="button" class="blue_common_btn btn btn-block pink-btn mt-3 erp-profile-form">
-                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                    </svg>
-                                    <span>Submit</span>
-                                </button>
-                                    {{-- <button type="button"
-                                        class="btn btn-block pink-btn mt-3 erp-profile-form" style="cursor: pointer;">Submit</button> --}}
+                                    <div class="col-md-12">
+                                        <button type="button" class="blue_common_btn btn btn-block pink-btn mt-3 erp-profile-form">
+                                          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                              <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                              <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                          </svg>
+                                          <span>Submit</span>
+                                      </button>
+                                          {{-- <button type="button"
+                                              class="btn btn-block pink-btn mt-3 erp-profile-form" style="cursor: pointer;">Submit</button> --}}
+                                      </div>
                                 </div>
                             </form>
                         </div>
