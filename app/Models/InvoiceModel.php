@@ -22,7 +22,8 @@ class InvoiceModel extends Model
         'total',
         'payment_method',
         'payment_status',
-        'product_id'
+        'product_id',
+        'quantity'
     ];
     public function user()
     {

@@ -100,6 +100,7 @@
                                 <tr>
                                     <td></td>
                                     <td class="text-end pe-1 py-4">
+                                        <p class="mb-2 pt-3">Quantity:</p>
                                         <p class="mb-2 pt-3">Sub-Total:</p>
                                         @if ($invoice->gst_percentage > 0)
                                             <p class="mb-2">GST ({{ intval($invoice->gst_percentage) }}%)(+):</p>
@@ -122,10 +123,16 @@
                                         <p class="mb-0 pb-3">Total:</p>
 
                                     <td class="ps-3 py-4">
-                                        <p class="fw-semibold mb-2 pt-3 text-start">₹{{ number_format($invoice->subtotal, 2) }}</p>
+                                        @php
+                                            $quantity = $invoice->quantity ?? 1;
+                                            $subtot = $invoice->subtotal * $quantity;
+                                            // dd($subtot);
+                                        @endphp
+                                        <p class="fw-semibold mb-2 pt-3 text-start"> {{ $invoice->quantity }}</p>
+                                        <p class="fw-semibold mb-2 pt-3 text-start">₹{{ number_format($subtot, 2) }}</p>
                                         @if ($invoice->gst_percentage > 0)
                                             @php
-                                                $taxAmount = ($invoice->subtotal * $invoice->gst_percentage) / 100;
+                                                $taxAmount = ($subtot * $invoice->gst_percentage) / 100;
                                                 $taxAmount = round($taxAmount);
                                             @endphp
                                             <p class="fw-semibold mb-2 text-start">₹ {{ round($taxAmount, 2) ?? '' }}</p>
