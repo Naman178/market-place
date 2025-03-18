@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/home_page_responsive.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Toastr CSS (Toast notifications) -->
@@ -59,6 +60,21 @@
                 }
             });
         });
+        const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', function() {
+        // Toggle the 'd-none' class on the mobile menu
+        mobileMenu.classList.toggle('d-none');
+        menuToggle.classList.remove('d-none');
+        console.log('Menu toggled');
+    });
+} else {
+    console.log('Menu toggle elements not found');
+}
+
+
     </script>
 </body>
 </html>

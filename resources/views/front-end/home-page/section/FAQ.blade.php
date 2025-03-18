@@ -21,12 +21,12 @@
     </div>
 </div>
 
-<div class="faq-section api_section">
+<div class="api_section">
     <div class="container">
         <div class="highlighted-section">
             <img class="pattern_img" src="{{ asset('front-end/images/design.png') }}" alt="not found">
             <img class="pattern2_img" src="{{ asset('front-end/images/design.png') }}" alt="not found">
-            <img src="{{ asset('front-end/images/Rectangle 28.png') }}" alt="not found">
+            <img src="{{ asset('front-end/images/Rectangle 28.png') }}" alt="not found" class="rectangle_img">
             <div class="banner">         
                 <h1>It takes less than a minute to get started</h1>
                 <li class="white_signup-wrapper mt-1">
@@ -67,7 +67,7 @@
                         {{-- <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
                         </div> --}}
-                        <li class="signup-wrapper mt-1"><a class="signup_btn sign_up_btn"data-route="{{route('newsletter-add')}}"> 
+                        <li class="signup-wrapper"><a class="blue_common_btn sign_up_btn"data-route="{{route('newsletter-add')}}"> 
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

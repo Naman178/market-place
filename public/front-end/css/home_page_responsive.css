@@ -1,0 +1,161 @@
+@media (max-width: 767px) {
+    .wordpress-plugin-grid {
+        grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
+    }
+    .vertical-menu-row{
+        display: block !important;
+    }
+}
+@media (max-width: 991px) {
+    .api_section{
+        display: none !important;
+    }
+    .menu-container {
+        display: none !important;
+    }
+    #menu-toggle {
+        display: block !important;
+    }
+    .signup-wrapper a {
+        margin-top: 12px !important;
+    }
+    .vector_img{
+        margin-left: 0px !important;
+    }
+    .tech .mt-13{
+        padding-left: 0px !important;
+    }
+}
+@media (max-width: 1024px) {
+
+    /* .banner {
+        top: calc(50vh + 1788%) !important;
+    } */
+    .rectangle_img {
+        width: 98% !important; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: clamp(24px, 5vw, 26px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    }
+    .support .integra_p {
+        width: 90% !important;
+    }
+}
+@media (max-width: 1199px) and (max-width: 1054px) {
+    .support .integra_p {
+        width: 90% !important;
+    }
+    .rectangle_img {
+        width: 98%; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: 25px !important;
+    }
+    .d-flex{
+        flex-wrap: wrap !important;
+    }
+    .w-70 {
+        width: 100% !important;
+    }
+    /* .banner {
+        top: calc(50vh + 1764%) !important;
+    } */
+    .faq-section h1 {
+        font-size: clamp(24px, 5vw, 32px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    }
+    
+}
+@media (max-width: 1199px)  {
+    .support .integra_p {
+        width: 90% !important;
+    }
+    
+    .wordpress-plugin-grid{
+        grid-template-columns: repeat(2, minmax(300px, 1fr)) !important;
+    }
+}
+@media (min-width: 1206px) and (max-width: 1199px) {
+    .faq-section h1 {
+        font-size: 29px !important;
+    }
+    /* .banner {
+        top: 456rem !important;
+    } */
+}
+@media (min-width: 1200px) and (max-width: 1299px) {
+    .rectangle_img {
+        width: 98%; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: 30px !important;
+    }
+    /* .banner {
+        top: 452rem !important;
+    } */
+}
+
+@media (min-width: 1300px) and (max-width: 1343px) {
+    .rectangle_img {
+        width: 95%; 
+    }
+    .faq-section h1 {
+        font-size: 31px !important;
+    }
+    /* .banner {
+        top: 447rem  !important;
+    } */
+}
+@media(max-width: 1599px) {
+    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
+        display: none !important;
+    }
+}
+
+@media (min-width: 1345px) and (max-width: 1599px) {
+    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
+        display: none;
+    }
+    .faq-section h1 {
+        font-size: 33px !important;
+    }
+    /* .banner {
+        top: 444rem !important;
+    } */
+}
+@media (min-width: 1600px) {
+    .faq-section h1 {
+        font-size: 39px !important;
+    }
+    /* .banner {
+        top: 446rem  !important;
+    } */
+}
+
+@media (min-width: 1920px) {
+    .circle_img {
+      left: 98%; 
+      top: 268rem;
+    }
+}
+  
+@media (min-width: 1880px) {
+    #menu-toggle {
+        display: none !important;
+    }
+    .circle_img {
+      left: 98% !important;
+      top: 268rem;
+    }
+  
+    .faq-section .question_img {
+        left: clamp(0%, 0vw, 30%) !important;   
+    }
+    .faq-section .second_question_img {
+        right: clamp(0%, 0vw, 30%) !important;   
+    }
+
+    .frame_img {
+        top: 45rem;
+        left: 20rem; 
+    } 
+}
