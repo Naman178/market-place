@@ -38,6 +38,7 @@ class StripePaymentController extends Controller
         $coupon_code = $input['final_coupon_code'] ?? '';
         $plan_type = $input['plan_type'] ?? 'one_time';
         $currency = $input['currency'];
+        $quantity = $input['final_quantity'];
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -116,7 +117,8 @@ class StripePaymentController extends Controller
             'discount' => $discount,
             'coupon_code' => $coupon_code,
             'discountvalue' => $discountvalue,
-            'plan_type' => $plan_type
+            'plan_type' => $plan_type,
+            'quantity' => $quantity
         ];
         if ($plan_type === 'recurring') {
             $return_url_params['subscription_id'] = $subscription->id;
@@ -146,6 +148,7 @@ class StripePaymentController extends Controller
         $discountvalue = $_GET['discountvalue'];
         $subtotal = $_GET['subtotal'];
         $gst_percentage = $_GET['gst'];
+        $quantity = $_GET['quantity'] ?? 1;
         $plan_type = $_GET['plan_type'] ?? 'one_time';
 
         // $discount = $_GET['discount'];
@@ -239,20 +242,24 @@ class StripePaymentController extends Controller
                     'remaining_order' => $total_order,
                 ]);
                 // add data to wallet
-
-                // key generation and add data to the key table.
-                $key = Str::random(50);
-                $currentDateTime = Carbon::now();
-                $oneYearLater = $currentDateTime->addYear();
-
-                $keytbl =  Key::create([
-                    'key'=> $key,
-                    'user_id' => $user['id'],
-                    'order_id' => $order_id,
-                    'product_id' => $product_id,
-                    'creared_at' => Carbon::now(),
-                    'expire_at' => $oneYearLater
-                ]);
+                $keyIds = [];
+                for ($i = 0; $i < $quantity; $i++) {
+                    // Key generation and add data to the key table.
+                    $key = Str::random(50);
+                    $currentDateTime = Carbon::now();
+                    $oneYearLater = $currentDateTime->addYear();
+                
+                    $keytbl = Key::create([
+                        'key' => $key,
+                        'user_id' => $user['id'],
+                        'order_id' => $order_id,
+                        'product_id' => $product_id,
+                        'created_at' => Carbon::now(),
+                        'expire_at' => $oneYearLater
+                    ]);
+                    $keyIds[] = $keytbl->id;
+                }
+                $keyIdsString = implode(',', $keyIds);
                 // dd(2,$order , $keytbl);
             // }
 
@@ -275,7 +282,7 @@ class StripePaymentController extends Controller
                         'subscription_id' => $subscription_id,
                         'product_id' => $product_id,
                         'status' => 'active',
-                        'key_id' => $keytbl->id
+                        'key_id' => $keyIdsString
                     ]);
                 }
             }
@@ -300,7 +307,8 @@ class StripePaymentController extends Controller
                 'total' => $old_amount / 100,
                 'payment_method' => "Stripe",
                 'payment_status' => $stripe_payment_status,
-                'product_id' => $product_id
+                'product_id' => $product_id,
+                'quantity' => $quantity
             ]);
             if($plan_type === 'recurring'){
                 $subscription_rec = SubscriptionRec::create([
@@ -308,7 +316,7 @@ class StripePaymentController extends Controller
                     'product_id' => $product_id,
                     'order_id' => $order_id,
                     'invoice_id' => $invoice->id,
-                    'key_id' => $keytbl->id,
+                    'key_id' => $keyIdsString,
                     'status' => 'active',
                 ]);
             }

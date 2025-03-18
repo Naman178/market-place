@@ -27,8 +27,7 @@
             console.log(itemPrice , gst , selecteddiscount, selectedtotal, final_total);
             let formattedTotal = new Intl.NumberFormat('en-IN').format(final_total);
             $('#final_total').text("INR " + formattedTotal);
-            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
-                "Proceed To Pay " + formattedTotal + " INR");
+            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text("Proceed To Pay " + formattedTotal + " INR");
             $('[name="amount"]').val(selectedtotal * 100);
             $('[name="discount_value"]').val(selecteddiscount);
             $('[name="final_coupon_code"]').val(selectedCouponId);
@@ -88,7 +87,7 @@
                             $(".discount_row").removeClass("d-none");
                             $("#discount_amount").text("INR " + new Intl.NumberFormat('en-IN').format(discount));
                         }
-                        applyCoupon(couponId, couponCode, button, total, discount);
+                        applyCoupon(couponId, couponCode, button, total, discount,response.discount_type);
                         $('#final_total').text("INR " + formattedTotal);
                         $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
                             "Proceed To Pay " + formattedTotal + " INR");
@@ -108,7 +107,7 @@
             });
         }
 
-        function applyCoupon(couponId, couponCode, button, total, discount) {
+        function applyCoupon(couponId, couponCode, button, total, discount,type) {
 
             var itemId = "{{ $plan->id }}";
             localStorage.setItem("selectedCouponId", couponId);
@@ -116,6 +115,7 @@
             localStorage.setItem("selectedtotal", total);
             localStorage.setItem("selecteddiscount", discount);
             localStorage.setItem("itemId", itemId);
+            localStorage.setItem("discount_type", type);
 
             window.location.reload();
             $(".coupon-btn").text("Apply").removeClass("remove-btn").prop("disabled", true).each(function() {
@@ -144,6 +144,9 @@
             // Calculate the total price including GST
             let fixedPrice = parseFloat("{{ $plan->pricing->sale_price }}");
             let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
+            let quantity = $('#quantity').text();
+            // console.log(quantity);
+            fixedPrice = fixedPrice * quantity;
             let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
             let roundedAmount = Math.round(totalWithGst);
 
@@ -196,7 +199,8 @@
 
         function showAppliedCouponSection(couponCode) {
             $(".apply-coupon-code-container").show();
-            $(".discount_row").show();
+            // $(".discount_row").show();
+            $(".discount_row").removeClass("d-none");
             $(".applied-coupon-code").text(couponCode);
         }
 

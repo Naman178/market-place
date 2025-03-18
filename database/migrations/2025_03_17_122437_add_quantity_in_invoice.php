@@ -14,7 +14,9 @@ class AddQuantityInInvoice extends Migration
     public function up()
     {
         Schema::table('invoice', function (Blueprint $table) {
-            //
+            if (!Schema::hasColumn('invoice', 'quantity')) {
+                $table->text('quantity')->after('product_id')->nullable();
+            }
         });
     }
 
