@@ -1,9 +1,62 @@
-@media (max-width: 767px) {
-    .wordpress-plugin-grid {
-        grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
+
+@media (max-width: 1198px) and (max-width: 1054px) {
+    .support .integra_p {
+        width: 90% !important;
     }
-    .vertical-menu-row{
-        display: block !important;
+    .rectangle_img {
+        width: 98%; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: 25px !important;
+    }
+    .d-flex{
+        flex-wrap: wrap !important;
+    }
+    .w-70 {
+        width: 100% !important;
+    }
+    .banner {
+        margin-top: -160px !important;
+    }
+    .faq-section h1 {
+        font-size: clamp(24px, 5vw, 32px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    }
+    
+}
+@media (max-width: 1199px)  {
+    .support .integra_p {
+        width: 90% !important;
+    }
+    
+    .wordpress-plugin-grid{
+        grid-template-columns: repeat(2, minmax(300px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .menu-container ul {
+        font-size: 15px !important;
+    }
+    /* .banner {
+        top: calc(50vh + 1788%) !important;
+    } */
+    .rectangle_img {
+        width: 98% !important; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: clamp(24px, 5vw, 26px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    }
+    .support .integra_p {
+        width: 90% !important;
+    }
+    div#integrationCarousel .col-4{
+        width: 100% !important;
+    }
+    .wsus__categories_item_2 {
+        padding: 7px !important;
+    }
+    .blog .vector2_img{
+        margin-left: 16rem !important;
     }
 }
 @media (max-width: 991px) {
@@ -25,53 +78,280 @@
     .tech .mt-13{
         padding-left: 0px !important;
     }
-}
-@media (max-width: 1024px) {
+    .wordpress-plugin-grid {
+        grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
+    }
+    .plugins, .int_bg, .category, .features, .social_media, .testimonial-section, .support {
+        margin-bottom: 30px !important;
+    }
+    
+    .logo-container img {
+        width: 240% !important;
+        margin-top: 10px !important;
+        margin-left: -31px !important;
+    }
+    .tech {
+        padding: 2rem !important;
+    }
+    .real_time h1{
+        font-size: calc(40px + 6*((100vw - 320px) / 680)) !important;
+        margin-top: 50px !important;
+        line-height: 44px !important;
+    }
+    .header-container{
+        padding: 0 !important;
+    }
+    .wordpress_plugin h1, .wordpress_plugin h1 span {
+        font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
+        list-style: 25px !important;
+    }
+    .real_time_section .real_time {
+        order: 2 !important;
+        margin-bottom: 30px;
+    }
 
-    /* .banner {
-        top: calc(50vh + 1788%) !important;
-    } */
-    .rectangle_img {
-        width: 98% !important; /* Slightly smaller width */
+    .real_time_section img.gold_price_img {
+        order: 1 !important;
     }
-    .faq-section h1 {
-        font-size: clamp(24px, 5vw, 26px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    .real_time_section {
+        margin-bottom: 10px !important;
     }
-    .support .integra_p {
-        width: 90% !important;
+    #integrationCarousel .slick-dots {
+        bottom: 19px !important;
+    }
+    .support .row {
+        display: flex;
+        flex-direction: column-reverse; /* Reverse the order */
     }
 }
-@media (max-width: 1199px) and (max-width: 1054px) {
-    .support .integra_p {
+@media (max-width: 767px) {
+    .wordpress-plugin-grid {
+        grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
+    }
+    .vertical-menu-row{
+        display: block !important;
+    }
+    .MetalPrice_img {
+        width: 100% !important; 
+        height: auto !important; 
+        left: 50% !important; 
+        top: 120px !important; 
+        margin-top: 30px !important; 
+        margin-bottom: 30px !important; 
+    }
+    #mobile-menu:not(.d-none) {
+        left: 37rem !important;
+    }
+
+    .gold_price_img {
+        width: 100px !important;
+        height: auto !important; 
+        margin-left: auto !important; 
+        margin-right: auto !important;
+        left: -110px !important;
+        top: 15em !important;
+        display: block !important; 
+        text-align: center !important;
+    }
+
+    .support_img{
+        left: 21rem !important;
+        margin-left:0 !important;
+        margin-right: 0 !important;
+        top: 9em !important;
+    }
+
+    .rates_img {
+        top: 18em !important;
+        left: -54px !important;
+        margin-left:0 !important;
+        margin-right: 0 !important;
+    }
+
+    .feature_img {
+        width: 100% !important; 
+        height: auto !important; 
+        left: 50% !important;
+        top: 100px !important;
+        margin-top: 30px !important;
+        margin-bottom: 30px !important;
+    }
+      
+    .cust_support_img {
+        max-width: 70% !important; 
+        padding-left: 5vw !important;
+        margin: 0 !important;
+    }
+    .real_time h1 {
+        margin-right: 0 !important;
+    }
+    
+    .arrow-container{
+        display: none !important;
+    }
+}
+@media (max-width: 480px) {
+    .MetalPrice_img {
+        width: 95% !important;
+        top: 80px !important;
+    }
+
+    .gold_price_img {
+        width: 70px !important;
+        top: 10em !important;
+    }
+
+    .support_img {
+        width: 70% !important;
+        max-width: 65px !important;
+        left: 8rem !important;
+        top: 11em !important;
+    }
+
+    .rates_img {
+        top: 15em !important;
+        width: 108px !important;
+        margin-left:0 !important;
+        margin-right: 0 !important;
+        left: 55px !important;
+    }
+
+    .feature_img {
         width: 90% !important;
+        top: 60px !important;
     }
-    .rectangle_img {
-        width: 98%; /* Slightly smaller width */
+    #mobile-menu:not(.d-none) {
+        left: 9rem !important;
     }
-    .faq-section h1 {
-        font-size: 25px !important;
+    .blog .vector2_img {
+        margin-left: 13rem !important;
+        width: 25% !important;
     }
-    .d-flex{
-        flex-wrap: wrap !important;
+    .footer-container {
+        padding: 50px 20px 20px !important;
     }
-    .w-70 {
+    .contact{
+        margin-left: 3px !important;
+    }
+}
+
+/* ✅ Final adjustments for 320px and below */
+@media (max-width: 320px) {
+    .MetalPrice_img {
+        width: 90% !important;
+        top: 60px !important;
+    }
+
+    .gold_price_img {
+        width: 60px !important;
+        top: 8em !important;
+        left: -80px !important;
+    }
+
+    .support_img {
+        width: 60% !important;
+        max-width: 90px !important;
+        left: 10rem !important;
+        top: 7em !important;
+    }
+
+    .rates_img {
+        top: 11em !important;
+        width: 110px !important;
+        left: -100px !important;
+    }
+
+    .feature_img {
+        width: 85% !important;
+        top: 50px !important;
+    }
+    .cust_support_img {
+        max-width: 97% !important; 
+        padding-left: 2vw !important; 
+    }
+    .wordpress-plugin-grid{
+        padding: 0 !important;
+        margin-left: -7px !important;
+    }
+    .vector2_img{
+        margin-left: 0 !important;
+    }
+    .integration{
+        margin-top: 10px !important;
+    }
+    .arrow-container{
+        margin-top: -33px !important;
+    }
+    .logo-container img {
+        width: 240% !important;
+        margin-top: 10px !important;
+        margin-left: -31px !important;
+    }
+    .patients .arrow{
+        left: -197px !important;
+    }
+    .vector2_img {
+        width: 38% !important;
+    }
+    .arrow-container{
+        display: none !important;
+    }
+    #integrationCarousel .wordpress_bg {
+        width: 290px !important;
+        height: 520px !important;
+    }
+    #integrationCarousel .d_flex{
+        flex-wrap: wrap;
+    }
+    .plus_logo{
+        margin-left: 90px !important;
+    }
+    .vector_img {
+        width: 49% !important;
+    }
+    .wordpress_plugin h1 {
+        line-height: 23px !important;
+    }
+    .integration h1, .integration h1 span {
+        line-height: 35px !important;
+        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+    }
+    .integra_p {
+        font-size: 16px !important;
+    }
+    .integration .mb-60 {
+        margin-bottom: 30px !important;
+    }
+    .integration .mb-53 {
+        margin-bottom: 15px !important;
+    }
+    .patients .rectangle_img {
+        height: 11rem !important;
+    }
+    .tech h1 span {
+        line-height: 12px !important;
+        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+    }
+    .blue_common_btn {
         width: 100% !important;
     }
-    /* .banner {
-        top: calc(50vh + 1764%) !important;
-    } */
-    .faq-section h1 {
-        font-size: clamp(24px, 5vw, 32px) !important; /* Adjust font size dynamically between 24px to 32px based on the viewport width */
+    .tech .testimonial-text{
+        margin-top: 12px !important;
+        margin-left: 15px !important;
     }
-    
-}
-@media (max-width: 1199px)  {
-    .support .integra_p {
-        width: 90% !important;
+    .integration .mt-65 {
+        margin-top: -5px !important;
     }
-    
-    .wordpress-plugin-grid{
-        grid-template-columns: repeat(2, minmax(300px, 1fr)) !important;
+    .features .mt-65{
+        margin-top:30px !important;
+    }
+    .real_time h1{
+        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+        margin-top: 0px !important;
+        line-height: 44px !important;
+    }
+    .category h1{
+        font-size: 24px;
     }
 }
 @media (min-width: 1206px) and (max-width: 1199px) {
@@ -158,4 +438,9 @@
         top: 45rem;
         left: 20rem; 
     } 
+}
+@media (max-width: 2560px) {
+    div#integrationCarousel .col-4{
+        width: 467px !important;
+    }
 }

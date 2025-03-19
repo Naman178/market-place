@@ -18,7 +18,7 @@
             Enhance functionality and drive success effortlessly.</p>
 
         <div class="row" id="integrationCarousel">
-            <div class="col-4">
+            <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
                         <div>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
                         <div>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
                         <div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
                         <div>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
                         <div>
