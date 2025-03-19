@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SEO;
 use App\Models\ContactsCountryEnum;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
@@ -17,21 +17,25 @@ class UserProfileController extends Controller
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         $seoData = SEO::where('page','profile')->first();
         $user = Auth::user();
+        $isoName = ContactsCountryEnum::where('country_code',$user->country_code)->first();
+        // dd($isoName->ISOname);
         return view('front-end.userprofile.userprofile')->with([            
             'countaries' => $countaries,
             'user' => $user,
             'seoData' => $seoData,
+            'isoName' => $user->country_name ?? 'IN',
+            // 'dialCode' => $isoName->ISOname,
         ]);
     }
     public function store_user_profile(Request $request){
+        // dd($request->all());
         if($request->ajax()){
             $user = User::find($request->user_id);
             $validator = Validator::make($request->all(), [
                 'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'email' => 'required|email',
-                'contact' => 'required|digits:10',
-                'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                 'city' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'postal' => 'required|digits_between:5,6',
                 'company_name' => 'required',
@@ -44,10 +48,8 @@ class UserProfileController extends Controller
                 'lastname.regex' => 'The Last Name should only contain letters and spaces.',
                 'email.required' => 'The Email Is Required.',
                 'email.email' => 'Please enter a valid email address.',
-                'contact.required' => 'Please Add Your Contact Number.',
-                'contact.digits' => 'The Contact Number must be exactly 10 digits.',
-                'address_line_one.required' => 'Please Add Your Address.',
-                'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+                'address_line1.required' => 'Please Add Your Address.',
+                'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                 'city.required' => 'The City Is Required.',
                 'city.regex' => 'The City name should only contain letters and spaces.',
                 'postal.required' => 'The Postal Code Is Required.',
@@ -56,20 +58,36 @@ class UserProfileController extends Controller
                 'company_website.required' => 'Please enter a valid URL for the company website.',
                 'company_website.url' => 'Please enter a valid company website URL.',
             ]);
-            if ($validator->passes()){
+            $imageName = $request->old_photo;
+            if ($request->profile_pic) {
+                $imageName = time().'.'.$request->profile_pic->extension();  
+                $request->profile_pic->move(public_path('assets/images/faces'), $imageName);
+            }
+            if ($validator->fails()){
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            } else{
                 if($user){
+                    $countryname = '';
+                    $countaries = ContactsCountryEnum::orderBy('id')->get();
+                    foreach($countaries as $country){
+                        if($country->country_code == $request->country_code){
+                            $countryname = $country->name;
+                        }
+                    }
                     $user->update([
                         "name" => $request->firstname. ' '. $request->lastname,
+                        'profile_pic' => $imageName,
                         "email" => $request->email,
                         "country_code" => $request->country_code,
                         "contact_number" => $request->contact,
                         "company_website" => $request->company_website,
                         "company_name" => $request->company_name,
-                        "country" => $request->country,
-                        "address_line1" => $request->address_line_one,
-                        "address_line2" => $request->address_line_two,
+                        "country" => $countryname,
+                        "address_line1" => $request->address_line1,
+                        "address_line2" => $request->address_line2,
                         "city" => $request->city,
-                        "postal_code" => $request->postal
+                        "postal_code" => $request->postal,
+                        "country_name" => $request->country_name
                     ]);
                     
                     $user->save();
@@ -81,9 +99,6 @@ class UserProfileController extends Controller
                     'type' => 'update',
                     'data' => $user
                 ]);
-            }
-            else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             }
         }
     }

@@ -15,13 +15,83 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
-    public function index(string $id)
+    public function index(Request $request, string $id)
     {
-        $planId = base64_decode($id);
+        $planId = base64_decode($id); 
+        $pricingId = $request->query('pricing_id');
         $countaries = ContactsCountryEnum::orderBy('id')->get();
-        $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews", "reviews"])->find($planId);
         $user = Auth::user();
-        $couponCodes = Coupon::where('status','active')->get();
-        return view('front-end.checkout.checkout', compact('countaries', 'plan', 'user', 'couponCodes'));
+        $plan = Items::with(["features", "images", "tags", "categorySubcategory", "pricing", "reviews"])->find($planId);
+    
+        if (!$plan) {
+            return redirect()->route('home')->with('error', 'Plan not found.');
+        }
+
+        $selectedPricing = null;
+        if ($pricingId) {
+            $selectedPricing = ItemsPricing::where('id', $pricingId)->first();
+        } else {
+            $selectedPricing = $plan->pricing()->first();
+        }
+        $mergedPricing = [];
+        $cart = session()->get('cart', []);
+        
+        if (isset($cart[$planId])) {
+            $existingPricing = collect($cart[$planId]['pricing']);
+            $newPricing = collect([$selectedPricing]);
+    
+            $mergedPricing = $existingPricing->merge($newPricing)->unique('id')->values()->toArray();
+
+            $keyFeatures = $plan->features->pluck('key_feature')->toArray();
+            $mergedPricing = array_map(function ($pricing) use ($keyFeatures) {
+                return array_merge((array)$pricing, ['key_features' => $keyFeatures]);
+            }, $mergedPricing);
+
+            $cart[$planId]['pricing'] = $mergedPricing;
+        } else {
+            $keyFeatures = $plan->features->pluck('key_feature')->toArray();
+            $mergedPricing = array_map(function ($pricing) use ($keyFeatures) {
+                return array_merge((array)$pricing, ['key_features' => $keyFeatures]);
+            }, $mergedPricing);
+            $cart[$planId] = [
+                'item' => $plan,
+                'pricing' => [$selectedPricing]
+            ];
+        }
+        // dd($mergedPricing);
+        session()->put('cart', $cart);
+        $couponCodes = Coupon::where('status', 'active')
+            ->withCount('usage')
+            ->get()
+            ->filter(function ($coupon) {
+                return $coupon->usage_count < $coupon->total_redemptions && $coupon->valid_until > now();
+            });
+    
+        return view('front-end.checkout.checkout', compact('countaries', 'mergedPricing', 'plan', 'selectedPricing', 'user', 'couponCodes', 'cart'));
     }
+
+    public function removeItem(Request $request)
+    {
+        $planId = $request->input('plan_id');
+        $pricingId = $request->input('pricing_id');
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$planId])) {
+            $cart[$planId]['pricing'] = array_filter($cart[$planId]['pricing'], function ($pricing) use ($pricingId) {
+                return $pricing['id'] != $pricingId;
+            });
+
+            if (empty($cart[$planId]['pricing'])) {
+                unset($cart[$planId]);
+            }
+
+            session()->put('cart', $cart);
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Item not found']);
+    }
+
 }

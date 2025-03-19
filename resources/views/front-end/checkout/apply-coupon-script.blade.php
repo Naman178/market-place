@@ -1,7 +1,12 @@
 <script>
     $(document).ready(function() {
         var itemId = "{{ $plan->id }}";
+        console.log("{{ $plan->pricing->fixed_price}}")
         var storeid = localStorage.getItem("itemId");
+        var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
+        var gst = Math.round(
+            parseFloat("{{$totalGST ?? ( $selectedPricing->gst_percentage) / 100 * ($selectedPricing['sale_price'] ?? $selectedPricing->sale_price) }}") || 0
+        );
         if (itemId != storeid) {
             localStorage.removeItem("selectedCouponId");
             localStorage.removeItem("selectedCouponCode");
@@ -12,20 +17,37 @@
 
         let selectedCouponId = localStorage.getItem("selectedCouponId");
         let selectedCouponCode = localStorage.getItem("selectedCouponCode");
-        let selectedtotal = localStorage.getItem("selectedtotal");
+        // let selectedtotal = localStorage.getItem("selectedtotal");
+        let selectedtotal = (itemPrice + gst).toFixed(2);
         let selecteddiscount = localStorage.getItem("selecteddiscount");
-
+        $("#discount_amount").text("INR " + selecteddiscount);
+        
         if (selectedCouponId) {
-            let formattedTotal = new Intl.NumberFormat('en-IN').format(selectedtotal);
+            let final_total = selectedtotal - selecteddiscount;
+            console.log(itemPrice , gst , selecteddiscount, selectedtotal, final_total);
+            let formattedTotal = new Intl.NumberFormat('en-IN').format(final_total);
             $('#final_total').text("INR " + formattedTotal);
-            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
-                "Proceed To Pay " + formattedTotal + " INR");
+            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text("Proceed To Pay " + formattedTotal + " INR");
             $('[name="amount"]').val(selectedtotal * 100);
             $('[name="discount_value"]').val(selecteddiscount);
             $('[name="final_coupon_code"]').val(selectedCouponId);
             let selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');
             applyCouponStyle(selectedBtn);
             selectedBtn.text("Remove").addClass("remove-btn").prop("disabled", false);
+            showAppliedCouponSection(selectedCouponCode);
+        }
+
+        let autoApplyCouponId = "{{ isset($autoApplyCoupon) ? $autoApplyCoupon->id : '' }}";
+        let autoApplyCouponCode = "{{ isset($autoApplyCoupon) ? $autoApplyCoupon->coupon_code : '' }}";
+        if (!selectedCouponId && autoApplyCouponId) {
+            // No coupon selected, apply auto-apply coupon
+            let $autoApplyBtn = $(".coupon-btn[data-coupon-id='" + autoApplyCouponId + "']");
+            validateAndApplyCoupon(autoApplyCouponId, autoApplyCouponCode, $autoApplyBtn);
+        } else if (selectedCouponId) {
+            // Restore previous coupon selection
+            let $selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');
+            applyCouponStyle($selectedBtn);
+            $selectedBtn.text("Remove").addClass("remove-btn").prop("disabled", false);
             showAppliedCouponSection(selectedCouponCode);
         }
 
@@ -61,7 +83,11 @@
                         let formattedTotal = new Intl.NumberFormat('en-IN').format(response.total);
                         let total = response.total;
                         let discount = response.discount;
-                        applyCoupon(couponId, couponCode, button, total, discount);
+                        if(discount > 0){
+                            $(".discount_row").removeClass("d-none");
+                            $("#discount_amount").text("INR " + new Intl.NumberFormat('en-IN').format(discount));
+                        }
+                        applyCoupon(couponId, couponCode, button, total, discount,response.discount_type);
                         $('#final_total').text("INR " + formattedTotal);
                         $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
                             "Proceed To Pay " + formattedTotal + " INR");
@@ -81,7 +107,7 @@
             });
         }
 
-        function applyCoupon(couponId, couponCode, button, total, discount) {
+        function applyCoupon(couponId, couponCode, button, total, discount,type) {
 
             var itemId = "{{ $plan->id }}";
             localStorage.setItem("selectedCouponId", couponId);
@@ -89,11 +115,13 @@
             localStorage.setItem("selectedtotal", total);
             localStorage.setItem("selecteddiscount", discount);
             localStorage.setItem("itemId", itemId);
+            localStorage.setItem("discount_type", type);
 
             window.location.reload();
             $(".coupon-btn").text("Apply").removeClass("remove-btn").prop("disabled", true).each(function() {
                 removeCouponStyle($(this));
             });
+            $(".discount_row").removeClass("d-none");
 
             button.text("Remove").addClass("remove-btn").prop("disabled", false);
             applyCouponStyle(button);
@@ -111,8 +139,34 @@
                 removeCouponStyle($(this));
             });
 
-            window.location.reload();
             hideAppliedCouponSection();
+
+            // Calculate the total price including GST
+            let fixedPrice = parseFloat("{{ $plan->pricing->sale_price }}");
+            let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
+            let quantity = $('#quantity').text();
+            // console.log(quantity);
+            fixedPrice = fixedPrice * quantity;
+            let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
+            let roundedAmount = Math.round(totalWithGst);
+
+            // Format the total
+            let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
+
+            // Update the UI with the new final total
+            $('#final_total').text("INR " + formattedTotal);
+            $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text(
+                "Proceed To Pay INR " + formattedTotal
+            );
+
+            $('[name="amount"]').val(roundedAmount * 100);
+            $('[name="discount_value"]').val(0);
+            $('[name="final_coupon_code"]').val('');
+
+            $(".discount_row").addClass("d-none");
+            $("#discount_amount").text("");
+
+            $(".coupon-error").text("");
         }
 
         function applyCouponStyle(button) {
@@ -145,6 +199,8 @@
 
         function showAppliedCouponSection(couponCode) {
             $(".apply-coupon-code-container").show();
+            // $(".discount_row").show();
+            $(".discount_row").removeClass("d-none");
             $(".applied-coupon-code").text(couponCode);
         }
 
@@ -152,8 +208,9 @@
             $(".apply-coupon-code-container").hide();
         }
 
-        if (!selectedCouponCode) {
+        // if (!selectedCouponCode) {
             $('#coupon_code_apply_btn').on('click', function() {
+                console.log('btn clicked');
                 let couponCode = $('#coupon_code').val().trim();
                 if (couponCode === "") {
                     $('#coupon_code_error').text('Coupon code is required!').css('color', 'red');
@@ -218,6 +275,61 @@
                     });
                 }
             });
+        // }
+        
+        $(".remove-item").on("click", function () {
+            let planId = $(this).data("plan-id");
+            let pricingId = $(this).data("pricing-id");
+
+            $.ajax({
+                url: "{{ route('cart.remove') }}",
+                type: "POST",
+                data: {
+                    plan_id: planId,
+                    pricing_id: pricingId,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#cart-item-" + planId + "-" + pricingId).fadeOut(300, function () {
+                            $(this).remove();
+                            location.reload();
+                            recalculateTotals();
+                        });
+                    } else {
+                        toastr.error("Error removing item");
+                    }
+                },
+                error: function () {
+                    toastr.error("Failed to remove item. Try again.");
+                }
+            });
+        });
+
+        function recalculateTotals() {
+            let newSubtotal = 0;
+            let newGST = 0;
+            let newDiscount = parseFloat(localStorage.getItem("selecteddiscount")) || 0;
+
+            $(".cart-item").each(function () {
+                let price = parseFloat($(this).find(".new-price").text().replace("₹", "").trim()) || 0;
+                let gstPercent = parseFloat($(this).data("gst-percentage")) || 0;
+                
+                let gstAmount = Math.round((gstPercent / 100) * price);
+
+                newSubtotal += price;
+                newGST += gstAmount;
+            });
+
+            let finalTotal = newSubtotal + newGST - newDiscount;
+
+            // 🏷️ Update HTML with new values
+            $("#subtotal_amount").text("INR " + newSubtotal.toLocaleString("en-IN"));
+            $("#gst_amount").text("INR " + newGST.toLocaleString("en-IN"));
+            $("#discount_amount").text("INR " + newDiscount.toLocaleString("en-IN"));
+            $("#final_total").text("INR " + finalTotal.toLocaleString("en-IN"));
+
+            console.log("Updated Totals:", newSubtotal, newGST, newDiscount, finalTotal);
         }
     });
 </script>

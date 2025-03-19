@@ -16,4 +16,25 @@
             }
         });
     });
+    $(document).ready(function () {
+        var quill = new Quill('#quill_editor', {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        quill.on('text-change', function () {
+            $('#description').val(quill.root.innerHTML);
+        });
+    });
 </script>

@@ -54,6 +54,7 @@
         align-items: center;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
     <div class="loader spinner-bubble spinner-bubble-primary"></div>
@@ -76,8 +77,15 @@
                         <li class="nav-item">
                             <a class="nav-link" id="login-register-settings-tab" data-toggle="tab" href="#loginRegisterSettings" role="tab" aria-controls="loginRegisterSettings" aria-selected="false">Login\Register Settings</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="stripe-settings-tab" data-toggle="tab" href="#StripeSettings" role="tab" aria-controls="StripeSettings" aria-selected="false">Stripe Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="smtp-setting-tab" data-toggle="tab" href="#SmtpSetting" role="tab" aria-controls="SmtpSetting" aria-selected="false">Smtp Setting</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
+                        
                         <div class="tab-pane fade show active" id="site_setting" role="tabpanel" aria-labelledby="site_setting_tab">
                             <form class="erp-form-submit-pdf">
                                 @csrf
@@ -100,6 +108,42 @@
                                             <label for="site_name">Site Name</label>
                                             <input type="text" class="form-control" name="site_name" value="{{$site["value"]["site_name"] ?? ""}}">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="address1">Address 1</label>
+                                            <input type="text" class="form-control" name="address1" value="{{$site["value"]["address_1"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address2">Address 2</label>
+                                            <input type="text" class="form-control" name="address2" value="{{$site["value"]["address_2"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="city">City</label>
+                                            <input type="text" class="form-control" name="city" value="{{$site["value"]["city"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="state">State</label>
+                                            <input type="text" class="form-control" name="state" value="{{$site["value"]["state"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="country">Country</label>
+                                            <input type="text" class="form-control" name="country" value="{{$site["value"]["country"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pin">Pincode</label>
+                                            <input type="text" class="form-control" name="pin" value="{{$site["value"]["pin"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">GST No</label>
+                                            <input type="text" class="form-control" name="gst" value="{{$site["value"]["gst"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">Stripe Key</label>
+                                            <input type="text" class="form-control" name="stripe_key" value="{{$site["value"]["stripe_key"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">Stripe Secret</label>
+                                            <input type="text" class="form-control" name="stripe_secret" value="{{$site["value"]["stripe_secret"] ?? ""}}">
+                                        </div>
                                         <div>
                                             <?php $showFavIcon = (!empty($site['value']['site_favicon'])) ? 'display:inline-block' : ''; ?>
                                             <label for="site_favicon">Favicon</label>
@@ -119,6 +163,7 @@
                                 <button type="submit" class="btn btn-outline-primary settings_form_pdf float-right">Save</button>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="loginRegisterSettings" role="tabpanel" aria-labelledby="login-register-settings-tab">
                             <div class="col-sm-12 col-md-12 mb-4 mt-4">
                                 <h4 class="heading-color d-inline-block">Login Register Settings</h4>
@@ -147,6 +192,113 @@
                                 <button type="submit" class="btn btn-outline-primary settings_form_login_register float-right">Save</button>
                             </div>
                         </div>
+
+                        <div class="tab-pane fade" id="StripeSettings" role="tabpanel" aria-labelledby="login-register-settings-tab">
+                            <div class="col-sm-12 col-md-12 mb-4 mt-4">
+                                <h4 class="heading-color d-inline-block">Stripe Settings</h4>
+                                <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
+                                <button type="submit" class="btn btn-outline-primary settings_stripe_register float-right">Save</button>
+                            </div>
+                            <form class="erp-form-submit-stripe">
+                                @csrf
+                                <input type="hidden" name="key" value="stripe_setting" />
+                                
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 form-group mb-3">
+                                        <div class="mb-3">
+                                            <label for="stripe_key">Stripe Key</label>
+                                            <input type="text" class="form-control" name="stripe_key" value="{{$stripe_setting['value']['stripe_key'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="stripe_secret">Stripe Secret</label>
+                                            <input type="text" class="form-control" name="stripe_secret" value="{{$stripe_setting['value']['stripe_secret'] ?? ''}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-sm-12 col-md-12 mb-4 mt-4">
+                                <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
+                                <button type="submit" class="btn btn-outline-primary settings_stripe_register float-right">Save</button>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="SmtpSetting" role="tabpanel" aria-labelledby="SmtpSetting">
+                            <div class="col-sm-12 col-md-12 mb-4 mt-4">
+                                <h4 class="heading-color d-inline-block">SMTP Settings</h4>
+                                <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
+                                <button type="button" class="btn btn-outline-primary settings_smtp_register float-right">Save</button>
+                                <button type="button" class="btn btn-outline-primary float-right mr-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">Send Mail</button>
+                            </div>
+                            
+                            <form class="erp-form-submit-smtp">
+                                @csrf
+                                <input type="hidden" name="key" value="smtp_setting">
+                                
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 form-group mb-3">
+                                        <div class="mb-3">
+                                            <label for="mail_mailer">Mail driver (e.g., smtp, sendmail, mail)</label>
+                                            <input type="text" class="form-control" name="mail_mailer" value="{{$smtp_setting['value']['mail_mailer'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_host">Mail Host (e.g., smtp.yourdomain.com)</label>
+                                            <input type="text" class="form-control" name="mail_host" value="{{$smtp_setting['value']['mail_host'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_port">Mail Port (e.g., 2525, 465)</label>
+                                            <input type="text" class="form-control" name="mail_port" value="{{$smtp_setting['value']['mail_port'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_username">Mail Username</label>
+                                            <input type="text" class="form-control" name="mail_username" value="{{$smtp_setting['value']['mail_username'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_pass">Mail Password</label>
+                                            <input type="text" class="form-control" name="mail_pass" value="{{$smtp_setting['value']['mail_pass'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_encryption">Mail Encryption (e.g., TLS/SSL)</label>
+                                            <input type="text" class="form-control" name="mail_encryption" value="{{$smtp_setting['value']['mail_encryption'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_sender">Sender</label>
+                                            <input type="text" class="form-control" name="mail_sender" value="{{$smtp_setting['value']['mail_sender'] ?? ''}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mail_app">Mail From Name</label>
+                                            <input type="text" class="form-control" name="mail_app" value="{{$smtp_setting['value']['mail_app'] ?? ''}}">
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div class="col-sm-12 col-md-12 mb-4 mt-4">
+                                    <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
+                                    <button type="button" class="btn btn-outline-primary settings_smtp_register float-right">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Bootstrap Modal -->
+                        <div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="sendMailModalLabel">Send Test Mail</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="sendMailForm">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="test_email" class="form-label">Enter Email</label>
+                                                <input type="email" class="form-control" id="test_email" name="test_email" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

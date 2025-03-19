@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <!-- Latest Font Awesome CDN -->
+{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endsection
 @section('meta')
@@ -33,7 +34,7 @@
 @else
     @include('front-end.home-page.section.Category')
 @endif
-@include('front-end.home-page.section.items-grid')
+{{-- @include('front-end.home-page.section.items-grid') --}}
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
 </div>
@@ -47,6 +48,7 @@
 @endsection
 @section('scripts')
 <!-- jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -111,43 +113,52 @@
         });
     });
     $(document).ready(function(){
-        $('#left-arrow-btn').on('click', function () {
+        $('#left-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#integrationCarousel').slick('slickPrev');
         });
 
-        $('#right-arrow-btn').on('click', function () {
+        $('#right-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#integrationCarousel').slick('slickNext');
         });
-
-        $('#categroy-left-arrow-btn').on('click', function () {
+        $('#categroy-left-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#categoryCarousel').slick('slickPrev');
         });
 
-        $('#category-right-arrow-btn').on('click', function () {
+        $('#category-right-arrow-btn').on('click', function (event) {
+            event.preventDefault();
             $('#categoryCarousel').slick('slickNext');
         });
 
-        $('#subcategroy-left-arrow-btn').on('click', function () {
+        $('#subcategroy-left-arrow-btn').on('click', function (event) {
+            event.preventDefault();
             $('#subcategoryCarousel').slick('slickPrev');
         });
 
-        $('#subcategroy-right-arrow-btn').on('click', function () {
+        $('#subcategroy-right-arrow-btn').on('click', function (event) {
+            event.preventDefault(); 
             $('#subcategoryCarousel').slick('slickNext');
         });
 
-        $('#blog-left-arrow-btn').click(function() {
+        $('#blog-left-arrow-btn').click(function(event) {
+            event.preventDefault(); 
             $('.blog-slider').slick('slickPrev');
         });
 
-        $('#blog-right-arrow-btn').click(function() {
+        $('#blog-right-arrow-btn').click(function(event) {
+            event.preventDefault(); 
             $('.blog-slider').slick('slickNext');
         });
 
-        $('.left-arrow').click(function() {
+        $('.left-arrow').click(function(event) {
+            event.preventDefault(); 
             $('#patientCarousel').carousel('prev');
         });
 
-        $('.right-arrow').click(function() {
+        $('.right-arrow').click(function(event) {
+            event.preventDefault(); 
             $('#patientCarousel').carousel('next');
         });
 
@@ -169,7 +180,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 1199,
                     settings: {
                         slidesToShow: 2,
                     }
@@ -185,7 +196,7 @@
 
         $('#integrationCarousel').slick({
             infinite: true,
-            slidesToShow: 3,
+            slidesToShow: 2,
             slidesToScroll: 1,
             arrows: false,
             dots: false,
@@ -193,7 +204,7 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 1199,
                     settings: {
                         slidesToShow: 2,
                     }
@@ -207,57 +218,103 @@
             ]
         });
 
+        // $('.category-slider').slick({
+        //     slidesToShow: 3,
+        //     slidesToScroll: 1,
+        //     infinite: true,
+        //     autoplay: false,
+        //     autoplaySpeed: 3000,
+        //     dots: false,
+        //     arrows: false,
+        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+        //     responsive: [
+        //         {
+        //             breakpoint: 1024,
+        //             settings: {
+        //                 slidesToShow: 2
+        //             }
+        //         },
+        //         {
+        //             breakpoint: 768,
+        //             settings: {
+        //                 slidesToShow: 1
+        //             }
+        //         }
+        //     ]
+        // });
         $('.category-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
             infinite: true,
-            autoplay: false,
-            autoplaySpeed: 3000,
-            dots: false,
+            slidesToShow: 6,
+            slidesToScroll: 1,
             arrows: false,
-            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 1024,
+                    breakpoint: 991,
                     settings: {
-                        slidesToShow: 2
+                        slidesToShow: 2,
                     }
                 },
                 {
-                    breakpoint: 768,
+                    breakpoint: 480,
                     settings: {
-                        slidesToShow: 1
+                        slidesToShow: 1,
+                    }
+                }
+            ]
+        });
+        $('.subcategory-slider').slick({
+            infinite: true,
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 991,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
                     }
                 }
             ]
         });
 
-        $('.subcategory-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            infinite: true,
-            autoplay: false,
-            autoplaySpeed: 3000,
-            dots: false,
-            arrows: false,
-            prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-            nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 2
-                    }
-                },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1
-                    }
-                }
-            ]
-        });
+        // $('.subcategory-slider').slick({
+        //     slidesToShow: 3,
+        //     slidesToScroll: 1,
+        //     infinite: true,
+        //     autoplay: false,
+        //     autoplaySpeed: 3000,
+        //     dots: false,
+        //     arrows: false,
+        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
+        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
+        //     responsive: [
+        //         {
+        //             breakpoint: 1024,
+        //             settings: {
+        //                 slidesToShow: 2
+        //             }
+        //         },
+        //         {
+        //             breakpoint: 768,
+        //             settings: {
+        //                 slidesToShow: 1
+        //             }
+        //         }
+        //     ]
+        // });
     });
 
     let currentIndex = 0;
@@ -390,7 +447,11 @@
                 },
                 success: function(response) {
                     $('.email_text').val('');
-                    $('.newsletter_success').text("Successfully subscribed!").css({"color": "green"}).fadeIn();
+                    $('.newsletter_success').text("Successfully subscribed!").css({
+                        "color": "green",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
                     setTimeout(function() {
                         $('.newsletter_success').fadeOut();
                     }, 5000);
@@ -405,8 +466,11 @@
                             errorMessage = errors.email[0]
                         }
                     }
-
-                    $('.newsletter_success').text(errorMessage).css("color", "red").fadeIn();
+                    $('.newsletter_success').text(errorMessage).css({
+                        "color": "red",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
                     setTimeout(function() {
                         $('.newsletter_success').fadeOut();
                         $('.email_text').val('');

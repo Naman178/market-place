@@ -16,56 +16,56 @@
             }
         });
     });
-    document.getElementById('image').addEventListener('change', function(event) {
-        document.getElementById('image-previews').innerHTML = '';
+    // document.getElementById('image').addEventListener('change', function(event) {
+    //     document.getElementById('image-previews').innerHTML = '';
 
-        const files = event.target.files; // Get the selected files
-        const previewContainer = document.getElementById('image-previews'); 
+    //     const files = event.target.files; // Get the selected files
+    //     const previewContainer = document.getElementById('image-previews'); 
 
-        // Loop through all selected files
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+    //     // Loop through all selected files
+    //     for (let i = 0; i < files.length; i++) {
+    //         const file = files[i];
 
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
+    //         if (file.type.startsWith('image/')) {
+    //             const reader = new FileReader();
 
-                reader.onload = function(e) {
-                    const previewWrapper = document.createElement('div');
-                    previewWrapper.style.position = 'relative';
-                    previewWrapper.style.display = 'inline-block';
-                    previewWrapper.style.margin = '5px';
+    //             reader.onload = function(e) {
+    //                 const previewWrapper = document.createElement('div');
+    //                 previewWrapper.style.position = 'relative';
+    //                 previewWrapper.style.display = 'inline-block';
+    //                 previewWrapper.style.margin = '5px';
 
-                    const image = document.createElement('img');
-                    image.src = e.target.result;
-                    image.style.width = '100px';
-                    image.style.height = '100px';
-                    image.style.objectFit = 'cover';
+    //                 const image = document.createElement('img');
+    //                 image.src = e.target.result;
+    //                 image.style.width = '100px';
+    //                 image.style.height = '100px';
+    //                 image.style.objectFit = 'cover';
 
-                    const deleteButton = document.createElement('button');
-                    deleteButton.innerHTML = 'X';
-                    deleteButton.style.position = 'absolute';
-                    deleteButton.style.top = '-8px';
-                    deleteButton.style.right = '-8px';
-                    deleteButton.style.background = 'red';
-                    deleteButton.style.color = 'white';
-                    deleteButton.style.border = 'none';
-                    deleteButton.style.borderRadius = '50%';
-                    deleteButton.style.padding = '0 5px';
+    //                 const deleteButton = document.createElement('button');
+    //                 deleteButton.innerHTML = 'X';
+    //                 deleteButton.style.position = 'absolute';
+    //                 deleteButton.style.top = '-8px';
+    //                 deleteButton.style.right = '-8px';
+    //                 deleteButton.style.background = 'red';
+    //                 deleteButton.style.color = 'white';
+    //                 deleteButton.style.border = 'none';
+    //                 deleteButton.style.borderRadius = '50%';
+    //                 deleteButton.style.padding = '0 5px';
 
-                    deleteButton.addEventListener('click', function() {
-                        previewWrapper.remove(); 
-                        event.target.value = ''; 
-                    });
+    //                 deleteButton.addEventListener('click', function() {
+    //                     previewWrapper.remove(); 
+    //                     event.target.value = ''; 
+    //                 });
 
-                    previewWrapper.appendChild(image);
-                    previewWrapper.appendChild(deleteButton);
+    //                 previewWrapper.appendChild(image);
+    //                 previewWrapper.appendChild(deleteButton);
 
-                    previewContainer.appendChild(previewWrapper);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-    });
+    //                 previewContainer.appendChild(previewWrapper);
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+    //     }
+    // });
 
 
     function removeImageFromInput(file) {
@@ -82,4 +82,25 @@
         
         input.files = dataTransfer.files;  // Update the input element with the new list of files
     }
+    $(document).ready(function () {
+        var quill = new Quill('#quill_editor', {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        quill.on('text-change', function () {
+            $('#description').val(quill.root.innerHTML);
+        });
+    });
 </script>

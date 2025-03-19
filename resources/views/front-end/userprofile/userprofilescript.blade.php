@@ -1,10 +1,19 @@
  
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function () {
+        var successMessage = localStorage.getItem('successMessage');
+        if (successMessage) {
+            toastr.success(successMessage); // Show toastr notification
+            localStorage.removeItem('successMessage'); // Clear message after displaying
+        }
+    });
+
 $(document).on("click", ".erp-profile-form", function(e) {
     e.preventDefault();
     var submitUrl = $('#profile_form').data("url");
     var formData = new FormData($('#profile_form')[0]);
+    // console.log(FormData);
 
     $.ajaxSetup({
         headers: {
@@ -22,6 +31,7 @@ $(document).on("click", ".erp-profile-form", function(e) {
         $('#city_error').text(errors.city ? errors.city : '');
         $('#postal_error').text(errors.postal ? errors.postal : '');
         $('#address_line_one_error').text(errors.address_line_one ? errors.address_line_one : '');
+        $('#profile_pic_error').text(errors.profile_pic ? errors.profile_pic : '');
     }
 
 
@@ -38,8 +48,13 @@ $(document).on("click", ".erp-profile-form", function(e) {
                 $("#preloader").hide();
                 $('.input-error').removeClass('is-invalid');
                 if (response.success) {
+                    localStorage.setItem('successMessage', response.success);
                     window.location.href = "{{ route('profile') }}";
+                    // toastr.success(response.success);
                 } else if (response.error) {
+                    $.each(response.error, function(key, value) {
+                        toastr.error(value);
+                    });
                     handleErrorMessages(response.error); // Ensure this function handles validation errors correctly
                 }
             },

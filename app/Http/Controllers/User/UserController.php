@@ -4,7 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\helper\helper;
 use App\Http\Controllers\Controller;
+use App\Models\InvoiceModel;
 use App\Models\Items;
+use App\Models\Subscription;
+use App\Models\SubscriptionRec;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -215,8 +218,10 @@ class UserController extends Controller
                 'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
                 'message.required' => 'Message is required.',
             ]);
-            if ($validator->passes()){
-
+            if ($validator->fails()){
+                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            }
+            else{
                 $full_name = $request->full_name;
                 $email = $request->email;
                 $contact_number = $request->contact_number;
@@ -249,15 +254,12 @@ class UserController extends Controller
 
                 session()->flash('success', 'ThankYou For Your Inquiry We Will Contact You Soon !');
                 return response()->json([
-                    'success' => 'inqury added successfully!',
+                    'success' => 'Inquiry added successfully!',
                     'title' => 'Inquiry',
                     'type' => 'Add',
                     'data' => $userinquiry
                 ]);
-            }   
-            else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-            }            
+            }        
         }
     }
     public function userDashboard(){
@@ -271,14 +273,51 @@ class UserController extends Controller
         $order_history = WoocommerceOrderHistory::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
         $woo_user = UserCustomer::where('register_under_user_id',$user['id'])->get();
         $allplan = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
+        $invoice = InvoiceModel::where('user_id',$user['id'])->get();
+        $subscription = Subscription::where('user_id',$user['id'])->with('product')->get();
 
-        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','order_history','allplan','woo_user'));
+        return view('dashboard.user-dashboard',compact('orders','wallet','transactions','subscription','invoice','order_history','allplan','woo_user'));
     }
     public function user_price()
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         $seoData = SEO::where('page','price')->first();
         return view('pages.Home.Price',compact('data','seoData'));
+    }
+
+    public function orders() {
+        $orders = Order::where('user_id', auth()->id())->get();
+        return view('dashboard.orders', compact('orders'));
+    }
+
+    public function downloads() {
+        $orders = Order::where('user_id', auth()->id())->get();
+        return view('dashboard.downloads', compact('orders'));
+    }
+
+    public function support() {
+        $wallet = Wallet::where('user_id',auth()->id())->first();
+        return view('dashboard.support',compact('wallet'));
+    }
+
+    public function transactions() {
+        $transactions = Transaction::where('user_id', auth()->id())->get();
+        return view('dashboard.transactions', compact('transactions'));
+    }
+
+    public function invoice() {
+        $invoice = InvoiceModel::where('user_id',auth()->id())->get();
+        return view('dashboard.invoice',compact('invoice'));
+    }
+
+    public function subscription() {
+        $subscription = SubscriptionRec::get();
+        // $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
+        return view('dashboard.subscription',compact('subscription'));
+    }
+
+    public function settings() {
+        return view('dashboard.settings');
     }
 
 }

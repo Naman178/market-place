@@ -34,7 +34,11 @@
                     <div class="title pb-2">General</div>
                     <ul class="menu-vertical list-style">
                         <li>Documentation</li>
-                        <li><a href="{{ route('user-price') }}">Pricing</a></li>
+                        @if ($category)
+                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                        @elseif ($subcategory)
+                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                        @endif
                         <li><a href="{{ route('user-faq') }}">FAQ</a></li>
                         <li>Sponsorship</li>
                         <li><a href="{{ route('contact-us') }}">Contact</a></li>
@@ -45,7 +49,7 @@
                     <ul class="menu-vertical">
                         <li>Sign Up For Free</li>
                         <li>Free Log in</li>
-                        <li><a href="{{url('/user-dashboard#list-settings')}}" id="forgot-password-link">Forgot Password</a></li>
+                        <li><a href="{{url('/profile-settings')}}">Forgot Password</a></li>
                     </ul>
                 </div>
                 <div>
@@ -71,7 +75,7 @@
                     <div class="title pb-3">Contact</div>
                     <ul class="menu-vertical">
                         <li>
-                            <p>Bhagwati Circle,</p><p>Opposite Annapurna</p><p>Dining Hall, Kaliyabid,</p><p>Bhavnagar - 364002,</p><p>Gujarat India</p>
+                            <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p>
                         </li>
                     </ul>
                 </div>

@@ -36,7 +36,10 @@ class User extends Authenticatable
         "created_at",
         "updated_at",
         "postal_code",
-        "city"
+        "city",
+        "profile_pic",
+        "subscribe_to_promotions",
+        'country_name',
     ];
 
     /**

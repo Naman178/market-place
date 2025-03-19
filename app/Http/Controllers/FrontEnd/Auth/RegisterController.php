@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\FrontEnd\Auth;
 
 use App\Http\Controllers\Controller;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\Mail;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Stripe\Stripe;
+use App\Models\ContactsCountryEnum;
 use App\Models\SEO;
 use Stripe\Charge;
 class RegisterController extends Controller
 {
     public function index()
     {
+        $countaries = ContactsCountryEnum::orderBy('id')->get();
         $seoData = SEO::where('page','sign up')->first();
-        return view('front-end.auth.register',compact('seoData'));
+        return view('front-end.auth.register',compact('seoData','countaries'));
     }
 
     public function register(Request $request)
@@ -46,7 +48,7 @@ class RegisterController extends Controller
         $user->lname = $request->lname;
         $user->email = $request->email;
         $user->country_code = $request->country_code;
-        $user->contact_number = $request->contact_number;
+        $user->contact_number = $request->contact_number_number;
         $user->company_name = $request->company_name;
         $user->company_website = $request->company_website;
         $user->country = $request->country;
@@ -60,7 +62,7 @@ class RegisterController extends Controller
         $user->save();
 
         // Redirect to dashboard or login page
-        return redirect('/login')->with('success', 'Registration successful. You can now login.');
+        return redirect('/user-login')->with('success', 'Registration successful. You can now login.');
     }
 
     public function userCreateCheckout(Request $request){
@@ -71,7 +73,7 @@ class RegisterController extends Controller
                 'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'email' => 'required|email|unique:users',
                 'country_code' => 'required',
-                'contact' => 'required|digits:10',
+               'contact_number' => 'required|digits:10',
                 'country' => 'required',
                 'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                 'city' => 'required|regex:/^[a-zA-Z\s]+$/',
@@ -102,22 +104,23 @@ class RegisterController extends Controller
                 'company_website.required' => 'Please enter a valid URL for the company website.',
                 'company_website.url' => 'Please enter a valid company website URL.',
             ]);
-            if ($validator->passes()){
-               
+            if ($validator->fails()){
+                return response()->json(['errors' => $validator->errors()]);
+            }else{
                 $name = $request->firstname .' '.$request->lastname;
                 $fname = $request->firstname;
                 $lname = $request->lastname;
                 $email = $request->email;
                 $country_code = $request->country_code;
-                $contact = $request->contact;
+                $contact = $request->contact_number;
                 $mobile = '+'.$country_code.$contact;
                 $company_name = $request->company_name;
                 $company_website = $request->company_website;
                 $country = $request->country;
-                $address_line_one = $request->address_line_one;
-                $address_line_two = $request->address_line_two;
+                $address_line_one = $request->address_line1;
+                $address_line_two = $request->address_line2;
                 $city = $request->city;
-                $postal = $request->postal;
+                $postal = $request->postal_code;
                 $gst = $request->gst;
                 $pass = Str::random(10);
                 $password = Hash::make($pass);
@@ -128,15 +131,15 @@ class RegisterController extends Controller
                     'fname'=> $fname,
                     'lname'=>$lname,
                     'country_code'=>$country_code,
-                    'contact'=>$contact, 
+                   'contact_number'=>$contact, 
                     'password'=>$password,
                     'company_name' => $company_name,
                     'company_website' => $company_website,
                     'country' => $country,
-                    'address_line_1' => $address_line_one,
-                    'address_line_2' => $address_line_two,
+                    'address_line1' => $address_line_one,
+                    'address_line2' => $address_line_two,
                     'city' => $city,
-                    'zip' => $postal,
+                    'postal_code' => $postal,
                     'gstin' => $gst,
                 ]);
                 
@@ -169,7 +172,7 @@ class RegisterController extends Controller
                                             'line1' => $request->address_line_one,
                                             'line2' => $request->address_line_two,
                                             'city' => $request->city,
-                                            'postal_code' => $request->postal,
+                                            'postal_code' => $request->postal_code,
                                             'country' => $request->country,
                                         ],
                                     ]);
@@ -234,15 +237,11 @@ class RegisterController extends Controller
                         'title' => 'User',
                         'type' => 'Creation',
                         'data' => $save_user,
-                        'user' => $cust
                     ]);
                 }
                 else{
                     return response()->json(['error'=> 'Error in login in user' ]);
                 }      
-            }
-            else{
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
             }
             
          }
@@ -253,7 +252,7 @@ class RegisterController extends Controller
                         'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
                         'email' => 'required|email',
                         'country_code' => 'required',
-                        'contact' => 'required|digits:10',
+                       'contact_number' => 'required|digits:10',
                         'country' => 'required',
                         'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                         'city' => 'required|regex:/^[a-zA-Z\s]+$/',
@@ -284,22 +283,27 @@ class RegisterController extends Controller
                         'company_website.url' => 'Please enter a valid company website URL.',
                     ]);
                     
-                    if ($validator->passes()){
+                    if ($validator->fails()){
+                        return response()->json([
+                            'error'=> $validator->errors()->first(),
+                        ])
+                        ->setStatusCode(500);
+                    }
+                    else{
                         $user = User::find(Auth::user()->id);
                         if($user){
                             $user->update([
                                 "name" => $request->firstname . ' '. $request->lastname,
                                 "email" => $request->email,
                                 "country_code" => $request->country_code,
-                                "contact_number" => $request->contact,
-                                "country_code" => $request->country_code,
+                                "contact_number" => $request->contact_number,
                                 "company_website" => $request->company_website,
                                 "company_name" => $request->company_name,
                                 "country" => $request->country,
                                 "address_line1" => $request->address_line_one,
                                 "address_line2" => $request->address_line_two,
                                 "city" => $request->city,
-                                "postal_code" => $request->postal
+                                "postal_code" => $request->postal_code
                             ]);
                         }
         
@@ -317,7 +321,7 @@ class RegisterController extends Controller
                                     'line1' => $request->address_line_one,
                                     'line2' => $request->address_line_two,
                                     'city' => $request->city,
-                                    'postal_code' => $request->postal,
+                                    'postal_code' => $request->postal_code,
                                     'country' => $request->country,
                                 ],
                             ]);
@@ -360,9 +364,6 @@ class RegisterController extends Controller
                             ]);
                         }
                     }
-                else{
-                        return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-                    }
                 }
             }
         }        
@@ -370,36 +371,43 @@ class RegisterController extends Controller
     
     public function postRegistration(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'first_name' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users', // Check for unique email
-            'country_code' => 'required|string',
-            'contact_number' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'company_website' => 'nullable|url|max:255',
-            'country' => 'required|string',
-            'address_line1' => 'required|string|max:255',
-            'address_line2' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'password' => 'required|string|min:8|confirmed', // Add confirmation rule if applicable
+            // 'country_code' => 'required|string',
+            // 'company_name' => 'required|string|max:255',
+            // 'company_website' => 'nullable|url|max:255',
+            // 'address_line1' => 'required|string|max:255',
+            // 'address_line2' => 'nullable|string|max:255',
+            // 'city' => 'required|string|max:255',
+            // 'postal_code' => 'required|string|max:20',
+            'password' => 'required|string|min:8', // Add confirmation rule if applicable
         ]);
-        $name = $request->first_name .' '.$request->last_name;
-        $fname = $request->first_name;
+        $countryname = '';
+        $countaries = ContactsCountryEnum::orderBy('id')->get();
+        foreach($countaries as $country){
+            if($country->country_code == $request->country_code){
+                $countryname = $country->name;
+            }
+        }
+        $name = $request->firstname .' '.$request->last_name;
+        $fname = $request->firstname;
         $lname = $request->last_name;
         $email = $request->email;
-        $country_code = $request->country_code;
-        $contact = $request->contact;
-        $mobile = '+'.$country_code.$contact;
-        $company_name = $request->company_name;
-        $company_website = $request->company_website;
-        $country = $request->country;
-        $address_line_one = $request->address_line_one;
-        $address_line_two = $request->address_line_two;
-        $city = $request->city;
-        $postal = $request->postal;
-        $gst = $request->gst;
+        $subscribeToPromotions = $request->has('promotionsSubscriber') ? 1 : 0;
+        // $country_code = $request->country_code;
+        // $contact = $request->contact_number;
+        // $mobile = '+'.$country_code.$contact;
+        // $company_name = $request->company_name;
+        // $company_website = $request->company_website;
+        // $country = $countryname;
+        // $address_line_one = $request->address_line1;
+        // $address_line_two = $request->address_line2;
+        // $city = $request->city;
+        // $postal = $request->postal_code;
+        // $gst = $request->gst;
         
         $password = Hash::make($request['password']);
         
@@ -408,18 +416,20 @@ class RegisterController extends Controller
             'email'=>$email , 
             'fname'=> $fname , 
             'lname'=>$lname , 
-            'country_code'=>$country_code, 
-            'contact'=>$contact , 
-            'company_name'=>$company_name, 
-            'company_website'=>$company_website,
-            'country'=>$country,
-            'address_line_1'=>$address_line_one,
-            'address_line_2'=>$address_line_two,
-            'city'=>$city,
-            'zip'=>$postal,
-            'gstin'=>$gst,
-            'password'=>$password
+        //     'country_code'=>$country_code, 
+        //    'contact_number'=>$contact , 
+        //     'company_name'=>$company_name, 
+        //     'company_website'=>$company_website,
+        //     'country'=>$country,
+        //     'address_line1'=>$address_line_one,
+        //     'address_line2'=>$address_line_two,
+        //     'city'=>$city,
+        //     'postal_code'=>$postal,
+        //     'gstin'=>$gst,
+            'password'=>$password,
+            'subscribe_to_promotions'=>$subscribeToPromotions
         ]);
+        
         // if($save_user){
 
         //     $razorpay_customer_id = '';
@@ -456,7 +466,7 @@ class RegisterController extends Controller
         //         $razorpay_customer = $api->customer->create([
         //             'name' => $name,
         //             'email' => $email,
-        //             'contact' => $mobile,
+        //            'contact_number' => $mobile,
         //         ]);
         //         $razorpay_customer_id = $razorpay_customer['id'];
         //     }
@@ -466,8 +476,9 @@ class RegisterController extends Controller
         //         'razorpay_customer_id' => $razorpay_customer_id
         //     ]);
         // }
-        
-        $save_user->assignRole('User');
+        if (!$save_user->hasRole('User')) {
+            $save_user->assignRole('User');
+        }
 
         $mailData = [
             'title' => 'Registration Successful !',
@@ -502,7 +513,8 @@ class RegisterController extends Controller
 		}
 
         Mail::to($email)->send(new WelcomeEmail( $save_user, $password));
-        return redirect('user-login')->withSuccess('Great! You have Successfully loggedin');
+        Auth::login($save_user);
+        return redirect('user-dashboard')->withSuccess('Great! You have Successfully loggedin');
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {

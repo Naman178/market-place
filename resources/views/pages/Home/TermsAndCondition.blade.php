@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
     <style>
         .cust-page-padding {
-            padding: 2rem 58px 5rem;
+            padding: 2rem 10rem 5rem;
         }
         h1.feature_heading {
             margin-top: 0;
@@ -29,7 +29,7 @@
             color: #182433;
             margin: 80px 0 85px;
         }
-        hr{
+        .terms-and-condition hr{
             border: none;
             border-bottom: 1px solid #007ac1;
         }
@@ -41,8 +41,8 @@
             <div class="title">
                 <h3><span class="txt-black">Terms and </span><span class="color-blue underline-text"> Conditions</span></h3>
             </div> 
-            <div class="row justify-content-center "> 
-                <div class="terms-and-condition cust-page-padding">          
+            <div class="row  "> 
+                <div class="terms-and-condition cust-page-padding w-100">          
                     {{-- <h1 class="text-center feature_heading">Terms and Conditions</h1> --}}
                     @foreach ($term_conditions as  $term_condition)
                         <h4>{{ $term_condition->title ?? '' }}</h4>        

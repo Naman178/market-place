@@ -143,9 +143,8 @@
             <div class="title">
                 <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline-text"> Questions</span></h3>
             </div> 
-            <div class="d-flex flex-wrap justify-content-between">
+            {{-- <div class="d-flex flex-wrap">
                 <div class="faq-heading-row">
-                    {{-- <h1 class="text-center faq_heading">Frequently Asked Questions</h1> --}}
                     <div class="faq-button_n_text d-lg-block d-none">
                         <p>Have more questions?</p>
                         <a href="{{ Route('contact-us') }}"
@@ -154,10 +153,9 @@
                                 alt="arrow"></a>
                     </div>
                 </div>
-                <div class="faq-faq-row">
+                <div class="faq-faq-row w-100">
 
                     <div class="accordion" id="faqAccordian">
-                        <!-- First Accordion Item -->
                         @foreach ($FAQs as $key => $FAQ)
                         <div class="card">
                             <div class="accordion-item">
@@ -173,6 +171,24 @@
                     
                     </div>
                 </div>
+            </div> --}}
+            <div class="features integration faq-section">
+                <div class="container">
+                    <div class="faq">
+                        @foreach ($FAQs as $key => $FAQ)
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                {{ $FAQ->question ?? '' }}
+                                <span class="faq-icon"></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>{{ $FAQ->answer ?? '' }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -180,15 +196,56 @@
 @endsection
 @section('scripts')
 <script>
- function toggleAccordion(header) {
-    const body = header.nextElementSibling;
-    if (body && body.classList) {
-        body.classList.toggle("show");
-        header.classList.toggle("collapsed");
-    } else {
-        console.error("Accordion structure issue: 'accordion-body' not found for this header.");
-    }
-}
+//  function toggleAccordion(header) {
+//     const body = header.nextElementSibling;
+//     if (body && body.classList) {
+//         body.classList.toggle("show");
+//         header.classList.toggle("collapsed");
+//     } else {
+//         console.error("Accordion structure issue: 'accordion-body' not found for this header.");
+//     }
+// }
+    // for FAQ
+    window.onload = () => {
+        const firstFaq = document.querySelector('.faq-item');
+        if (firstFaq) {
+            const firstQuestion = firstFaq.querySelector('.faq-question');
+            const firstAnswer = firstFaq.querySelector('.faq-answer');
+            const firstIcon = firstFaq.querySelector('.faq-icon');
+
+            // Set the first FAQ as open
+            firstAnswer.classList.add('open');
+            firstIcon.classList.add('rotate');
+            firstQuestion.classList.add('active');
+        }
+    };
+
+    // Event listener for FAQ questions
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            // Close all other FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const answer = item.querySelector('.faq-answer');
+                const icon = item.querySelector('.faq-icon');
+                const itemQuestion = item.querySelector('.faq-question');
+
+                if (itemQuestion !== question) {
+                    answer.classList.remove('open');
+                    icon.classList.remove('rotate');
+                    itemQuestion.classList.remove('active');
+                }
+            });
+
+            // Toggle open/close for the current FAQ
+            const parent = question.parentElement;
+            const answer = parent.querySelector('.faq-answer');
+            const icon = question.querySelector('.faq-icon');
+
+            answer.classList.toggle('open');
+            icon.classList.toggle('rotate');
+            question.classList.toggle('active');
+        });
+    });
 
 </script>
 @endsection

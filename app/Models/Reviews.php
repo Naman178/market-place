@@ -25,4 +25,7 @@ class Reviews extends Model
     {
         return $this->belongsTo(Items::class, 'item_id');
     }
+    public function user() {
+        return $this->belongsTo(User::class); 
+    }
 }

@@ -954,25 +954,25 @@
         }
     });
 
-    document.getElementById('edit_content_type').addEventListener('change', function() {
-        var contentType = this.value;
+    // document.getElementById('edit_content_type').addEventListener('change', function() {
+    //     var contentType = this.value;
 
-        // Hide all content options
-        var contentOptions = document.querySelectorAll('.content-option');
-        contentOptions.forEach(function(option) {
-            option.style.display = 'none';
-        });
+    //     // Hide all content options
+    //     var contentOptions = document.querySelectorAll('.content-option');
+    //     contentOptions.forEach(function(option) {
+    //         option.style.display = 'none';
+    //     });
 
-        // Show the selected content option based on the selected value
-        if (contentType === 'heading-description-image') {
-            document.getElementById('content-option-1').style.display = 'block';
-        } else if (contentType === 'heading-image-description') {
-            document.getElementById('content-option-2').style.display = 'block';
-        } else if (contentType === 'image-description-heading') {
-            document.getElementById('content-option-3').style.display = 'block';
-        } else if (contentType === 'heading-description-image-description') {
-            document.getElementById('content-option-4').style.display = 'block';
-        }
-    });
+    //     // Show the selected content option based on the selected value
+    //     if (contentType === 'heading-description-image') {
+    //         document.getElementById('content-option-1').style.display = 'block';
+    //     } else if (contentType === 'heading-image-description') {
+    //         document.getElementById('content-option-2').style.display = 'block';
+    //     } else if (contentType === 'image-description-heading') {
+    //         document.getElementById('content-option-3').style.display = 'block';
+    //     } else if (contentType === 'heading-description-image-description') {
+    //         document.getElementById('content-option-4').style.display = 'block';
+    //     }
+    // });
 
 </script>

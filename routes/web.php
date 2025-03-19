@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Invoice\InvoiceController;
 use App\Http\Controllers\newsletter\NewsletterController;
 use App\Http\Controllers\SentMail\SentMailController;
 use Illuminate\Support\Facades\Route;
@@ -46,12 +47,20 @@ use Illuminate\Support\Facades\Artisan;
 // Home Page
 // Route::redirect('/', '/home');
 Route::get("/", [HomePageController::class, "index"]);
-Route::post("/newsletter", [HomePageController::class, "newsletter"])->name('newsletter');
-Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.list');
+Route::post("/newsletter-add", [HomePageController::class, "newsletter"])->name('newsletter-add');
+Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->name('newsletter-delete');
+// Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
-Route::get('/product/{subcategory}', [ItemsController::class, 'show'])->name('product.list');
+Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
+Route::get('/product/{categoryOrSubcategory}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
+Route::post('/product-comment-post', [HomePageController::class, 'commentPost'])->name('product-comment-post');
+Route::post('/product-review-post', [HomePageController::class, 'reviewPost'])->name('product-review-post');
+Route::post('/wishlist/add', [HomePageController::class, 'addToWishlist'])->name('wishlist.add');
+Route::get('/get-wishlist', [HomePageController::class, 'getUserWishlist'])->name('get_wishlist');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
+Route::post('/checkout/remove', [CheckoutController::class, 'removeItem'])->name('cart.remove');
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('apply.coupon');
 Route::post('/checkout/process-payment', [CheckoutController::class, "processPayment"])->name('process.payment');
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
@@ -61,6 +70,12 @@ Route::get('/user-login', [LoginController::class, 'index'])->name('user-login')
 Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post');
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
+
+Route::get('auth/github', [LoginController::class, 'redirectToGitHub'])->name('github.login');
+Route::get('auth/github/callback', [LoginController::class, 'handleGitHubCallback']);
+
+Route::get('auth/linkedin', [LoginController::class, 'redirectToLinkdin'])->name('linkedin.login');
+Route::get('auth/linkedin/callback', [LoginController::class, 'handleLinkdinCallback']);
 
 // user register
 Route::post('/post-registration', [RegisterController::class, 'postRegistration'])->name('user-register-post');
@@ -92,9 +107,28 @@ Route::middleware(['auth'])->group(function () {
     //Settings Module
     Route::get('/settings',[SettingsController::class,'index'])->name('settings-index');
     Route::post('/settings/store',[SettingsController::class,'store'])->name('settings-store');
+    Route::post('/settings/mail',[SettingsController::class,'mail'])->name('settings-mail');
 
     // front user dashboard
     Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
+    Route::get('/orders', [UserController::class, 'orders'])->name('orders');
+    Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    Route::get('/support', [UserController::class, 'support'])->name('support');
+    Route::get('/transactions', [UserController::class, 'transactions'])->name('transactions');
+    Route::get('/invoice', [UserController::class, 'invoice'])->name('invoice');
+    Route::get('/subscription', [UserController::class, 'subscription'])->name('subscription');
+    Route::get('/profile-settings', [UserController::class, 'settings'])->name('profile-settings');
+
+    //invoice
+    Route::get('/invoicepreview/{id}',[InvoiceController::class,'preview'])->name('invoice-preview');
+    Route::get('invoice/download/{id}', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
+    Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice-list');
+    Route::get('/orderlist', [InvoiceController::class, 'viewOrder'])->name('order-list');
+    Route::get('/invoice/edit/{id}/{id1?}', [InvoiceController::class, 'edit'])->name('invoice-edit');
+    Route::get('/fetch-subcategories', [InvoiceController::class, 'fetchSubcategories'])->name('fetch.subcategories');
+    Route::get('/fetch-products', [InvoiceController::class, 'fetchProducts'])->name('fetch.products');
+    Route::get('/fetch-coupon', [InvoiceController::class, 'fetchcoupon'])->name('fetch.coupon');
+    Route::post('/invoice/store',[InvoiceController::class,'store'])->name('invoice-store');
 
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');
@@ -173,7 +207,8 @@ Route::middleware(['auth'])->group(function () {
     // stripe payment
     Route::post('stripe-payment', [StripePaymentController::class, 'stripePost'])->name('stripe-payment-store');
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
-
+    Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
+    Route::get('/subscription/cancel/{id}', [StripePaymentController::class, 'cancelSubscription'])->name('subscription.cancel');
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');

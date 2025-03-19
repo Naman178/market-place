@@ -17,56 +17,56 @@
         });
     });
 
-    document.getElementById('image').addEventListener('change', function(event) {
-        document.getElementById('image-previews').innerHTML = '';
+    // document.getElementById('image').addEventListener('change', function(event) {
+    //     document.getElementById('image-previews').innerHTML = '';
 
-        const files = event.target.files; // Get the selected files
-        const previewContainer = document.getElementById('image-previews');
+    //     const files = event.target.files; // Get the selected files
+    //     const previewContainer = document.getElementById('image-previews');
 
-        // Loop through all selected files
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+    //     // Loop through all selected files
+    //     for (let i = 0; i < files.length; i++) {
+    //         const file = files[i];
 
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
+    //         if (file.type.startsWith('image/')) {
+    //             const reader = new FileReader();
 
-                reader.onload = function(e) {
-                    const previewWrapper = document.createElement('div');
-                    previewWrapper.style.position = 'relative';
-                    previewWrapper.style.display = 'inline-block';
-                    previewWrapper.style.margin = '5px';
+    //             reader.onload = function(e) {
+    //                 const previewWrapper = document.createElement('div');
+    //                 previewWrapper.style.position = 'relative';
+    //                 previewWrapper.style.display = 'inline-block';
+    //                 previewWrapper.style.margin = '5px';
 
-                    const image = document.createElement('img');
-                    image.src = e.target.result;
-                    image.style.width = '100px';
-                    image.style.height = '100px';
-                    image.style.objectFit = 'cover';
+    //                 const image = document.createElement('img');
+    //                 image.src = e.target.result;
+    //                 image.style.width = '100px';
+    //                 image.style.height = '100px';
+    //                 image.style.objectFit = 'cover';
 
-                    const deleteButton = document.createElement('button');
-                    deleteButton.innerHTML = 'X';
-                    deleteButton.style.position = 'absolute';
-                    deleteButton.style.top = '-8px';
-                    deleteButton.style.right = '-8px';
-                    deleteButton.style.background = 'red';
-                    deleteButton.style.color = 'white';
-                    deleteButton.style.border = 'none';
-                    deleteButton.style.borderRadius = '50%';
-                    deleteButton.style.padding = '0 5px';
+    //                 const deleteButton = document.createElement('button');
+    //                 deleteButton.innerHTML = 'X';
+    //                 deleteButton.style.position = 'absolute';
+    //                 deleteButton.style.top = '-8px';
+    //                 deleteButton.style.right = '-8px';
+    //                 deleteButton.style.background = 'red';
+    //                 deleteButton.style.color = 'white';
+    //                 deleteButton.style.border = 'none';
+    //                 deleteButton.style.borderRadius = '50%';
+    //                 deleteButton.style.padding = '0 5px';
 
-                    deleteButton.addEventListener('click', function() {
-                        previewWrapper.remove();
-                        event.target.value = '';
-                    });
+    //                 deleteButton.addEventListener('click', function() {
+    //                     previewWrapper.remove();
+    //                     event.target.value = '';
+    //                 });
 
-                    previewWrapper.appendChild(image);
-                    previewWrapper.appendChild(deleteButton);
+    //                 previewWrapper.appendChild(image);
+    //                 previewWrapper.appendChild(deleteButton);
 
-                    previewContainer.appendChild(previewWrapper);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-    });
+    //                 previewContainer.appendChild(previewWrapper);
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+    //     }
+    // });
 
 
     function removeImageFromInput(file) {
@@ -94,6 +94,47 @@
         selector: '#long-description',
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+
+    $(document).ready(function () {
+        var quill = new Quill('#quill_editor', {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+        var quill = new Quill('#long_quill_editor', {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        quill.on('text-change', function () {
+            $('#short_description').val(quill.root.innerHTML);
+        });
+        
+        quill.on('text-change', function () {
+            $('#long_description').val(quill.root.innerHTML);
+        });
     });
 
     $(document).ready(function() {
@@ -136,7 +177,8 @@
             $(`#content-container-${sectionIndex}`).html(updatedContent);
 
             // Initialize TinyMCE for new textareas in the section
-            initializeTinyMCE(`#content-container-${sectionIndex} textarea`);
+            // initializeTinyMCE(`#content-container-${sectionIndex} textarea`);
+            initializeTinyMCE(sectionIndex, ' ');
         });
 
         // Initialize default type selection
@@ -185,7 +227,6 @@
                 
                 // Call a function to dynamically render the content based on the selected type
                 renderContentByType(contentContainer, selectedType, sectionIndex);
-                reinitializeTinyMCE();
             });
 
             // Initial render based on the pre-selected value (in case of edit)
@@ -193,7 +234,6 @@
             const sectionIndex = selectElement.dataset.sectionIndex;
             const contentContainer = document.querySelector(`#section-${sectionIndex} .dynamic-content`);
             renderContentByType(contentContainer, initialSelectedType, sectionIndex);
-            reinitializeTinyMCE();
         });
 
         function renderContentByType(container, type, index) {
@@ -201,7 +241,7 @@
             let imageUrl = '';
             // Replace the PHP values in HTML with JavaScript variables.
             const headingValue = document.querySelector(`#heading-${index}`).value || '';
-            const description1Value = document.querySelector(`#description-${index}`).value || '';
+            const description1Value = document.querySelector(`[name="description-${index}"]`).value || '';
             const imageUrlInput = document.getElementById(`image-url-${index}`);
 
             if (imageUrlInput) {
@@ -211,8 +251,11 @@
             } else {
                 console.error(`Element with ID image-url-${index} not found`);
             }
-
-
+             // <textarea class="form-control tinymce-textarea" id="description-${index}" name="description_${index}">${description1Value}</textarea>
+            //  <textarea class="form-control tinymce-textarea" id="description2-${index}" name="description2_${index}">${description1Value}</textarea>
+            //  <textarea class="form-control tinymce-textarea" id="description-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+            // <textarea class="form-control tinymce-textarea" id="description1-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+            // <textarea class="form-control tinymce-textarea" id="description2-${sectionIndex}" name="description2_${sectionIndex}"></textarea>
             if (type === 'heading-description-image') {
                 contentHtml = `
                     <div class="content-option" id="content-option-heading-description-image">
@@ -222,7 +265,8 @@
                         </div>
                         <div class="form-group description-field">
                             <label for="description-${index}">Description</label>
-                            <textarea class="form-control tinymce-textarea" id="description-${index}" name="description_${index}">${description1Value}</textarea>
+                            <div id="description-${index}" class="quill-editor" style="height: 200px; width:100%;">${description1Value}</div>
+                            <input type="hidden" name="description-${index}" id="description_${index}" value="${description1Value}">
                         </div>
                         <div class="form-group image-field">
                             <label for="image-${index}">Image</label>
@@ -245,7 +289,8 @@
                         </div>
                         <div class="form-group description-field">
                             <label for="description-${index}">Description</label>
-                            <textarea class="form-control tinymce-textarea" id="description-${index}" name="description_${index}">${description1Value}</textarea>
+                            <div id="description-${index}" class="quill-editor" style="height: 200px; width:100%;">${description1Value}</div>
+                            <input type="hidden" name="description-${index}" id="description_${index}" value="${description1Value}">
                         </div>
                     </div>
                 `;
@@ -259,7 +304,8 @@
                         </div>
                         <div class="form-group description-field">
                             <label for="description-${index}">Description</label>
-                            <textarea class="form-control tinymce-textarea" id="description-${index}" name="description_${index}">${description1Value}</textarea>
+                           <div id="description-${index}" class="quill-editor" style="height: 200px; width:100%;">${description1Value}</div>
+                            <input type="hidden" name="description-${index}" id="description_${index}" value="${description1Value}">
                         </div>
                         <div class="form-group heading-field">
                             <label for="heading-${index}">Heading</label>
@@ -276,7 +322,8 @@
                         </div>
                         <div class="form-group description-field">
                             <label for="description-${index}">Description</label>
-                            <textarea class="form-control tinymce-textarea" id="description-${index}" name="description_${index}">${description1Value}</textarea>
+                           <div id="description-${index}" class="quill-editor" style="height: 200px; width:100%;">${description1Value}</div>
+                            <input type="hidden" name="description-${index}" id="description_${index}" value="${description1Value}">
                         </div>
                         <div class="form-group image-field">
                             <label for="image-${index}">Image</label>
@@ -285,7 +332,8 @@
                         </div>
                         <div class="form-group description-field">
                             <label for="description2-${index}">Description</label>
-                            <textarea class="form-control tinymce-textarea" id="description2-${index}" name="description2_${index}">${description1Value}</textarea>
+                            <div id="description2-${index}" class="quill-editor" style="height: 200px; width:100%;">${description1Value}</div>
+                            <input type="hidden" name="description2-${index}" id="description2_${index}" value="${description1Value}">
                         </div>
                     </div>
                 `;
@@ -293,7 +341,8 @@
 
             // Update the content area with the generated HTML
             container.innerHTML = contentHtml;
-            initializeTinyMCE(container);
+            
+            initializeTinyMCE(index, description1Value);
         }
     });
 
@@ -353,7 +402,9 @@
                     </div>
                     <div class="form-group">
                         <label for="description-${sectionIndex}">Description</label>
-                        <textarea class="form-control tinymce-textarea" id="description-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+                        <div id="description-${sectionIndex}" class="quill-editor" style="height: 200px; width:100%;">${sectionIndex}</div>
+                        <input type="hidden" name="description-${sectionIndex}" id="description_${sectionIndex}" value="${sectionIndex}">
+                       
                     </div>
                     <div class="form-group">
                         <label for="image-${sectionIndex}">Image</label>
@@ -373,7 +424,8 @@
                     </div>
                     <div class="form-group">
                         <label for="description-${sectionIndex}">Description</label>
-                        <textarea class="form-control tinymce-textarea" id="description-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+                        <div id="description-${sectionIndex}" class="quill-editor" style="height: 200px; width:100%;">${sectionIndex}</div>
+                        <input type="hidden" name="description-${sectionIndex}" id="description_${sectionIndex}" value="${sectionIndex}">
                     </div>`;
                 break;
 
@@ -385,7 +437,8 @@
                     </div>
                     <div class="form-group">
                         <label for="description-${sectionIndex}">Description</label>
-                        <textarea class="form-control tinymce-textarea" id="description-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+                        <div id="description-${sectionIndex}" class="quill-editor" style="height: 200px; width:100%;">${sectionIndex}</div>
+                        <input type="hidden" name="description-${sectionIndex}" id="description_${sectionIndex}" value="${sectionIndex}">
                     </div>
                     <div class="form-group">
                         <label for="heading-${sectionIndex}">Heading</label>
@@ -401,7 +454,8 @@
                     </div>
                     <div class="form-group">
                         <label for="description1-${sectionIndex}">Description 1</label>
-                        <textarea class="form-control tinymce-textarea" id="description1-${sectionIndex}" name="description_${sectionIndex}"></textarea>
+                        <div id="description1-${sectionIndex}" class="quill-editor" style="height: 200px; width:100%;">${sectionIndex}</div>
+                        <input type="hidden" name="description_${sectionIndex}" id="description1-${sectionIndex}" value="${sectionIndex}">
                     </div>
                     <div class="form-group">
                         <label for="image-${sectionIndex}">Image</label>
@@ -409,7 +463,8 @@
                     </div>
                     <div class="form-group">
                         <label for="description2-${sectionIndex}">Description 2</label>
-                        <textarea class="form-control tinymce-textarea" id="description2-${sectionIndex}" name="description2_${sectionIndex}"></textarea>
+                        <div id="description2-${sectionIndex}" class="quill-editor" style="height: 200px; width:100%;">${sectionIndex}</div>
+                        <input type="hidden" name="description2_${sectionIndex}" id="description2-${sectionIndex}" value="${sectionIndex}">
                     </div>`;
                 break;
 
@@ -420,25 +475,71 @@
     }
 
     // Initialize or reinitialize TinyMCE editor
-    function initializeTinyMCE(selector) {
-        tinymce.init({
-            selector: selector, // Target all textareas with class 'tinymce-textarea'
-            menubar: false,
-            plugins: 'advlist autolink lists link image charmap print preview anchor',
-            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-            height: 200, // Adjust as needed
+    function initializeTinyMCE(index, description1Value) {
+        const quillSelector = `#description-${index}`; // Specific selector for each index
+        console.log(quillSelector, index, description1Value);
+        
+        // Initialize the Quill editor
+        const quillEditor = new Quill(quillSelector, {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Set the initial content if it exists (this should be done after initializing Quill)
+        if (description1Value) {
+            quillEditor.root.innerHTML = description1Value;
+        }
+
+        // Listen for text changes and update the hidden input field
+        quillEditor.on('text-change', function () {
+            const descriptionValue = quillEditor.root.innerHTML;
+            console.log(descriptionValue, 'Updated Description');
+
+            // Update the hidden input field with the Quill editor content
+            document.querySelector(`#description_${index}`).value = descriptionValue;
         });
     }
 
-    // Function to reinitialize TinyMCE when required
-    function reinitializeTinyMCE() {
-        tinymce.remove('.tinymce-textarea'); // Remove all existing TinyMCE instances
-        initializeTinyMCE('.tinymce-textarea'); // Reinitialize on all elements
-    }
 
+
+    // To retrieve the value from the Quill editor and store it in the hidden input field
+    function updateDescriptionValue(index) {
+        const quillEditor = new Quill(`#description-${index}`, {
+            theme: 'snow',
+            placeholder: 'Write something...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+    const descriptionValue = quillEditor.root.innerHTML;
+    document.querySelector(`#description_${index}`).value = descriptionValue;
+}
     // Ensure TinyMCE is initialized when the page is loaded or after adding a new section
-    document.addEventListener('DOMContentLoaded', function() {
-        initializeTinyMCE('.tinymce-textarea'); // Initialize TinyMCE on page load
+    $(document).ready(function () {
+        // Initialize all existing sections if any
+        $('.quill-editor').each(function () {
+            initializeTinyMCE(this);
+        });
     });
 
 
@@ -448,7 +549,7 @@
         const container = document.getElementById('sections-container');
         const html = getSectionHtml(type, sectionIndex++);
         container.insertAdjacentHTML('beforeend', html);
-        reinitializeTinyMCE();
+        initializeTinyMCE(sectionIndex);
     }
 
     // Event listener for dynamically changing section type
@@ -458,7 +559,7 @@
             const newType = e.target.value;
             const dynamicContent = document.querySelector(`#section-${sectionIndex} .dynamic-content`);
             dynamicContent.innerHTML = generateContent(newType, sectionIndex);
-            reinitializeTinyMCE();
+            initializeTinyMCE(sectionIndex);
         }
     });
 
@@ -468,9 +569,6 @@
             addNewSection();
         });
     });
-
-    // Initialize TinyMCE initially in case there are predefined elements
-    initializeTinyMCE('.tinymce-textarea');
 
 
     function confirmStatusChange(blogId,status) {
