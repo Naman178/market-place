@@ -202,12 +202,12 @@
 }
 
 
-.hero_banner .container ,.plugins .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
+.hero_banner .container ,.plugins .container,.category .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
   max-width: 1400px !important;
   width: 100% !important;
 }
 
-.plugins , .int_bg , .features, .social_media, .testimonial-section, .support{
+.plugins , .int_bg ,.category, .features, .social_media, .testimonial-section, .support{
   margin-bottom: 150px;
 }
 
@@ -1301,11 +1301,11 @@
   right: 0;
 }
 .carousel-container .col-4{
-  width: 33% !important;
+  width: 33%;
 }
 
 div#integrationCarousel .col-4{
-    width: 467px !important;
+    width: 467px;
 }
 
 .blog h1 {
@@ -1580,13 +1580,23 @@ div#integrationCarousel .col-4{
   right: clamp(0%, 0vw, 30%);   
 }
 
-.banner {
+/* .banner {
   position: absolute;
   left: clamp(10%, 50vw, 50%); 
   top: clamp(446rem, 20vh, 40rem);
   transform: translateX(-50%);
   color: #fff;
   width: 100%;
+} */
+.banner {
+  position: absolute;
+  margin-top: -185px;
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Ensure it remains centered */
+  color: #fff;
+  width: 90%; /* Adjust width to be responsive */
+  max-width: 1200px; /* Prevent overly wide banners */
+  text-align: center; /* Ensure text is centered */
 }
 
 .rectangle_img{
@@ -1753,7 +1763,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 }
 
 .menu-container ul li {
-  margin-right: 50px;
+  margin-right: 29px;
 }
 
 .menu-container ul li a {

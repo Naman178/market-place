@@ -23,17 +23,17 @@
 @endsection
 @section('content')
 @include('front-end.home-page.section.hero_banner')
+@if ($category->count()<=1)
+    @include('front-end.home-page.section.Subcategory')
+@else
+    @include('front-end.home-page.section.Category')
+@endif
 @include('front-end.home-page.section.plugins')
 <div class="carousel-container">
     @include('front-end.home-page.section.Integration')
 </div>
 @include('front-end.home-page.section.Features')
 @include('front-end.home-page.section.Support')
-@if ($category->count()<=1)
-    @include('front-end.home-page.section.Subcategory')
-@else
-    @include('front-end.home-page.section.Category')
-@endif
 {{-- @include('front-end.home-page.section.items-grid') --}}
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
@@ -166,7 +166,9 @@
             interval: false, // Disable auto-sliding
             wrap: true // Enable wrapping around from last to first slide
         });
-
+        if ($(window).width() <= 320) {
+            $('.arrow-container').show();
+        }
     });
     // for Social media
     $(document).ready(function () {
@@ -196,23 +198,25 @@
 
         $('#integrationCarousel').slick({
             infinite: true,
-            slidesToShow: 2,
+            slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: false, // Default arrows hidden (we use custom ones)
             dots: false,
             autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 1199,
+                    breakpoint: 1405,
                     settings: {
                         slidesToShow: 2,
                     }
                 },
                 {
-                    breakpoint: 480,
+                    breakpoint: 991,
                     settings: {
                         slidesToShow: 1,
+                        dots: true,
+                        arrows: false,
                     }
                 }
             ]
