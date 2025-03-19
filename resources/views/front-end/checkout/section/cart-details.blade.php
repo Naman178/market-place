@@ -82,6 +82,7 @@
                                 <div class="card-body">
                                     <h5 class="mt-0">{{$val}}</h5>
                                     <p>Same fee {{$val}} for all products in order</p>
+                                    <input type="hidden" name="discount_coupon_type" id="discount_coupon_type" data-type="{{$item->discount_type}}" value="{{$item->discount_value}}">
                                     <div class="card">
                                         <div class="card-body p-10">
                                             <div class="d-flex align-items-center justify-content-between">

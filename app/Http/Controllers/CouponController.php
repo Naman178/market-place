@@ -205,6 +205,7 @@ class CouponController extends Controller
                                                 'message' => "Coupon applied successfully.",
                                                 'total' => $total,
                                                 'discount' => $discount,
+                                                'discount_type' =>$exist->discount_type,
                                                 'id'=>$exist->id,
                                             ]);
                                         } else {
