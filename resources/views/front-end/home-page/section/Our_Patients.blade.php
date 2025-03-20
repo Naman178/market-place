@@ -1,4 +1,4 @@
-<div class="features integration patients int_bg ">
+<div class="features integration patients int_bg pb-35 mb-0">
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">

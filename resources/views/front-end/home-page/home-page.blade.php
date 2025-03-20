@@ -38,9 +38,9 @@
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
 </div>
-@include('front-end.home-page.section.social_media')
 <div class="carousel-container">
 @include('front-end.home-page.section.Our_Patients')
+@include('front-end.home-page.section.social_media')
 @include('front-end.home-page.section.FAQ')
 </div>
 
@@ -98,15 +98,19 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 992,
+                    breakpoint: 991,
                     settings: {
-                        slidesToShow: 2
+                        slidesToShow: 2,
+                        dots: true,
+                        arrows: false,
                     }
                 },
                 {
-                    breakpoint: 576,
+                    breakpoint: 767,
                     settings: {
-                        slidesToShow: 1
+                        slidesToShow: 1,
+                        dots: true,
+                        arrows: false,
                     }
                 }
             ]

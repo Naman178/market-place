@@ -2,7 +2,7 @@
 <div class="int_bg">
     <div class="container">
         <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found">
-        <div class="d-flex">
+        <div class="d_flex">
             <div class="integration">
                 <h1>Powering Your Business with Smart<span>  Solutions</span></h1>
                 <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
@@ -21,7 +21,7 @@
             <div class="col-3">
                 <div class="item wordpress_bg">
                     <div class="d_flex">
-                        <div>
+                        <div class="thunder">
                             <img class="round_blue_img" height="70" width="70" src="front-end/images/Ellipse 450.png" alt="not found">
                             <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/thunder.png" alt="not found" style="margin-left:0px; left:83px;">
                         </div>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class="col-3">
-                <div class="item wordpress_bg">
+                <div class="item wordpress_bg secure">
                     <div class="d_flex">
                         <div>
                             <img class="round_blue_img" src="front-end/images/Ellipse 450.png" height="70" width="70"  alt="not found">

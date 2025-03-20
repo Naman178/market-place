@@ -2,10 +2,11 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="int_bg blog">
+
+<div class="int_bg blog mb-37">
     <div class="container">
-        <img class="mt-65" src="front-end/images/Group 1000002961.png" alt="not found">
-        <div class="d-flex">
+        <img class="" src="front-end/images/Group 1000002961.png" alt="not found">
+        <div class="d_flex">
             <div class="integration">
                 <h1>Latest From Our <span>Blog</span></h1>
                 <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found">
@@ -18,13 +19,13 @@
         <div id="blogCarousel" >
             <div class="row blog-slider">
                 @foreach ($Blogs as $blog)
-                    <div class="col-4">
+                    <div class="col-4 match-height-item">
+                        <a href="{{ route('blog_details', ['blog_id' => $blog->blog_id]) }}">
+                        <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                         <div class="item">
-                            <div class="mb-5">
-                                <img class="blog_img match-height-item" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
-                            </div>
-                            <a href="javascript:void(0)" class="blogcategoryBtn">{{ $blog->category_name }}</a>
-                            <h3 class="mb-4" style="margin-top: 38px;">{{ $blog->title }}</h3>
+                           <p class="badge">{{ $blog->categoryname->name ?? ''}}</p>
+                            <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
+                            <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
                             <div class="d-flex">
                                 <a href="{{ route('blog_details', ['blog_id' => $blog->blog_id]) }}" class="integration_know d-flex align-items-center">
                                     <span>Read More</span>
@@ -32,10 +33,43 @@
                                 </a>
                             </div>
                         </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
 </div>
+<script>
+    function setEqualHeights(selector) {
+    let maxHeight = 0;
+
+    // Reset the height to auto for recalculation
+    document.querySelectorAll(selector).forEach(item => {
+        item.style.height = 'auto';
+    });
+
+    // Find the maximum height
+    document.querySelectorAll(selector).forEach(item => {
+        const height = item.offsetHeight;
+        if (height > maxHeight) {
+            maxHeight = height;
+        }
+    });
+
+    // Apply the maximum height to all items
+    document.querySelectorAll(selector).forEach(item => {
+        item.style.height = `${maxHeight}px`;
+    });
+}
+
+// Call the function on page load and resize
+document.addEventListener('DOMContentLoaded', () => {
+    setEqualHeights('.blog-slider .item');
+});
+
+window.addEventListener('resize', () => {
+    setEqualHeights('.blog-slider .item');
+});
+</script>
 <!-- Integration section end -->

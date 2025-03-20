@@ -31,7 +31,7 @@ class HomePageController extends Controller
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         $FAQs = FAQ::get();
-        $Blogs = Blog::where('status', '1')->get();
+        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
         foreach ($Blogs as $blog) {
             $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
             $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count();
