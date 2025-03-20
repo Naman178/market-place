@@ -1,3 +1,94 @@
+@media (max-width: 2560px) {
+    div#integrationCarousel .col-4{
+        width: 467px !important;
+    }
+}
+  
+@media (min-width: 1920px) {
+    .circle_img {
+      left: 98%; 
+      top: 268rem;
+    }
+}
+
+@media (min-width: 1880px) {
+   
+    .circle_img {
+      left: 98% !important;
+      top: 268rem;
+    }
+  
+    .faq-section .question_img {
+        left: clamp(0%, 0vw, 30%) !important;   
+    }
+    .faq-section .second_question_img {
+        right: clamp(0%, 0vw, 30%) !important;   
+    }
+
+    .frame_img {
+        top: 45rem;
+        left: 20rem; 
+    } 
+}
+@media (min-width: 1600px) {
+    .faq-section h1 {
+        font-size: 39px !important;
+    }
+    /* .banner {
+        top: 446rem  !important;
+    } */
+}
+@media(max-width: 1599px) {
+    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
+        display: none !important;
+    }
+    
+    .mt-7 {
+        margin-top: 0 !important;
+    }
+}
+@media (min-width: 1345px) and (max-width: 1599px) {
+    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
+        display: none;
+    }
+    .faq-section h1 {
+        font-size: 33px !important;
+    }
+    /* .banner {
+        top: 444rem !important;
+    } */
+}
+@media (min-width: 1300px) and (max-width: 1343px) {
+    .rectangle_img {
+        width: 95%; 
+    }
+    .faq-section h1 {
+        font-size: 31px !important;
+    }
+    /* .banner {
+        top: 447rem  !important;
+    } */
+}
+
+@media (min-width: 1206px) and (max-width: 1199px) {
+    .faq-section h1 {
+        font-size: 29px !important;
+    }
+    /* .banner {
+        top: 456rem !important;
+    } */
+}
+@media (min-width: 1200px) and (max-width: 1299px) {
+    .rectangle_img {
+        width: 98%; /* Slightly smaller width */
+    }
+    .faq-section h1 {
+        font-size: 30px !important;
+    }
+    /* .banner {
+        top: 452rem !important;
+    } */
+}
 
 @media (max-width: 1198px) and (max-width: 1054px) {
     .support .integra_p {
@@ -58,6 +149,29 @@
     .blog .vector2_img{
         margin-left: 16rem !important;
     }
+    
+    .real_time_section .real_time {
+        order: 2 !important;
+        margin-bottom: 76px;
+    }
+
+    .real_time_section img.gold_price_img {
+        order: 1 !important;
+    }
+    .pattern_img, .pattern2_img, .pattern3_img, .pattern4_img{
+        display: none !important;
+    }
+    .api_section{
+        margin-top: 0 !important;
+         margin-bottom: 0 !important;
+    }
+    .patients  .arrow-container {
+        position: relative;
+        left: -20rem;
+    }
+    .patients .rectangle_img {
+        height: 30rem !important;
+    }
 }
 @media (max-width: 991px) {
     .api_section{
@@ -76,13 +190,16 @@
         margin-left: 0px !important;
     }
     .tech .mt-13{
-        padding-left: 0px !important;
+        padding-left: 15px !important;
     }
     .wordpress-plugin-grid {
         grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
     }
-    .plugins, .int_bg, .category, .features, .social_media, .testimonial-section, .support {
+    .plugins, .category, .features, .social_media, .testimonial-section, .support {
         margin-bottom: 30px !important;
+    }
+    .int_bg{
+        margin-bottom: 0 !important;
     }
     
     .logo-container img {
@@ -105,14 +222,6 @@
         font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
         list-style: 25px !important;
     }
-    .real_time_section .real_time {
-        order: 2 !important;
-        margin-bottom: 30px;
-    }
-
-    .real_time_section img.gold_price_img {
-        order: 1 !important;
-    }
     .real_time_section {
         margin-bottom: 10px !important;
     }
@@ -123,14 +232,48 @@
         display: flex;
         flex-direction: column-reverse; /* Reverse the order */
     }
+    .vertical-menu-row .row.left-row{
+        justify-content: space-between !important;
+        margin-top : 20px !important;
+    }
+    .vertical-menu-row{
+        padding: 0 0 15px !important;
+    }
+    .row.left-row .title{
+        margin-top:20px !important;
+    }
+    .blog h1{
+        width: 100% !important;
+    }
+    .arrow-container{
+        display: none !important;
+    }
+    #mobile-menu:not(.d-none) {
+        left: 36rem; /* Adjust position */
+    }
+    .menu-vertical li {
+        line-height: 30px !important;
+    }
+    
+    .blue_common_btn {
+        width: 100% !important;
+    }
 }
 @media (max-width: 767px) {
     .wordpress-plugin-grid {
         grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
     }
-    .vertical-menu-row{
+    .vertical-menu-row, .row.left-row{
         display: block !important;
     }
+    .vertical-menu-row .title {
+        font-weight: 600;
+        font-size: 20px;
+    }
+    .vector2_img, .vector_img, .vector5_img{
+        display: none !important;
+    }
+    
     .MetalPrice_img {
         width: 100% !important; 
         height: auto !important; 
@@ -185,9 +328,8 @@
     .real_time h1 {
         margin-right: 0 !important;
     }
-    
-    .arrow-container{
-        display: none !important;
+    #mobile-menu:not(.d-none) {
+        left: 20rem; /* Adjust further */
     }
 }
 @media (max-width: 480px) {
@@ -221,7 +363,7 @@
         top: 60px !important;
     }
     #mobile-menu:not(.d-none) {
-        left: 9rem !important;
+        left: 10rem !important;
     }
     .blog .vector2_img {
         margin-left: 13rem !important;
@@ -232,6 +374,9 @@
     }
     .contact{
         margin-left: 3px !important;
+    }
+    .click_img{
+        display: none !important;
     }
 }
 
@@ -298,7 +443,7 @@
     }
     #integrationCarousel .wordpress_bg {
         width: 290px !important;
-        height: 520px !important;
+        height: 390px !important;
     }
     #integrationCarousel .d_flex{
         flex-wrap: wrap;
@@ -332,12 +477,12 @@
         line-height: 12px !important;
         font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
     }
-    .blue_common_btn {
-        width: 100% !important;
-    }
-    .tech .testimonial-text{
+   .tech .tech_text .testimonial-text{
         margin-top: 12px !important;
         margin-left: 15px !important;
+    }
+   .tech .latest .testimonial-text{
+        margin-left: 0 !important; 
     }
     .integration .mt-65 {
         margin-top: -5px !important;
@@ -353,94 +498,37 @@
     .category h1{
         font-size: 24px;
     }
-}
-@media (min-width: 1206px) and (max-width: 1199px) {
-    .faq-section h1 {
-        font-size: 29px !important;
+    .round_blue_img {
+        margin-left: 18px !important;
     }
-    /* .banner {
-        top: 456rem !important;
-    } */
-}
-@media (min-width: 1200px) and (max-width: 1299px) {
-    .rectangle_img {
-        width: 98%; /* Slightly smaller width */
+    .wordpress_white_logo {
+        left: 100px !important;
     }
-    .faq-section h1 {
-        font-size: 30px !important;
+   .thunder .wordpress_white_logo{
+        left: 50px !important;
+   }
+   .secure .d_flex{
+        flex-wrap: wrap !important;
+   }
+   .wordpress_bg .int_p{
+        margin-left: 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 25px !important;
+        line-height: 25px  !important;
+   }
+   .wordpress_bg .intig_p{
+        font-size: 17px  !important;
+        line-height: 30px  !important;
+        margin-left: 20px  !important;
+        margin-top: 0px  !important;
+        margin-bottom: 40px  !important;
+   }
+   .tech {
+        padding: 1rem !important;
     }
-    /* .banner {
-        top: 452rem !important;
-    } */
-}
-
-@media (min-width: 1300px) and (max-width: 1343px) {
-    .rectangle_img {
-        width: 95%; 
-    }
-    .faq-section h1 {
-        font-size: 31px !important;
-    }
-    /* .banner {
-        top: 447rem  !important;
-    } */
-}
-@media(max-width: 1599px) {
-    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
-        display: none !important;
-    }
-}
-
-@media (min-width: 1345px) and (max-width: 1599px) {
-    .faq-section .second_question_img, .faq-section .question_img, .frame_img, .circle_img{
-        display: none;
-    }
-    .faq-section h1 {
-        font-size: 33px !important;
-    }
-    /* .banner {
-        top: 444rem !important;
-    } */
-}
-@media (min-width: 1600px) {
-    .faq-section h1 {
-        font-size: 39px !important;
-    }
-    /* .banner {
-        top: 446rem  !important;
-    } */
-}
-
-@media (min-width: 1920px) {
-    .circle_img {
-      left: 98%; 
-      top: 268rem;
-    }
-}
-  
-@media (min-width: 1880px) {
-    #menu-toggle {
-        display: none !important;
-    }
-    .circle_img {
-      left: 98% !important;
-      top: 268rem;
-    }
-  
-    .faq-section .question_img {
-        left: clamp(0%, 0vw, 30%) !important;   
-    }
-    .faq-section .second_question_img {
-        right: clamp(0%, 0vw, 30%) !important;   
-    }
-
-    .frame_img {
-        top: 45rem;
-        left: 20rem; 
-    } 
-}
-@media (max-width: 2560px) {
-    div#integrationCarousel .col-4{
-        width: 467px !important;
+    hr {
+        height: 0 !important;
+        width: auto !important;
+        margin-left: -8px !important;
     }
 }

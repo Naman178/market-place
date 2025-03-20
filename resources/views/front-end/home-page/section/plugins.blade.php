@@ -1,4 +1,4 @@
-<div class="plugins">
+<div class="plugins mt-7">
     <img class="frame_img" src="{{ asset('front-end/images/Frame.png') }}" alt="not found">
     <div class="container">
         <img src="{{ asset('front-end/images/Group 1000002953.png') }}" alt="not found">
@@ -16,7 +16,7 @@
                     <img class="round_img" src="{{ asset('front-end/images/Ellipse 440.png') }}" alt="not found">
                     <img class="wordpress_logo" src="{{ asset('front-end/images/store.png') }}" alt="not found">
                     <h4 class="plugin_h4 ml-40 mt-20">Live Gold Price Updates</h4>
-                    <p class="plugin_p ml-40">Automatically fetch real-time gold, silver, and platinum prices to ensure accurate and up-to-date pricing for your WooCommerce store</p>
+                    <p class="plugin_p ml-40">Automatically fetch real-time gold, silver, and platinum prices to ensure accurate and <br> up-to-date pricing for your WooCommerce store</p>
                     <a href="#" class="know_more ml-40">Learn More <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                 </div>
            

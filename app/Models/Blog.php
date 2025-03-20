@@ -26,4 +26,8 @@ class Blog extends Model
     {
         return Blog::whereIn('blog_id', json_decode($this->related_blogs, true) ?? [])->get();
     }
+    public function categoryname()
+    {
+        return $this->hasOne(Blog_category::class, 'category_id', 'category');
+    }
 }

@@ -60,7 +60,7 @@ class BlogController extends Controller
                         'title' => $request->title,
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
-                        'short_description' => $request->short_description,
+                        'short_description' => $request->shortdescription,
                         'long_description' => $request->long_description,
                         'uploaded_by' => Auth::user()->name,
                         'created_at' => Carbon::now(),
@@ -157,18 +157,25 @@ class BlogController extends Controller
             
                     // Handle image upload for updating the blog
                     $blog_originalImageName = null;
+                    // if ($request->hasFile('blog_image')) {
+                    //     $blog_originalImageName = $request->file('blog_image')->getClientOriginalName();
+                    //     $destinationPath = public_path('storage/images/');
+                    //     $request->file('blog_image')->move($destinationPath, $blog_originalImageName);
+                    // }
                     if ($request->hasFile('blog_image')) {
                         $blog_originalImageName = $request->file('blog_image')->getClientOriginalName();
                         $destinationPath = public_path('storage/images/');
                         $request->file('blog_image')->move($destinationPath, $blog_originalImageName);
+                    } else {
+                        $blog_originalImageName = $Blog->image; 
                     }
             
                     // Update the blog entry
                     $Blog->update([
                         'title' => $request->title,
                         'category' => $request->category,
-                        'image' => $blog_originalImageName ?? $request->old_image,
-                        'short_description' => $request->short_description,
+                        'image' => $blog_originalImageName,
+                        'short_description' => $request->shortdescription,
                         'long_description' => $request->long_description,
                         'uploaded_by' => Auth::user()->name,
                         'updated_at' => Carbon::now(),
@@ -233,6 +240,7 @@ class BlogController extends Controller
                             }
                         }
                     }
+                    if (!empty($contentSections)) {
                     foreach ($contentSections as $sectionData) {
                         if (!empty($sectionData['id'])) {
                             $existingContent = BlogContent::where('blog_id', $request->scid)
@@ -262,7 +270,7 @@ class BlogController extends Controller
                             ]);
                         }
                     }
-            
+                }
                     // Flash success message
                     session()->flash('success', trans('custom.Blog_update_success'));
             

@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-lg-7 col-sm-12 col-12">
                 <h1><span>Stay Updated with the Latest Innovations!</span></h1>
-                <div>
+                <div class="latest">
                     <p class="integra_p testimonial-text">
                         Subscribe to our newsletter and be the first to receive updates on new features, exclusive offers, and expert insights.
                     </p>
@@ -74,7 +74,9 @@
                           </svg><span> Sign Up </span></a></li>
                     </div>
                     <span class="newsletter_success"></span>
+                    <div class="tech_text">
                     <p class="integra_p testimonial-text small_text">By clicking Sign Up you're confirming that you agree with our Terms and Conditions.</p>
+                    </div>
                 </div>
             </div>
         </div>
