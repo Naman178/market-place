@@ -65,7 +65,7 @@
 
         <div class="menu-toggle d-lg-none" id="menu-toggle">
             <button class="menu-btn">
-                ☰
+                <img class="menu-img" src="{{ asset('front-end/images/menu.png') }}" alt="menu">
             </button>
         </div>
 
