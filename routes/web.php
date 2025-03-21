@@ -54,10 +54,14 @@ Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
 Route::get('/product/{categoryOrSubcategory}', [HomePageController::class, 'show'])->name('product.list');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
+Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
+Route::post('/reviews/update/{id}', [HomePageController::class, 'reviewsupdate'])->name('reviews.update');
 Route::post('/product-comment-post', [HomePageController::class, 'commentPost'])->name('product-comment-post');
 Route::post('/product-review-post', [HomePageController::class, 'reviewPost'])->name('product-review-post');
 Route::post('/wishlist/add', [HomePageController::class, 'addToWishlist'])->name('wishlist.add');
+Route::post('/wishlist/remove', [HomePageController::class, 'removeToWishlist'])->name('wishlist.remove');
 Route::get('/get-wishlist', [HomePageController::class, 'getUserWishlist'])->name('get_wishlist');
+Route::get('/wishlist', [HomePageController::class, 'wishlistindex'])->name('wishlist.index');
 
 Route::get("/checkout/{id}", [CheckoutController::class, "index"])->name("checkout");
 Route::post('/checkout/remove', [CheckoutController::class, 'removeItem'])->name('cart.remove');

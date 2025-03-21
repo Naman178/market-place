@@ -531,4 +531,7 @@
         width: auto !important;
         margin-left: -8px !important;
     }
+    .menu-img{
+        width: 10% !important;
+    }
 }
