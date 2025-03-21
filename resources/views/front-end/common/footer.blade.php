@@ -42,6 +42,7 @@
                         <li><a href="{{ route('user-faq') }}">FAQ</a></li>
                         <li>Sponsorship</li>
                         <li><a href="{{ route('contact-us') }}">Contact</a></li>
+                        <li><a href="{{ route('wishlist.index') }}">Wishlist</a></li>
                     </ul>
                 </div>
                 <div>

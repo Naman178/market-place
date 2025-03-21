@@ -156,16 +156,68 @@
     });
 
     function dynamicCalculation() {
-        let quantity; 
         let subTotalText = $("#subtotal_amount").data('amount');
-        let subTotal = parseInt(subTotalText.replace(/[^0-9]/g, ""));
-
-        setTimeout(function() {
-            quantity = parseInt($("#quantity").text());
-            continueCalculation(quantity, subTotal);
-        }, 1000);
+        let subTotal = parseInt(subTotalText.replace(/[^0-9]/g, "")); 
+        let quantity = parseInt($("#quantity").val());
+        
+        if (!isNaN(quantity)) {
+            setTimeout(function() {
+                continueCalculation(quantity, subTotal);
+            }, 1000)
+            $("#items-count").text(quantity + " Items");
+        } else {
+            console.error("Quantity is undefined or invalid.");
+        }
     }
+    // function addQuantityOption() {
+    //     const quantitySelect = document.getElementById("quantity");
+    //     const currentOptions = quantitySelect.options.length; // Get the current number of options
+    //     const newOptionValue = currentOptions + 1; // Calculate the new value for the next option
 
+    //     // Create a new <option> element
+    //     const newOption = document.createElement("option");
+    //     newOption.value = newOptionValue;
+    //     newOption.textContent = newOptionValue;
+
+    //     // Add the new option to the <select> element
+    //     quantitySelect.appendChild(newOption);
+    // }
+   
+
+    const addToWishlistRoute = "{{ route('wishlist.add') }}";
+    function saveForLater(planId) {
+        // Fetch the CSRF token from the meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Send a POST request to the wishlist add route
+        fetch(addToWishlistRoute, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                item_id: planId,
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to save for later.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                toastr.success(data.message);
+            } else {
+                toastr.error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            toastr.error(data.message);
+        });
+    }
     function continueCalculation(quantity, subTotal) {
         let finalTotal = quantity * subTotal;
         let subTotalText = $("#subtotal_amount").text('INR ' + finalTotal);
@@ -187,6 +239,7 @@
 
         let gst_text = $("#gst_amount").text('INR ' + gstAmount);
         let final_text = $("#final_total").text('INR ' + finalTotal);
+        let finaltext = $(".final_total").text('INR ' + finalTotal);
         let discount_amount = $("#discount_amount").text('INR ' + discountAmount);
         let discount_value = $("#discount_value").val(discountAmount);
         let final_text_btn = $(".final_btn_text").text(finalTotal);

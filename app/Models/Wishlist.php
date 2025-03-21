@@ -15,4 +15,12 @@ class Wishlist extends Model
         'user_id',
         'product_id',
     ];
+    public function plan()
+    {
+        return $this->hasMany(Items::class, 'id', 'product_id');
+    }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
 }
