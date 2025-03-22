@@ -781,9 +781,14 @@
                                     {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
                                 </div>
                             @else
-                                <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
-                                    class="rounded-full w-100 h-100">
-                            @endif 
+                                @php
+                                    // Check if the profile picture is a Google URL or local file
+                                    $profilePic = filter_var(auth()->user()->profile_pic, FILTER_VALIDATE_URL) 
+                                                ? auth()->user()->profile_pic 
+                                                : asset('assets/images/faces/' . auth()->user()->profile_pic);
+                                @endphp
+                                <img src="{{ $profilePic }}" alt="profile" class="rounded-full w-100 h-100">
+                            @endif
                         </div>
                         <div class="text">
                             <h2>{{ auth()->user()->name }}</h2>

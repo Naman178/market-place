@@ -34,7 +34,12 @@
                                     {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
                                 </div>
                             @else
-                                <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
+                                @php
+                                    $profilePic = filter_var(auth()->user()->profile_pic, FILTER_VALIDATE_URL) 
+                                            ? auth()->user()->profile_pic 
+                                            : asset('assets/images/faces/' . auth()->user()->profile_pic);
+                                @endphp
+                                <img src="{{ $profilePic }}" alt="profile"
                                     class="rounded-full header_image">
                             @endif 
                          <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>

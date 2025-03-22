@@ -100,6 +100,10 @@
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
+.google .blue_common_btn svg {
+    left: -3px !important;
+}
+
 .btn-google:hover {
     /* background-color: #007AC1; */
     /* border: 1px solid #edf2f4; */
