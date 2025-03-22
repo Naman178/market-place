@@ -69,7 +69,7 @@ class LoginController extends Controller
         
             if ($user) {
                 // Update profile picture if needed
-                if (!$user->profile_pic) {
+                if (empty($user->profile_pic)) {
                     $user->update([
                         'profile_pic' => $googleUser->avatar . '?sz=200',
                     ]);
@@ -116,11 +116,12 @@ class LoginController extends Controller
                 [
                     'name' => $githubUser->name ?? $githubUser->nickname,
                     'email' => $githubUser->email,
-                    'profile_pic' => $githubUser->avatar, // Store GitHub profile image
                     'password' => bcrypt('admin@123'), // Dummy password
                 ]
             );
-    
+            if (empty($user->profile_pic)) {
+                $user->update(['profile_pic' => $githubUser->avatar]);
+            }
             // Log in the user
             Auth::login($user);
     
@@ -144,9 +145,11 @@ class LoginController extends Controller
                 [
                     'name' => $linkedinUser->name ?? $linkedinUser->nickname,
                     'email' => $linkedinUser->email,
-                    'profile_pic' => $linkedinUser->avatar ?? null, // Store LinkedIn profile image if available
                 ]
             );
+            if (empty($user->profile_pic)) {
+                $user->update(['profile_pic' => $linkedinUser->avatar ?? null]);
+            }
             // dd($linkedinUser);
             Auth::login($user);
             return redirect('/');

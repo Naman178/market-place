@@ -3346,3 +3346,23 @@ button:focus {
 a {
   text-decoration: none !important;
 }
+.wsus__product_page_search form {
+  position: relative;
+}
+.wsus__product_page_search form input {
+  border: 1px solid #DEDEDE;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 21px 20px;
+}
+.wsus__product_page_search form button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+.blue_common_btn i {
+  margin-right: 5px;
+}

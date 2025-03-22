@@ -48,6 +48,9 @@
                             <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                                 <span class="dropdown_label">  Dashboard </span>
                             </a>
+                            <a class="dropdown-item" href="{{ route('wishlist.index') }}">
+                                <span class="dropdown_label">  Wishlist </span>
+                            </a>
                             <a class="dropdown-item" href="{{ route('profile') }}">
                                 <span class="dropdown_label">  Profile Setting </span>
                             </a>
