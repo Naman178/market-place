@@ -256,7 +256,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" name="lastname" id="lastname" class="form-control custom-css"
-                                                value="{{ $name[1] }}" placeholder="">
+                                                value="{{ $name[1] ?? '' }}" placeholder="">
                                             <label for="lastname" class="floating-label">Last Name</label>
                                             <div class="error" id="lastname_error"></div>
                                         </div>

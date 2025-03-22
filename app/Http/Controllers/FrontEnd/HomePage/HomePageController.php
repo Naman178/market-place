@@ -85,6 +85,7 @@ class HomePageController extends Controller
     public function sortItems(Request $request)
     {
         $sortOption = $request->input('sort');
+        $keyword = $request->input('keyword');
         $subcategories = SubCategory::where('category_id', $request->item_id)
             ->where('sys_state', '=', '0')
             ->pluck('id'); // Get only the IDs for efficient querying
@@ -102,6 +103,22 @@ class HomePageController extends Controller
             ->select('items__tbl.*')
             ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price') // Get the first (lowest) recurring fixed price
             ->groupBy('items__tbl.id');
+        if (!empty($keyword)) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('items__tbl.name', 'LIKE', "%$keyword%")
+                      ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%") 
+                      ->orWhereHas('tags', function ($query) use ($keyword) { 
+                          $query->where('tag_name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) { 
+                          $query->where('name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) { 
+                          $query->where('name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]); 
+                });
+            }
         if ($request->has('price')) {
             $price = (int) $request->price;  
             $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [$price]);
@@ -124,7 +141,7 @@ class HomePageController extends Controller
             $query->where('sys_state', '=', '0');
         }])->get();
         if($subcategories){
-            $item = Items::with(['categorySubcategory', 'pricing' , 'order'])
+            $item = Items::with(['categorySubcategory', 'pricing' , 'order','tags'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                         $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                     })

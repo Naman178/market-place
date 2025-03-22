@@ -20,6 +20,12 @@
     <meta property="og:type" content="website">
 @endsection
 @section('content')
+@php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+@endphp
 <div class="container items-container product_details">
     <div class="row cust-page-padding">
         <div class="col-xl-8 col-lg-7">
@@ -301,7 +307,11 @@
                         <li><span>Tags</span>
                             <p>
                                 @foreach ($item->tags as $tag)
-                                    <a>{{ $tag['tag_name']   ?? '' }},</a>
+                                @if ($category)
+                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                @elseif ($subcategory)
+                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                @endif                           
                                 @endforeach
                             </p>
                         </li>

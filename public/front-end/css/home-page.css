@@ -343,7 +343,7 @@
   stroke-dashoffset: -480;
 }
 .blue_common_btn {
-  position: relative !important;
+  position: relative;
   display: inline-flex;
   align-items: center !important;
   justify-content: center !important;
@@ -565,7 +565,7 @@
   transform-origin: 0 50%  !important;
 }
 .dropdown-menu {
-  margin-top: 10rem !important;
+  margin-top: 13rem !important;
 }
 .dropdown_label {
   display: inline-block;
@@ -1822,7 +1822,6 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
 }
 
 .logo-container img {
