@@ -42,6 +42,7 @@
                         <li><a href="{{ route('user-faq') }}">FAQ</a></li>
                         <li>Sponsorship</li>
                         <li><a href="{{ route('contact-us') }}">Contact</a></li>
+                        <li><a href="{{ route('wishlist.index') }}">Wishlist</a></li>
                     </ul>
                 </div>
                 <div>
@@ -69,10 +70,8 @@
                         <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="row right-row contact">
                 <div>
-                    <div class="title pb-3">Contact</div>
+                    <div class="title pb-2">Contact</div>
                     <ul class="menu-vertical">
                         <li>
                             <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p>
@@ -80,6 +79,16 @@
                     </ul>
                 </div>
             </div>
+            {{-- <div class="row right-row contact">
+                <div class="w-100">
+                    <div class="title pb-3">Contact</div>
+                    <ul class="menu-vertical">
+                        <li>
+                            <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p>
+                        </li>
+                    </ul>
+                </div>
+            </div> --}}
         </div>
         <hr>
         <div class="copyright-row">

@@ -86,7 +86,7 @@
                                     <label for="Blog_image_label">Upload Image</label>
                                     <label class="form-control filelabel image-input-wrapper">
                                         <input type="hidden" name="old_image" value="@if(!empty($Blog->image)){{$Blog->image}}@endif">
-                                        <input type="file" name="image" id="Blog_image"  class="form-control input-error image-input">
+                                        <input type="file" name="blog_image" id="Blog_image"  class="form-control input-error image-input">
                                         <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
                                         <img id="Blog_image_prev" class="previewImgCls hidepreviewimg" src="@if(!empty($Blog->image)){{asset('storage/images/'.$Blog->image)}}@endif" style="{{$showImagePrev}}">
                                         <span class="title" id="category_image_title">{{ $Blog->image ??  ''}}</span>
@@ -94,9 +94,9 @@
                                     <div class="error" style="color:red;" id="image_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label for="short_description">Short Description</label>
+                                    <label for="shortdescription">Short Description</label>
                                     <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$Blog->short_description!!}</div>
-                                    <input type="hidden" name="short_description" id="short_description" value="{{$Blog->short_description}}">
+                                    <input type="hidden" name="shortdescription" id="shortdescription" value="{{$Blog->short_description}}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="long-description">Long Description</label>
@@ -401,9 +401,9 @@
                                     <div class="error" style="color:red;" id="image_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label for="short-description">Short Description</label>
+                                    <label for="shortdescription">Short Description</label>
                                     <div id="quill_editor" class="quill_editor filelabel image-input-wrapper" style="height: 200px; width:100%;"></div>
-                                    <input type="hidden" name="short_description" id="short_description">
+                                    <input type="hidden" name="shortdescription" id="shortdescription">
                                     {{-- <textarea id="short_description" name="short_description"></textarea> --}}
                                 </div>
                                 <div class="form-group col-md-12">

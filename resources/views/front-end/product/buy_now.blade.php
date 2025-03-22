@@ -95,18 +95,45 @@
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
                                     <div class="d-flex align-items-start">
                                         <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" 
-                                            alt="User Image">
-                        
+                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
+
                                         <!-- Comment Content -->
-                                        <div class="mx-3">
-                                            <h4 class="mb-1 text-primary mt-2">{{ $comment->user->name ?? 'Anonymous' }}</h4>
-                                            
+                                        <div class="mx-3 w-100">
+                                            <h4 class="mb-1 text-primary mt-2">
+                                                {{ $comment->user->name ?? 'Anonymous' }}
+                                                @if($comment->is_edited) <small class="text-muted">(edited)</small> @endif
+                                            </h4>
+
                                             <!-- Comment Date -->
                                             <span class="text-muted small">{{ $comment->created_at->format('M d, Y h:i A') }}</span>
-                        
+
                                             <!-- Comment Text -->
-                                            <p class="mb-0 mt-2 text-secondary">{{ $comment->description ?? 'No comment provided.' }}</p>
+                                            <p class="mb-0 mt-2 text-secondary comment-text-{{ $comment->id }}">
+                                                {{ $comment->description ?? 'No comment provided.' }}
+                                                @if ($comment->is_edited)
+                                                    <span class="text-muted">(Edited by {{ $comment->user->name }})</span>
+                                                @endif
+                                            </p>
+
+
+                                            <!-- Edit Form (Hidden by Default) -->
+                                            <textarea class="form-control d-none edit-textarea-{{ $comment->id }}">{{ $comment->description }}</textarea>
+
+                                            <!-- Action Buttons -->
+                                            @if(Auth::check() && Auth::id() == $comment->user_id)
+                                                <div class="mt-2">
+                                                    <button class="blue_common_btn btn-sm btn-outline-primary edit-btn-{{ $comment->id }}" onclick="editComment({{ $comment->id }})">
+                                                        Edit
+                                                    </button>
+                                                    <button class="blue_common_btn btn-sm btn-success save-btn-{{ $comment->id }} d-none" onclick="saveComment({{ $comment->id }})">
+                                                        Save
+                                                    </button>
+                                                    <button class="blue_common_btn btn-sm btn-secondary cancel-btn-{{ $comment->id }} d-none" onclick="cancelEdit({{ $comment->id }})">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -163,9 +190,8 @@
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
                                     <div class="d-flex align-items-center">
                                         <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" 
-                                            alt="User Image">
-                        
+                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
+                                        
                                         <!-- Review Content -->
                                         <div class="ms-3 mx-2">
                                             <h4 class="mb-1 text-primary">{{ $review->user->name ?? 'Anonymous' }}</h4>
@@ -173,13 +199,39 @@
                                             <!-- Star Rating Display -->
                                             <div class="rating">
                                                 @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                                    <i class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}" data-star="{{ $i }}"></i>
                                                 @endfor
                                                 <span class="text-muted ms-2">({{ number_format($review->rating, 1) }})</span>
                                             </div>
-                        
+                                            
                                             <!-- Review Text -->
-                                            <p class="mb-0 mt-2 text-secondary">{{ $review->review ?? 'No review provided.' }}</p>
+                                            <p class="review-text-{{ $review->id }} mb-0 mt-2 text-secondary">
+                                                {{ $review->review ?? 'No review provided.' }}
+                                                @if ($review->is_edited)
+                                                    <span class="text-muted">(Edited by {{ $review->user->name }})</span>
+                                                @endif
+                                            </p>
+
+                                            
+                                            <!-- Edit Textarea (Hidden by default) -->
+                                            <textarea class="review-edit-textarea-{{ $review->id }} d-none form-control" rows="3">{{ $review->review ?? '' }}</textarea>
+
+                                            <!-- Edit Rating (Hidden by default) -->
+                                            <div class="edit-rating-{{ $review->id }} d-none">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star rating-edit-{{ $review->id }} {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}" data-star="{{ $i }}" onclick="updateRating({{ $review->id }}, {{ $i }})"></i>
+                                                @endfor
+                                            </div>
+
+                                            <!-- Buttons (Save and Cancel) -->
+                                            <div class="mt-2">
+                                                <!-- Edit Button -->
+                                                @if (Auth::check() && Auth::id() == $review->user_id)
+                                                    <button class="blue_common_btn btn-sm btn-outline-primary review-edit-btn-{{ $review->id }}" onclick="editReview({{ $review->id }})">Edit</button>
+                                                @endif
+                                                <button class="blue_common_btn btn-sm btn-success review-save-btn-{{ $review->id }} d-none" onclick="saveReview({{ $review->id }})">Save</button>
+                                                <button class="blue_common_btn btn-sm btn-secondary review-cancel-btn-{{ $review->id }} d-none" onclick="cancelEdit({{ $review->id }})">Cancel</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -373,18 +425,45 @@
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
                                     <div class="d-flex align-items-start">
                                         <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" 
-                                            alt="User Image">
-                        
+                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
+
                                         <!-- Comment Content -->
-                                        <div class="mx-3">
-                                            <h4 class="mb-1 text-primary mt-2">{{ $comment->user->name ?? 'Anonymous' }}</h4>
-                                            
+                                        <div class="mx-3 w-100">
+                                            <h4 class="mb-1 text-primary mt-2">
+                                                {{ $comment->user->name ?? 'Anonymous' }}
+                                                @if($comment->is_edited) <small class="text-muted">(edited)</small> @endif
+                                            </h4>
+
                                             <!-- Comment Date -->
                                             <span class="text-muted small">{{ $comment->created_at->format('M d, Y h:i A') }}</span>
-                        
+
                                             <!-- Comment Text -->
-                                            <p class="mb-0 mt-2 text-secondary">{{ $comment->description ?? 'No comment provided.' }}</p>
+                                            <p class="mb-0 mt-2 text-secondary comment-text-{{ $comment->id }}">
+                                                {{ $comment->description ?? 'No comment provided.' }}
+                                                @if ($comment->is_edited)
+                                                    <span class="text-muted">(Edited by {{ $comment->user->name }})</span>
+                                                @endif
+                                            </p>
+
+
+                                            <!-- Edit Form (Hidden by Default) -->
+                                            <textarea class="form-control d-none edit-textarea-{{ $comment->id }}">{{ $comment->description }}</textarea>
+
+                                            <!-- Action Buttons -->
+                                            @if(Auth::check() && Auth::id() == $comment->user_id)
+                                                <div class="mt-2">
+                                                    <button class="blue_common_btn btn-sm btn-outline-primary edit-btn-{{ $comment->id }}" onclick="editComment({{ $comment->id }})">
+                                                        Edit
+                                                    </button>
+                                                    <button class="blue_common_btn btn-sm btn-success save-btn-{{ $comment->id }} d-none" onclick="saveComment({{ $comment->id }})">
+                                                        Save
+                                                    </button>
+                                                    <button class="blue_common_btn btn-sm btn-secondary cancel-btn-{{ $comment->id }} d-none" onclick="cancelEdit({{ $comment->id }})">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -435,9 +514,8 @@
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
                                     <div class="d-flex align-items-center">
                                         <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" 
-                                            alt="User Image">
-                        
+                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
+                                        
                                         <!-- Review Content -->
                                         <div class="ms-3 mx-2">
                                             <h4 class="mb-1 text-primary">{{ $review->user->name ?? 'Anonymous' }}</h4>
@@ -445,13 +523,40 @@
                                             <!-- Star Rating Display -->
                                             <div class="rating">
                                                 @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                                    <i class="fas fa-star rating-edit-1 {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"
+                                                        data-star="{{ $i }}" onclick="updateRating(1, {{ $i }})"></i>
                                                 @endfor
-                                                <span class="text-muted ms-2">({{ number_format($review->rating, 1) }})</span>
+                                                <span class="text-muted ms-2" data-review-id="1">({{ number_format($review->rating, 1) }})</span>
                                             </div>
-                        
+                                            
                                             <!-- Review Text -->
-                                            <p class="mb-0 mt-2 text-secondary">{{ $review->review ?? 'No review provided.' }}</p>
+                                            <p class="review-text-{{ $review->id }} mb-0 mt-2 text-secondary">
+                                                {{ $review->review ?? 'No review provided.' }}
+                                                @if ($review->is_edited)
+                                                    <span class="text-muted">(Edited by {{ $review->user->name }})</span>
+                                                @endif
+                                            </p>
+
+                                            
+                                            <!-- Edit Textarea (Hidden by default) -->
+                                            <textarea class="review-edit-textarea-{{ $review->id }} d-none form-control" rows="3">{{ $review->review ?? '' }}</textarea>
+
+                                            <!-- Edit Rating (Hidden by default) -->
+                                            <div class="edit-rating-{{ $review->id }} d-none">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star rating-edit-{{ $review->id }} {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}" data-star="{{ $i }}" onclick="updateRating({{ $review->id }}, {{ $i }})"></i>
+                                                @endfor
+                                            </div>
+
+                                            <!-- Buttons (Save and Cancel) -->
+                                            <div class="mt-2">
+                                                <!-- Edit Button -->
+                                                @if (Auth::check() && Auth::id() == $review->user_id)
+                                                    <button class="blue_common_btn btn-sm btn-outline-primary review-edit-btn-{{ $review->id }}" onclick="editReview({{ $review->id }})">Edit</button>
+                                                @endif
+                                                <button class="blue_common_btn btn-sm btn-success review-save-btn-{{ $review->id }} d-none" onclick="saveReview({{ $review->id }})">Save</button>
+                                                <button class="blue_common_btn btn-sm btn-secondary review-cancel-btn-{{ $review->id }} d-none" onclick="cancelEdit({{ $review->id }})">Cancel</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -613,6 +718,182 @@
     $('.price-slick-slider').on('init reInit afterChange', function(event, slick) {
         $('.slick-slide').css('width', 'auto'); // Reset incorrect widths
     });
+    function editComment(commentId) {
+        // Hide the text and show the textarea
+        document.querySelector(`.comment-text-${commentId}`).classList.add('d-none');
+        document.querySelector(`.edit-textarea-${commentId}`).classList.remove('d-none');
+
+        // Show Save and Cancel buttons, Hide Edit button
+        document.querySelector(`.save-btn-${commentId}`).classList.remove('d-none');
+        document.querySelector(`.cancel-btn-${commentId}`).classList.remove('d-none');
+        document.querySelector(`.edit-btn-${commentId}`).classList.add('d-none');
+    }
+
+    function cancelEdit(commentId) {
+        // Show the text and hide the textarea
+        document.querySelector(`.comment-text-${commentId}`).classList.remove('d-none');
+        document.querySelector(`.edit-textarea-${commentId}`).classList.add('d-none');
+
+        // Hide Save and Cancel buttons, Show Edit button
+        document.querySelector(`.save-btn-${commentId}`).classList.add('d-none');
+        document.querySelector(`.cancel-btn-${commentId}`).classList.add('d-none');
+        document.querySelector(`.edit-btn-${commentId}`).classList.remove('d-none');
+    }
+
+
+    function saveComment(commentId) {
+        let newText = document.querySelector(`.edit-textarea-${commentId}`).value;
+        let editCommentRoute = "{{ route('comments.update', ':id') }}".replace(':id', commentId);
+        
+        fetch(editCommentRoute, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ description: newText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the comment text
+                document.querySelector(`.comment-text-${commentId}`).textContent = newText;
+                document.querySelector(`.comment-text-${commentId}`).classList.remove('d-none');
+                document.querySelector(`.edit-textarea-${commentId}`).classList.add('d-none');
+
+                // Hide Save and Cancel buttons, Show Edit button
+                document.querySelector(`.save-btn-${commentId}`).classList.add('d-none');
+                document.querySelector(`.cancel-btn-${commentId}`).classList.add('d-none');
+                document.querySelector(`.edit-btn-${commentId}`).classList.remove('d-none');
+
+                // Add (edited) tag with username
+                let commentTextElement = document.querySelector(`.comment-text-${commentId}`);
+                if (!commentTextElement.innerHTML.includes('(edited)')) {
+                    let editedTag = document.createElement('span');
+                    editedTag.classList.add('text-muted');
+                    editedTag.innerHTML = ` (Edited by ${data.username})`; // Show username
+                    commentTextElement.appendChild(editedTag);
+                }
+            }
+        })
+        .catch(error => console.log("Error updating comment:", error));
+    }
+
+// Edit Review
+function editReview(reviewId) {
+    // Hide the text and show the textarea
+    document.querySelector(`.review-text-${reviewId}`).classList.add('d-none');
+    document.querySelector(`.review-edit-textarea-${reviewId}`).classList.remove('d-none');
+    document.querySelector(`.edit-rating-${reviewId}`).classList.remove('d-none');
+
+    // Show Save and Cancel buttons, Hide Edit button
+    document.querySelector(`.review-save-btn-${reviewId}`).classList.remove('d-none');
+    document.querySelector(`.review-cancel-btn-${reviewId}`).classList.remove('d-none');
+    document.querySelector(`.review-edit-btn-${reviewId}`).classList.add('d-none');
+
+    // Set the current rating visually in the edit stars
+    let currentRating = document.querySelectorAll(`.rating-edit-${reviewId}.text-warning`).length;
+    updateRating(reviewId, currentRating); // update the stars to the current rating
+}
+
+// Update Rating
+function updateRating(reviewId, star) {
+    let stars = document.querySelectorAll(`.rating-edit-${reviewId}`);
+    stars.forEach((starElement, index) => {
+        if (index < star) {
+            starElement.classList.add('text-warning');
+            starElement.classList.remove('text-muted');
+        } else {
+            starElement.classList.remove('text-warning');
+            starElement.classList.add('text-muted');
+        }
+    });
+    // Update the rating on the textarea
+    document.querySelector(`.review-edit-textarea-${reviewId}`).setAttribute('data-rating', star);
+}
+
+// Save Review
+function saveReview(reviewId) {
+    let editReviewRoute = "{{ route('reviews.update', ':id') }}".replace(':id', reviewId);
+    let newReviewText = document.querySelector(`.review-edit-textarea-${reviewId}`).value;
+
+    let newRating = 0;
+    document.querySelectorAll(`.rating-edit-${reviewId}.text-warning`).forEach(star => {
+        newRating++;
+    });
+
+    fetch(editReviewRoute, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify({ review: newReviewText, rating: newRating })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the review text
+            document.querySelector(`.review-text-${reviewId}`).innerText = newReviewText;
+            document.querySelector(`.edit-rating-${reviewId}`).classList.add('d-none');
+            // Conditionally show the edited user name if the review is edited
+            let editedTag = document.createElement('span');
+            editedTag.classList.add('text-muted');
+            editedTag.innerText = `(Edited by ${data.username})`; // Update with the actual user name
+            document.querySelector(`.review-text-${reviewId}`).appendChild(editedTag);
+
+            document.querySelector(`.review-text-${reviewId}`).classList.remove('d-none');
+            document.querySelector(`.review-edit-textarea-${reviewId}`).classList.add('d-none');
+
+            // Update the star rating display
+            updateRatingDisplay(reviewId, newRating);
+
+            // Hide the save and cancel buttons, show the edit button
+            document.querySelector(`.review-save-btn-${reviewId}`).classList.add('d-none');
+            document.querySelector(`.review-cancel-btn-${reviewId}`).classList.add('d-none');
+            document.querySelector(`.review-edit-btn-${reviewId}`).classList.remove('d-none');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateRatingDisplay(reviewId, newRating) {
+    // Update the displayed rating stars
+    let stars = document.querySelectorAll(`.rating i`);
+    stars.forEach((star, index) => {
+        if (index < newRating) {
+            star.classList.add('text-warning');
+            star.classList.remove('text-muted');
+        } else {
+            star.classList.remove('text-warning');
+            star.classList.add('text-muted');
+        }
+    });
+
+    // Update the rating text
+    let ratingText = document.querySelector(`.rating span`);
+    if (ratingText) {
+        ratingText.innerText = `(${newRating.toFixed(1)})`;
+    }
+}
+
+
+// Cancel Edit
+function cancelEdit(reviewId) {
+    // Revert to the original review text and hide the textarea
+    let originalText = document.querySelector(`.review-text-${reviewId}`).innerText;
+    document.querySelector(`.review-text-${reviewId}`).classList.remove('d-none');
+    document.querySelector(`.review-edit-textarea-${reviewId}`).classList.add('d-none');
+    document.querySelector(`.edit-rating-${reviewId}`).classList.add('d-none');
+
+    // Hide Save and Cancel buttons, Show Edit button
+    document.querySelector(`.review-save-btn-${reviewId}`).classList.add('d-none');
+    document.querySelector(`.review-cancel-btn-${reviewId}`).classList.add('d-none');
+    document.querySelector(`.review-edit-btn-${reviewId}`).classList.remove('d-none');
+}
+
 
 </script>   
 @endsection

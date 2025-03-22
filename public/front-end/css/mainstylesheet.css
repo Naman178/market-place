@@ -1049,7 +1049,7 @@ input {
   list-style: none;
   display: flex;
   font-family: "Work Sans";
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 19px;
   letter-spacing: 0em;
@@ -1143,9 +1143,13 @@ input {
 }
 
 .vertical-menu-row .row.left-row {
-  width: 60%;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: space-around;
   margin: 0;
+}
+
+.vertical-menu-row .row.left-row p{
+  margin-bottom: 0;
 }
 
 .title {
@@ -1167,7 +1171,7 @@ input {
 
 .menu-vertical.list-style {
   list-style-type: disc;
-  padding-left: 18px;
+  padding-left: 0;
 }
 
 .copyright-row {

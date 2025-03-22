@@ -1,10 +1,10 @@
 <!-- category section start -->
-<div class="int_bg">
+<div class="category">
     <div class="container">
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
-            <div class="category">
-                <h1><span>Category</span></h1>
+            <div>
+                <h1>Category</h1>
                 <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found" style="margin-left: 1px;">
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">

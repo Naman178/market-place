@@ -291,7 +291,7 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        $("#cart-item-" + planId + "-" + pricingId).fadeOut(300, function () {
+                        $("#cart-container-" + planId + "-" + pricingId).fadeOut(300, function () {
                             $(this).remove();
                             location.reload();
                             recalculateTotals();

@@ -9,7 +9,7 @@
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="mt-65" src="{{ asset('front-end/images/Group 1000002956.png') }}" alt="not found">
                 <div class="integration">
-                    <h1>Why Choose Infinity Softech?</h1>
+                    <h1>Why Choose Infinity <span>Softech?</span></h1>
                     <img class="vector2_img" src="{{ asset('front-end/images/Vector 4.png') }}" alt="not found">
                     <p class="integra_p mb-60 mt-3">
                         At Infinity Softech, we provide cutting-edge digital solutions that simplify your business processes, enhance efficiency, and drive success. Our expertise in web and mobile development ensures you get the best tools for your needs.

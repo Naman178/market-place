@@ -1,5 +1,5 @@
 <!-- subcategory section start -->
-<div class="int_bg">
+<div class="category">
     <div class="container">
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">

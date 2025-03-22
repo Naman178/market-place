@@ -31,7 +31,7 @@ class HomePageController extends Controller
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         $FAQs = FAQ::get();
-        $Blogs = Blog::where('status', '1')->get();
+        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
         foreach ($Blogs as $blog) {
             $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
             $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count();
@@ -183,7 +183,43 @@ class HomePageController extends Controller
         }
         return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'comments', 'userReviewsCount', 'reviews', 'filteredFeatures'));
     }
+    public function commentupdate(Request $request, $id)
+    {
+        $comment = Comments::findOrFail($id);
+    
+        // Ensure only the owner can edit
+        if (Auth::id() !== $comment->user_id) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+    
+        $comment->description = $request->description;
+        $comment->is_edited = true;
+        $comment->save();
+    
+        return response()->json([
+            'success' => true,
+            'username' => $comment->user->name // Return the username
+        ]);
+    }
+    
 
+    public function reviewsupdate(Request $request, $id)
+    {
+        $review = Reviews::findOrFail($id);
+
+        // Ensure only the owner can edit
+        if (Auth::id() !== $review->user_id) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $review->review = $request->review;
+        $review->rating = $request->rating;
+        $review->is_edited = true;
+        $review->save();
+
+        return response()->json([ 'success' => true,
+        'username' => $review->user->name]);
+    }
     public function commentPost(Request $request)
     {
         if(!Auth::check()){
@@ -226,7 +262,13 @@ class HomePageController extends Controller
     
         return redirect()->back()->with('success', 'Your review has been posted.');
     }
-    
+
+    public function wishlistindex()
+    {
+        $user = auth()->user();
+        $wishlists = Wishlist::where('user_id', $user->id)->with('plan', 'pricing')->get();
+        return view('front-end.wishlist.wishlist', compact('wishlists'));
+    }
     public function addToWishlist(Request $request)
     {
         if (!Auth::check()) {
@@ -239,9 +281,7 @@ class HomePageController extends Controller
                     ->first();
 
         if ($wishlist) {
-            // Remove from wishlist if already added
-            $wishlist->delete();
-            return response()->json(['success' => true, 'message' => 'Removed from Wishlist']);
+            return response()->json(['error' => true, 'message' => 'Item already in Wishlist']);    
         } else {
             // Add to wishlist
             Wishlist::create([
@@ -249,6 +289,25 @@ class HomePageController extends Controller
                 'product_id' => $request->item_id
             ]);
             return response()->json(['success' => true, 'message' => 'Added to Wishlist']);
+        }
+    }
+
+    public function removeToWishlist(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'redirect' => route('user-login'), 'message' => 'You need to be logged in to remove from Wishlist.']);
+        }
+
+        $user = auth()->user();
+        $wishlist = Wishlist::where('user_id', $user->id)
+                    ->where('product_id', $request->item_id)
+                    ->first();
+
+        if ($wishlist) {
+            $wishlist->delete();
+            return response()->json(['success' => true, 'message' => 'Removed from Wishlist']);
+        } else {
+            return response()->json(['error' => true, 'message' => 'Item not in Wishlist']);
         }
     }
 

@@ -84,20 +84,20 @@
         input.files = dataTransfer.files; // Update the input element with the new list of files
     }
 
-    tinymce.init({
-        selector: '#short-description',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-    });
+    // tinymce.init({
+    //     selector: '#short-description',
+    //     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    //     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    // });
 
-    tinymce.init({
-        selector: '#long-description',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-    });
+    // tinymce.init({
+    //     selector: '#long-description',
+    //     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    //     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    // });
 
     $(document).ready(function () {
-        var quill = new Quill('#quill_editor', {
+        var quillShort = new Quill('#quill_editor', {
             theme: 'snow',
             placeholder: 'Write something...',
             modules: {
@@ -112,7 +112,7 @@
                 ]
             }
         });
-        var quill = new Quill('#long_quill_editor', {
+        var quillLong  = new Quill('#long_quill_editor', {
             theme: 'snow',
             placeholder: 'Write something...',
             modules: {
@@ -128,12 +128,12 @@
             }
         });
 
-        quill.on('text-change', function () {
-            $('#short_description').val(quill.root.innerHTML);
+        quillShort.on('text-change', function () {
+            $('#shortdescription').val(quillShort.root.innerHTML);
         });
         
-        quill.on('text-change', function () {
-            $('#long_description').val(quill.root.innerHTML);
+        quillLong .on('text-change', function () {
+            $('#long_description').val(quillLong.root.innerHTML);
         });
     });
 
