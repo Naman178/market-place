@@ -137,12 +137,20 @@
 </head>
 
 <body>
+    <?php
+    $setting = \App\Models\Settings::where('key', 'footer_settings')->first();
+    ?>
     <section>
         <div class="container">
             <div class="header">
                 <div class="image">
-                    <img class="logo" src="{{ asset('storage/Logo_Settings/logo_new_vnet.png') }}" alt="logo"
+                    @if ($setting && $setting['value']['logo_image'])
+                        <img src="{{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }}" alt="logo"
                         style="width: 8rem;">
+                    @else
+                            <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo"
+                            style="width: 8rem;">
+                    @endif
                 </div>
             </div>
         </div>

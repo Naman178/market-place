@@ -23,6 +23,7 @@ use App\Http\Controllers\SEO\SEOController;
 use App\Http\Controllers\FAQ\FAQController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog_category\BlogCategoryController;
+use App\Http\Controllers\Testimonial\TestimonialController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -232,6 +233,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Blog_category/store',[BlogCategoryController::class,'store'])->name('Blog_category-store');
     Route::get('/Blog_category/edit/{id}', [BlogCategoryController::class, 'edit'])->name('Blog_category-edit');
     Route::get('/Blog_category/delete/{id}', [BlogCategoryController::class, 'remove'])->name('Blog_category-delete');
+
+    // Testimonial module
+    Route::get('/Testimonial-index',[TestimonialController::class,'index'])->name('Testimonial-index');
+    Route::post('/Testimonial/store',[TestimonialController::class,'store'])->name('Testimonial-store');
+    Route::get('/Testimonial/edit/{id}', [TestimonialController::class, 'edit'])->name('Testimonial-edit');
+    Route::get('/Testimonial/delete/{id}', [TestimonialController::class, 'remove'])->name('Testimonial-delete');
 });
 
 // forgot password

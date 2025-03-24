@@ -35,6 +35,7 @@
     use App\Models\SubCategory;
       $category = Category::where('sys_state','=','0')->first();
       $subcategory = SubCategory::where('sys_state','=','0')->first();
+      $setting = \App\Models\Settings::where('key', 'site_setting')->first();
     @endphp
     <style>
         table.dataTable {
@@ -1046,7 +1047,7 @@
                 currency: currency,
                 name: "Skyfinity Quick Checkout",
                 description: "Payment For The Topup of Skyfinity Quick Checkout Wallet",
-                image: "{{ asset('front-end/images/header_logo.png') }}",
+                image: "@if ($setting && $setting['value']['logo_image']) {{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }} @else {{ asset('front-end/images/infiniylogo.png') }} @endif",
                 prefill: {
                     name: name,
                     email: email,

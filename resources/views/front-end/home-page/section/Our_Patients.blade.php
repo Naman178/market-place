@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="mt-65" src="{{ asset('front-end/images/Group 5685.png') }}" alt="not found">
-                <h1>Our <span>Patients</span></h1>
+                <h1>Happy <span>Clients</span></h1>
                 <img class="vector2_img" src="{{ asset('front-end/images/Vector 8.png') }}" alt="not found">
             </div>
         </div>
@@ -28,7 +28,7 @@
                                     a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.
                                 </p>
                                 <h4 class="patient-name text_blue font_weight">Joe Root</h4>
-                                <p class="patient-role">Happy Patient</p>
+                                <p class="patient-role">Happy Clients</p>
                             </div>
                             <div class="thumbnail-slider">
                                 <div class="thumbnails">

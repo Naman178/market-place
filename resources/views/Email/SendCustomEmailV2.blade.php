@@ -374,7 +374,9 @@
 </head>
 
 <body>
-
+<?php
+    $setting = \App\Models\Settings::where('key','site_setting')->first();
+?>
     <center>
         <div align="center">
             <table border="0" cellspacing="0" cellpadding="0" width="100%" class="aw-bgc" align="center"
@@ -409,13 +411,17 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                 <tr>
                                                                                     <td align="center"
                                                                                         style="padding: 0px; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;">
-
-                                                                                        <img class="model"
-                                                                                            src="{{ asset('storage/Logo_Settings/logo_new_vnet.png') }}"
-                                                                                            style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
+                                                                                        @if ($setting && $setting['value']['logo_image'])
+                                                                                            <img src="{{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
                                                                                             alt="Logo"
                                                                                             width="8rem"
                                                                                             height="41">
+                                                                                        @else
+                                                                                            <img src="{{ asset('front-end/images/infiniylogo.png') }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
+                                                                                            alt="Logo"
+                                                                                            width="8rem"
+                                                                                            height="41">
+                                                                                        @endif
 
                                                                                     </td>
                                                                                 </tr>

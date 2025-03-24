@@ -2,7 +2,7 @@
     <div class="logo">
         <?php
             $site = \App\Models\Settings::where('key','site_setting')->first();
-            $logo = '';
+            $logo = asset('front-end/images/infiniylogo.png');
             if(!empty($site['value']['logo_image'])){
                 $logo = asset('storage/Logo_Settings/'.$site['value']['logo_image']);
             }

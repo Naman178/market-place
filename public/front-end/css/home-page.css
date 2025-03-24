@@ -1956,7 +1956,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
   border-top: 1px solid #ddd; 
 }
 .cart-container {
-  max-width: 800px;
+  /* max-width: 800px; */
   /* margin: auto; */
   padding: 20px;
   border-radius: 8px;

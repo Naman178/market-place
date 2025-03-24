@@ -152,6 +152,15 @@
                     <div class="triangle"></div>
                 </li>
             @endcan
+            @can('Testimonial-tab-show')
+                <li class="nav-item {{ request()->routeIs('Testimonial-list') ? 'active' : '' }}">
+                    <a class="nav-item-hold" href="{{ route('Testimonial-index') }}">
+                        <i class="nav-icon i-Receipt-3"></i>
+                        <span class="nav-text">Testimonial</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endcan
             @can('order-tab-show')
                 <li class="nav-item {{ request()->is('order-list') ? 'active' : '' }}">
                     <a class="nav-item-hold" href="{{ route('order-list') }}">

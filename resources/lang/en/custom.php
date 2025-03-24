@@ -82,4 +82,10 @@ return [
     'Newsletter_create_success' => 'Newsletter created successfully!',
     'Newsletter_update_success' => 'Newsletter updated successfully!',
     'Newsletter_delete_success' => 'Newsletter deleted successfully!',
+
+    // Blog category
+    'Testimonial_title' => 'Testimonial',
+    'Testimonial_create_success' => 'Testimonial created successfully!',
+    'Testimonial_update_success' => 'Testimonial updated successfully!',
+    'Testimonial_delete_success' => 'Testimonial deleted successfully!',
 ];

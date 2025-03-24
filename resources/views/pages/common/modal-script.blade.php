@@ -940,6 +940,47 @@
 
         });
 
+        // For Testimonial
+        $(document).on("click", ".erp-testimonial-form", function (e) {
+            e.preventDefault();
+            var submitUrl = $('#testimonial_form').attr("data-url");
+            var data_id = $('#testimonial_form').attr("data-id");
+            var formData = new FormData($('#testimonial_form')[0]);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            if (!$('.form-control').hasClass('is-invalid')) {
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('Testimonial-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+            }
+
+        });
+
         function handleFormErrors(errors) {
             $('#name_error').text(errors['name'] || '');
             $('#image_error').text(errors['image'] || '');

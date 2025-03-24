@@ -111,10 +111,17 @@
     </style>
 </head>
 <body>
+    <?php
+        $setting = \App\Models\Settings::where('key', 'site_setting')->first();
+    ?>
     <section>
         <div class="container">
             <div class="image">
-                <img src="{{ asset('front-end/images/header_logo.png') }}" alt="logo">
+                @if ($setting && $setting['value']['logo_image'])
+                    <img src="{{ asset('storage/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                @else
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                @endif
             </div>
             <div class="header">                                                    
                 <div class="title">
