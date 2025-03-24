@@ -4,8 +4,8 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div class="subcategory">
-                <h1><span>Subcategory</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found" style="margin-left: 1px;">
+                <h1><span>Shop By Subcategory</span></h1>
+                <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
                 {{-- <a href="javascript:void(0)" role="button" data-slide="prev" id="subcategroy-left-arrow-btn"><span

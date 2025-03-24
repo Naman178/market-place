@@ -325,74 +325,90 @@
         // });
     });
 
-    let currentIndex = 0;
+    // let currentIndex = 0;
 
-    const testimonials = [
-        {
-            text: 'Facilisis pretium viverra varius tempus ligula natoque fermentum dictumst scelerisque vehicula euismod sed nam sapien rhoncus tristique eros erat nullam class venenatis hendrerit montes ut vestibulum integer orci luctus primis fringilla sem bibendum donec fames congue suscipit sociis turpis.',
-            name: 'Joe Root',
-            role: 'Happy Client',
-            image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
-        },
-        {
-            text: 'Congue parturient interdum penatibus sem lacus ultricies mi varius nisi dictum fusce volutpat sociosqu vehicula ac nullam curae malesuada gravida id natoque tristique convallis porta scelerisque quam class senectus nisl auctor fermentum montes hendrerit tempor orci.',
-            name: 'Jane Doe',
-            role: 'Satisfied Client',
-            image: '{{ asset("front-end/images/Group 5748.png") }}',
-        },
-        {
-            text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-            name: 'John Smith',
-            role: 'Grateful Client',
-            image: '{{ asset("front-end/images/Group 5749.png") }}',
-        },
-    ];
-
-    function updateTestimonial(index) {
-        let selectedTestimonial = testimonials[index];
-
-        $(".patientsSlider").css({
-            "position": "relative",
-            "right": "-100%",
-            "opacity": "0"
-        }).animate({
-            "right": "0",
-            "opacity": "1"
-        }, 500);
-
-        $("#large-image").fadeOut(200, function () {
-            $(this).attr("src", selectedTestimonial.image).fadeIn(200);
-        });
-
-        $(".testimonial-text").fadeOut(200, function () {
-            $(this).text(selectedTestimonial.text).fadeIn(200);
-        });
-
-        $(".patient-name").fadeOut(200, function () {
-            $(this).text(selectedTestimonial.name).fadeIn(200);
-        });
-
-        $(".patient-role").fadeOut(200, function () {
-            $(this).text(selectedTestimonial.role).fadeIn(200);
-        });
-
-        $(".thumbnail").removeClass("active");
-        $(".thumbnail").eq(index).addClass("active");
-    }
-
+    // const testimonials = [
+    //     {
+    //         text: 'Facilisis pretium viverra varius tempus ligula natoque fermentum dictumst scelerisque vehicula euismod sed nam sapien rhoncus tristique eros erat nullam class venenatis hendrerit montes ut vestibulum integer orci luctus primis fringilla sem bibendum donec fames congue suscipit sociis turpis.',
+    //         name: 'Joe Root',
+    //         role: 'Happy Client',
+    //         image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
+    //     },
+    //     {
+    //         text: 'Congue parturient interdum penatibus sem lacus ultricies mi varius nisi dictum fusce volutpat sociosqu vehicula ac nullam curae malesuada gravida id natoque tristique convallis porta scelerisque quam class senectus nisl auctor fermentum montes hendrerit tempor orci.',
+    //         name: 'Jane Doe',
+    //         role: 'Satisfied Client',
+    //         image: '{{ asset("front-end/images/Group 5748.png") }}',
+    //     },
+    //     {
+    //         text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
+    //         name: 'John Smith',
+    //         role: 'Grateful Client',
+    //         image: '{{ asset("front-end/images/Group 5749.png") }}',
+    //     },
+    // ];
     $(document).ready(function () {
+        let testimonials = @json($testimonials); // Get testimonials from Laravel
+        let index = 1;
+        let selectedTestimonial = testimonials[0];
+        let currentIndex = 0; 
+        $(".patients .testimonial-text").fadeOut(200, function () {
+            $(this).html(selectedTestimonial.message).fadeIn(200);
+        });
+        
+        function updateTestimonial(index) {
+            let selectedTestimonial = testimonials[index];
+
+            // Animate content change
+            $(".patientsSlider").css({
+                "position": "relative",
+                "right": "-100%",
+                "opacity": "0"
+            }).animate({
+                "right": "0",
+                "opacity": "1"
+            }, 500);
+
+            // Change the large image
+            $("#large-image").fadeOut(200, function () {
+                $(this).attr("src", "front-end/images/" + selectedTestimonial.image).fadeIn(200);
+            });
+
+            // Update testimonial text
+            $(".patients .testimonial-text").fadeOut(200, function () {
+                $(this).html(selectedTestimonial.message).fadeIn(200);
+            });
+
+            // Update name
+            $(".patient-name").fadeOut(200, function () {
+                $(this).text(selectedTestimonial.name).fadeIn(200);
+            });
+
+            // Update role/designation
+            $(".patient-role").fadeOut(200, function () {
+                $(this).text(selectedTestimonial.designation ?? "Happy Client").fadeIn(200);
+            });
+
+            // Highlight active thumbnail
+            $(".thumbnail").removeClass("active");
+            $(".thumbnail").eq(index).addClass("active");
+        }
+
+        // Thumbnail click event
         $(".thumbnail").click(function () {
             currentIndex = $(this).index();
             updateTestimonial(currentIndex);
         });
 
-        $(".prev-btn").click(function () {
-            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+        // Next button
+        $(".next-btn").click(function () {
+            currentIndex = (currentIndex + 1) % testimonials.length;
             updateTestimonial(currentIndex);
         });
 
-        $(".next-btn").click(function () {
-            currentIndex = (currentIndex + 1) % testimonials.length;
+        // Previous button
+        $(".prev-btn").click(function () {
+            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
             updateTestimonial(currentIndex);
         });
     });

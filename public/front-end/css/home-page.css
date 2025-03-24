@@ -1792,6 +1792,17 @@ div#integrationCarousel .col-4{
   text-align: end;
 }
 
+.patientsSlider p{
+  font-weight: 600 !important;
+  font-style: italic;
+  color: #4D4D4D;
+  font-family: Work Sans;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: left;
+}
 
 div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
     font-weight: 600 !important;
@@ -1847,6 +1858,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 
 .menu-container ul {
   display: flex;
+  justify-content: end;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1854,6 +1866,10 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 
 .menu-container ul li {
   margin-right: 29px;
+}
+
+.menu-container ul li:last-child {
+  margin-right: 0;
 }
 
 .menu-container ul li a {

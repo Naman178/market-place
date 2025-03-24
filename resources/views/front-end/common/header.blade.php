@@ -3,7 +3,7 @@
 @endphp
 <div class="header-container">
     <div class="header-row">
-        <div class="col">
+        <div class="col p-0 m-0">
             <div class="logo-container">
                 <a href="{{ url('/') }}">
                     @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
@@ -14,7 +14,7 @@
                 </a>
             </div>
         </div>
-        <div class="col">
+        <div class="col p-0 m-0">
             <div class="menu-container menu-1">
                 <ul>
                     @if (!empty($category))
@@ -23,7 +23,7 @@
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">FAQs</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth
                     <li class="dropdown d_flex align-items-center justify-content-center">
@@ -147,7 +147,7 @@
             @elseif (!empty($subcategory))
                 <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
             @endif
-            <li><a href="{{ route('user-faq') }}">Faq</a></li>
+            <li><a href="{{ route('user-faq') }}">FAQs</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
             @auth
                 <li><a href="{{ route('user-dashboard') }}">Dashboard</a></li>
