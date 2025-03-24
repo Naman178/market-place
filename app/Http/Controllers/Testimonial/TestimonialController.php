@@ -52,7 +52,7 @@ class TestimonialController extends Controller
                     }
                     $save_Testimonial = Testimonials::create([
                         'name' => $request->name,
-                        'message' => $request->description,
+                        'message' => $request->message,
                         'image' => $originalImageName ?? null,
                         'designation' => $request->designation,
                         'created_at' => Carbon::now(),
@@ -79,7 +79,7 @@ class TestimonialController extends Controller
                     }
                     $Testimonial->update([
                         'name' => $request->name,
-                        'message' => $request->description,
+                        'message' => $request->message,
                         'designation' => $request->designation,
                         'image' => $originalImageName,
                         'updated_at' => Carbon::now(),
@@ -104,7 +104,7 @@ class TestimonialController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'designation' => 'required|string|max:255',
             'message' => 'required|string',
         ];

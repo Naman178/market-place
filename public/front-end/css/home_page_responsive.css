@@ -248,15 +248,19 @@
     .arrow-container{
         display: none !important;
     }
-    #mobile-menu:not(.d-none) {
-        left: 36rem; /* Adjust position */
-    }
+    
     .menu-vertical li {
         line-height: 30px !important;
     }
     
     .blue_common_btn {
         width: 100% !important;
+    }
+    .header-row{
+        width: 90% !important;
+    }
+    .menu-img{
+        margin-top: 0 !important;
     }
 }
 @media (max-width: 767px) {

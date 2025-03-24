@@ -3,7 +3,7 @@
         event.preventDefault();
         var submitURL = $(this).attr("data-url");
         Swal.fire({
-            title: 'Are you sure you want to delete this Blog Category?',
+            title: 'Are you sure you want to delete this Testimonial?',
             //text: 'If you delete this, it will be gone forever.',
             icon: 'warning',
             showCancelButton: true,

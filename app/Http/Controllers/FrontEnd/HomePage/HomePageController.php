@@ -18,6 +18,7 @@ use App\Models\SubCategory;
 use App\Models\Reviews;
 use App\Models\Wishlist;
 use App\Models\ItemsPricing;
+use App\Models\Testimonials;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -40,8 +41,10 @@ class HomePageController extends Controller
         $seoData = SEO::where('page', 'home')->first();
         $category = Category::where('sys_state','=','0')->get();
         $subcategory = SubCategory::where('sys_state','=','0')->get();
-    
-        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory'));
+        $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
+                            ->get();
+        
+        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials'));
     }
     public function newsletter(Request $request){
         $request->validate([
