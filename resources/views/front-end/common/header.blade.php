@@ -17,9 +17,9 @@
         <div class="col">
             <div class="menu-container menu-1">
                 <ul>
-                    @if ($category)
+                    @if (!empty($category))
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}">Products</a></li>
-                    @elseif ($subcategory)
+                    @elseif (!empty($subcategory))
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
@@ -142,7 +142,11 @@
     <!-- Mobile Navigation -->
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
-            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+            @if (!empty($category))
+                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+            @elseif (!empty($subcategory))
+                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+            @endif
             <li><a href="{{ route('user-faq') }}">Faq</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
             @auth
