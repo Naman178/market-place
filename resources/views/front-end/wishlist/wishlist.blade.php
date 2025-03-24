@@ -158,7 +158,7 @@
                 <p><strong>₹{{ $item->pricing->sale_price }}</strong></p>
 
                 <!-- Buttons (Prevent Redirect When Clicking These) -->
-                <a class="red_common_btn remove-btn" id="wishlistBtn-{{ $item->id }}" onclick="removeWishlist(event, {{ $item->id }})">
+                <a class="red_common_btn remove-btn" id="wishlistBtn-{{ $item->id }}" onclick="removeWishlist({{ $item->id }})">
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

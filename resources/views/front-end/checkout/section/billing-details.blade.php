@@ -239,7 +239,7 @@
         <!-- First Name -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="firstname" id="firstname" class="form-control" placeholder=" " value="{{ $name[0] }}" />
+                <input type="text" name="firstname" id="firstname" class="form-control" placeholder=" " value="{{ $name[0] ?? '' }}" />
                 <label for="firstname" class="floating-label">First Name</label>
                 <div class="error" id="firstname_error"></div>
             </div>
@@ -248,7 +248,7 @@
         <!-- Last Name -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="lastname" id="lastname" class="form-control" placeholder=" " value="{{ $name[1] }}" />
+                <input type="text" name="lastname" id="lastname" class="form-control" placeholder=" " value="{{ $name[1] ?? '' }}" />
                 <label for="lastname" class="floating-label">Last Name</label>
                 <div class="error" id="lastname_error"></div>
             </div>

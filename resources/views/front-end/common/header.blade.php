@@ -1,9 +1,16 @@
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 <div class="header-container">
     <div class="header-row">
         <div class="col">
             <div class="logo-container">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                    @if ($site['value']['logo_image'])
+                        <img src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
+                    @else
+                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                    @endif
                 </a>
             </div>
         </div>
@@ -11,9 +18,9 @@
             <div class="menu-container menu-1">
                 <ul>
                     @if ($category)
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}">Products</a></li>
                     @elseif ($subcategory)
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>

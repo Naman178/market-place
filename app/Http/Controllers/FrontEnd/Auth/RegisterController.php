@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Stripe\Stripe;
 use App\Models\ContactsCountryEnum;
 use App\Models\SEO;
+use Illuminate\Support\Facades\Http;
 use Stripe\Charge;
 class RegisterController extends Controller
 {
@@ -385,6 +386,13 @@ class RegisterController extends Controller
             // 'postal_code' => 'required|string|max:20',
             'password' => 'required|string|min:8', // Add confirmation rule if applicable
         ]);
+        $response = Http::get('https://disposable.debounce.io', [
+            'email' => $request->email,
+        ]);
+        $data = $response->json();
+        if ($data['disposable'] === 'true') {
+            return back()->withErrors(['email' => 'Email addresses are not allowed.']);
+        }
         $countryname = '';
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         foreach($countaries as $country){

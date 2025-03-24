@@ -26,8 +26,10 @@
     @php
         use App\Models\Category;
         use App\Models\SubCategory;
+        use App\Models\Settings;
         $category = Category::where('sys_state','=','0')->first();
         $subcategory = SubCategory::where('sys_state','=','0')->first();
+        $site = Settings::where('key','site_setting')->first();
     @endphp
     @include('front-end.common.header')
     <div class="main-content">

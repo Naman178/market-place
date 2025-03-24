@@ -331,19 +331,19 @@
         {
             text: 'Facilisis pretium viverra varius tempus ligula natoque fermentum dictumst scelerisque vehicula euismod sed nam sapien rhoncus tristique eros erat nullam class venenatis hendrerit montes ut vestibulum integer orci luctus primis fringilla sem bibendum donec fames congue suscipit sociis turpis.',
             name: 'Joe Root',
-            role: 'Happy Patient',
+            role: 'Happy Client',
             image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
         },
         {
             text: 'Congue parturient interdum penatibus sem lacus ultricies mi varius nisi dictum fusce volutpat sociosqu vehicula ac nullam curae malesuada gravida id natoque tristique convallis porta scelerisque quam class senectus nisl auctor fermentum montes hendrerit tempor orci.',
             name: 'Jane Doe',
-            role: 'Satisfied Patient',
+            role: 'Satisfied Client',
             image: '{{ asset("front-end/images/Group 5748.png") }}',
         },
         {
             text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
             name: 'John Smith',
-            role: 'Grateful Patient',
+            role: 'Grateful Client',
             image: '{{ asset("front-end/images/Group 5749.png") }}',
         },
     ];

@@ -42,7 +42,12 @@
                         <div class="row p-4">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center mb-4">
-                                    <img src="{{ asset('storage/Logo_Settings/' . $setting->value['logo_image']) }}" height="50" width="50" alt="Site Logo">
+                                    @if ($setting->value['logo_image'] != null)
+                                        <img src="{{ asset('storage/Logo_Settings/' . $setting->value['logo_image']) }}" height="50" width="150" alt="Site Logo">
+                                    @else
+                                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" height="50" width="150" alt="Site Logo">
+                                        
+                                    @endif
                                 </div>
                                 <h3 class="fw-bold">Invoice #{{ $invoice->invoice_number ?? '' }}</h3>
                             </div>
