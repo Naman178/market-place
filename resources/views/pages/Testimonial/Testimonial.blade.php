@@ -41,8 +41,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Description</th>
+                                    <th>Designation</th>
                                     <th>Image</th>
+                                    <th>Message</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -56,7 +57,8 @@
                                         <td>{{ $list->designation }}</td>
                                         <td>
                                             <img src="{{ asset('storage/images/' .$list->image) }}" alt="not found" width="100px">
-                                        </td>                                        
+                                        </td>    
+                                        <td>{{ $list->message }}</td>                                    
                                         <td>{{ \Carbon\Carbon::parse($list->created_at)->format('d-m-Y') }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-primary" data-toggle="dropdown"
@@ -89,8 +91,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Description</th>
+                                    <th>Designation</th>
                                     <th>Image</th>
+                                    <th>Message</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>

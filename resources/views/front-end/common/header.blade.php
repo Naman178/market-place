@@ -6,7 +6,7 @@
         <div class="col">
             <div class="logo-container">
                 <a href="{{ url('/') }}">
-                    @if ($site['value']['logo_image'])
+                    @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
                         <img src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
                     @else
                         <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
