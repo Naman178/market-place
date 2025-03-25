@@ -218,6 +218,14 @@
                 {
                     breakpoint: 991,
                     settings: {
+                        slidesToShow: 2,
+                        dots: true,
+                        arrows: false,
+                    }
+                },
+                {
+                    breakpoint: 767,
+                    settings: {
                         slidesToShow: 1,
                         dots: true,
                         arrows: false,
@@ -349,13 +357,20 @@
     // ];
     $(document).ready(function () {
         let testimonials = @json($testimonials); // Get testimonials from Laravel
-        let index = 1;
-        let selectedTestimonial = testimonials[0];
-        let currentIndex = 0; 
-        $(".patients .testimonial-text").fadeOut(200, function () {
-            $(this).html(selectedTestimonial.message).fadeIn(200);
-        });
-        
+        let currentIndex = 0;
+        const imagesToShow = 3; 
+
+        function updateVisibleThumbnails() {
+            $(".thumbnail").each(function (index) {
+                if ((index >= currentIndex && index < currentIndex + imagesToShow) || 
+                    (currentIndex + imagesToShow > testimonials.length && index < (currentIndex + imagesToShow) % testimonials.length)) {
+                    $(this).removeClass("hidden").addClass("visible");
+                } else {
+                    $(this).removeClass("visible").addClass("hidden");
+                }
+            });
+        }
+
         function updateTestimonial(index) {
             let selectedTestimonial = testimonials[index];
 
@@ -396,24 +411,34 @@
 
         // Thumbnail click event
         $(".thumbnail").click(function () {
-            currentIndex = $(this).index();
-            updateTestimonial(currentIndex);
+            const clickedIndex = $(this).index();
+            // Adjust the currentIndex so the clicked image is centered
+            if (clickedIndex + 1 > currentIndex + imagesToShow) {
+                currentIndex = clickedIndex - (imagesToShow - 1);
+            } else {
+                currentIndex = Math.max(0, clickedIndex);
+            }
+            updateVisibleThumbnails();
+            updateTestimonial(clickedIndex);
         });
-
-        // Next button
+        
+        // Next button functionality
         $(".next-btn").click(function () {
             currentIndex = (currentIndex + 1) % testimonials.length;
+            updateVisibleThumbnails();
             updateTestimonial(currentIndex);
         });
 
-        // Previous button
+        // Previous button functionality
         $(".prev-btn").click(function () {
             currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+            updateVisibleThumbnails();
             updateTestimonial(currentIndex);
         });
+
+        // Initialize the first set of visible thumbnails
+        updateVisibleThumbnails();
     });
-
-
     // for FAQ
     window.onload = () => {
         const firstFaq = document.querySelector('.faq-item');

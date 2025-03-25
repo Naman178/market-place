@@ -206,6 +206,7 @@
         width: 240% !important;
         margin-top: 10px !important;
         margin-left: -31px !important;
+        margin-bottom: 5px !important;
     }
     .tech {
         padding: 2rem !important;
@@ -257,10 +258,35 @@
         width: 100% !important;
     }
     .header-row{
-        width: 90% !important;
+        width: 85% !important;
     }
     .menu-img{
         margin-top: 0 !important;
+    }
+    .wordpress_bg{
+        width: 337px !important;
+    }
+    .int_p{
+        line-height: 25px !important;
+    }
+    .intig_p {
+        font-size: 18px !important;
+        line-height: 25px !important;
+    }
+    .wordpress_white_logo{
+        top: 35px !important;
+    }
+    .international .wordpress_white_logo, .encrypted .wordpress_white_logo{
+        top: 30px !important;
+    }
+    .integration h1 span, .tech h1 span{
+        line-height: 30px !important;
+    }
+    .wordpress_plugin h1, .integration h1 {
+        line-height: 40px !important;
+    }
+    .wordpress_plugin h1 span{
+        line-height: 0 !important;
     }
 }
 @media (max-width: 767px) {
@@ -287,7 +313,7 @@
         margin-bottom: 30px !important; 
     }
     #mobile-menu:not(.d-none) {
-        left: 37rem !important;
+        /* left: 37rem !important; */
     }
 
     .gold_price_img {
@@ -333,7 +359,10 @@
         margin-right: 0 !important;
     }
     #mobile-menu:not(.d-none) {
-        left: 20rem; /* Adjust further */
+        /* left: 20rem; */
+    }
+    .header-row {
+        width: 75% !important;
     }
 }
 @media (max-width: 480px) {
@@ -367,7 +396,7 @@
         top: 60px !important;
     }
     #mobile-menu:not(.d-none) {
-        left: 10rem !important;
+        /* left: 10rem !important; */
     }
     .blog .vector2_img {
         margin-left: 13rem !important;
@@ -381,6 +410,16 @@
     }
     .click_img{
         display: none !important;
+    }
+    #menu-toggle{
+        font-size: 25px !important;
+    }
+    .menu-img{
+        width: 9% !important;
+        margin-top: 6px !important;
+    }
+    .btn-outline-primary{
+        padding: 0 8px !important;
     }
 }
 
@@ -463,7 +502,7 @@
     }
     .integration h1, .integration h1 span {
         line-height: 35px !important;
-        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+        font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
     }
     .integra_p {
         font-size: 16px !important;
@@ -475,11 +514,11 @@
         margin-bottom: 15px !important;
     }
     .patients .rectangle_img {
-        height: 11rem !important;
+        height: 100% !important;
     }
     .tech h1 span {
         line-height: 12px !important;
-        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+        font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
     }
    .tech .tech_text .testimonial-text{
         margin-top: 12px !important;
@@ -495,12 +534,13 @@
         margin-top:30px !important;
     }
     .real_time h1{
-        font-size: calc(24px + 6*((100vw - 320px) / 680)) !important;
+        font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
         margin-top: 0px !important;
         line-height: 44px !important;
     }
     .category h1{
-        font-size: 24px;
+        font-size: 28px;
+        margin-bottom: 25px;
     }
     .round_blue_img {
         margin-left: 18px !important;
@@ -508,9 +548,6 @@
     .wordpress_white_logo {
         left: 100px !important;
     }
-   .thunder .wordpress_white_logo{
-        left: 50px !important;
-   }
    .secure .d_flex{
         flex-wrap: wrap !important;
    }
@@ -537,5 +574,21 @@
     }
     .menu-img{
         width: 10% !important;
+    }
+    .header-row{
+        width: 75% !important;
+    }
+    #menu-toggle {
+        right: 5px !important;
+        top: 22px !important;
+    }
+    .menu-img{
+        margin-top: 0 !important;
+    }
+    .wordpress-plugin-grid .mt-20{
+        margin-top: 0 !important;
+    }
+    .filelabel{
+        margin: -4px 0 14px 0 !important;
     }
 }

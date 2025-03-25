@@ -80,7 +80,11 @@
 
         <div class="menu-toggle d-lg-none" id="menu-toggle">
             <button class="menu-btn">
-                <img class="menu-img" src="{{ asset('front-end/images/menu.png') }}" alt="menu">
+                <svg class="vbp-header-menu-button__svg">
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="top" shape-rendering="crispEdges" />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="middle" shape-rendering="crispEdges" />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="bottom" shape-rendering="crispEdges" />
+                  </svg>
             </button>
         </div>
 
