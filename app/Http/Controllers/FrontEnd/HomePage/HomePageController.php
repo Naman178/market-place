@@ -19,6 +19,7 @@ use App\Models\Reviews;
 use App\Models\Wishlist;
 use App\Models\ItemsPricing;
 use App\Models\Testimonials;
+use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -43,8 +44,9 @@ class HomePageController extends Controller
         $subcategory = SubCategory::where('sys_state','=','0')->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
-        
-        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials'));
+        $socialmedia = SocialMedia::orderBy('social_media.id', 'desc')
+                            ->get();  
+        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials','socialmedia'));
     }
     public function newsletter(Request $request){
         $request->validate([

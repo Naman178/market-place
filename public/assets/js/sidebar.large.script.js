@@ -79,6 +79,9 @@ $(document).ready(function() {
     $sidebarLeftSecondary.find(`[data-parent="${dataItem}"]`).show();
   });
 
+  $sidebarLeftSecondary.on("mouseleave", function (event) {
+    closeSidebarSecondary();
+  });
   // Prevent opeing link if has data-item
   $sidebarLeft.find(".nav-item").on("click", function(e) {
     

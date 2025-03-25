@@ -63,19 +63,32 @@
             });
         });
         const menuToggle = document.getElementById('menu-toggle');
-const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', function() {
-        // Toggle the 'd-none' class on the mobile menu
-        mobileMenu.classList.toggle('d-none');
-        menuToggle.classList.remove('d-none');
-        console.log('Menu toggled');
-    });
-} else {
-    console.log('Menu toggle elements not found');
-}
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                // Toggle the 'd-none' class on the mobile menu
+                mobileMenu.classList.toggle('d-none');
+                menuToggle.classList.remove('d-none');
+                console.log('Menu toggled');
+            });
+        } else {
+            console.log('Menu toggle elements not found');
+        }
 
+        jQuery(document).ready(function () {
+            var body = jQuery(document.body);
+            var button = jQuery("svg");
+            var line = jQuery("line");
+
+            button.click(function () {
+                if (jQuery(document.body).hasClass("menu-open")) {
+                    body.removeClass("menu-open");
+                    return;
+                }
+                body.addClass("menu-open");
+            });
+        });
 
     </script>
 </body>

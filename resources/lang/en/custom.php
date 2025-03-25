@@ -83,9 +83,15 @@ return [
     'Newsletter_update_success' => 'Newsletter updated successfully!',
     'Newsletter_delete_success' => 'Newsletter deleted successfully!',
 
-    // Blog category
+    // Testimonial
     'Testimonial_title' => 'Testimonial',
     'Testimonial_create_success' => 'Testimonial created successfully!',
     'Testimonial_update_success' => 'Testimonial updated successfully!',
     'Testimonial_delete_success' => 'Testimonial deleted successfully!',
+
+    // Social Media
+    'SocialMedia_title' => 'Social Media',
+    'SocialMedia_create_success' => 'Social Media created successfully!',
+    'SocialMedia_update_success' => 'Social Media updated successfully!',
+    'SocialMedia_delete_success' => 'Social Media deleted successfully!',
 ];

@@ -1,4 +1,4 @@
-<div class="features">
+<div class="features infinity_softech">
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
@@ -9,39 +9,40 @@
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <img class="mt-65" src="{{ asset('front-end/images/Group 1000002956.png') }}" alt="not found">
                 <div class="integration">
-                    <h1>Why Choose Infinity <span>Softech?</span></h1>
+                    <h1>Why Choose <span>Infinity Softech?</span></h1>
                     <img class="vector2_img" src="{{ asset('front-end/images/Vector 4.png') }}" alt="not found">
                     <p class="integra_p mb-60 mt-3">
                         At Infinity Softech, we provide cutting-edge digital solutions that simplify your business processes, enhance efficiency, and drive success. Our expertise in web and mobile development ensures you get the best tools for your needs.
                     </p>
                     <div>
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Reliable & Scalable Solutions</b> - High-performance software tailored to your business needs.</span>
+                        <span class="ml-2 integra_p"><b>Reliable & Scalable Solutions</b> - High-performance software tailored to your business needs.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Easy Integration</b> - Compatible with major platforms, making setup hassle-free.</span>
+                        <span class="ml-2 integra_p"><b>Easy Integration</b> - Compatible with major platforms, making setup hassle-free.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Regular Updates & Support</b> - Stay ahead with frequent updates and expert assistance.</span>
+                        <span class="ml-2 integra_p"><b>Regular Updates & Support</b> - Stay ahead with frequent updates and expert assistance.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Optimized for Performance</b> - Lightweight, fast, and built for maximum efficiency.</span>
+                        <span class="ml-2 integra_p"><b>Optimized for Performance</b> - Lightweight, fast, and built for maximum efficiency.</span>
                     </div>
                     <div class="mt-3 mb-53">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Secure & Trustworthy</b> - Industry-standard security to protect your business.</span>
+                        <span class="ml-2 integra_p"><b>Secure & Trustworthy</b> - Industry-standard security to protect your business.</span>
                     </div>
                     <div class="signup-wrapper">
                         <a href="#" class="blue_common_btn"> 
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                      </svg><span class="ml-3">Explore Our Products </span> <span class="ml-1 mr-3">
+                      </svg><span>Explore Our Products </span>
+                       {{-- <span class="ml-1 mr-3">
                                 <i class="fa-solid fa-greater-than"></i>
-                            </span>
+                            </span> --}}
                         </a>
                     </div>
                 </div>

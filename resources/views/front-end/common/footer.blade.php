@@ -50,7 +50,9 @@
                     <ul class="menu-vertical">
                         <li>Sign Up For Free</li>
                         <li>Free Log in</li>
-                        <li><a href="{{url('/profile-settings')}}">Forgot Password</a></li>
+                        @if (Auth::check())
+                            <li><a href="{{url('/profile-settings')}}">Forgot Password</a></li>
+                        @endif
                     </ul>
                 </div>
                 <div>

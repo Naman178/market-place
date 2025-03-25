@@ -34,7 +34,7 @@
                                         @foreach($testimonials as $key => $testimonial)
                                             <img src="{{ asset('front-end/images/' . $testimonial->image) }}" 
                                                 alt="Client {{ $key + 1 }}" 
-                                                class="thumbnail {{ $key == 0 ? 'active' : '' }}">
+                                                class="thumbnail {{ $key < 3 ? 'visible' : 'hidden' }}">
                                         @endforeach
                                     @endif
                                 </div>

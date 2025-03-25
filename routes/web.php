@@ -24,6 +24,7 @@ use App\Http\Controllers\FAQ\FAQController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog_category\BlogCategoryController;
 use App\Http\Controllers\Testimonial\TestimonialController;
+use App\Http\Controllers\SocialMedia\SocialMediaController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -239,6 +240,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Testimonial/store',[TestimonialController::class,'store'])->name('Testimonial-store');
     Route::get('/Testimonial/edit/{id}', [TestimonialController::class, 'edit'])->name('Testimonial-edit');
     Route::get('/Testimonial/delete/{id}', [TestimonialController::class, 'remove'])->name('Testimonial-delete');
+    
+    // SocialMedia module
+    Route::get('/SocialMedia-index',[SocialMediaController::class,'index'])->name('SocialMedia-index');
+    Route::post('/SocialMedia/store',[SocialMediaController::class,'store'])->name('SocialMedia-store');
+    Route::get('/SocialMedia/edit/{id}', [SocialMediaController::class, 'edit'])->name('SocialMedia-edit');
+    Route::get('/SocialMedia/delete/{id}', [SocialMediaController::class, 'remove'])->name('SocialMedia-delete');
 });
 
 // forgot password

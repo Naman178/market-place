@@ -2201,8 +2201,9 @@ select.form-control {
 .sticky {
   position: -webkit-sticky; /* For Safari */
   position: sticky;
-  top: 20px; /* Adjust the top position as needed */
-  z-index: 1000; /* Ensure the sticky element appears above other elements */
+  /* top: 20px; */
+  top: 87px;
+  z-index: 1;
 }
 
 .related_blogs li{
@@ -2870,9 +2871,6 @@ a{
   -ms-transition: all linear .3s;
   -o-transition: all linear .3s;
   border: none;
-}
-button{
-  cursor: pointer;
 }
 
 button:focus {
