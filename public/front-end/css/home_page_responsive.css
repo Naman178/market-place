@@ -288,6 +288,9 @@
     .wordpress_plugin h1 span{
         line-height: 0 !important;
     }
+    .padding-left{
+        padding-left: 30px !important;
+    }
 }
 @media (max-width: 767px) {
     .wordpress-plugin-grid {
@@ -590,5 +593,8 @@
     }
     .filelabel{
         margin: -4px 0 14px 0 !important;
+    }
+    .padding-left{
+        padding-left: 15px !important;
     }
 }
