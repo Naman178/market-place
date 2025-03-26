@@ -72,7 +72,7 @@
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link show active" id="site_setting_tab" data-toggle="tab" href="#site_setting" role="tab" aria-controls="pdf_settings" aria-selected="true">Site Settings</a>
+                            <a class="nav-link show active" id="site_setting_tab" data-toggle="tab" href="#site_setting" role="tab" aria-controls="pdf_settings" aria-selected="true">General Settings</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="login-register-settings-tab" data-toggle="tab" href="#loginRegisterSettings" role="tab" aria-controls="loginRegisterSettings" aria-selected="false">Login\Register Settings</a>
@@ -83,6 +83,9 @@
                         <li class="nav-item">
                             <a class="nav-link" id="smtp-setting-tab" data-toggle="tab" href="#SmtpSetting" role="tab" aria-controls="SmtpSetting" aria-selected="false">Smtp Setting</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="invoice-setting-tab" data-toggle="tab" href="#invoice_pdf_setting" role="tab" aria-controls="invoice_pdf_setting" aria-selected="false">Invoice PDF Settings</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         
@@ -91,7 +94,7 @@
                                 @csrf
                                 <input type="hidden" name="key" id="key" value="site_setting" />
                                 <div class="col-sm-12 col-md-12 mb-2 mt-4">
-                                    <h4 class="heading-color d-inline-block mb-4">Logo Settings</h4>
+                                    <h4 class="heading-color d-inline-block mb-4">General Settings</h4>
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="col-md-12 form-group mb-3">
@@ -104,46 +107,6 @@
                                             <img id="previewImgForLogo" class="previewImgCls hidepreviewimg" src="@if(!empty($site['value']['logo_image'])){{asset('storage/Logo_Settings/'.$site['value']['logo_image'])}}@endif" style="{{$imgdis4}}">
                                             <span class="title" id="titleForLogo">@if(!empty($site['value']['logo_image'])){{$site['value']['logo_image']}}@endif</span>
                                         </label>
-                                        <div class="mb-3">
-                                            <label for="site_name">Site Name</label>
-                                            <input type="text" class="form-control" name="site_name" value="{{$site["value"]["site_name"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="address1">Address 1</label>
-                                            <input type="text" class="form-control" name="address1" value="{{$site["value"]["address_1"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="address2">Address 2</label>
-                                            <input type="text" class="form-control" name="address2" value="{{$site["value"]["address_2"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="city">City</label>
-                                            <input type="text" class="form-control" name="city" value="{{$site["value"]["city"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="state">State</label>
-                                            <input type="text" class="form-control" name="state" value="{{$site["value"]["state"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="country">Country</label>
-                                            <input type="text" class="form-control" name="country" value="{{$site["value"]["country"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="pin">Pincode</label>
-                                            <input type="text" class="form-control" name="pin" value="{{$site["value"]["pin"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="gst">GST No</label>
-                                            <input type="text" class="form-control" name="gst" value="{{$site["value"]["gst"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="gst">Stripe Key</label>
-                                            <input type="text" class="form-control" name="stripe_key" value="{{$site["value"]["stripe_key"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="gst">Stripe Secret</label>
-                                            <input type="text" class="form-control" name="stripe_secret" value="{{$site["value"]["stripe_secret"] ?? ""}}">
-                                        </div>
                                         <div>
                                             <?php $showFavIcon = (!empty($site['value']['site_favicon'])) ? 'display:inline-block' : ''; ?>
                                             <label for="site_favicon">Favicon</label>
@@ -276,6 +239,63 @@
                                     <button type="button" class="btn btn-outline-primary settings_smtp_register float-right">Save</button>
                                 </div>
                             </form>
+                        </div>
+                        <div class="tab-pane fade" id="invoice_pdf_setting" role="tabpanel" aria-labelledby="invoice_pdf_setting">
+                            <form class="erp-invoice-form-submit-pdf">
+                                @csrf
+                                <input type="hidden" name="key" id="key" value="invoice_site_setting" />
+                                <div class="col-sm-12 col-md-12 mb-2 mt-4">
+                                    <h4 class="heading-color d-inline-block mb-4">Invoice PDF Settings</h4>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 form-group mb-3">
+                                        <div class="mb-3">
+                                            <label for="site_name">Site Name</label>
+                                            <input type="text" class="form-control" name="site_name" value="{{$invoice_setting["value"]["site_name"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address1">Address 1</label>
+                                            <input type="text" class="form-control" name="address1" value="{{$invoice_setting["value"]["address_1"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address2">Address 2</label>
+                                            <input type="text" class="form-control" name="address2" value="{{$invoice_setting["value"]["address_2"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="city">City</label>
+                                            <input type="text" class="form-control" name="city" value="{{$invoice_setting["value"]["city"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="state">State</label>
+                                            <input type="text" class="form-control" name="state" value="{{$invoice_setting["value"]["state"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="country">Country</label>
+                                            <input type="text" class="form-control" name="country" value="{{$invoice_setting["value"]["country"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pin">Pincode</label>
+                                            <input type="text" class="form-control" name="pin" value="{{$invoice_setting["value"]["pin"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">GST No</label>
+                                            <input type="text" class="form-control" name="gst" value="{{$invoice_setting["value"]["gst"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">Stripe Key</label>
+                                            <input type="text" class="form-control" name="stripe_key" value="{{$invoice_setting["value"]["stripe_key"] ?? ""}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gst">Stripe Secret</label>
+                                            <input type="text" class="form-control" name="stripe_secret" value="{{$invoice_setting["value"]["stripe_secret"] ?? ""}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-sm-12 col-md-12 mb-4 mt-4">
+                                <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
+                                <button type="submit" class="btn btn-outline-primary settings_invoice_form_pdf float-right">Save</button>
+                            </div>
                         </div>
                         <!-- Bootstrap Modal -->
                         <div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">

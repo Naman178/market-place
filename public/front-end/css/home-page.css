@@ -786,13 +786,16 @@
 .int_bg {
     background-color: #EDF2F4;
 }
-
+.category h1 span{
+  font-weight: 700;
+  color: #007AC1;
+}
 .vector2_img {
     margin-top: -16px;
     margin-left: 8rem;
 }
 .mt-7{
-  margin-top: -5rem;
+  margin-top: -8rem;
 }
 .mt-65 {
     margin-top: 35px;
@@ -1438,6 +1441,34 @@ div#integrationCarousel .col-4{
 .blog .integration_know{
   margin-bottom: 10px !important;
 }
+.social_media{
+  margin-top: 30px;
+}
+.social_media .slick-dots {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important; 
+  padding: 10px 0 !important;
+  list-style: none !important;
+}
+
+.social_media .slick-dots li {
+  display: inline-block !important;
+  width: 30px !important; 
+  height: 3px !important;
+  background-color: #ccc !important; 
+  transition: background 0.3s ease-in-out, width 0.3s ease-in-out !important;
+  border-radius: 2px !important; 
+}
+
+.social_media .slick-dots li button {
+  display: none !important; 
+}
+
+.social_media .slick-dots li.slick-active {
+  background-color: #007ac1 !important; 
+}
 
 .social_media .mr-7{
   margin-right: 5rem;
@@ -1476,6 +1507,7 @@ div#integrationCarousel .col-4{
   -moz-transition: all linear .3s;
   -ms-transition: all linear .3s;
   -o-transition: all linear .3s;
+  max-height: 200px;
 }
 
 .wsus__categories_item_2 .icon {
@@ -1496,6 +1528,10 @@ div#integrationCarousel .col-4{
 .slick-track {
   display: flex !important;
   align-items: center;
+}
+.social_media .slick-track{
+  width: 100% !important;
+  margin-right: 0 !important;
 }
 
 .patients .vector2_img {
@@ -2052,8 +2088,8 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 }
 
 .vbp-header-menu-button__svg {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   transform: scaleX(-1);
 }

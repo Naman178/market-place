@@ -78,7 +78,7 @@
         <ul class="childNav" data-parent="product" style="display: none;">
             @can('category-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('category-index') }}">
+                    <a class="{{ request()->is('category*') ? 'active' : '' }}" href="{{ route('category-index') }}">
                         <i class="nav-icon i-Receipt"></i>
                         <span class="nav-text">Category</span>
                     </a>
@@ -86,7 +86,7 @@
             @endcan
             @can('sub-category-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('sub-category-index') }}">
+                    <a class="{{ request()->is('sub-category*') ? 'active' : '' }}" href="{{ route('sub-category-index') }}">
                         <i class="nav-icon i-Receipt-4"></i>
                         <span class="nav-text">{{ trans('custom.sub_category_title') }}</span>
                     </a>
@@ -94,7 +94,7 @@
             @endcan
             @can('items-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('items-index') }}">
+                    <a class="{{ request()->is('items*') ? 'active' : '' }}" href="{{ route('items-index') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">{{ trans('custom.items_title') }}</span>
                     </a>
@@ -102,7 +102,7 @@
             @endcan
             @can('coupon-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('coupon-index') }}">
+                    <a class="{{ request()->is('coupon*') ? 'active' : '' }}" href="{{ route('coupon-index') }}">
                         <i class="nav-icon i-Gift-Box"></i>
                         <span class="nav-text">{{ trans('custom.coupon_title') }}</span>
                     </a>
@@ -110,7 +110,7 @@
             @endcan
             @can('reviews-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('items-list') }}">
+                    <a class="{{ request()->is('reviews*') ? 'active' : '' }}" href="{{ route('items-list') }}">
                         <i class="nav-icon i-Technorati"></i>
                         <span class="nav-text">{{ trans('custom.reviews_title') }}</span>
                     </a>
@@ -120,7 +120,7 @@
         <ul class="childNav" data-parent="orders" style="display: none;">
             @can('invoice-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('invoice-list') }}">
+                    <a class="{{ request()->is('invoice*') ? 'active' : '' }}" href="{{ route('invoice-list') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">Invoice</span>
                     </a>
@@ -128,7 +128,7 @@
             @endcan
             @can('order-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('order-list') }}">
+                    <a class="{{ request()->is('order*') ? 'active' : '' }}" href="{{ route('order-list') }}">
                         <i class="nav-icon i-Receipt-4"></i>
                         <span class="nav-text">Orders</span>
                     </a>
@@ -138,7 +138,7 @@
         <ul class="childNav" data-parent="cms" style="display: none;">
             @can('privacy-policy-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('privacy-policy-index') }}">
+                    <a class="{{ request()->is('privacy-policy*') ? 'active' : '' }}" href="{{ route('privacy-policy-index') }}">
                         <i class="nav-icon i-Receipt-4"></i>
                         <span class="nav-text">{{ trans('custom.privacy_policy_title') }}</span>
                     </a>
@@ -146,7 +146,7 @@
             @endcan
             @can('term-condition-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('term-condition-index') }}">
+                    <a class="{{ request()->is('term-condition*') ? 'active' : '' }}" href="{{ route('term-condition-index') }}">
                         <i class="nav-icon i-File-Text--Image"></i>
                         <span class="nav-text">{{ trans('custom.term_condition_title') }}</span>
                     </a>
@@ -154,7 +154,7 @@
             @endcan
             @can('FAQ-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('FAQ-index') }}">
+                    <a class="{{ request()->is('FAQ*') ? 'active' : '' }}" href="{{ route('FAQ-index') }}">
                         <i class="nav-icon i-Information"></i>
                         <span class="nav-text">{{ trans('custom.FAQ_title') }}</span>
                     </a>
@@ -162,7 +162,7 @@
             @endcan
             @can('Testimonial-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('Testimonial-index') }}">
+                    <a class="{{ request()->is('Testimonial*') ? 'active' : '' }}" href="{{ route('Testimonial-index') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">Testimonial</span>
                     </a>
@@ -170,7 +170,7 @@
             @endcan
             @can('SocialMedia-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('SocialMedia-index') }}">
+                    <a class="{{ request()->is('SocialMedia*') ? 'active' : '' }}" href="{{ route('SocialMedia-index') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">Social Media</span>
                     </a>
@@ -178,7 +178,7 @@
             @endcan
             @can('SEO-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('SEO-index') }}">
+                    <a class="{{ request()->is('SEO*') ? 'active' : '' }}" href="{{ route('SEO-index') }}">
                         <i class="nav-icon i-Search-on-Cloud"></i>
                         <span class="nav-text">{{ trans('custom.SEO_title') }}</span>
                     </a>
@@ -188,7 +188,7 @@
         <ul class="childNav" data-parent="blog" style="display: none;">
             @can('Blog-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('Blog-index') }}">
+                    <a class="{{ request()->is('Blog*') ? 'active' : '' }}" href="{{ route('Blog-index') }}">
                         <i class="nav-icon i-Blogger"></i>
                         <span class="nav-text">{{ trans('custom.Blog_title') }}</span>
                     </a>
@@ -196,7 +196,7 @@
             @endcan
             @can('Blog_category-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('Blog_category-index') }}">
+                    <a class="{{ request()->is('Blog_category*') ? 'active' : '' }}" href="{{ route('Blog_category-index') }}">
                         <i class="nav-icon i-File-Clipboard-File--Text"></i>
                         <span class="nav-text">{{ trans('custom.Blog_category_title') }}</span>
                     </a>
@@ -206,7 +206,7 @@
         <ul class="childNav" data-parent="email" style="display: none;">
             @can('newsletter-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('newsletter') }}">
+                    <a class="{{ request()->is('newsletter*') ? 'active' : '' }}" href="{{ route('newsletter') }}">
                         <i class="nav-icon i-Receipt"></i>
                         <span class="nav-text">Newsletter</span>
                     </a>
@@ -214,7 +214,7 @@
             @endcan
             @can('email-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('email') }}">
+                    <a class="{{ request()->is('email*') ? 'active' : '' }}" href="{{ route('email') }}">
                         <i class="nav-icon i-Receipt-3"></i>
                         <span class="nav-text">Sent Mail</span>
                     </a>
@@ -224,7 +224,7 @@
         <ul class="childNav" data-parent="user" style="display: none;">
             @can('user-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('user-index') }}">
+                    <a class="{{ request()->is('user*') ? 'active' : '' }}" href="{{ route('user-index') }}">
                         <i class="nav-icon i-Add-User"></i>
                         <span class="nav-text">User</span>
                     </a>
@@ -232,7 +232,7 @@
             @endcan
             @can('role-tab-show')
                 <li class="nav-item">
-                    <a class="" href="{{ route('roles.index') }}">
+                    <a class="{{ request()->is('role*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
                         <i class="nav-icon i-Add-UserStar"></i>
                         <span class="nav-text">Roles</span>
                     </a>

@@ -259,9 +259,10 @@
         //         }
         //     ]
         // });
-        $('.category-slider').slick({
+        
+        $('#category-slider').slick({
             infinite: true,
-            slidesToShow: 6,
+            slidesToShow: 4,
             slidesToScroll: 1,
             arrows: false,
             dots: true,
@@ -271,20 +272,24 @@
                 {
                     breakpoint: 991,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 3,
+                        dots: true,
+                        arrows: false,
                     }
                 },
                 {
-                    breakpoint: 480,
+                    breakpoint: 767,
                     settings: {
                         slidesToShow: 1,
+                        dots: true,
+                        arrows: false,
                     }
                 }
             ]
         });
-        $('.subcategory-slider').slick({
+        $('#subcategory-slider').slick({
             infinite: true,
-            slidesToShow: 6,
+            slidesToShow: 4,
             slidesToScroll: 1,
             arrows: false,
             dots: true,
@@ -292,15 +297,25 @@
             autoplaySpeed: 2000,
             responsive: [
                 {
-                    breakpoint: 991,
+                    breakpoint: 1405,
                     settings: {
                         slidesToShow: 2,
                     }
                 },
                 {
-                    breakpoint: 480,
+                    breakpoint: 991,
+                    settings: {
+                        slidesToShow: 3,
+                        dots: true,
+                        arrows: false,
+                    }
+                },
+                {
+                    breakpoint: 767,
                     settings: {
                         slidesToShow: 1,
+                        dots: true,
+                        arrows: false,
                     }
                 }
             ]
