@@ -1,3 +1,24 @@
+@php
+    $isProductActive = request()->is('category*') || 
+                       request()->is('sub-category*') || 
+                       request()->is('items*') || 
+                       request()->is('coupon*') || 
+                       request()->is('reviews*');
+    $isOrderActive = request()->is('invoice*') || 
+                     request()->is('order*');
+    $isCmsActive = request()->is('privacy-policy*') ||
+                     request()->is('term-condition*') ||
+                     request()->is('FAQ*') ||
+                     request()->is('Testimonial*') ||
+                     request()->is('SocialMedia*') ||
+                     request()->is('SEO*');
+    $isBlogActive = request()->is('Blog*') ||
+                     request()->is('Blog_category*');
+    $isEmailActive = request()->is('newsletter*') ||
+                     request()->is('email*');
+    $isUserActive = request()->is('user*') ||
+                    request()->is('role*');
+@endphp
 <div class="side-content-wrap">
     <div class="sidebar-left rtl-ps-none ps ps--active-y open" data-perfect-scrollbar="" data-suppress-scroll-x="true">
         <ul class="navigation-left">
@@ -9,7 +30,7 @@
                 <div class="triangle"></div>
             </li>
             @can('category-tab-show')
-                <li class="nav-item" data-item="product">
+                <li class="nav-item {{ $isProductActive ? 'active' : '' }}" data-item="product">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-Professor"></i>
                         <span class="nav-text">Product</span>
@@ -18,7 +39,7 @@
                 </li>
             @endcan
             @can('order-tab-show')
-                <li class="nav-item" data-item="orders">
+                <li class="nav-item {{ $isOrderActive ? 'active' : '' }}" data-item="orders">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-Receipt-4"></i>
                         <span class="nav-text">Orders</span>
@@ -27,7 +48,7 @@
                 </li>
             @endcan
             @can('privacy-policy-tab-show')
-                <li class="nav-item" data-item="cms">
+                <li class="nav-item {{ $isCmsActive ? 'active' : '' }}" data-item="cms">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-David-Star"></i>
                         <span class="nav-text">CMS</span>
@@ -36,7 +57,7 @@
                 </li>
             @endcan
             @can('Blog-tab-show')
-                <li class="nav-item" data-item="blog">
+                <li class="nav-item {{ $isBlogActive ? 'active' : '' }}" data-item="blog">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-Blogger"></i>
                         <span class="nav-text">Blog</span>
@@ -45,7 +66,7 @@
                 </li>
             @endcan
             @can('email-tab-show')
-                <li class="nav-item" data-item="email">
+                <li class="nav-item {{ $isEmailActive ? 'active' : '' }}" data-item="email">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-Letter-Open"></i>
                         <span class="nav-text">Email</span>
@@ -54,7 +75,7 @@
                 </li>
             @endcan
             @can('user-tab-show')
-                <li class="nav-item" data-item="user">
+                <li class="nav-item {{ $isUserActive ? 'active' : '' }}" data-item="user">
                     <a class="nav-item-hold" href="#">
                         <i class="nav-icon i-Add-UserStar"></i>
                         <span class="nav-text">User</span>

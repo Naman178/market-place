@@ -19881,7 +19881,7 @@ a.typo_link.text-gray-900:after {
   color: #03060a;
 }
 
-.layout-sidebar-large .sidebar-left .navigation-left .nav-item.active .triangle {
+.layout-sidebar-large .sidebar-left .navigation-left .nav-item.active .triangle{
   position: absolute;
   width: 0;
   height: 0;

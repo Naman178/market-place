@@ -2,9 +2,6 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <style>
-        .form-control {
-            padding: 0px 15px !important;
-        }
 
         .main-content .container {
             max-width: 1375px;
@@ -22,6 +19,17 @@
             border-radius: 3px;
             font-size: 16px;
             font-weight: 300;
+        }
+        button{
+            cursor: pointer;
+        }
+        .form-control{
+            padding: 13px !important;
+            height: calc(2.5em + 0.75rem + 2px);
+        }
+        .clearFilterButton .blue_common_btn svg {
+            left: 0 !important;
+            width: 100% !important;
         }
     </style>
 @endsection
@@ -64,11 +72,11 @@
             </div>
         </div> --}}
         <div class="row">
-            <div class="col-xl-6 col-md-12">
+            <div class="col-xl-11 col-md-12">
                 <div class="wsus__product_page_search">
                     <form id="search_form">
                         @foreach ($categories as $category)
-                        <input type="search" name="keyword" id="search_keyword" value placeholder="Search your products..."  data-item-id="{{ $category->id }}" oninput="searchItems(this)">
+                        <input type="search" name="keyword" id="search_keyword" value placeholder="Search your products..."  data-item-id="{{ $category->id }}" oninput="searchItems(this)" required>
                         <button class="blue_common_btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i><svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -79,19 +87,29 @@
                     </form>
                 </div>
             </div>
+            <div class="col-xl-1 col-md-12 justify-content-end clearFilterButton">
+                <button class="blue_common_btn mt-1" type="button" onclick="clearFilters()" id="clearFilterButton" style="display:none;">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg>
+                    <span>Clear Filter</span>
+                </button>
+            </div>
         </div>
         <div class="row">
             <div class="col-xl-3 col-md-6">
-                @foreach ($categories as $category)
-                    <select name="sorting" id="sorting-{{ $category->id }}" class="form-control select-input mt-3" data-item-id="{{ $category->id }}" onchange="sortItems(this)">
-                        <option value="0">Default Sorting</option>
-                        <option value="1">Low to Highest Price</option>
-                        <option value="2">Highest to Low Price</option>
-                    </select>
-                    @break
-                @endforeach                
-
                 <div class="wsus__product_sidebar_area mt-3">
+                    <div class="wsus__product_sidebar categories">
+                    @foreach ($categories as $category)
+                        <select name="sorting" id="sorting-{{ $category->id }}" class="form-control select-input mt-3" data-item-id="{{ $category->id }}" onchange="sortItems(this)">
+                            <option value="0">Default Sorting</option>
+                            <option value="1">Low to Highest Price</option>
+                            <option value="2">Highest to Low Price</option>
+                        </select>
+                        @break
+                    @endforeach  
+                    </div>
                     <div class="wsus__product_sidebar categories">
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
@@ -198,7 +216,9 @@
                 </div>
             </div>
             @else
-                <p>No Product Found</p>
+                <div class="col-xl-9 col-md-12 text-center no-items">
+                    <p>No products found.</p>
+                </div>
             @endif
         </div>
     </div>
@@ -259,9 +279,13 @@
                             // Append the item HTML to the container
                             $("#items-container").append(itemHTML);
                         });
+                        document.getElementById('clearFilterButton').style.display = 'block';
                     } else {
                         // If no items are found
-                        $("#items-container").append('<p>No items found.</p>');
+                        $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                            <p>No products found</p>
+                        </div>`);
+                        document.getElementById('clearFilterButton').style.display = 'block';
                     }
                 }
             });
@@ -359,8 +383,12 @@
                         `;
                         $("#items-container").append(itemHTML);
                     });
+                    document.getElementById('clearFilterButton').style.display = 'block';
                 } else {
-                    $("#items-container").append('<p>No items found.</p>');
+                    $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                            <p>No products found</p>
+                        </div>`);
+                    document.getElementById('clearFilterButton').style.display = 'block';
                 }
             }
         });
@@ -407,8 +435,12 @@
                     `;
                     $("#items-container").append(itemHTML);
                 });
+                document.getElementById('clearFilterButton').style.display = 'block';
             } else {
-                $("#items-container").append('<p>No items found.</p>');
+                $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                        <p>No products found</p>
+                    </div>`);
+                    document.getElementById('clearFilterButton').style.display = 'block';
             }
             },
             error: function () {
@@ -416,6 +448,25 @@
             }
         });
     });
+    function clearFilters() {
+        document.getElementById('search_keyword').value = '';
+
+        const sortingSelects = document.querySelectorAll('.form-control.select-input');
+        sortingSelects.forEach(select => {
+            select.value = '0'; 
+        });
+
+        const priceRange = document.getElementById('priceRange');
+        if (priceRange) {
+            priceRange.value = 0;
+            document.getElementById('priceLabel').innerText = '0';
+        }
+
+        const form = document.getElementById('search_form');
+        form.submit(); 
+
+        document.getElementById('clearFilterButton').style.display = 'none';
+    }
 
 </script>
 @endsection
