@@ -63,7 +63,8 @@ class HomePageController extends Controller
            'email' => $email,
         ]);
         Mail::to($email)->send(new NewsletterMail($email , $appName));
-        return response()->json(['message' => 'Successfully subscribed!'], 200);
+        return redirect()->back()->with('success', 'Successfully subscribed!');
+        // return response()->json(['message' => 'Successfully subscribed!'], 200);
     }
     public function deletenewsletter(Request $request, $id){
         Newsletter::where('id', $id)->delete();

@@ -65,7 +65,7 @@
        @csrf
        <input type="hidden" name="recaptcha" id="recaptcha">
         <div class="row justify-content-center">
-            <d<div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
+            <d<div class="col-xl-4 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card">
                     <div class=" mb-1">
                         <div class="text-center mt-2">
