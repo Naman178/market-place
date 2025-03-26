@@ -1063,7 +1063,7 @@
 }
 
 .features .tick_img , .support .tick_img{
-  margin-bottom: -2px;
+  /* margin-bottom: 55px; */
 }
 .read_btn {
   background-color: #007AC1;
@@ -1150,7 +1150,7 @@
 }
 
 .features .integration div,  .support .integration div{
-   display: flex;
+   /* display: flex; */
    align-items: center;
 }
 
@@ -1441,33 +1441,8 @@ div#integrationCarousel .col-4{
 .blog .integration_know{
   margin-bottom: 10px !important;
 }
-.social_media{
+.category .social_media{
   margin-top: 30px;
-}
-.social_media .slick-dots {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 5px !important; 
-  padding: 10px 0 !important;
-  list-style: none !important;
-}
-
-.social_media .slick-dots li {
-  display: inline-block !important;
-  width: 30px !important; 
-  height: 3px !important;
-  background-color: #ccc !important; 
-  transition: background 0.3s ease-in-out, width 0.3s ease-in-out !important;
-  border-radius: 2px !important; 
-}
-
-.social_media .slick-dots li button {
-  display: none !important; 
-}
-
-.social_media .slick-dots li.slick-active {
-  background-color: #007ac1 !important; 
 }
 
 .social_media .mr-7{
@@ -1862,7 +1837,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
   display: grid;
   grid-template-columns: repeat(3, minmax(300px, 1fr)); /* 3 columns per row */
   gap: 20px; /* Reduced gap */
-  padding: 20px;
+  padding: 0;
 }
 /* General Styles */
 .header-container {
@@ -1962,7 +1937,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 #mobile-menu ul li a {
   color: #007AC1; 
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   text-decoration: none;
   text-align: left;
   display: block;
