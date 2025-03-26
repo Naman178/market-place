@@ -4,7 +4,7 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div>
-                <h1>Shop By Category</h1>
+                <h1>Shop By <span>Category</span></h1>
                 <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
@@ -40,9 +40,9 @@
             </div>
         </div> --}}
         <div class="social_media pb_10">
-            <div class="container text-center category-slider pb_30">
+            <div class="container text-center category-slider pb_30" id="category-slider">
                 @foreach ($category as $item)
-                    <div class="col-xl-6" style="width: 100%; display: inline-block;">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" style="display: inline-block;">
                         <a href="{{ route('product.list', ['categoryOrSubcategory' => $item->id]) }}" tabindex="0">
                         <div class="wsus__categories_item_2">
                             <div class="icon">

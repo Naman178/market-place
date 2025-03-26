@@ -19843,6 +19843,12 @@ a.typo_link.text-gray-900:after {
 .layout-sidebar-large .sidebar-left .navigation-left .nav-item.active .nav-item-hold {
   color: #003473;
 }
+.layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item a.active {
+  color: #663399 !important;
+}
+.layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item a.active  .nav-icon{
+  color: #663399 !important;
+}
 
 .layout-sidebar-large .sidebar-left .navigation-left .nav-item .nav-item-hold {
   display: block;

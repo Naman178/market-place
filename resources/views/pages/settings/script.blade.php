@@ -35,6 +35,35 @@
             }
         });
     });
+    /* pdf settings submit form event */
+    $(document).on("click", ".settings_invoice_form_pdf", function(){
+        $(".erp-invoice-form-submit-pdf").submit();
+        $("#preloader").show();
+    });
+
+    /*pdf settings submit ajax event */
+    $(".erp-invoice-form-submit-pdf").submit(function (e){
+        e.preventDefault();
+        var obj = {};
+        var $value = new FormData(this);
+        $value.forEach((value, key) => obj[key] = value);
+        var json = JSON.stringify(obj);
+        $.ajax({
+            url: "{{url('/settings/store')}}",
+            type:"POST",
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: $value,
+            dataType: 'json',
+            processData: false,
+            success:function(response){
+                // toastr.info(response.success, response.title);
+                location.reload();
+            }
+        });
+    });
 
     /* header image preview on change  */
     $('body').on('change', 'input[name="header_image"]', function(e) {
