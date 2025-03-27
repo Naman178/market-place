@@ -503,6 +503,7 @@
                 $('#sendMailModal').modal('hide');
             },
             error: function(err){
+                toastr.error(err.responseJSON.message, err.responseJSON.message);
                 console.log(err);
             }
         });

@@ -258,6 +258,10 @@ class SettingsController extends Controller
     }
     public function mail(Request $request){
         // dd($request->all());
+        $settings = Settings::where('key','smtp_setting')->first();
+        if(!$settings){
+            return response()->json(['message' => 'Please set SMTP settings first'], 400);
+        }
         $email = $request->email;
         // dd($email);
         $details = [

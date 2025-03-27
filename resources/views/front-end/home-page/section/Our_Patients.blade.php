@@ -10,9 +10,9 @@
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12 patientsSlider" id="patientsSlider">
                 <div>
-                    <img id="large-image" class="mt-65 rectangle_img" 
+                    <img id="large-image" class="mt-65 w-50 h-auto" 
                          src="{{ asset('storage/images/' . ($testimonials->first()->image ?? 'Rectangle 3985.png')) }}" 
-                         alt="not found" style="min-width: 80%;">
+                         alt="not found" style="min-width: 75%;">
                 </div>
             </div>
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12 mt-2">

@@ -370,15 +370,105 @@
     //         image: '{{ asset("front-end/images/Group 5749.png") }}',
     //     },
     // ];
+    // $(document).ready(function () {
+    //     let testimonials = @json($testimonials); // Get testimonials from Laravel
+    //     let latestTestimonials = @json($latestTestimonials);
+    //     let currentIndex = 0;
+    //     const imagesToShow = 3; 
+    //     let latestselectedTestimonial = latestTestimonials[0];
+    //     $(".patients .testimonial-text").fadeOut(200, function () {
+    //             $(this).html(latestselectedTestimonial.message).fadeIn(200);
+    //         });
+    //     function updateVisibleThumbnails() {
+    //         $(".thumbnail").each(function (index) {
+    //             if ((index >= currentIndex && index < currentIndex + imagesToShow) || 
+    //                 (currentIndex + imagesToShow > testimonials.length && index < (currentIndex + imagesToShow) % testimonials.length)) {
+    //                 $(this).removeClass("hidden").addClass("visible");
+    //             } else {
+    //                 $(this).removeClass("visible").addClass("hidden");
+    //             }
+    //         });
+    //     }
+
+    //     function updateTestimonial(index) {
+    //         let selectedTestimonial = testimonials[index];
+
+    //         // Animate content change
+    //         $(".patientsSlider").css({
+    //             "position": "relative",
+    //             "right": "-100%",
+    //             "opacity": "0"
+    //         }).animate({
+    //             "right": "0",
+    //             "opacity": "1"
+    //         }, 500);
+
+    //         // Change the large image
+    //         $("#large-image").fadeOut(200, function () {
+    //             $(this).attr("src", "storage/images/" + selectedTestimonial.image).fadeIn(200);
+    //         });
+
+    //         // Update testimonial text
+    //         $(".patients .testimonial-text").fadeOut(200, function () {
+    //             $(this).html(selectedTestimonial.message).fadeIn(200);
+    //         });
+
+    //         // Update name
+    //         $(".patient-name").fadeOut(200, function () {
+    //             $(this).text(selectedTestimonial.name).fadeIn(200);
+    //         });
+
+    //         // Update role/designation
+    //         $(".patient-role").fadeOut(200, function () {
+    //             $(this).text(selectedTestimonial.designation ?? "Happy Client").fadeIn(200);
+    //         });
+
+    //         // Highlight active thumbnail
+    //         $(".thumbnail").removeClass("active");
+    //         $(".thumbnail").eq(index).addClass("active");
+    //     }
+
+    //     // Thumbnail click event
+    //     $(".thumbnail").click(function () {
+    //         const clickedIndex = $(this).index();
+    //         // Adjust the currentIndex so the clicked image is centered
+    //         if (clickedIndex + 1 > currentIndex + imagesToShow) {
+    //             currentIndex = clickedIndex - (imagesToShow - 1);
+    //         } else {
+    //             currentIndex = Math.max(0, clickedIndex);
+    //         }
+    //         updateVisibleThumbnails();
+    //         updateTestimonial(clickedIndex);
+    //     });
+        
+    //     // Next button functionality
+    //     $(".next-btn").click(function () {
+    //         currentIndex = (currentIndex + 1) % testimonials.length;
+    //         updateVisibleThumbnails();
+    //         updateTestimonial(currentIndex);
+    //     });
+
+    //     // Previous button functionality
+    //     $(".prev-btn").click(function () {
+    //         currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+    //         updateVisibleThumbnails();
+    //         updateTestimonial(currentIndex);
+    //     });
+
+    //     // Initialize the first set of visible thumbnails
+    //     updateVisibleThumbnails();
+    // });
+    
     $(document).ready(function () {
-        let testimonials = @json($testimonials); // Get testimonials from Laravel
+        let testimonials = @json($testimonials);
         let latestTestimonials = @json($latestTestimonials);
         let currentIndex = 0;
-        const imagesToShow = 3; 
+        const imagesToShow = 3;
         let latestselectedTestimonial = latestTestimonials[0];
-        $(".patients .testimonial-text").fadeOut(200, function () {
-                $(this).html(latestselectedTestimonial.message).fadeIn(200);
-            });
+
+        // Initialize with the latest testimonial
+        $(".patients .testimonial-text").html(latestselectedTestimonial.message);
+
         function updateVisibleThumbnails() {
             $(".thumbnail").each(function (index) {
                 if ((index >= currentIndex && index < currentIndex + imagesToShow) || 
@@ -393,35 +483,19 @@
         function updateTestimonial(index) {
             let selectedTestimonial = testimonials[index];
 
-            // Animate content change
-            $(".patientsSlider").css({
-                "position": "relative",
-                "right": "-100%",
-                "opacity": "0"
-            }).animate({
-                "right": "0",
-                "opacity": "1"
-            }, 500);
+            // Animate elements moving up slowly
+            $(".patientsSlider, #large-image, .patients .testimonial-text, .patient-name, .patient-role")
+                .animate({ opacity: 0, top: "-40px" }, 500, function () {
 
-            // Change the large image
-            $("#large-image").fadeOut(200, function () {
-                $(this).attr("src", "storage/images/" + selectedTestimonial.image).fadeIn(200);
-            });
+                    // Update content after animation completes
+                    $("#large-image").attr("src", "storage/images/" + selectedTestimonial.image);
+                    $(".patients .testimonial-text").html(selectedTestimonial.message);
+                    $(".patient-name").text(selectedTestimonial.name);
+                    $(".patient-role").text(selectedTestimonial.designation ?? "Happy Client");
 
-            // Update testimonial text
-            $(".patients .testimonial-text").fadeOut(200, function () {
-                $(this).html(selectedTestimonial.message).fadeIn(200);
-            });
-
-            // Update name
-            $(".patient-name").fadeOut(200, function () {
-                $(this).text(selectedTestimonial.name).fadeIn(200);
-            });
-
-            // Update role/designation
-            $(".patient-role").fadeOut(200, function () {
-                $(this).text(selectedTestimonial.designation ?? "Happy Client").fadeIn(200);
-            });
+                    // Slide elements back down and fade in slowly
+                    $(this).css({ top: "40px" }).animate({ opacity: 1, top: "0px" }, 500);
+                });
 
             // Highlight active thumbnail
             $(".thumbnail").removeClass("active");
@@ -431,7 +505,6 @@
         // Thumbnail click event
         $(".thumbnail").click(function () {
             const clickedIndex = $(this).index();
-            // Adjust the currentIndex so the clicked image is centered
             if (clickedIndex + 1 > currentIndex + imagesToShow) {
                 currentIndex = clickedIndex - (imagesToShow - 1);
             } else {
@@ -440,7 +513,7 @@
             updateVisibleThumbnails();
             updateTestimonial(clickedIndex);
         });
-        
+
         // Next button functionality
         $(".next-btn").click(function () {
             currentIndex = (currentIndex + 1) % testimonials.length;
