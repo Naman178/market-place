@@ -44,9 +44,12 @@ class HomePageController extends Controller
         $subcategory = SubCategory::where('sys_state','=','0')->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
+        $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
+                            ->latest()
+                            ->get();
         $socialmedia = SocialMedia::orderBy('social_media.id', 'desc')
                             ->get();  
-        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials','socialmedia'));
+        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials','socialmedia','latestTestimonials'));
     }
     public function newsletter(Request $request){
         $request->validate([

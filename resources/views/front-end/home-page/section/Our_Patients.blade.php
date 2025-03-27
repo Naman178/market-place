@@ -11,7 +11,7 @@
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12 patientsSlider" id="patientsSlider">
                 <div>
                     <img id="large-image" class="mt-65 rectangle_img" 
-                         src="{{ asset('front-end/images/' . ($testimonials->first()->image ?? 'Rectangle 3985.png')) }}" 
+                         src="{{ asset('storage/images/' . ($testimonials->first()->image ?? 'Rectangle 3985.png')) }}" 
                          alt="not found" style="min-width: 80%;">
                 </div>
             </div>
@@ -32,7 +32,7 @@
                                 <div class="thumbnails">
                                     @if($testimonials->isNotEmpty())
                                         @foreach($testimonials as $key => $testimonial)
-                                            <img src="{{ asset('front-end/images/' . $testimonial->image) }}" 
+                                            <img src="{{ asset('storage/images/' . $testimonial->image) }}" 
                                                 alt="Client {{ $key + 1 }}" 
                                                 class="thumbnail {{ $key < 3 ? 'visible' : 'hidden' }}">
                                         @endforeach

@@ -344,6 +344,7 @@
 }
 .blue_common_btn {
   position: relative;
+  cursor: pointer;
   display: inline-flex;
   align-items: center !important;
   justify-content: center !important;

@@ -33,6 +33,9 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 40px !important;
         }
+        .footer-04 .form-control {
+             padding: 14px 15px !important;
+         }
     </style>
 @endsection
 @section('content')

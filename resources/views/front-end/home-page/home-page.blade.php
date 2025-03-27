@@ -372,9 +372,13 @@
     // ];
     $(document).ready(function () {
         let testimonials = @json($testimonials); // Get testimonials from Laravel
+        let latestTestimonials = @json($latestTestimonials);
         let currentIndex = 0;
         const imagesToShow = 3; 
-
+        let latestselectedTestimonial = latestTestimonials[0];
+        $(".patients .testimonial-text").fadeOut(200, function () {
+                $(this).html(latestselectedTestimonial.message).fadeIn(200);
+            });
         function updateVisibleThumbnails() {
             $(".thumbnail").each(function (index) {
                 if ((index >= currentIndex && index < currentIndex + imagesToShow) || 
@@ -543,7 +547,7 @@
             });
         })
         $('.subscribe_btn').on('click',function(){
-            let email = $('.email_text').val();
+            let email = $('.email_txt').val();
             let submit_url = $(this).attr('data-route');
             console.log(submit_url);
             $.ajax({
@@ -556,7 +560,7 @@
                 success: function(response) {
                     $('.email_text').val('');
                     $('.subscribe_success').text("Successfully subscribed!").css({
-                        "color": "green",
+                        "color": "#003473",
                         "margin-top": "10px",
                         "margin-left": "17px"
                     }).fadeIn();

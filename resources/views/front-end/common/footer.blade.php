@@ -147,7 +147,7 @@
                 <h2 class="footer-heading">Subcribe</h2>
                 <div class="subscribe-form">
                     <div class="form-group d_flex">
-                        <input type="email" class="form-control rounded-left" value="" name="email" placeholder="Enter your email">
+                        <input type="email" class="form-control rounded-left email_txt" value="" name="email" placeholder="Enter your email" required>
                         <a class="form-control submit rounded-right subscribe_btn" data-route="{{route('newsletter-add')}}"> 
                                 <span class="sr-only">Submit</span><i class="fa fa-paper-plane"></i></a>
                       

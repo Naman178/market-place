@@ -11,7 +11,7 @@
                     <span class="faq-icon"></span>
                 </div>
                 <div class="faq-answer">
-                    <p>{{ $FAQ->answer ?? '' }}</p>
+                    <p>{!! $FAQ->answer ?? '' !!}</p>
                 </div>
             </div>
             <hr>
@@ -47,7 +47,7 @@
 </div>
 
 
-<div class="tech">
+{{-- <div class="tech">
     <div class="container">
         <div class="row">
             <div class="col-lg-7 col-sm-12 col-12">
@@ -64,9 +64,9 @@
                     <input type="text" class="email_text" value="" name="email" placeholder="Enter your email">
                     </div>
                     <div class="col-lg-4 col-sm-12 col-12 text-end">
-                        {{-- <div class="sign_up_btn" data-route="{{route('newsletter')}}">
+                        <div class="sign_up_btn" data-route="{{route('newsletter')}}">
                            Sign Up
-                        </div> --}}
+                        </div>
                         <li class="signup-wrapper"><a class="blue_common_btn sign_up_btn"data-route="{{route('newsletter-add')}}"> 
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
@@ -81,4 +81,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

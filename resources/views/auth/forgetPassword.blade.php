@@ -11,6 +11,9 @@
         .form-control {
              padding: 21px 15px !important;
          }
+         .footer-04 .form-control {
+             padding: 14px 15px !important;
+         }
     </style>
 @endsection
 @section('content')
@@ -20,7 +23,7 @@
             <h3><span class="txt-black">Forgot</span><span class="color-blue underline-text"> Password</span></h3>
         </div>
         <div class="row justify-content-center">
-            <div class="col-xl-4 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card mb-5">                    
                     {{-- <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                     --}}
                     @if (Session::has('message'))
