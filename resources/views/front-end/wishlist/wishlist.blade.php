@@ -132,7 +132,8 @@
                 border-radius: 4px;
             }
             .wishlist{
-                margin-top: 30px;
+                margin-top: 97px;
+                margin-bottom: 97px !important;
             }
     </style>
 </head>
