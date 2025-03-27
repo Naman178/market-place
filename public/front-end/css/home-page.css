@@ -203,8 +203,8 @@
 
 
 .hero_banner .container ,.plugins .container,.category .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
-  max-width: 1400px !important;
-  width: 100% !important;
+  max-width: 1400px;
+  width: 100%;
 }
 
 .plugins , .int_bg ,.category, .wishlist, .features, .social_media, .testimonial-section, .support, .hero_banner{

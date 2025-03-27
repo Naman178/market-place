@@ -28,8 +28,8 @@
             height: calc(2.5em + 0.75rem + 2px);
         }
         .clearFilterButton .blue_common_btn svg {
-            left: 0 !important;
-            width: 100% !important;
+            left: 0 ;
+            width: 100%;
         }
     </style>
 @endsection
@@ -98,7 +98,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-3 col-md-6">
+            <div class="col-xl-3 col-lg-6 col-md-12 xol-sm-12">
                 <div class="wsus__product_sidebar_area mt-3">
                     <div class="wsus__product_sidebar categories">
                     @foreach ($categories as $category)
@@ -157,10 +157,10 @@
                 </div>
             </div>
             @if ($item->count() != 0)
-            <div class="col-xl-9 col-md-12">
+            <div class="col-xl-9 col-lg-6 col-md-12">
                 <div id="items-container" class="row">
                 @foreach ($item as $items)
-                <div class="col-xl-5 col-md-6">
+                <div class="col-xl-5 col-md-12">
                     <div class="wsus__gallery_item">
                         <div class="wsus__gallery_item_img">
                             <img src="{{ asset('public/storage/items_files/' . $items->thumbnail_image) }}"
@@ -248,7 +248,7 @@
                         response.forEach(function(item) {
                             // Create the item HTML structure dynamically
                             var itemHTML = `
-                                <div class="col-xl-5 col-md-6">
+                                <div class="col-xl-5 col-md-12">
                                     <div class="wsus__gallery_item">
                                         <div class="wsus__gallery_item_img">
                                             <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -357,7 +357,7 @@
                 if (response.length > 0) {
                     response.forEach(function(item) {
                         var itemHTML = `
-                            <div class="col-xl-5 col-md-6">
+                            <div class="col-xl-5 col-md-12">
                                 <div class="wsus__gallery_item">
                                     <div class="wsus__gallery_item_img">
                                         <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -409,7 +409,7 @@
             if (response.length > 0) {
                 response.forEach(function(item) {
                     var itemHTML = `
-                        <div class="col-xl-5 col-md-6">
+                        <div class="col-xl-5 col-md-12">
                             <div class="wsus__gallery_item">
                                 <div class="wsus__gallery_item_img">
                                     <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">

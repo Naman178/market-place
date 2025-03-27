@@ -133,7 +133,9 @@
 
 <body>
     @php
-        $path = public_path('storage/Logo_Settings/' . $setting->value['logo_image'] ) ?? public_path('front-end/images/infiniylogo.png');
+        $path = is_array($setting->value) && isset($setting->value['logo_image'])
+        ? public_path('storage/Logo_Settings/' . $setting->value['logo_image'])
+        : public_path('front-end/images/infiniylogo.png');
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);

@@ -190,7 +190,7 @@
                                 <h4 class="heading-color d-inline-block">SMTP Settings</h4>
                                 <a href="{{route('dashboard')}}" class="btn btn-outline-primary ml-2 float-right">Cancel</a>
                                 <button type="button" class="btn btn-outline-primary settings_smtp_register float-right">Save</button>
-                                <button type="button" class="btn btn-outline-primary float-right mr-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">Send Mail</button>
+                                <button type="button" class="btn btn-outline-primary float-right mr-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">Send Test Mail</button>
                             </div>
                             
                             <form class="erp-form-submit-smtp">
@@ -281,14 +281,6 @@
                                             <label for="gst">GST No</label>
                                             <input type="text" class="form-control" name="gst" value="{{$invoice_setting["value"]["gst"] ?? ""}}">
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="gst">Stripe Key</label>
-                                            <input type="text" class="form-control" name="stripe_key" value="{{$invoice_setting["value"]["stripe_key"] ?? ""}}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="gst">Stripe Secret</label>
-                                            <input type="text" class="form-control" name="stripe_secret" value="{{$invoice_setting["value"]["stripe_secret"] ?? ""}}">
-                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -303,7 +295,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="sendMailModalLabel">Send Test Mail</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
                                     </div>
                                     <div class="modal-body">
                                         <form id="sendMailForm">

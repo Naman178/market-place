@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/home_page_responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/product_responsive.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Toastr CSS (Toast notifications) -->

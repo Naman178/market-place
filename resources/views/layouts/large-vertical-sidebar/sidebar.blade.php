@@ -22,7 +22,7 @@
 <div class="side-content-wrap">
     <div class="sidebar-left rtl-ps-none ps ps--active-y open" data-perfect-scrollbar="" data-suppress-scroll-x="true">
         <ul class="navigation-left">
-            <li class="nav-item {{ request()->is('/*') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
                 <a class="nav-item-hold" href="{{ route('dashboard') }}">
                     <i class="nav-icon i-Bar-Chart"></i>
                     <span class="nav-text">Dashboard</span>

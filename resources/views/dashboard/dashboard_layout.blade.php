@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/home_page_responsive.css') }}">
     <!-- Toastr CSS (Toast notifications) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     
@@ -758,6 +759,24 @@
         .font-weight-bold {
             font-weight: 700 !important;
         }
+        @media (max-width: 1024px) {
+            .wsus__profile_header_text .rating p {
+                font-size: 15px;
+            }
+        }
+        @media (max-width: 991px) {
+            .wsus__profile_header_text .header_button {
+                position: relative;
+                padding: 0;
+            }
+            .wsus__profile_header_text .header_button li{
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .accordion .mb-0{
+                margin-bottom: 15px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1281,7 +1300,19 @@
                 });
             });
         });
-        
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                // Toggle the 'd-none' class on the mobile menu
+                mobileMenu.classList.toggle('d-none');
+                menuToggle.classList.remove('d-none');
+                console.log('Menu toggled');
+            });
+        } else {
+            console.log('Menu toggle elements not found');
+        }
     </script>
 
 </body>

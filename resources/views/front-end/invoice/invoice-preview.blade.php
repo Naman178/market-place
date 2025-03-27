@@ -32,6 +32,10 @@
         max-width: 1320px;
     }
 </style>
+@php
+ use App\Models\Settings;
+ $site = Settings::where('key','site_setting')->first();
+@endphp
 <div class="container checkout-container py-5">
    <div class="checkout">
       <div class="container">
@@ -42,8 +46,8 @@
                         <div class="row p-4">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center mb-4">
-                                    @if ($setting->value['logo_image'] != null)
-                                        <img src="{{ asset('storage/Logo_Settings/' . $setting->value['logo_image']) }}" height="50" width="150" alt="Site Logo">
+                                    @if ($site->value['logo_image'] != null)
+                                        <img src="{{ asset('storage/Logo_Settings/' . $site->value['logo_image']) }}" height="50" width="150" alt="Site Logo">
                                     @else
                                         <img src="{{ asset('front-end/images/infiniylogo.png') }}" height="50" width="150" alt="Site Logo">
                                         
