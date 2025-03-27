@@ -405,7 +405,7 @@
 
             // Change the large image
             $("#large-image").fadeOut(200, function () {
-                $(this).attr("src", "front-end/images/" + selectedTestimonial.image).fadeIn(200);
+                $(this).attr("src", "storage/images/" + selectedTestimonial.image).fadeIn(200);
             });
 
             // Update testimonial text
