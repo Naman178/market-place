@@ -45,4 +45,7 @@ class Order extends Model
     public function invoice(){
         return $this->HasOne(InvoiceModel::class, "orderid" , 'id');
     }
+    public function transaction(){
+        return $this->hasOne(Transaction::class,'id','transaction_id');
+    }
 }

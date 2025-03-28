@@ -152,7 +152,7 @@
             }
 
             table.dataTable th, table.dataTable td {
-                padding: 8px !important;
+                /* padding: 8px !important; */
             }
 
             .dataTables_wrapper .dataTables_filter {
@@ -759,12 +759,91 @@
         .font-weight-bold {
             font-weight: 700 !important;
         }
+        .mobile_accordion-container{
+            display: none;
+        }
+        .mobile_accordion {
+            width: 100%;
+            border: 1px solid #91C9FF;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .mobile_accordion-header {
+            padding: 10px;
+            background-color: #007AC1;
+            cursor: pointer;
+            font-size: 13px !important;
+            color: #fff;
+            border-bottom: 1px solid #91C9FF;
+        }
+
+        .mobile_accordion-body {
+            padding: 10px;
+            display: none;
+            background-color: #fff;
+            font-size: 14px!important;
+        }
+
+        .active .mobile_accordion-body {
+            display: block;
+        }
+        
+
         @media (max-width: 1024px) {
             .wsus__profile_header_text .rating p {
                 font-size: 15px;
             }
         }
+
         @media (max-width: 991px) {
+            table {
+                border: 0;
+            }
+            table.dataTable.display tbody td {
+                border: none;   
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+            table tfoot {
+                display: none;
+            }
+            
+            table thead{
+                display: none;
+            }
+            
+            table tr, table th {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+            
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+                word-wrap: break-word;
+                word-break: break-all;
+                white-space: normal;
+                font-size: 12px;
+            }
+            
+            table td::before {
+                content: attr(data-label);
+                /* float: left; */
+                margin-right: 10px;
+                font-size: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            
+            table td:last-child {
+                border-bottom: 0;
+            }
             .wsus__profile_header_text .header_button {
                 position: relative;
                 padding: 0;
@@ -776,6 +855,65 @@
             .accordion .mb-0{
                 margin-bottom: 15px !important;
             }
+            .mobile_accordion-container{
+                display: block;
+            }
+            .menu, .user_tab{
+                display: none;
+            }
+            div.dataTables_wrapper div.dataTables_paginate{
+                white-space: wrap;
+            }
+            .paginate_button {
+                margin-bottom: 10px;
+            }
+           .dataTables_length, .dataTables_filter, div.dataTables_wrapper div.dataTables_info, #DataTables_Table_0_info, #DataTables_Table_0_paginate, .dataTables_wrapper .dataTables_paginate{
+               display: none !important;
+           }
+           .wsus__profile_header_text .header_button{
+                margin-top: -28rem;
+           }
+           .wsus__profile_header {
+             padding: 20px 0;
+           }
+        }
+        @media (max-width: 546px) {
+            .wsus__profile_header_text .header_button{
+                margin-top: 15px;
+                margin-bottom: 0;
+           }
+        }
+
+        @media (max-width: 480px) {
+            .p_0{
+                padding: 0 !important;
+            }
+            div.dataTables_wrapper div.dataTables_filter label {
+                flex-wrap: wrap;
+                justify-content: start !important;
+            }
+            div.dataTables_wrapper div.dataTables_filter input{
+                margin-left: 0 ;
+            }
+            #list-profile .ml-2{
+                margin-left: 0 !important;
+            }
+            #list-profile .blue_common_btn {
+                padding: 12px 14px !important;
+            }
+            .floating-label{
+                background: transparent !important;
+            }
+            
+           .wsus__profile_header_text .header_button{
+                margin-bottom: 0;
+           }
+           .wsus__profile_header_text {
+                margin-bottom: -24px;
+           }
+           .wsus__profile_header_text .header_button li{
+                padding: 20px 20px;
+           }
         }
     </style>
 </head>
@@ -835,7 +973,7 @@
     </div>
 
     <!-- Navigation Menu -->
-    <div class="container mb-5">
+    <div class="container mb-5 menu">
         <ul class="header_menu d-flex flex-wrap">
             <li><a href="{{ route('user-dashboard') }}" class="{{ request()->is('user-dashboard') ? 'active' : '' }}">Dashboard</a></li>
             <li><a href="{{ route('orders') }}" class="{{ request()->is('orders') ? 'active' : '' }}">Orders</a></li>
@@ -859,6 +997,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>
+       function toggleAccordion(element) {
+        const accordions = document.querySelectorAll('.mobile_accordion');
+        console.log(accordions);
+        
+            accordions.forEach(accordion => {
+                accordion.classList.remove('active');
+            });
+
+            // Open the selected mobile accordion
+            const parent = element.parentElement;
+            parent.classList.toggle('active');
+        }
+        function logout() {
+            document.getElementById('logout-form').submit();
+        }
+
         @if(Session::has('success'))
             toastr.success("{{ Session::get('success') }}");
         @elseif(Session::has('error'))

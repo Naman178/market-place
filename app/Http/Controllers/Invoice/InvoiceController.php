@@ -66,6 +66,13 @@ class InvoiceController extends Controller
         $order = Order::with(['product'])->get();
         return view('pages.Invoice.order',compact('invoices','order'));
     }
+    public function orderDetails($id)
+    {
+        $invoices = InvoiceModel::with(['order.product'])->get();
+        $order = Order::with(['product','key'])->where('id',$id)->get();
+        return view('pages.Invoice.orderdetails',compact('invoices','order'));
+    }
+
     public function edit($id)
     {
         $users = User::role('user')->get(); 
@@ -261,4 +268,23 @@ class InvoiceController extends Controller
         }
         return response()->json(['success' => true, 'invoice_id' => $invoice->id,'redirect_url' => route('invoice-preview', ['id' => $invoice->id])]);
     }
+    public function suspendKey($id, Request $request)
+    {
+        $key = Key::where('key', $id)->first();
+        
+        if ($key) {
+            if ($request->action == 'suspend') {
+                $key->expire_at = now();
+                $key->save();
+                return response()->json(['success' => true, 'message' => 'Licence Suspended Successfully!']);
+            } else if ($request->action == 'reactivate') {
+                $key->expire_at = null;  
+                $key->save();
+                return response()->json(['success' => true, 'message' => 'Licence Reactivated Successfully!']);
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => 'Key not found'], 404);
+    }
+
 }

@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
 
     //Profile Settings Module
-    Route::get('/profilesettings/{id}',[ProfileSettingsController::class,'index'])->name('profile-settings');
+    Route::get('/profilesettings/{id}',[ProfileSettingsController::class,'index'])->name('profilesettings');
     Route::post('/profilesettings/store',[ProfileSettingsController::class,'store'])->name('profilesettings-store');
     Route::get('/changePassword', [ProfileSettingsController::class, 'showChangePasswordGet'])->name('changePasswordGet');
     Route::post('/changePassword', [ProfileSettingsController::class, 'changePasswordPost'])->name('changePasswordPost');
@@ -130,11 +130,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('invoice/download/{id}', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
     Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice-list');
     Route::get('/orderlist', [InvoiceController::class, 'viewOrder'])->name('order-list');
+    Route::get('order-details/{id}', [InvoiceController::class, 'orderDetails'])->name('order-details');
     Route::get('/invoice/edit/{id}/{id1?}', [InvoiceController::class, 'edit'])->name('invoice-edit');
     Route::get('/fetch-subcategories', [InvoiceController::class, 'fetchSubcategories'])->name('fetch.subcategories');
     Route::get('/fetch-products', [InvoiceController::class, 'fetchProducts'])->name('fetch.products');
     Route::get('/fetch-coupon', [InvoiceController::class, 'fetchcoupon'])->name('fetch.coupon');
     Route::post('/invoice/store',[InvoiceController::class,'store'])->name('invoice-store');
+    // Expired the key
+    Route::post('/key/suspend/{id}', [InvoiceController::class, 'suspendKey'])->name('key.suspend');
 
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');

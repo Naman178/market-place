@@ -135,6 +135,16 @@
                 margin-top: 97px;
                 margin-bottom: 97px !important;
             }
+            @media (max-width: 991px) {
+                .wishlist-container {
+                    max-width: 90%; 
+                }
+                .wishlist-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust for small screens */
+                    gap: 10px; /* Reduce the gap */
+                }
+            }
+
     </style>
 </head>
 @endsection

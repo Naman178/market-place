@@ -67,6 +67,9 @@
                                                             <i class="fa-regular fa-eye font-weight-bold"></i> View Invoice
                                                         </a>
                                                     @endif
+                                                    <a class="dropdown-item" href="{{ route('order-details', $ord->id) }}">
+                                                        <i class="fa-regular fa-eye font-weight-bold"></i> Order Details
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
