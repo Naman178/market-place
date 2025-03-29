@@ -442,7 +442,7 @@
                     <!--        Proceed To Pay {{ number_format((int) $final_total) }} INR-->
                     <!--    </button>-->
                     <!--</div>-->
-                    <button type="submit" class="blue_common_btn d-inline-block border-0 proced_to_pay_btn">
+                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -453,7 +453,7 @@
                      {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
                 @else
                  <div class="col-md-12">
-                    <button type="submit" class="blue_common_btn d-inline-block border-0 proced_to_pay_btn">
+                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

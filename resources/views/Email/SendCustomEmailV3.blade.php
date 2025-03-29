@@ -198,6 +198,9 @@
 
 <body dir="ltr"
     style="-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;background-color:#d6d6d5;margin:0;min-width:100%;padding:0;width:100%">
+    <?php
+    $setting = \App\Models\Settings::where('key', 'site_setting')->first();
+    ?>
     <span data-blockuuid="ab2f7a3a-54b3-4956-8fcc-02b837adf583"
         style="display: none; max-height: 0px; font-size: 0px; overflow: hidden; mso-hide: all;">
         Get familiar with useful features like Spotlight and Share My Trip.
@@ -250,12 +253,19 @@
                                                                                             <tr>
                                                                                                 <td
                                                                                                     style="direction:ltr;text-align:left;">
-                                                                                                    <img src="{{ asset('storage/Logo_Settings/logo_new_vnet.png') }}"
-                                                                                                        width="69"
+                                                                                                    @if ($setting && $setting['value']['logo_image'])
+                                                                                                        <img src="{{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }}"  width="69"
                                                                                                         height=""
                                                                                                         style="-ms-interpolation-mode: bicubic; clear: both; display: block; height: auto; max-width: 200px; outline: none; text-decoration: none; width: 100%;"
                                                                                                         border="0"
                                                                                                         alt="">
+                                                                                                    @else
+                                                                                                            <img src="{{ asset('front-end/images/infiniylogo.png') }}"   width="69"
+                                                                                                            height=""
+                                                                                                            style="-ms-interpolation-mode: bicubic; clear: both; display: block; height: auto; max-width: 200px; outline: none; text-decoration: none; width: 100%;"
+                                                                                                            border="0"
+                                                                                                            alt="">
+                                                                                                    @endif
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>

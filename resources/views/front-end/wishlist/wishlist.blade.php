@@ -132,8 +132,19 @@
                 border-radius: 4px;
             }
             .wishlist{
-                margin-top: 30px;
+                margin-top: 97px;
+                margin-bottom: 97px !important;
             }
+            @media (max-width: 991px) {
+                .wishlist-container {
+                    max-width: 90%; 
+                }
+                .wishlist-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust for small screens */
+                    gap: 10px; /* Reduce the gap */
+                }
+            }
+
     </style>
 </head>
 @endsection
@@ -158,7 +169,7 @@
                 <p><strong>₹{{ $item->pricing->sale_price }}</strong></p>
 
                 <!-- Buttons (Prevent Redirect When Clicking These) -->
-                <a class="red_common_btn remove-btn" id="wishlistBtn-{{ $item->id }}" onclick="removeWishlist(event, {{ $item->id }})">
+                <a class="red_common_btn remove-btn" id="wishlistBtn-{{ $item->id }}" onclick="removeWishlist({{ $item->id }})">
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

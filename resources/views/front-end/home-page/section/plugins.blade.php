@@ -3,8 +3,7 @@
     <div class="container">
         <img src="{{ asset('front-end/images/Group 1000002953.png') }}" alt="not found">
         <div class="wordpress_plugin">
-            <h1>Powerful <span>Features</span></h1>
-            <h1> to Elevate Your <span>Store</span></h1>
+            <h1>Powerful <span>Features</span> <br> to Elevate Your <span>Store</span></h1>
             <img class="vector_img" src="{{ asset('front-end/images/Vector 2.png') }}" alt="not found">
         </div>
 

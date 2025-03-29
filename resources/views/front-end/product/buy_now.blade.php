@@ -20,9 +20,15 @@
     <meta property="og:type" content="website">
 @endsection
 @section('content')
+@php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+@endphp
 <div class="container items-container product_details">
     <div class="row cust-page-padding">
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-8 col-lg-12 col-md-12">
             <div class="wsus__product_details_img">
                 <img  src="{{ asset('public/storage/items_files/' . $item->thumbnail_image) }}"
                     alt="product" class="img-fluod w-100 h-100">
@@ -242,7 +248,7 @@
             </div>
             @endif
         </div>
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-4 col-lg-12 col-md-12">
             <div class="wsus__sidebar pl_30 xs_pl_0" id="sticky_sidebar">
                 @if ($item->pricing['pricing_type'] === 'one-time')
                     <div class="wsus__sidebar_licence">
@@ -257,7 +263,7 @@
                         @foreach ($item->features as $feature)
                             <ul class="p-0">
                                 <li class="txt-white">
-                                    <div class="d-flex align-items-center">
+                                    <div class="d_flex align-items-center">
                                         <i class="fa fa-check"></i>
                                         {{ $feature->key_feature ?? '' }}
                                     </div>
@@ -301,7 +307,11 @@
                         <li><span>Tags</span>
                             <p>
                                 @foreach ($item->tags as $tag)
-                                    <a>{{ $tag['tag_name']   ?? '' }},</a>
+                                @if ($category)
+                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                @elseif ($subcategory)
+                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                @endif                           
                                 @endforeach
                             </p>
                         </li>

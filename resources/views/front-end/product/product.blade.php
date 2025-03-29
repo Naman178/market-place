@@ -2,9 +2,6 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <style>
-        .form-control {
-            padding: 0px 15px !important;
-        }
 
         .main-content .container {
             max-width: 1375px;
@@ -12,6 +9,27 @@
 
         .items-container .row {
             justify-content: start !important;
+        }
+        .wsus__product_page_search input, textarea {
+            width: 100%;
+            padding: 12px 20px;
+            outline: none;
+            resize: none;
+            border: 1px solid #E4E7E9;
+            border-radius: 3px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+        button{
+            cursor: pointer;
+        }
+        .form-control{
+            padding: 13px !important;
+            height: calc(2.5em + 0.75rem + 2px);
+        }
+        .clearFilterButton .blue_common_btn svg {
+            left: 0 ;
+            width: 100%;
         }
     </style>
 @endsection
@@ -54,17 +72,44 @@
             </div>
         </div> --}}
         <div class="row">
-            <div class="col-xl-3 col-md-6">
-                @foreach ($categories as $category)
-                    <select name="sorting" id="sorting-{{ $category->id }}" class="form-control select-input" data-item-id="{{ $category->id }}" onchange="sortItems(this)">
-                        <option value="0">Default Sorting</option>
-                        <option value="1">Low to Highest Price</option>
-                        <option value="2">Highest to Low Price</option>
-                    </select>
-                    @break
-                @endforeach                
-
+            <div class="col-xl-11 col-md-12">
+                <div class="wsus__product_page_search">
+                    <form id="search_form">
+                        @foreach ($categories as $category)
+                        <input type="search" name="keyword" id="search_keyword" value placeholder="Search your products..."  data-item-id="{{ $category->id }}" oninput="searchItems(this)" required>
+                        <button class="blue_common_btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i><svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg>
+                        <span>Search</span></button>
+                        @break
+                        @endforeach
+                    </form>
+                </div>
+            </div>
+            <div class="col-xl-1 col-md-12 justify-content-end clearFilterButton">
+                <button class="blue_common_btn mt-1" type="button" onclick="clearFilters()" id="clearFilterButton" style="display:none;">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg>
+                    <span>Clear Filter</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-12 xol-sm-12">
                 <div class="wsus__product_sidebar_area mt-3">
+                    <div class="wsus__product_sidebar categories">
+                    @foreach ($categories as $category)
+                        <select name="sorting" id="sorting-{{ $category->id }}" class="form-control select-input mt-3" data-item-id="{{ $category->id }}" onchange="sortItems(this)">
+                            <option value="0">Default Sorting</option>
+                            <option value="1">Low to Highest Price</option>
+                            <option value="2">Highest to Low Price</option>
+                        </select>
+                        @break
+                    @endforeach  
+                    </div>
                     <div class="wsus__product_sidebar categories">
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
@@ -73,6 +118,20 @@
                         </ul>
                         @endforeach
                     </div>
+                    @foreach ($item as $items)
+                        <div class="wsus__product_sidebar categories">
+                            <h3>Tags</h3>
+                            @foreach ($items->tags as $tag)
+                            @foreach ($categories as $category)
+                            <ul class="p-0">
+                                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? '', 'tag' => $tag['tag_name']]) }}">{{ $tag['tag_name'] ?? ''}}</a></li>
+                            </ul>
+                            @break
+                            @endforeach
+                            @endforeach
+                        </div>
+                        @break
+                    @endforeach
                     <div class="wsus__product_sidebar tags">
                         <h3>Filter Price</h3>
                         @foreach ($item as $items)
@@ -98,10 +157,10 @@
                 </div>
             </div>
             @if ($item->count() != 0)
-            <div class="col-xl-9 col-md-12">
+            <div class="col-xl-9 col-lg-6 col-md-12">
                 <div id="items-container" class="row">
                 @foreach ($item as $items)
-                <div class="col-xl-5 col-md-6">
+                <div class="col-xl-5 col-md-12">
                     <div class="wsus__gallery_item">
                         <div class="wsus__gallery_item_img">
                             <img src="{{ asset('public/storage/items_files/' . $items->thumbnail_image) }}"
@@ -157,7 +216,9 @@
                 </div>
             </div>
             @else
-                <p>No Product Found</p>
+                <div class="col-xl-9 col-md-12 text-center no-items">
+                    <p>No products found.</p>
+                </div>
             @endif
         </div>
     </div>
@@ -187,7 +248,7 @@
                         response.forEach(function(item) {
                             // Create the item HTML structure dynamically
                             var itemHTML = `
-                                <div class="col-xl-5 col-md-6">
+                                <div class="col-xl-5 col-md-12">
                                     <div class="wsus__gallery_item">
                                         <div class="wsus__gallery_item_img">
                                             <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -218,9 +279,13 @@
                             // Append the item HTML to the container
                             $("#items-container").append(itemHTML);
                         });
+                        document.getElementById('clearFilterButton').style.display = 'block';
                     } else {
                         // If no items are found
-                        $("#items-container").append('<p>No items found.</p>');
+                        $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                            <p>No products found</p>
+                        </div>`);
+                        document.getElementById('clearFilterButton').style.display = 'block';
                     }
                 }
             });
@@ -292,7 +357,7 @@
                 if (response.length > 0) {
                     response.forEach(function(item) {
                         var itemHTML = `
-                            <div class="col-xl-5 col-md-6">
+                            <div class="col-xl-5 col-md-12">
                                 <div class="wsus__gallery_item">
                                     <div class="wsus__gallery_item_img">
                                         <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -318,11 +383,90 @@
                         `;
                         $("#items-container").append(itemHTML);
                     });
+                    document.getElementById('clearFilterButton').style.display = 'block';
                 } else {
-                    $("#items-container").append('<p>No items found.</p>');
+                    $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                            <p>No products found</p>
+                        </div>`);
+                    document.getElementById('clearFilterButton').style.display = 'block';
                 }
             }
         });
     }
+    $("#search_form").on("submit", function (e) {
+        e.preventDefault(); 
+        let keyword = $("#search_keyword").val(); 
+        let itemId = $("#search_keyword").data("item-id");
+        $.ajax({
+            url: "{{ route('items.sort') }}", 
+            method: "GET",
+            data: { 
+                keyword: keyword,
+                item_id: itemId
+                },
+            success: function (response) {
+                $("#items-container").empty();
+            if (response.length > 0) {
+                response.forEach(function(item) {
+                    var itemHTML = `
+                        <div class="col-xl-5 col-md-12">
+                            <div class="wsus__gallery_item">
+                                <div class="wsus__gallery_item_img">
+                                    <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
+                                    <ul class="wsus__gallery_item_overlay">
+                                        <li><a target="_blank" href="${item.preview_url}">Preview</a></li>
+                                        <li><a href="/product-details/${item.id}">Buy Now</a></li>
+                                    </ul>
+                                </div>
+                                <div class="wsus__gallery_item_text">
+                                    <p class="price">${item.pricing ? item.pricing.fixed_price : 0}</p>
+                                    <a class="title" href="/product-details/${item.id}">${item.name}</a>
+                                    <ul class="d-flex flex-wrap justify-content-between">
+                                        <li>
+                                            <p>${getStarRating(item.reviews)} <span>(${item.reviews.length ?? 0})</span></p>
+                                        </li>
+                                        <li>
+                                            <span class="download"><i class="fa fa-download" aria-hidden="true"></i> 0 Sale</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $("#items-container").append(itemHTML);
+                });
+                document.getElementById('clearFilterButton').style.display = 'block';
+            } else {
+                $("#items-container").append(`  <div class="col-xl-12 col-md-12 text-center no-items">
+                        <p>No products found</p>
+                    </div>`);
+                    document.getElementById('clearFilterButton').style.display = 'block';
+            }
+            },
+            error: function () {
+                alert("Error fetching search results.");
+            }
+        });
+    });
+    function clearFilters() {
+        document.getElementById('search_keyword').value = '';
+
+        const sortingSelects = document.querySelectorAll('.form-control.select-input');
+        sortingSelects.forEach(select => {
+            select.value = '0'; 
+        });
+
+        const priceRange = document.getElementById('priceRange');
+        if (priceRange) {
+            priceRange.value = 0;
+            document.getElementById('priceLabel').innerText = '0';
+        }
+
+        const form = document.getElementById('search_form');
+        form.submit(); 
+
+        document.getElementById('clearFilterButton').style.display = 'none';
+    }
+
 </script>
 @endsection

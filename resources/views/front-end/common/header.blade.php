@@ -1,22 +1,29 @@
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 <div class="header-container">
     <div class="header-row">
-        <div class="col">
+        <div class="col p-0 m-0">
             <div class="logo-container">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                    @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+                        <img src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
+                    @else
+                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                    @endif
                 </a>
             </div>
         </div>
-        <div class="col">
+        <div class="col p-0 m-0">
             <div class="menu-container menu-1">
                 <ul>
-                    @if ($category)
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
-                    @elseif ($subcategory)
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                    @if (!empty($category))
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}">Products</a></li>
+                    @elseif (!empty($subcategory))
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">FAQs</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth
                     <li class="dropdown d_flex align-items-center justify-content-center">
@@ -34,7 +41,12 @@
                                     {{ $initials ?: strtoupper(implode('', array_map(function($namePart) { return $namePart[0]; }, explode(' ', auth()->user()->name)))) }}
                                 </div>
                             @else
-                                <img src="{{ asset('assets/images/faces/' . auth()->user()->profile_pic) }}" alt="profile"
+                                @php
+                                    $profilePic = filter_var(auth()->user()->profile_pic, FILTER_VALIDATE_URL) 
+                                            ? auth()->user()->profile_pic 
+                                            : asset('assets/images/faces/' . auth()->user()->profile_pic);
+                                @endphp
+                                <img src="{{ $profilePic }}" alt="profile"
                                     class="rounded-full header_image">
                             @endif 
                          <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
@@ -42,6 +54,9 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                                 <span class="dropdown_label">  Dashboard </span>
+                            </a>
+                            <a class="dropdown-item" href="{{ route('wishlist.index') }}">
+                                <span class="dropdown_label">  Wishlist </span>
                             </a>
                             <a class="dropdown-item" href="{{ route('profile') }}">
                                 <span class="dropdown_label">  Profile Setting </span>
@@ -65,7 +80,11 @@
 
         <div class="menu-toggle d-lg-none" id="menu-toggle">
             <button class="menu-btn">
-                <img class="menu-img" src="{{ asset('front-end/images/menu.png') }}" alt="menu">
+                <svg class="vbp-header-menu-button__svg">
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="top" shape-rendering="crispEdges" />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="middle" shape-rendering="crispEdges" />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" class="bottom" shape-rendering="crispEdges" />
+                  </svg>
             </button>
         </div>
 
@@ -127,8 +146,12 @@
     <!-- Mobile Navigation -->
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
-            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
-            <li><a href="{{ route('user-faq') }}">Faq</a></li>
+            @if (!empty($category))
+                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+            @elseif (!empty($subcategory))
+                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+            @endif
+            <li><a href="{{ route('user-faq') }}">FAQs</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
             @auth
                 <li><a href="{{ route('user-dashboard') }}">Dashboard</a></li>

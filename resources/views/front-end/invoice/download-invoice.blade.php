@@ -132,9 +132,18 @@
 </head>
 
 <body>
+    @php
+        $path = is_array($setting->value) && isset($setting->value['logo_image'])
+        ? public_path('storage/Logo_Settings/' . $setting->value['logo_image'])
+        : public_path('front-end/images/infiniylogo.png');
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+    @endphp
     <div class="contentWrapper">
         <div class="companyLogo">
-            {{-- <img src="{{ public_path('header_logo.png') }}" alt="logo"> --}}
+            <img src="{{$base64}}" alt="logo" class="logo" width="150" height="50">
         </div>
         <div class="vnetCompanyInfo">
             <h3>{{ $setting->value['site_name'] ?? '' }}</h3>

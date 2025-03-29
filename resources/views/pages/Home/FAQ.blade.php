@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
 <style>
     .cust-page-padding {
-        padding: 2rem 10rem 5rem;
+        /* padding: 2rem 10rem 5rem; */
     }
 
     h1.feature_heading {
@@ -120,6 +120,16 @@
     .collapsed.faq-link::after {
         transform: rotate(180deg);
     }
+
+    @media (max-width: 991px) {
+        .register-container .title h3{
+            font-size: 30px;
+            line-height: 30.2px;
+        }
+        .faq {
+            margin-top: 50px;
+        }
+    }
 </style>
 @endsection
 @section('content')
@@ -182,7 +192,7 @@
                                 <span class="faq-icon"></span>
                             </div>
                             <div class="faq-answer">
-                                <p>{{ $FAQ->answer ?? '' }}</p>
+                                <p>{!! $FAQ->answer ?? '' !!}</p>
                             </div>
                         </div>
                         <hr>

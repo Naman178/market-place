@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('front-end/css/mainstylesheet.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/home_page_responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('front-end/css/product_responsive.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Toastr CSS (Toast notifications) -->
@@ -26,8 +27,10 @@
     @php
         use App\Models\Category;
         use App\Models\SubCategory;
+        use App\Models\Settings;
         $category = Category::where('sys_state','=','0')->first();
         $subcategory = SubCategory::where('sys_state','=','0')->first();
+        $site = Settings::where('key','site_setting')->first();
     @endphp
     @include('front-end.common.header')
     <div class="main-content">
@@ -61,19 +64,32 @@
             });
         });
         const menuToggle = document.getElementById('menu-toggle');
-const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', function() {
-        // Toggle the 'd-none' class on the mobile menu
-        mobileMenu.classList.toggle('d-none');
-        menuToggle.classList.remove('d-none');
-        console.log('Menu toggled');
-    });
-} else {
-    console.log('Menu toggle elements not found');
-}
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                // Toggle the 'd-none' class on the mobile menu
+                mobileMenu.classList.toggle('d-none');
+                menuToggle.classList.remove('d-none');
+                console.log('Menu toggled');
+            });
+        } else {
+            console.log('Menu toggle elements not found');
+        }
 
+        jQuery(document).ready(function () {
+            var body = jQuery(document.body);
+            var button = jQuery("svg");
+            var line = jQuery("line");
+
+            button.click(function () {
+                if (jQuery(document.body).hasClass("menu-open")) {
+                    body.removeClass("menu-open");
+                    return;
+                }
+                body.addClass("menu-open");
+            });
+        });
 
     </script>
 </body>

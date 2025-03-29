@@ -19,6 +19,9 @@
        .form-control {
             padding: 21px 15px !important;
         }
+        .footer-04 .form-control {
+             padding: 14px 15px !important;
+         }
         .select2-container .select2-selection--single .select2-selection__rendered {
             padding-top: 7px;
         }

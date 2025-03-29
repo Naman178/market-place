@@ -359,6 +359,9 @@ class BlogController extends Controller
 
     public function postComment(Request $request, $blog_id)
     {
+        $request->validate([
+            'comment' => 'required|string',
+        ]);
       
         if (!Auth::check()) {
             return redirect()->route('user-login')->with('error', 'You need to be logged in to submit a comment.');

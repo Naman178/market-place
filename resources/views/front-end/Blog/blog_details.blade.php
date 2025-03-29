@@ -60,7 +60,7 @@
             <div class="col-md-4 ">
                 @if ($blog->related_blogs)
                     <div class="related_blogs sticky">
-                        <ul style="padding: 10px 17px 27px 18px; background: white; margin-top:10px; color: #4d4d4d; font-family: 'Work Sans';">
+                        <ul style="padding: 10px 17px 27px 18px; background: white; margin-top:0px; color: #4d4d4d; font-family: 'Work Sans';">
                             <li class="mt-2">  <h3>Related Blogs</h3></li>
                             @foreach ($blog->related_blogs as $relatedBlogId)
                                 @php
@@ -101,7 +101,18 @@
                     <div class="card" style="border: none;">
                         @foreach ($comments as $comment)
                                 <div class="card-body d-flex justify-content-start align-items-center">
-                                    <img src="{{ asset('public/assets/images/user.png') }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    @php
+                                        // Check if the profile picture is a valid Google URL or local file
+                                        $profilePic = filter_var($comment->user->profile_pic, FILTER_VALIDATE_URL)
+                                            ? $comment->user->profile_pic
+                                            : asset('assets/images/faces/' . $comment->user->profile_pic);
+                                    @endphp
+                                    @if ($comment->user->profile_pic)
+                                        <img src="{{ $profilePic }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    @else
+                                        <img src="{{ asset('public/assets/images/user.png') }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    @endif
+                                  
                                     <div style="margin-left: 10px; width: 100%;">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <p style="margin-bottom: 2px;"><strong>{{ $comment->user->name }}</strong></p>
@@ -155,7 +166,13 @@
     });
 
     document.querySelector(".comment-form").addEventListener("submit", function(event) {
-        document.getElementById('quill-content').value = quill.root.innerHTML;
+        let quillContent = quill.root.innerHTML.trim(); 
+        if (quillContent === "<p><br></p>" || quillContent === "") { 
+            toastr.error("Comment field is required!"); 
+            event.preventDefault(); 
+            return;
+        }
+        document.getElementById('quill-content').value = quillContent;
     });
 
     document.addEventListener('DOMContentLoaded', function() {

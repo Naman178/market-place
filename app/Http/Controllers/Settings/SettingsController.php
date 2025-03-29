@@ -18,7 +18,8 @@ class SettingsController extends Controller
         $login_register = Settings::where('key','login_register_settings')->first();
         $stripe_setting = Settings::where('key','stripe_setting')->first();
         $smtp_setting = Settings::where('key','smtp_setting')->first();
-        return view('pages.settings.index',compact('login_register' ,"stripe_setting","smtp_setting", "site"));
+        $invoice_setting = Settings::where('key','invoice_site_setting')->first();
+        return view('pages.settings.index',compact('login_register' ,"stripe_setting","smtp_setting", "site","invoice_setting"));
     }
     public function updateEnvValue($key, $value)
     {
@@ -65,17 +66,8 @@ class SettingsController extends Controller
             }
 
             $finalArr = [];
-            $finalArr['site_name'] = $request->site_name;
-            $finalArr['address_1'] = $request->address1;
-            $finalArr['address_2'] = $request->address2;
-            $finalArr['city'] = $request->city;
-            $finalArr['state'] = $request->state;
-            $finalArr['country'] = $request->country;
-            $finalArr['gst'] = $request->gst;
-            $finalArr['pin'] = $request->pin;
             $finalArr['logo_image'] = $logo_image;
             $finalArr['site_favicon'] = $site_favicon;
-
 
             if(!$settings){
                 $setting = new Settings();
@@ -93,6 +85,42 @@ class SettingsController extends Controller
             return response()->json([
                 'success' => 'General Settings Saved Successfully!',
                 'title' => 'General Settings'
+            ]);
+        }
+        elseif($request->key == 'invoice_site_setting'){
+            $settings = Settings::where('key','invoice_site_setting')->first();
+
+            $header_image = '';
+            $signature_of_buyer = '';
+            $signature_of_seller = '';
+
+            $finalArr = [];
+            $finalArr['site_name'] = $request->site_name;
+            $finalArr['address_1'] = $request->address1;
+            $finalArr['address_2'] = $request->address2;
+            $finalArr['city'] = $request->city;
+            $finalArr['state'] = $request->state;
+            $finalArr['country'] = $request->country;
+            $finalArr['gst'] = $request->gst;
+            $finalArr['pin'] = $request->pin;
+
+
+            if(!$settings){
+                $setting = new Settings();
+                $setting->key = $request->key;
+                $setting->value = $finalArr ?? '';
+                $setting->save();
+            }else{
+                Settings::where('id',$settings->id)
+                ->update([
+                    "key" => $request->key,
+                    'value' => $finalArr ?? '',
+                ]);
+            }
+            session()->flash('success', 'Invoice PDF Settings Saved Successfully!');
+            return response()->json([
+                'success' => 'Invoice PDF Settings Saved Successfully!',
+                'title' => 'Invoice PDF Settings'
             ]);
         }
         elseif($request->key == 'login_register_settings'){
@@ -230,6 +258,10 @@ class SettingsController extends Controller
     }
     public function mail(Request $request){
         // dd($request->all());
+        $settings = Settings::where('key','smtp_setting')->first();
+        if(!$settings){
+            return response()->json(['message' => 'Please set SMTP settings first'], 400);
+        }
         $email = $request->email;
         // dd($email);
         $details = [

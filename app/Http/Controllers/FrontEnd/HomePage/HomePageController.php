@@ -18,6 +18,8 @@ use App\Models\SubCategory;
 use App\Models\Reviews;
 use App\Models\Wishlist;
 use App\Models\ItemsPricing;
+use App\Models\Testimonials;
+use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -40,8 +42,14 @@ class HomePageController extends Controller
         $seoData = SEO::where('page', 'home')->first();
         $category = Category::where('sys_state','=','0')->get();
         $subcategory = SubCategory::where('sys_state','=','0')->get();
-    
-        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory'));
+        $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
+                            ->get();
+        $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
+                            ->latest()
+                            ->get();
+        $socialmedia = SocialMedia::orderBy('social_media.id', 'desc')
+                            ->get();  
+        return view('front-end.home-page.home-page',compact('data','seoData','FAQs','Blogs','category','subcategory','testimonials','socialmedia','latestTestimonials'));
     }
     public function newsletter(Request $request){
         $request->validate([
@@ -58,7 +66,8 @@ class HomePageController extends Controller
            'email' => $email,
         ]);
         Mail::to($email)->send(new NewsletterMail($email , $appName));
-        return response()->json(['message' => 'Successfully subscribed!'], 200);
+        return redirect()->back()->with('success', 'Successfully subscribed!');
+        // return response()->json(['message' => 'Successfully subscribed!'], 200);
     }
     public function deletenewsletter(Request $request, $id){
         Newsletter::where('id', $id)->delete();
@@ -85,6 +94,7 @@ class HomePageController extends Controller
     public function sortItems(Request $request)
     {
         $sortOption = $request->input('sort');
+        $keyword = $request->input('keyword');
         $subcategories = SubCategory::where('category_id', $request->item_id)
             ->where('sys_state', '=', '0')
             ->pluck('id'); // Get only the IDs for efficient querying
@@ -102,6 +112,22 @@ class HomePageController extends Controller
             ->select('items__tbl.*')
             ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price') // Get the first (lowest) recurring fixed price
             ->groupBy('items__tbl.id');
+        if (!empty($keyword)) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('items__tbl.name', 'LIKE', "%$keyword%")
+                      ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%") 
+                      ->orWhereHas('tags', function ($query) use ($keyword) { 
+                          $query->where('tag_name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) { 
+                          $query->where('name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) { 
+                          $query->where('name', 'LIKE', "%$keyword%");
+                      })
+                      ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]); 
+                });
+            }
         if ($request->has('price')) {
             $price = (int) $request->price;  
             $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [$price]);
@@ -124,7 +150,7 @@ class HomePageController extends Controller
             $query->where('sys_state', '=', '0');
         }])->get();
         if($subcategories){
-            $item = Items::with(['categorySubcategory', 'pricing' , 'order'])
+            $item = Items::with(['categorySubcategory', 'pricing' , 'order','tags'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                         $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                     })

@@ -16,23 +16,23 @@
                     </p>
                     <div>
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Regular Feature Updates</b> - Stay ahead with new functionalities.</span>
+                        <span class="ml-2 integra_p"><b>Regular Feature Updates</b> - Stay ahead with new functionalities.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Security Enhancements</b> - Get the latest security patches for a safe experience.</span>
+                        <span class="ml-2 integra_p"><b>Security Enhancements</b> - Get the latest security patches for a safe experience.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b> Bug Fixes & Performance Optimizations</b> - Smooth and fast operations.</span>
+                        <span class="ml-2 integra_p"><b> Bug Fixes & Performance Optimizations</b> - Smooth and fast operations.</span>
                     </div>
                     <div class="mt-3">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Customer-Driven Improvements</b> - Your feedback helps shape our updates</span>
+                        <span class="ml-2 integra_p"><b>Customer-Driven Improvements</b> - Your feedback helps shape our updates</span>
                     </div>
                     <div class="mt-3 mb-53">
                         <img class="tick_img" src="{{ asset('front-end/images/tick-svgrepo-com 5.png') }}" alt="not found">
-                        <span class="ml-2"><b>Dedicated Support Team</b> - Quick resolutions for your queries.</span>
+                        <span class="ml-2 integra_p"><b>Dedicated Support Team</b> - Quick resolutions for your queries.</span>
                     </div>
                     
                 </div>
@@ -41,9 +41,7 @@
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                      </svg><spa class="ml-3"> Get Lifetime Support </span> <span class="ml-1 mr-3">
-                            <i class="fa-solid fa-greater-than"></i>
-                        </span>
+                      </svg><span> Get Lifetime Support </span>
                     </a>
                 </div>
             </div>

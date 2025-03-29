@@ -11,6 +11,9 @@
         .form-control {
              padding: 21px 15px !important;
          }
+         .footer-04 .form-control {
+             padding: 14px 15px !important;
+         }
     </style>
 @endsection
 @section('content')

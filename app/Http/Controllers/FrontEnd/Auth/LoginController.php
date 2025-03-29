@@ -62,23 +62,29 @@ class LoginController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+           $googleUser = Socialite::driver('google')->user();
 
-            // Find or create a user in the database
+            // Find the user in the database
             $user = User::where('email', $googleUser->email)->first();
-
+        
             if ($user) {
-                // If user exists, log them in
+                // Update profile picture if needed
+                if (empty($user->profile_pic)) {
+                    $user->update([
+                        'profile_pic' => $googleUser->avatar . '?sz=200',
+                    ]);
+                }
                 Auth::login($user);
             } else {
-                // If user doesn't exist, create a new user and log them in
+                // Create a new user and store Google profile picture
                 $newUser = User::create([
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
-                    'google_id' => $googleUser->id, // Storing Google ID
-                    'password' => bcrypt('123456dummy'), // Use a random password since it's not required for social login
+                    'google_id' => $googleUser->id,
+                    'profile_pic' => $googleUser->avatar . '?sz=200', // Store high-resolution image
+                    'password' => bcrypt('123456dummy'), // Dummy password
                 ]);
-
+        
                 Auth::login($newUser);
             }
 
@@ -91,7 +97,7 @@ class LoginController extends Controller
                 return redirect()->intended('/user-dashboard');
             }
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Failed to login using Google, please try again.');
+            return redirect()->route('user-login')->with('error', 'Failed to login using Google, please try again.');
         }
     }
 
@@ -103,24 +109,25 @@ class LoginController extends Controller
     {
         try {
             $githubUser = Socialite::driver('github')->user();
-
+    
             // Find or create user
             $user = User::updateOrCreate(
                 ['email' => $githubUser->email],
                 [
                     'name' => $githubUser->name ?? $githubUser->nickname,
                     'email' => $githubUser->email,
-                    'password' => 'admin@123',
+                    'password' => bcrypt('admin@123'), // Dummy password
                 ]
             );
-
+            if (empty($user->profile_pic)) {
+                $user->update(['profile_pic' => $githubUser->avatar]);
+            }
             // Log in the user
             Auth::login($user);
-
+    
             return redirect('/');
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect('/login')->with('error', 'Authentication failed.');
+            return redirect('/user-login')->with('error', 'GitHub authentication failed.');
         }
     }
     public function redirectToLinkdin()
@@ -136,18 +143,18 @@ class LoginController extends Controller
             $user = User::updateOrCreate(
                 ['email' => $linkedinUser->email],
                 [
-                    'name' => $linkedinUser->name,
+                    'name' => $linkedinUser->name ?? $linkedinUser->nickname,
                     'email' => $linkedinUser->email,
-                    // 'avatar' => $linkedinUser->avatar,
-                    // 'linkedin_token' => $linkedinUser->token,
                 ]
             );
+            if (empty($user->profile_pic)) {
+                $user->update(['profile_pic' => $linkedinUser->avatar ?? null]);
+            }
             // dd($linkedinUser);
             Auth::login($user);
             return redirect('/');
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect('/login')->with('error', 'Authentication failed.');
+            return redirect('/user-login')->with('error', 'LinkedIn authentication failed.');
         }
     }
 }

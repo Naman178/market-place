@@ -23,6 +23,8 @@ use App\Http\Controllers\SEO\SEOController;
 use App\Http\Controllers\FAQ\FAQController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog_category\BlogCategoryController;
+use App\Http\Controllers\Testimonial\TestimonialController;
+use App\Http\Controllers\SocialMedia\SocialMediaController;
 use App\Http\Controllers\FrontEnd\HomePage\HomePageController;
 use App\Http\Controllers\FrontEnd\Checkout\CheckoutController;
 use App\Http\Controllers\FrontEnd\Auth\LoginController;
@@ -103,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
 
     //Profile Settings Module
-    Route::get('/profilesettings/{id}',[ProfileSettingsController::class,'index'])->name('profile-settings');
+    Route::get('/profilesettings/{id}',[ProfileSettingsController::class,'index'])->name('profilesettings');
     Route::post('/profilesettings/store',[ProfileSettingsController::class,'store'])->name('profilesettings-store');
     Route::get('/changePassword', [ProfileSettingsController::class, 'showChangePasswordGet'])->name('changePasswordGet');
     Route::post('/changePassword', [ProfileSettingsController::class, 'changePasswordPost'])->name('changePasswordPost');
@@ -128,11 +130,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('invoice/download/{id}', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
     Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice-list');
     Route::get('/orderlist', [InvoiceController::class, 'viewOrder'])->name('order-list');
+    Route::get('order-details/{id}', [InvoiceController::class, 'orderDetails'])->name('order-details');
     Route::get('/invoice/edit/{id}/{id1?}', [InvoiceController::class, 'edit'])->name('invoice-edit');
     Route::get('/fetch-subcategories', [InvoiceController::class, 'fetchSubcategories'])->name('fetch.subcategories');
     Route::get('/fetch-products', [InvoiceController::class, 'fetchProducts'])->name('fetch.products');
     Route::get('/fetch-coupon', [InvoiceController::class, 'fetchcoupon'])->name('fetch.coupon');
     Route::post('/invoice/store',[InvoiceController::class,'store'])->name('invoice-store');
+    // Expired the key
+    Route::post('/key/suspend/{id}', [InvoiceController::class, 'suspendKey'])->name('key.suspend');
 
     // Category module
     Route::get('/category',[CategoryController::class,'index'])->name('category-index');
@@ -232,6 +237,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Blog_category/store',[BlogCategoryController::class,'store'])->name('Blog_category-store');
     Route::get('/Blog_category/edit/{id}', [BlogCategoryController::class, 'edit'])->name('Blog_category-edit');
     Route::get('/Blog_category/delete/{id}', [BlogCategoryController::class, 'remove'])->name('Blog_category-delete');
+
+    // Testimonial module
+    Route::get('/Testimonial-index',[TestimonialController::class,'index'])->name('Testimonial-index');
+    Route::post('/Testimonial/store',[TestimonialController::class,'store'])->name('Testimonial-store');
+    Route::get('/Testimonial/edit/{id}', [TestimonialController::class, 'edit'])->name('Testimonial-edit');
+    Route::get('/Testimonial/delete/{id}', [TestimonialController::class, 'remove'])->name('Testimonial-delete');
+    
+    // SocialMedia module
+    Route::get('/SocialMedia-index',[SocialMediaController::class,'index'])->name('SocialMedia-index');
+    Route::post('/SocialMedia/store',[SocialMediaController::class,'store'])->name('SocialMedia-store');
+    Route::get('/SocialMedia/edit/{id}', [SocialMediaController::class, 'edit'])->name('SocialMedia-edit');
+    Route::get('/SocialMedia/delete/{id}', [SocialMediaController::class, 'remove'])->name('SocialMedia-delete');
 });
 
 // forgot password
