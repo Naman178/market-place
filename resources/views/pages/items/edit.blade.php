@@ -503,6 +503,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-2 mb-2">
+                    <div class="card-body">
+                        <div class="col-md-12 form-group">
+                            <label for="trial_label">Trial Days</label>
+                            <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" value="{{ old('trial_days', $item->trial_days) }}">
+                        </div>
+                    </div>
+                </div>
             </form>
             @else
                 <div class="card">
@@ -554,6 +562,14 @@
                             <div class="col-md-12 form-group">
                                 <label for="tags_label">Tags</label>
                                 <div data-no-duplicate="true" data-pre-tags-separator="\n" data-no-duplicate-text="Duplicate tags" data-type-zone-class="type-zone" data-tag-box-class="tagging" data-edit-on-delete="false" class="tag_input"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="trial_label">Trial Days</label>
+                                <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" min="1" required>
                             </div>
                         </div>
                     </div>

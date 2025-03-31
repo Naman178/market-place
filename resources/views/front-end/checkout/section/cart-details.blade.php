@@ -134,7 +134,7 @@
                         </div>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="blue_common_btn d-inline-block border-0 m-0"  id="coupon_code_apply_btn">
+                            <button type="button" class="blue_common_btn border-0 m-0"  id="coupon_code_apply_btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -375,6 +375,7 @@
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
+                    <input type="hidden" name="trial_period_days" id="trial_period_days" value="{{ $plan->trial_days ?? 0}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -447,7 +448,11 @@
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                         </svg>
-                        <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  INR</span>
+                        @if($plan->trial_days > 0)
+                            <span>    Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days</span>
+                        @else
+                            <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> INR</span>
+                        @endif
                     </button>
                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  INR</button> --}}
                      {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
@@ -458,7 +463,11 @@
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                         </svg>
-                        <span> Proceed To Pay {{ number_format((int) $final_total) }} INR</span>
+                        @if($plan->trial_days > 0)
+                            <span>    Free Trial for {{ $plan->trial_days }}</span> Days</span>
+                        @else
+                            <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> INR</span>
+                        @endif
                     </button>
                     {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
                     </div>

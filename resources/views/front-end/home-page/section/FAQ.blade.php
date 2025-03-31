@@ -30,7 +30,7 @@
             <div class="banner">         
                 <h1>It takes less than a minute to get started</h1>
                 <li class="white_signup-wrapper mt-1">
-                    <a class="white_signup_btn" href="{{route('newsletter')}}">
+                    <a class="white_signup_btn" href="{{route('user-login')}}">
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
