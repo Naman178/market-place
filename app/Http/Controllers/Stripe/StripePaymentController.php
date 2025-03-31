@@ -24,9 +24,7 @@ use App\Models\CouponUsages;
 
 class StripePaymentController extends Controller
 {
-    public function stripePost(Request $request)
-    {
-        // dd($request->all());
+    public function stripePost(Request $request) {
         $input = $request->all();
         $product_id = $input['product_id'];
         $amount = $input['amount'];
@@ -41,21 +39,16 @@ class StripePaymentController extends Controller
         $quantity = $input['final_quantity'];
         $trial_period_days = $input['trial_period_days'] ?? 0;
     
-         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-    
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $user = auth()->user();
         $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
     
-        // Check if the customer exists in Stripe
-        $existingCustomer =  \Stripe\Customer::all([
-            'email' => $user['email'],
-            'limit' => 1,
-        ]);
-    
+        // Check if customer exists in Stripe
+        $existingCustomer = \Stripe\Customer::all(['email' => $user['email'], 'limit' => 1]);
         if ($existingCustomer->count() > 0) {
             $customer_id = $existingCustomer->data[0]->id;
         } else {
-            $customer =  \Stripe\Customer::create([
+            $customer = \Stripe\Customer::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'address' => [
@@ -69,15 +62,10 @@ class StripePaymentController extends Controller
             $customer_id = $customer->id;
         }
     
-        $paymentIntent = null;
-    
         if ($plan_type === 'recurring') {
-            // Create Product if not exists
-            $product =  \Stripe\Product::create([
-                'name' => $plan_name,
-                'type' => 'service',
-            ]);
-    
+            // Create Product
+            $product = \Stripe\Product::create(['name' => $plan_name, 'type' => 'service']);
+            
             // Create Subscription Price
             $price = \Stripe\Price::create([
                 'unit_amount' => $amount,
@@ -85,84 +73,37 @@ class StripePaymentController extends Controller
                 'recurring' => ['interval' => 'month'],
                 'product' => $product->id,
             ]);
-    
-            // Create PaymentMethod from Token
-            $paymentMethod =  \Stripe\PaymentMethod::create([
-                'type' => 'card',
-                'card' => [
-                    'token' => $request->stripeToken,
-                ],
-            ]);
-    
-            // Attach PaymentMethod to Customer (Fixed)
-            $paymentMethod->attach(['customer' => $customer_id]);
-    
-            // Set as default payment method
-             \Stripe\Customer::update($customer_id, [
-                'invoice_settings' => ['default_payment_method' => $paymentMethod->id]
-            ]);
-    
-            // Create Subscription
-            $subscription =  \Stripe\Subscription::create([
+            
+            // Create Subscription with Free Trial
+            $subscription = \Stripe\Subscription::create([
                 'customer' => $customer_id,
                 'items' => [['price' => $price->id]],
                 'trial_end' => Carbon::now()->addDays($trial_period_days)->timestamp,
-                'payment_behavior' => 'allow_incomplete', // Automatically charges after trial
-                'default_payment_method' => $paymentMethod->id,
+                'payment_behavior' => $trial_period_days > 0 ? 'default_incomplete' : 'allow_incomplete',
                 'expand' => ['latest_invoice.payment_intent'],
             ]);
-    
-            if (!empty($subscription->latest_invoice) && !empty($subscription->latest_invoice->payment_intent)) {
-                $paymentIntent = $subscription->latest_invoice->payment_intent;
-            } else {
-                return back()->with('error', 'Subscription creation failed.');
-            }
+            
+            return redirect()->route('success-page')->with('success', 'Subscription started successfully!');
         } else {
-            // One-Time Payment with Trial
+            // One-Time Payment with Trial (if applicable)
             $trial_end_date = Carbon::now()->addDays($trial_period_days)->timestamp;
-    
-            $paymentIntent =  \Stripe\PaymentIntent::create([
+            $paymentIntent = \Stripe\PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
                 'customer' => $customer_id,
                 'payment_method_types' => ['card'],
                 'description' => 'Payment For Skyfinity Quick Checkout Wallet',
-                'metadata' => [
-                    'trial_end_date' => $trial_end_date,
-                ],
+                'metadata' => ['trial_end_date' => $trial_end_date],
             ]);
         }
     
         if (!$paymentIntent) {
             return back()->with('error', 'Payment intent creation failed.');
         }
-    
-        // Confirm PaymentIntent
-        $stripe_payment = $paymentIntent->confirm([
-            'payment_method' => $paymentMethod->id,
-            'return_url' => route('stripe-payment-3d', [
-                'product_id' => $product_id,
-                'subtotal' => $subtotal,
-                'gst' => $gst,
-                'amount' => $amount,
-                'discount' => $discount,
-                'coupon_code' => $coupon_code,
-                'discountvalue' => $discountvalue,
-                'plan_type' => $plan_type,
-                'quantity' => $quantity,
-                'subscription_id' => $plan_type === 'recurring' ? $subscription->id : null,
-            ]),
-        ]);
-    
-        // Redirect for 3D Secure if required
-        if ($paymentIntent->status === 'requires_action') {
-            $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
-            echo "<script>window.location.href = '$authenticationUrl';</script>";
-            exit;
-        }
-    
+        
         return redirect()->route('success-page')->with('success', 'Payment processed successfully!');
     }
+    
     public function stripeAfterPayment(Request $request){
 
         $user = auth()->user();
