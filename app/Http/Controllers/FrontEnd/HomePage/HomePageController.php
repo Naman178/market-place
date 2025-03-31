@@ -79,7 +79,7 @@ class HomePageController extends Controller
     }
     public function Categoryshow($id){
         $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
-        $categories = Category::where('sys_state', '!=', '-1')     ->withCount(['subcategories' => function ($query) {
+        $categories = Category::where('sys_state', '!=', '-1')->withCount(['Items as products_count' => function ($query) {
             $query->where('sys_state', '=', '0');
         }])->get();
     
@@ -146,9 +146,10 @@ class HomePageController extends Controller
     
     public function show($id){
         $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
-        $categories = Category::where('sys_state', '!=', '-1')     ->withCount(['subcategories' => function ($query) {
+        $categories = Category::where('sys_state', '!=', '-1')->withCount(['Items as products_count' => function ($query) {
             $query->where('sys_state', '=', '0');
-        }])->get();
+        }])
+        ->get();
         if($subcategories){
             $item = Items::with(['categorySubcategory', 'pricing' , 'order','tags'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
