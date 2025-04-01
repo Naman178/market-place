@@ -105,6 +105,11 @@ class ItemsController extends Controller
                 $item->trial_days = $request->trial_days;
                 $item->save();
             }
+            if($request->has('currency')){
+                $currency = $request->currency;
+                $item->currency = $request->currency;
+                $item->save();
+            }
 
             if ($isUpdate) {
                 ItemsImage::where('item_id', $item->id)->where('sub_id','=',null)->delete();

@@ -368,8 +368,8 @@
                     @endif
                     <input type="hidden" name="final_quantity" id="final_quantity" value="1">
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
-                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}"> <!-- Convert amount to cents -->
-                    <input type="hidden" id="amount" name="currency" value="INR"> <!-- Convert amount to cents -->
+                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}">
+                    <input type="hidden" id="amount" name="currency" value="{{  $plan->currency ?? 'INR' }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="final_coupon_code" id="final_coupon_code" value="">
                     <input type="hidden" name="discount_value" id="discount_value" value="">
