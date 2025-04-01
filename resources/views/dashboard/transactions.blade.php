@@ -26,7 +26,7 @@
                                     <td> {{ $key + 1 }} </td>
                                     <td> {{ $tran->payment_status ? ($tran->payment_status == 'captured' ? 'Success' : $tran->payment_status) : '' }}
                                     </td>
-                                    <td> {{ $tran->payment_amount ?? '' }} </td>
+                                    <td> {{ $tran->product->currency ?? 'Rs.' }}  {{ $tran->payment_amount ?? '' }}</td>
                                     <td> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>
                                     <td>{{ $tran->product->product_name ?? '' }}</td>
                                     <td> {{ $tran->razorpay_payment_id ?? '' }} </td>

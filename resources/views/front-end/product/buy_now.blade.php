@@ -254,10 +254,10 @@
                     <div class="wsus__sidebar_licence">
                         <h2 class="p-0">
                             @if($item->pricing['fixed_price'] != $item->pricing['sale_price']) 
-                              <span class="old-price">&#8377; <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
+                              <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
                             @endif 
                             
-                            <span class="ml-2">&#8377;
+                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
                             <strong class="new-price" id="price">{{ $item->pricing['sale_price'] ?? 0 }}</strong> </span>
                         </h2>
                         @foreach ($item->features as $feature)
@@ -330,10 +330,10 @@
                                     <div class="price-slide">
                                         <h2 class="p-0">
                                             @if($price->fixed_price != $price->sale_price) 
-                                                <span class="old-price">&#8377; <strong >{{ $price->fixed_price ?? 0 }}</strong> </span>
+                                                <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $price->fixed_price ?? 0 }}</strong> </span>
                                             @endif 
                                             
-                                            <span class="ml-2">&#8377;
+                                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
                                             <strong class="new-price" id="price">{{ $price->sale_price ?? 0 }}</strong> </span>
                                             @if(isset($price->billing_cycle))
                                                 <span class="text-capitalize billing_cycle">per {{ $price->billing_cycle }}</span>
@@ -356,7 +356,7 @@
                                             <li>
                                                 <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
                                             </li>
-                                            <li class="ml-3">
+                                            <li class="ml-3 mt-3">
                                                 <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">
                                                     Add to Cart
                                                 </a>

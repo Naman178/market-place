@@ -178,11 +178,11 @@
                     <td class="planDetailRow">1</td>
                     <td class="planDetailRow">{{ $product->name }} </td>
                     <td class="planDetailRow"> {{ $validity }} </td>
-                    <td>Rs. {{ number_format($invoice->subtotal, 2) }}</td>
+                    <td> {{ $product->currency ?? 'Rs.'}}  {{ number_format($invoice->subtotal, 2) }}</td>
                 </tr>
                 <tr>
                     <td colspan="3">Sub-Total</td>
-                    <td>Rs. {{ number_format($invoice->subtotal, 2) }}</td>
+                    <td>{{ $product->currency ?? 'Rs.'}} {{ number_format($invoice->subtotal, 2) }} </td>
                 </tr>
                 @if ($invoice->gst_percentage > 0)
                     @php
@@ -190,7 +190,7 @@
                     @endphp
                     <tr>
                         <td colspan="3">GST ({{ intval($invoice->gst_percentage) }}%)(+)</td>
-                        <td> Rs {{ isset($taxAmount) ? number_format($taxAmount, 2) : 0 }}</td>
+                        <td>{{ $product->currency ?? 'Rs'}} {{ isset($taxAmount) ? number_format($taxAmount, 2) : 0 }} </td>
                     </tr>
                 @endif
                 @if ($invoice->discount > 0)
@@ -211,12 +211,12 @@
                     </tr>
                     <tr>
                         <td colspan="3">Discount ({{ $amount }})({{$text}})(-): </td>
-                        <td> Rs {{ round($invoice->discount, 2) ?? '' }}</td>
+                        <td>{{ $product->currency ?? 'Rs'}}  {{ round($invoice->discount, 2) ?? '' }} </td>
                     </tr>
                 @endif
                 <tr>
                     <td colspan="3">Total Amount</td>
-                    <td> Rs. {{ round($invoice->total, 2) ?? '' }}
+                    <td>  {{ $product->currency ?? 'Rs.'}} {{ round($invoice->total, 2) ?? '' }}
                     </td>
                 </tr>
             </tbody>

@@ -28,7 +28,7 @@
                                             {{ $inv->invoice_number }}
                                         </a>
                                     </td>
-                                    <td> Rs. {{ $inv->total ?? '' }}</td>
+                                    <td> {{ $inv->order->product->currency ?? 'Rs.' }} {{ $inv->total ?? '' }}</td>
                                     <td> {{ $inv->created_at }} </td>
                                     <td> <a href="{{ route('invoice-preview', $inv->id) }}" target="_blank"
                                             class="btn btn-primary">Preview</a> </td>

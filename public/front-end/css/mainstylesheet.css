@@ -2822,11 +2822,11 @@ a{
 }
 
 .wsus__sidebar_licence h2 {
-  font-size: 55px;
-  margin-left: -35px;
+  /* font-size: 55px;
+  margin-left: -35px; */
   color: #ffffff;
   margin-top: 5px;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding-right: 20px;
   text-align: center;
 }
@@ -3208,7 +3208,8 @@ button:focus {
 }
 
 .product_details .new-price, .price-slide .new-price {
-  font-size: 45px;
+  /* font-size: 45px; */
+  font-size: 38px;
 }
 /* Form Group Styling */
 .form-group {
