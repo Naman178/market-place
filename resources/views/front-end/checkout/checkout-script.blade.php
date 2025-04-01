@@ -218,9 +218,39 @@
             toastr.error(data.message);
         });
     }
+    // function continueCalculation(quantity, subTotal) {
+    //     let finalTotal = quantity * subTotal;
+    //     let subTotalText = $("#subtotal_amount").text('INR ' + finalTotal);
+
+    //     let gstPr = $('#gst_amount').data('pr');
+    //     let gstAmount = (gstPr / 100) * finalTotal;
+    //     finalTotal += gstAmount;
+
+    //     let discount = $('#discount_coupon_type').val();
+    //     let discountType = $('#discount_coupon_type').data('type');
+    //     let discountAmount = 0;
+    //     if (discountType === 'flat') {
+    //         discountAmount = discount;
+    //         finalTotal -= discount; 
+    //     } else if (discountType === 'percentage') {
+    //         discountAmount = (discount / 100) * finalTotal;
+    //         finalTotal -= (discount / 100) * finalTotal;
+    //     }
+
+    //     let gst_text = $("#gst_amount").text('INR ' + gstAmount);
+    //     let final_text = $("#final_total").text('INR ' + finalTotal);
+    //     let finaltext = $(".final_total").text('INR ' + finalTotal);
+    //     let discount_amount = $("#discount_amount").text('INR ' + discountAmount);
+    //     let discount_value = $("#discount_value").val(discountAmount);
+    //     let final_text_btn = $(".final_btn_text").text(finalTotal);
+    //     let final_quantity = $("#final_quantity").val(quantity);
+    //     let amount = $("#amount").val(finalTotal * 100 );
+    // }
     function continueCalculation(quantity, subTotal) {
+        let currency = $("#currency_code").val();
+
         let finalTotal = quantity * subTotal;
-        let subTotalText = $("#subtotal_amount").text('INR ' + finalTotal);
+        $("#subtotal_amount").text(currency + ' ' + finalTotal);
 
         let gstPr = $('#gst_amount').data('pr');
         let gstAmount = (gstPr / 100) * finalTotal;
@@ -229,6 +259,7 @@
         let discount = $('#discount_coupon_type').val();
         let discountType = $('#discount_coupon_type').data('type');
         let discountAmount = 0;
+
         if (discountType === 'flat') {
             discountAmount = discount;
             finalTotal -= discount; 
@@ -237,14 +268,14 @@
             finalTotal -= (discount / 100) * finalTotal;
         }
 
-        let gst_text = $("#gst_amount").text('INR ' + gstAmount);
-        let final_text = $("#final_total").text('INR ' + finalTotal);
-        let finaltext = $(".final_total").text('INR ' + finalTotal);
-        let discount_amount = $("#discount_amount").text('INR ' + discountAmount);
-        let discount_value = $("#discount_value").val(discountAmount);
-        let final_text_btn = $(".final_btn_text").text(finalTotal);
-        let final_quantity = $("#final_quantity").val(quantity);
-        let amount = $("#amount").val(finalTotal * 100 );
+        $("#gst_amount").text(currency + ' ' + gstAmount);
+        $("#final_total").text(currency + ' ' + finalTotal);
+        $(".final_total").text(currency + ' ' + finalTotal);
+        $("#discount_amount").text(currency + ' ' + discountAmount);
+        $("#discount_value").val(discountAmount);
+        $(".final_btn_text").text(finalTotal);
+        $("#final_quantity").val(quantity);
+        $("#amount").val(finalTotal * 100);
     }
 
 </script>

@@ -47,7 +47,7 @@
             </div>
             <!-- Price and Quantity -->
             <!-- <div class="price-quantity"> -->
-                  <p >Each<span class="d-block">₹ <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong> {{ $selectedPricing['billing_cycle'] ?? '' }}</span></p>
+                  <p >Each<span class="d-block">{{ $plan->currency ?? 'INR' }} <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong> {{ $selectedPricing['billing_cycle'] ?? '' }}</span></p>
 
                 <div>
                     <label for="quantity">Quantity:</label>
@@ -71,7 +71,7 @@
                         $discount = (int) ($selectedPricing['discount'] ?? 0);
                         $final_total = $itemPrice + $gst;
                     @endphp
-                    <p>Total: <strong class="d-block final_total">INR {{ number_format($final_total) }}</strong></p>
+                    <p>Total: <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
               
             <!-- </div> -->
         </div>
@@ -83,7 +83,7 @@
         <div class="border-top"></div>
         <div class="d-flex align-items-center justify-content-between">
             <h5 id="items-count">1 Items</h5>
-            <h5> <span class="ml-2"> <strong class="d-block final_total">INR {{ number_format($final_total) }}</strong></h5>  
+            <h5> <span class="ml-2"> <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
         </div>
     </div>
     @endforeach
@@ -163,7 +163,7 @@
                     $final_total = $total + $gst;
                     }
                     @endphp
-                    <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                    <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
                     @if ((int) $selectedPricing['id'] > 1)
                     <div class="mt-auto">  
                         <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item"

@@ -76,11 +76,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {{-- <i class="fa fa-inr" aria-hidden="true"></i> --}}
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Amount:</strong></div>
                                                             <div class="ml-2">
-                                                                <p class="mb-0 ml-2"> <i class="fa fa-inr" aria-hidden="true"></i> {{ $order->payment_amount ?? '' }}</p>
+                                                                <p class="mb-0 ml-2"> {{ $order->product->currency ?? '' }} {{ $order->payment_amount ?? '' }} </p>
                                                             </div>
                                                         </div>
                                                     </div>

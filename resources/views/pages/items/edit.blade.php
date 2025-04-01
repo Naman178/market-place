@@ -515,7 +515,16 @@
                     <div class="card-body">
                         <div class="col-md-12 form-group">
                             <label for="currency_label">Currency</label>
-                            <input type="text" class="form-control" id="currency" name="currency" placeholder="Enter currency" value="{{ old('currency', $item->currency) }}">
+                            <select class="form-control" id="currency" name="currency" required>
+                                <option value="USD" {{ old('currency', $item->currency) == 'USD' ? 'selected' : '' }}>U.S. Dollar</option>
+                                <option value="EUR" {{ old('currency', $item->currency) == 'EUR' ? 'selected' : '' }}>Euro</option>
+                                <option value="GBP" {{ old('currency', $item->currency) == 'GBP' ? 'selected' : '' }}>British Pound</option>
+                                <option value="CAD" {{ old('currency', $item->currency) == 'CAD' ? 'selected' : '' }}>Canadian Dollar</option>
+                                <option value="AUD" {{ old('currency', $item->currency) == 'AUD' ? 'selected' : '' }}>Australian Dollar</option>
+                                <option value="INR" {{ old('currency', $item->currency) == 'INR' ? 'selected' : '' }}>Indian Rupee</option>
+                                <option value="CNY" {{ old('currency', $item->currency) == 'CNY' ? 'selected' : '' }}>China Yuan RMB</option>
+                                <option value="AED" {{ old('currency', $item->currency) == 'AED' ? 'selected' : '' }}>United Arab Emirates Dirham</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -585,10 +594,19 @@
                         <div class="card-body">
                             <div class="col-md-12 form-group">
                                 <label for="currency_label">Currency</label>
-                                <input type="text" class="form-control" id="currency" name="currency" placeholder="Enter currency" required>
+                                <select class="form-control" id="currency" name="currency">
+                                    <option value="USD">U.S. Dollar</option>
+                                    <option value="EUR">Euro</option>
+                                    <option value="GBP">British Pound</option>
+                                    <option value="CAD">Canadian Dollar</option>
+                                    <option value="AUD">Australian Dollar</option>
+                                    <option value="INR">Indian Rupee</option>
+                                    <option value="CNY">China Yuan RMB</option>
+                                    <option value="AED">United Arab Emirates Dirham</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
                 </form>
             @endif
         </div>

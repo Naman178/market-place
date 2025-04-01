@@ -104,7 +104,7 @@
                                 <tr>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $validity }}</td>
-                                    <td>₹{{ number_format($invoice->subtotal, 2) }}</td>
+                                    <td>{{ $product->currency ?? '₹' }} {{ number_format($invoice->subtotal, 2) }} </td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -137,20 +137,20 @@
                                             $subtot = $invoice->subtotal * $quantity;
                                             // dd($subtot);
                                         @endphp
-                                        <p class="fw-semibold mb-2 pt-3 text-start"> {{ $invoice->quantity }}</p>
-                                        <p class="fw-semibold mb-2 pt-3 text-start">₹{{ number_format($subtot, 2) }}</p>
+                                        <p class="fw-semibold mb-2 pt-3 text-start">{{ $product->currency ?? '₹' }} {{ $invoice->quantity }}</p>
+                                        <p class="fw-semibold mb-2 pt-3 text-start">{{ $product->currency ?? '₹' }} {{ number_format($subtot, 2) }} </p>
                                         @if ($invoice->gst_percentage > 0)
                                             @php
                                                 $taxAmount = ($subtot * $invoice->gst_percentage) / 100;
                                                 $taxAmount = round($taxAmount);
                                             @endphp
-                                            <p class="fw-semibold mb-2 text-start">₹ {{ round($taxAmount, 2) ?? '' }}</p>
+                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ round($taxAmount, 2) ?? '' }} </p>
                                         @endif
                                         @if ($invoice->discount > 0)
                                             <p class="fw-semibold mb-2 text-start">{{ $invoice->coupon->coupon_code }}</p>
-                                            <p class="fw-semibold mb-2 text-start">₹ {{ round($invoice->discount, 2) ?? '' }}</p>
+                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ round($invoice->discount, 2) ?? '' }}</p>
                                         @endif
-                                        <p class="fw-semibold mb-0 pb-3 text-start">₹ {{ round($invoice->total, 2) ?? '' }}</p>
+                                        <p class="fw-semibold mb-0 pb-3 text-start">{{ $product->currency ?? '₹' }} {{ round($invoice->total, 2) ?? '' }}</p>
                                 </tr>
                             </thead>
                         </table>

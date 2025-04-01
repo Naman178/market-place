@@ -169,12 +169,12 @@
             @if (!empty($mergedPricing))
                 @foreach ($mergedPricing as $key => $selectedPricing)
                     <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing['sale_price'] ) }}</h5>
+                    <h5 class="mt-0 mb-2">{{ $plan->currency ?? 'INR' }}  {{ number_format((int)  $selectedPricing['sale_price'] ) }}</h5>
                     </div>
                 @endforeach
             @else
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int)  $selectedPricing->sale_price ) }}</h5>
+                <h5 class="mt-0 mb-2">{{ $plan->currency ?? 'INR' }}  {{ number_format((int)  $selectedPricing->sale_price ) }}</h5>
             </div>
             @endif
         </div>
@@ -195,7 +195,7 @@
                 }
             @endphp
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <h5 class="mt-0 mb-2">INR {{ number_format((int) $gst ) }}</h5>
+                <h5 class="mt-0 mb-2">{{ $plan->currency ?? 'INR' }}  {{ number_format((int) $gst ) }}</h5>
             </div>
         </div>
         <div class="row mb-1 discount_row">
@@ -204,13 +204,13 @@
             </div>
             <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
 
-                <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
+                <h5 class="mt-0 mb-2" id="discount_amount">{{ $plan->currency ?? 'INR' }} </h5>
                 @if (!empty($mergedPricing))
                     @foreach ($mergedPricing as $key => $selectedPricing)
-                        <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing['fixed_price'] }}</h5>
+                        <h5 class="mt-0 mb-2" id="discount_amount">{{ $plan->currency ?? 'INR' }}  {{ (int) $selectedPricing['fixed_price'] }}</h5>
                     @endforeach
                 @else
-                 <h5 class="mt-0 mb-2" id="discount_amount">INR {{ (int) $selectedPricing->fixed_price }}</h5>
+                 <h5 class="mt-0 mb-2" id="discount_amount">{{ $plan->currency ?? 'INR' }}  {{ (int) $selectedPricing->fixed_price }}</h5>
                 @endif
             </div>
         </div>
@@ -232,7 +232,7 @@
                         $final_total = $total + $gst;
                     }
                 @endphp
-                <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
              </div>
         </div> --}}
         @php
@@ -240,7 +240,7 @@
             $totalGST = 0;
             $totalDiscount = 0;
         @endphp
-
+        <input type="hidden" id="currency_code" value="{{ $plan->currency ?? 'INR' }}">
         @if (!empty($mergedPricing))
             @foreach ($mergedPricing as $key => $selectedPricing)
                 @php
@@ -258,7 +258,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($totalSubtotal) }}" id="subtotal_amount">INR {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($totalSubtotal) }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
                 </div>
             </div>
 
@@ -267,7 +267,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing['gst_percentage'] ?? 0 }}" id="gst_amount">INR {{ number_format($totalGST) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing['gst_percentage'] ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalGST) }}</h5>
                 </div>
             </div>
             <div class="row mb-1 discount_row d-none">
@@ -276,8 +276,8 @@
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
     
-                    <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                    {{-- <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ (int) $totalSubtotal }}</h5> --}}
+                    <h5 class="mt-0 mb-2" id="discount_amount">{{ $plan->currency ?? 'INR' }} </h5>
+                    {{-- <h5 class="mt-0 mb-2" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ (int) $totalSubtotal }}</h5> --}}
                        
                 </div>
             </div>
@@ -289,7 +289,7 @@
                     @php
                       $final_total = $totalSubtotal + $totalGST;
                     @endphp
-                    <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                    <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
                 </div>
             </div>
 
@@ -304,7 +304,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ number_format($selectedPricing->sale_price) }}</h5>
+                    <h5 class="mt-0 mb-2" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($selectedPricing->sale_price) }}</h5>
                 </div>
             </div>
             
@@ -313,7 +313,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="gst_amount">INR {{ number_format($gst) }}</h5>
+                    <h5 class="mt-0 mb-2" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
                 </div>
             </div>
             
@@ -323,8 +323,8 @@
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
     
-                    <h5 class="mt-0 mb-2" id="discount_amount">INR</h5>
-                     <h5 class="mt-0 mb-2" id="subtotal_amount">INR {{ (int) $selectedPricing->sale_price }}</h5>
+                    <h5 class="mt-0 mb-2" id="discount_amount">{{ $plan->currency ?? 'INR' }} </h5>
+                     <h5 class="mt-0 mb-2" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ (int) $selectedPricing->sale_price }}</h5>
                 </div>
             </div>
             
@@ -336,7 +336,7 @@
                     @php
                         $final_total = $itemPrice + $gst;
                     @endphp
-                      <h5 class="mt-0 mb-2" id="final_total">INR {{ number_format($final_total) }}</h5>
+                      <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
                 </div>
             </div>
         @endif
@@ -440,7 +440,7 @@
                     <!--        id="proceed_to_pay_btn"-->
                     <!--        type="button"-->
                     <!--        data-url="{{ route('payment') }}" >-->
-                    <!--        Proceed To Pay {{ number_format((int) $final_total) }} INR-->
+                    <!--        Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} -->
                     <!--    </button>-->
                     <!--</div>-->
                     <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
@@ -451,11 +451,11 @@
                         @if($plan->trial_days > 0)
                             <span>    Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days</span>
                         @else
-                            <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> INR</span>
+                            <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
                     </button>
-                    {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  INR</button> --}}
-                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
+                    {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  {{ $plan->currency ?? 'INR' }} </button> --}}
+                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
                 @else
                  <div class="col-md-12">
                     <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
@@ -466,10 +466,10 @@
                         @if($plan->trial_days > 0)
                             <span>    Free Trial for {{ $plan->trial_days }}</span> Days</span>
                         @else
-                            <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> INR</span>
+                            <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
                     </button>
-                    {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} INR</button> --}}
+                    {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
                     </div>
                     @endif
                 </div>
