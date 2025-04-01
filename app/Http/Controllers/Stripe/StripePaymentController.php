@@ -83,7 +83,7 @@ class StripePaymentController extends Controller
                 'expand' => ['latest_invoice.payment_intent'],
             ]);
             
-            return redirect()->route('success-page')->with('success', 'Subscription started successfully!');
+            return redirect()->route('user-dashboard')->with('success', 'Subscription started successfully!');
         } else {
             // One-Time Payment with Trial (if applicable)
             $trial_end_date = Carbon::now()->addDays($trial_period_days)->timestamp;
@@ -101,7 +101,7 @@ class StripePaymentController extends Controller
             return back()->with('error', 'Payment intent creation failed.');
         }
         
-        return redirect()->route('success-page')->with('success', 'Payment processed successfully!');
+        return redirect()->route('user-dashboard')->with('success', 'Payment processed successfully!');
     }
     
     public function stripeAfterPayment(Request $request){
