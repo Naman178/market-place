@@ -511,6 +511,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-2 mb-2">
+                    <div class="card-body">
+                        <div class="col-md-12 form-group">
+                            <label for="currency_label">Currency</label>
+                            <input type="text" class="form-control" id="currency" name="currency" placeholder="Enter currency" value="{{ old('currency', $item->currency) }}">
+                        </div>
+                    </div>
+                </div>
             </form>
             @else
                 <div class="card">
@@ -570,6 +578,14 @@
                             <div class="col-md-12 form-group">
                                 <label for="trial_label">Trial Days</label>
                                 <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="currency_label">Currency</label>
+                                <input type="text" class="form-control" id="currency" name="currency" placeholder="Enter currency" required>
                             </div>
                         </div>
                     </div>

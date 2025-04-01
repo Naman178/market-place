@@ -106,9 +106,6 @@ class StripePaymentController extends Controller
                 'customer' => $customer_id,
                 'payment_method_types' => ['card'],
                 'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
-                'metadata' => [
-                    'trial_period_days' => $input['trial_period_days'] ?? 0, // Store trial period in metadata
-                ],
             ]);
         }
 
