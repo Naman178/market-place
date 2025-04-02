@@ -114,7 +114,7 @@
     <?php
         $setting = \App\Models\Settings::where('key', 'site_setting')->first();
     ?>
-    <section>
+    {{-- <section>
         <div class="container">
             <div class="image">
                 @if ($setting && $setting['value']['logo_image'])
@@ -172,6 +172,50 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </section> --}}
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+        <!-- Logo Section -->
+        <tr>
+            <td align="center" style="padding: 20px; background-color: #ffffff;">
+                @if ($setting && $setting['value']['logo_image'])
+                    <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                @else
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                @endif
+            </td>
+        </tr>
+        
+        <!-- Header Section -->
+        <tr>
+            <td align="center" bgcolor="#007AC1" style="padding: 20px; color: #ffffff; font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: bold;">
+                Registration Successful!
+            </td>
+        </tr>
+        <!-- CONTENT -->
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 20px; color: #666666; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                <p>Thank you for registering with Skyfinity Quick Checkout!</p>
+                <p>Please use the credentials below to log in to your account:</p>
+                <p><strong>Email:</strong> {{ $user->email }}</p>
+                <p><strong>Password:</strong> {{ $generatedPassword }}</p>
+            </td>
+        </tr>
+        <!-- FOOTER -->
+        <tr>
+            <td align="center" bgcolor="#007AC1" style="padding: 20px; color: #ffffff; font-family: Helvetica, Arial, sans-serif; font-size: 14px;">
+                <p>Stay Up To Date And Follow Us On Social Media</p>
+                <table border="0" cellpadding="5" cellspacing="0">
+                    <tr>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
+                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html> 
