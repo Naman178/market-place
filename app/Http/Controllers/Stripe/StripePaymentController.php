@@ -38,19 +38,19 @@ class StripePaymentController extends Controller
         $plan_type = $input['plan_type'] ?? 'one_time';
         $currency = $input['currency'];
         $quantity = $input['final_quantity'];
-        $trial_period_days = $input['trial_period_days'] ?? 0; // Added trial period handling
-
+        $trial_period_days = $input['trial_period_days'] ?? 0;
+    
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
+    
         $user = auth()->user();
         $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
-
+    
         // Check if customer exists in Stripe
         $existingCustomer = \Stripe\Customer::all([
             'email' => $user['email'],
             'limit' => 1,
         ]);
-
+    
         if ($existingCustomer->count() > 0) {
             $customer_id = $existingCustomer->data[0]->id;
         } else {
@@ -67,9 +67,26 @@ class StripePaymentController extends Controller
             ]);
             $customer_id = $customer->id;
         }
-
+    
+        // Create Payment Method
+        $paymentMethod = \Stripe\PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'token' => $request->stripeToken,
+            ],
+        ]);
+    
+        // Attach the payment method to the customer
+        $paymentMethod->attach(['customer' => $customer_id]);
+    
+        // Set the default payment method
+        \Stripe\Customer::update(
+            $customer_id, 
+            ['invoice_settings' => ['default_payment_method' => $paymentMethod->id]]
+        );
+    
         if ($plan_type === 'recurring') {
-            // Step 1: Create a Product (if not exists)
+            // Step 1: Create a Product
             $product = \Stripe\Product::create([
                 'name' => $plan_name,
                 'type' => 'service',
@@ -82,25 +99,25 @@ class StripePaymentController extends Controller
                 'recurring' => ['interval' => 'month'],
                 'product' => $product->id,
             ]);
-
-            // Step 3: Create Subscription with Free Trial if applicable
+    
+            // Step 3: Create Subscription with Default Payment Method & Trial Handling
             $subscription_params = [
                 'customer' => $customer_id,
                 'items' => [['price' => $price->id]],
-                'payment_behavior' => 'default_incomplete',
+                'payment_behavior' => 'allow_incomplete',
                 'expand' => ['latest_invoice.payment_intent'],
             ];
-
+    
             if ($trial_period_days > 0) {
                 $subscription_params['trial_end'] = Carbon::now()->addDays($trial_period_days)->timestamp;
             }
-
+    
             $subscription = \Stripe\Subscription::create($subscription_params);
             $paymentIntent = $subscription->latest_invoice->payment_intent;
-
+    
         } else {
             // One-time payment
-                $paymentIntent = \Stripe\PaymentIntent::create([
+            $paymentIntent = \Stripe\PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
                 'customer' => $customer_id,
@@ -108,15 +125,7 @@ class StripePaymentController extends Controller
                 'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
             ]);
         }
-
-        // Create Payment Method
-        $paymentMethod = \Stripe\PaymentMethod::create([
-            'type' => 'card',
-            'card' => [
-                'token' => $request->stripeToken,
-            ],
-        ]);
-
+    
         // Prepare return URL parameters
         $return_url_params = [
             'product_id' => $product_id,
@@ -129,21 +138,21 @@ class StripePaymentController extends Controller
             'plan_type' => $plan_type,
             'quantity' => $quantity,
         ];
-
+    
         if ($plan_type === 'recurring') {
             $return_url_params['subscription_id'] = $subscription->id;
         }
-
+    
         // Confirm the payment intent
-        if($paymentIntent){
-        $stripe_payment = $paymentIntent->confirm([
-            'payment_method' => $paymentMethod->id,
-            'return_url' => route('stripe-payment-3d', $return_url_params),
-        ]);
-        }else{
+        if ($paymentIntent) {
+            $stripe_payment = $paymentIntent->confirm([
+                'payment_method' => $paymentMethod->id,
+                'return_url' => route('stripe-payment-3d', $return_url_params),
+            ]);
+        } else {
             return redirect()->route('user-dashboard')->with('success', 'Payment processed successfully!');
         }
-
+    
         // Handle 3D Secure authentication if required
         if ($paymentIntent->status === 'requires_action') {
             $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;

@@ -123,10 +123,10 @@
                     </div>
                     <div class="">
                         <div class="form-group">
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
                             <label for="email" class="floating-label">Email</label>
                             @error('email')
-                                <div class="text-danger">{{ $message }}</div>
+                                <div class="text-danger" id="email_error_message">{{ $message }}</div>
                             @enderror
                             <div class="error" id="email_error"></div>
                         </div>
@@ -304,23 +304,25 @@
                 const inputFields = document.querySelectorAll(".form-control");
                 // Function to handle floating label
                 function updateFloatingLabel(input) {
-                    const label = input.nextElementSibling; // Get the corresponding label
-                    if (input.value.trim() !== "") {
-                        label.style.top = "50%";
+                    const label = input.nextElementSibling; // Get the label
+                    const errorMessage = document.getElementById(input.id + "_error_message");
+
+                    if (input.value.trim() !== "" || (errorMessage && errorMessage.textContent.trim() !== "")) {
+                        label.style.top = input.id === "email" ? "18%" : "50%"; // Email: 18%, Others: 50%
                         label.style.fontSize = "1rem";
                         label.style.color = "#70657b";
                     } else {
                         label.style.top = "50%";
                         label.style.fontSize = "1rem";
-                        label.style.color = "#70657b"; // Ensure this style on initial load if empty
+                        label.style.color = "#70657b";
                     }
                 }
 
                 function handleBlur(input) {
                     const label = input.nextElementSibling;
                     if (input.value.trim() === "") {
-                        label.style.color = "red"; // Set red when empty on blur
-                        label.style.top = "35%"; // Set label top position when empty on blur
+                        label.style.color = "red";
+                        label.style.top = input.id === "email" ? "18%" : "35%"; // Email stays 18% on error, others at 35%
                     }
                 }
 
@@ -328,30 +330,35 @@
                 inputFields.forEach(input => {
                     updateFloatingLabel(input);
                     const label = input.nextElementSibling;
-                    // Blur event: Check if empty & show error
-                    input.addEventListener("blur", function () {
-                    const errorDiv = document.getElementById(input.id + "_error");
 
-                    if (!input.value.trim()) {
-                        if (errorDiv) { // ✅ Check if errorDiv exists
-                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                            errorDiv.style.display = "block";
+                    input.addEventListener("blur", function () {
+                        const errorDiv = document.getElementById(input.id + "_error");
+                        const errorMessage = document.getElementById(input.id + "_error_message");
+
+                        if (!input.value.trim()) {
+                            if (errorDiv) {
+                                errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                                errorDiv.style.display = "block";
+                            }
+                            input.style.borderColor = "red";
+                            label.style.top = input.id === "email" ? "18%" : "35%";
+                            label.style.fontSize = "1rem";
+                            label.style.color = "red";
+                        } else {
+                            if (errorDiv) {
+                                errorDiv.style.display = "none";
+                            }
+                            input.style.borderColor = "#ccc";
+                            label.style.color = "#70657b";
                         }
-                        input.style.borderColor = "red";
-                        label.style.top = "35%";
-                        label.style.fontSize = "1rem";
-                        label.style.color = "red";
-                    } else {
-                        if (errorDiv) {
-                            errorDiv.style.display = "none";
+
+                        // If Laravel error message exists, keep the label at 18%
+                        if (errorMessage && errorMessage.textContent.trim() !== "") {
+                            label.style.top = "18%";
                         }
-                        input.style.borderColor = "#ccc";
-                        label.style.color = "#70657b";
-                    }
-                });
-                    // Focus event: Float label
+                    });
+
                     input.addEventListener("focus", function () {
-                        const label = input.nextElementSibling;
                         label.style.top = "-1%";
                         label.style.fontSize = "0.8rem";
                         if (input.value.trim() !== "") {

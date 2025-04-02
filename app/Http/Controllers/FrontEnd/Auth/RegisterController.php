@@ -391,7 +391,7 @@ class RegisterController extends Controller
         ]);
         $data = $response->json();
         if ($data['disposable'] === 'true') {
-            return back()->withErrors(['email' => 'Email addresses are not allowed.']);
+            return back()->withErrors(['email' => 'We are not accepting Disposable Email Address please use actual email address or signup with google, github, linkedIn.']);
         }
         $countryname = '';
         $countaries = ContactsCountryEnum::orderBy('id')->get();
