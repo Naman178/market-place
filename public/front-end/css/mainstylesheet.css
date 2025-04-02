@@ -3192,7 +3192,9 @@ button:focus {
 .product_details .slick-track{
   margin: 0px !important;
 }
-
+.product_details .slick-slide{
+  width: 50% !important;
+}
 .price-slide {
   padding: 10px; /* Add padding to each slide to avoid content from sticking to the edges */
 }
