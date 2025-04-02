@@ -28,6 +28,12 @@
 @else
     @include('front-end.home-page.section.Category')
 @endif
+@php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+@endphp
 @include('front-end.home-page.section.plugins')
 <div class="carousel-container">
     @include('front-end.home-page.section.Integration')

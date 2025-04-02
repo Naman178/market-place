@@ -34,8 +34,7 @@
                     </div>
                     <p class="int_p">Optimized for speed to ensure smooth website performance.</p>
                     <div class="d_flex">
-                        <a href="#" class="integration_know ml-40">Know More</a>
-                        <span><img class="know_arrow" src="front-end/images/blue_arrow.png" alt="not found"></span>
+                       
                         {{-- <img class="plus_logo mb-30" src="front-end/images/Ellipse 451.png" alt="not found">
                         <img class="plus_img" src="front-end/images/plus_sign.png" alt="not found"> --}}
                     </div>
@@ -54,8 +53,7 @@
                     </div>
                     <p class="intig_p">Hassle-free installation and seamless compatibility with WordPress.</p>
                     <div class="d_flex">
-                        <a href="#" class="integration_know ml-40">Know More</a>
-                        <span><img class="know_arrow" src="front-end/images/blue_arrow.png" alt="not found"></span>
+                       
                         {{-- <img class="plus_logo mb-30" src="front-end/images/Ellipse 447.png" alt="not found">
                         <img class="plus_img" src="front-end/images/plus_sign.png" alt="not found"> --}}
                     </div>
@@ -74,8 +72,7 @@
                     </div>
                     <p class="int_p">Continuous improvements and dedicated support to keep you ahead.</p>
                     <div class="d_flex">
-                        <a href="#" class="integration_know ml-40">Know More</a>
-                        <span><img class="know_arrow" src="front-end/images/blue_arrow.png" alt="not found"></span>
+                       
                         {{-- <img class="plus_logo mb-30" src="front-end/images/Ellipse 451.png" alt="not found">
                         <img class="plus_img" src="front-end/images/plus_sign.png" alt="not found"> --}}
                     </div>
@@ -97,8 +94,7 @@
                     </div>
                     <p class="int_p">Built with security in mind to protect your data and transactions.</p>
                     <div class="d_flex">
-                        <a href="#" class="integration_know ml-40">Know More</a>
-                        <span><img class="know_arrow" src="front-end/images/blue_arrow.png" alt="not found"></span>
+                       
                         {{-- <img class="plus_logo mb-30" src="front-end/images/Ellipse 451.png" alt="not found">
                         <img class="plus_img" src="front-end/images/plus_sign.png" alt="not found"> --}}
                     </div>
@@ -120,8 +116,7 @@
                     </div>
                     <p class="int_p">Works effortlessly across different regions and markets.</p>
                     <div class="d_flex">
-                        <a href="#" class="integration_know ml-40">Know More</a>
-                        <span><img class="know_arrow" src="front-end/images/blue_arrow.png" alt="not found"></span>
+                       
                         {{-- <img class="plus_logo mb-30" src="front-end/images/Ellipse 451.png" alt="not found">
                         <img class="plus_img" src="front-end/images/plus_sign.png" alt="not found"> --}}
                     </div>

@@ -37,12 +37,23 @@
                     
                 </div>
                 <div class="signup-wrapper">
-                    <a href="#" class="blue_common_btn">
+                    @if (!empty($category))
+                    <a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}" class="blue_common_btn"> 
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                      </svg><span> Get Lifetime Support </span>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Get Lifetime Support </span>
+                    {{-- <span class="ml-1 mr-3">
+                                <i class="fa-solid fa-greater-than"></i>
+                            </span> --}}
                     </a>
+                @elseif (!empty($subcategory))
+                    <a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}" class="blue_common_btn"> 
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                        </svg><span>Get Lifetime Support </span></a>
+                @endif
                 </div>
             </div>
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
