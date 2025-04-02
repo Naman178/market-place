@@ -320,8 +320,8 @@
             </div>
         </div>
         @if ($item->pricing['pricing_type'] === 'recurring')
-        <div class="row justify-content-start bg-white mt-5 ml-22">
-            <div class="col-xl-9 col-lg-7">
+        {{-- <div class="row justify-content-start bg-white mt-5 ml-22"> --}}
+            <div class="col-xl-12 col-lg-12 mt-5">
                 
                     <div class="price-slick-slider">
                         @foreach ($pricingData as $index => $price)
@@ -356,7 +356,7 @@
                                             <li>
                                                 <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
                                             </li>
-                                            <li class="ml-3 mt-3">
+                                            <li class="ml-1 mt-3">
                                                 <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">
                                                     Add to Cart
                                                 </a>
@@ -373,7 +373,7 @@
                     </div>
                 
             </div>
-        </div>
+        {{-- </div> --}}
         <div class="col-xl-8 col-lg-7">
             <div class="wsus__product_details_text">
                 <ul class="nav" id="pills-tab">

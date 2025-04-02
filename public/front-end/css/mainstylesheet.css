@@ -2688,6 +2688,10 @@ a{
   padding: 35px;
 }
 
+.wsus__sidebar_licence .slick-slide{
+  width: auto !important;
+}
+
 .select_licance {
   display: flex;
   justify-content: center;
@@ -3182,8 +3186,11 @@ button:focus {
 }
 .price-slick-slider {
   width: 116%; 
-  max-width: 1200px; 
-  margin: auto;
+  max-width: 1024px;
+  /* margin: auto; */
+}
+.product_details .slick-track{
+  margin: 0px !important;
 }
 
 .price-slide {
