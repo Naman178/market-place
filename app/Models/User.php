@@ -60,4 +60,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function avatar()
+    {
+        dd($this->profile_pic);
+        return filter_var($this->profile_pic, FILTER_VALIDATE_URL) 
+            ? $this->profile_pic 
+            : asset('assets/images/faces/' . $this->profile_pic);
+    }
 }

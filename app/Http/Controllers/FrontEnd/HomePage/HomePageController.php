@@ -22,6 +22,8 @@ use App\Models\Testimonials;
 use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
+use Usamamuneerchaudhary\Commentify\Models\Comment;
 use Mail;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
@@ -36,7 +38,7 @@ class HomePageController extends Controller
         $Blogs = Blog::where('status', '1')->with('categoryname')->get();
         foreach ($Blogs as $blog) {
             $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
-            $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count();
+            $blog->comments_count = Comments::where('post_id', $blog->blog_id)->count();
             $blog->shares_count = Share::where('blog_id', $blog->blog_id)->count();
         }
         $seoData = SEO::where('page', 'home')->first();
@@ -177,13 +179,14 @@ class HomePageController extends Controller
         if (!$item) {
             return redirect()->back()->with('error', 'Item not found.');
         }
-        $userCommentsCount = Comments::where('user_id', Auth::id())->where('item_id', $id)
-        ->count();
+        // $userCommentsCount = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        // ->count();
 
-        $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
-        ->with('user') 
-        ->get();
-
+        // $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        // ->with('user') 
+        // ->get();
+        $userCommentsCount = Comment::where('item_id', $id)->where('parent_id', null)->count(); 
+        $post = Post::first();
         $userReviewsCount = Reviews::where('user_id', Auth::id())->where('item_id', $id)
             ->count();
 
@@ -208,7 +211,7 @@ class HomePageController extends Controller
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
             }
         }
-        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'comments', 'userReviewsCount', 'reviews', 'filteredFeatures'));
+        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures'));
     }
     public function commentupdate(Request $request, $id)
     {

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\Comments;
 use App\Models\Share;
 use App\Models\SEO;
+use App\Models\Post;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -349,11 +350,12 @@ class BlogController extends Controller
         if (!is_null($blog->related_blogs)) {
             $blog->related_blogs = json_decode($blog->related_blogs); 
         }
-        $comments = Comments::where('blog_id', $blog_id)->with('user')->get();
+        $post = Post::with('comments.user')->findOrFail($blog_id);
+
         $Blogcontents = BlogContent::where('blog_id', $blog_id)->get();
         $Blog_category = Blog_category::get();
         $seoData = SEO::where('page', 'home')->first();
-        return view('front-end.Blog.blog_details',compact('seoData','blog','comments','Blogcontents','Blog_category'));
+        return view('front-end.Blog.blog_details',compact('seoData','blog','post','Blogcontents','Blog_category'));
     }
 
 

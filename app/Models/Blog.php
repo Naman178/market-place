@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Usamamuneerchaudhary\Commentify\Http\Livewire\Comments;
 
 class Blog extends Model
 {
@@ -29,5 +31,9 @@ class Blog extends Model
     public function categoryname()
     {
         return $this->hasOne(Blog_category::class, 'category_id', 'category');
+    }
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comments::class, 'commentable');
     }
 }
