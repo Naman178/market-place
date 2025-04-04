@@ -83,50 +83,23 @@
                 <h1 class="card-title" style="margin-top:15px; margin-bottom:15px; font-size:1.5rem;">Comments</h1>
             </div>
             <div class="col-md-8" style="background-color:#ffffff;">
-                <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
+                {{-- <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
                     <div class="card-body" style="padding-top:15px;">
                         <form class="comment-form" action="{{route('blog-comment-post', $blog->blog_id)}}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="comment">Comment</label>
-                                {{-- <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea> --}}
+                                <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea>
                                 <div id="quill-editor" style="height: 200px; background-color: white;"></div>
                                 <input type="hidden" name="comment" id="quill-content">
                             </div>
                             <button type="submit" class="pink-blue-grad-button d-inline-block border-0">Submit</button>
                         </form>
                     </div>
-                </div>
-                @if ($comments)
-                    <div class="card" style="border: none;">
-                        @foreach ($comments as $comment)
-                                <div class="card-body d-flex justify-content-start align-items-center">
-                                    @php
-                                        // Check if the profile picture is a valid Google URL or local file
-                                        $profilePic = filter_var($comment->user->profile_pic, FILTER_VALIDATE_URL)
-                                            ? $comment->user->profile_pic
-                                            : asset('assets/images/faces/' . $comment->user->profile_pic);
-                                    @endphp
-                                    @if ($comment->user->profile_pic)
-                                        <img src="{{ $profilePic }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
-                                    @else
-                                        <img src="{{ asset('public/assets/images/user.png') }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
-                                    @endif
-                                  
-                                    <div style="margin-left: 10px; width: 100%;">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p style="margin-bottom: 2px;"><strong>{{ $comment->user->name }}</strong></p>
-                                            <p style="margin-bottom: 2px;">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</p>
-                                        </div>
-                                        <div class="blogcommentdescription">{!! $comment->description !!}</div>
-                                    </div>
-                                </div>
-                            @if (!$loop->last)
-                                <hr style="border: 1px solid #007ac1; width:96%; margin:auto;">
-                            @endif
-                        @endforeach
-                    </div>
-                @endif
+                </div> --}}
+                {{-- <livewire:comments :post="$post"/> --}}
+                <livewire:comments :model="$post" />
+
             </div>
         </div>
     </div>
@@ -139,13 +112,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-     tinymce.init({
-        selector: 'textarea',
-        menubar: false,
-        plugins: 'advlist autolink lists link image charmap print preview anchor',
-        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-        height: 200
-    });
+    //  tinymce.init({
+    //     selector: 'textarea',
+    //     menubar: false,
+    //     plugins: 'advlist autolink lists link image charmap print preview anchor',
+    //     toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+    //     height: 200
+    // });
 
     var quill = new Quill('#quill-editor', {
         theme: 'snow',

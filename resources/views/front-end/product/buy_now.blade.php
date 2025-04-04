@@ -411,7 +411,9 @@
                         </div>
                         <div class="wsus__pagination">
                         </div>
-                        <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
+                        <livewire:comments :model="$post" :itemId="$item->id" />
+
+                        {{-- <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id ?? 0 }}">
                             <input type="hidden" name="item_id" value="{{ $item->id }}">
@@ -479,7 +481,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        
+                         --}}
                     </div>
                     <div class="tab-content" id="pills-contact">
                         <div class="wsus__pro_det_review d-flex align-items-center">

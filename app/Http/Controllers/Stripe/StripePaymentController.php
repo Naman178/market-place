@@ -189,6 +189,7 @@ class StripePaymentController extends Controller
         $stripe_payment_id = $stripe_payment->id;
         $stripe_payment_method = $stripe_payment['payment_method'];
         $stripe_payment_status = $stripe_payment->status;
+        dd($stripe_payment_status);
         if ($stripe_payment_status === 'succeeded') {
 
             // $plan = Plan::where('id',$product_id)->first();
