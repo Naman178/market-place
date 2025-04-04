@@ -70,7 +70,9 @@
                         </div>
                         <div class="wsus__pagination">
                         </div>
-                        <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
+                        
+                        <livewire:comments :model="$post" :itemId="$item->id" />
+                        {{-- <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id ?? 0 }}">
                             <input type="hidden" name="item_id" value="{{ $item->id }}">
@@ -90,7 +92,7 @@
                                         </svg>
                                         <span> Submit Comment</span>
                                     </button>
-                                    {{-- <button class="common_btn pink-blue-grad-button " id="submitBtn" type="submit">Submit Comment</button> --}}
+                                    <button class="common_btn pink-blue-grad-button " id="submitBtn" type="submit">Submit Comment</button>
                                     <button class="common_btn d-none" id="showSpain" type="submit"><i
                                             class="fas fa-spinner fa-spin" aria-hidden="true"></i></button>
                                 </div>
@@ -144,7 +146,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
+                        </div> --}}
                         
                     </div>
                     <div class="tab-content" id="pills-contact">
@@ -163,7 +165,7 @@
 
                         <div class="wsus__pagination">
                         </div>
-                            
+                        @if($orderitem)
                         <form class="wsus__comment_input_area" id="productReviewForm" method="POST" action="{{ route('product-review-post') }}">
                             @csrf
                             <div class="row">
@@ -191,6 +193,7 @@
                                 </div>
                             </div>
                         </form>
+                        @endif
                         <div class="wsus__pagination">
                             @foreach ($reviews as $review)
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
@@ -499,7 +502,7 @@
 
                         <div class="wsus__pagination">
                         </div>
-                          
+                        @if($orderitem)
                         <form class="wsus__comment_input_area" id="productReviewForm" method="POST" action="{{ route('product-review-post') }}">
                             @csrf
                             <div class="row">
@@ -521,6 +524,7 @@
                                 </div>
                             </div>
                         </form>
+                        @endif
                         <div class="wsus__pagination">
                             @foreach ($reviews as $review)
                                 <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">

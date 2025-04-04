@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\NewsletterMail;
 use App\Models\Comments;
 use App\Models\Newsletter;
+use App\Models\Order;
 use App\Models\Settings;
 use App\Models\Share;
 use App\Models\Items;
@@ -185,12 +186,13 @@ class HomePageController extends Controller
         // $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
         // ->with('user') 
         // ->get();
+        $orderitem = Order::where('product_id', $id)->where('user_id', Auth::id())->first();
         $userCommentsCount = Comment::where('item_id', $id)->where('parent_id', null)->count(); 
         $post = Post::first();
         $userReviewsCount = Reviews::where('user_id', Auth::id())->where('item_id', $id)
             ->count();
 
-        $reviews = Reviews::where('user_id', Auth::id())->where('item_id', $id)
+        $reviews = Reviews::where('item_id', $id)
             ->with('user') 
             ->get();
         $pricingData = ItemsPricing::where('item_id', $id)->get(); 
@@ -211,7 +213,7 @@ class HomePageController extends Controller
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
             }
         }
-        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures'));
+        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures', 'orderitem'));
     }
     public function commentupdate(Request $request, $id)
     {
