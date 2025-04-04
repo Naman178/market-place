@@ -503,6 +503,31 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-2 mb-2">
+                    <div class="card-body">
+                        <div class="col-md-12 form-group">
+                            <label for="trial_label">Trial Days</label>
+                            <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" value="{{ old('trial_days', $item->trial_days) }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-2 mb-2">
+                    <div class="card-body">
+                        <div class="col-md-12 form-group">
+                            <label for="currency_label">Currency</label>
+                            <select class="form-control" id="currency" name="currency" required>
+                                <option value="USD" {{ old('currency', $item->currency) == 'USD' ? 'selected' : '' }}>U.S. Dollar</option>
+                                <option value="EUR" {{ old('currency', $item->currency) == 'EUR' ? 'selected' : '' }}>Euro</option>
+                                <option value="GBP" {{ old('currency', $item->currency) == 'GBP' ? 'selected' : '' }}>British Pound</option>
+                                <option value="CAD" {{ old('currency', $item->currency) == 'CAD' ? 'selected' : '' }}>Canadian Dollar</option>
+                                <option value="AUD" {{ old('currency', $item->currency) == 'AUD' ? 'selected' : '' }}>Australian Dollar</option>
+                                <option value="INR" {{ old('currency', $item->currency) == 'INR' ? 'selected' : '' }}>Indian Rupee</option>
+                                <option value="CNY" {{ old('currency', $item->currency) == 'CNY' ? 'selected' : '' }}>China Yuan RMB</option>
+                                <option value="AED" {{ old('currency', $item->currency) == 'AED' ? 'selected' : '' }}>United Arab Emirates Dirham</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </form>
             @else
                 <div class="card">
@@ -557,6 +582,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="trial_label">Trial Days</label>
+                                <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-2 mb-2">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <label for="currency_label">Currency</label>
+                                <select class="form-control" id="currency" name="currency">
+                                    <option value="USD">U.S. Dollar</option>
+                                    <option value="EUR">Euro</option>
+                                    <option value="GBP">British Pound</option>
+                                    <option value="CAD">Canadian Dollar</option>
+                                    <option value="AUD">Australian Dollar</option>
+                                    <option value="INR">Indian Rupee</option>
+                                    <option value="CNY">China Yuan RMB</option>
+                                    <option value="AED">United Arab Emirates Dirham</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>                    
                 </form>
             @endif
         </div>

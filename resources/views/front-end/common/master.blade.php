@@ -90,7 +90,51 @@
                 body.addClass("menu-open");
             });
         });
+        $('.subscribe_btn').on('click',function(){
+            let email = $('.email_txt').val();
+            let submit_url = $(this).attr('data-route');
+            console.log(submit_url);
+            $.ajax({
+                url: submit_url,
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    email: email
+                },
+                success: function(response) {
+                    $('.subscribe_success').text("Successfully subscribed!").css({
+                        "color": "#003473",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
+                    setTimeout(function() {
+                        $('.subscribe_success').fadeOut();
+                        $('.email_txt').val('');
+                    }, 5000);
+                },
+                error: function(xhr, status, error) {
 
+                    let errorMessage = "This email is already subscribed try another email id";
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        if (errors.email) {
+                            errorMessage = errors.email[0]
+                        }
+                    }
+                    $('.subscribe_success').text(errorMessage).css({
+                        "color": "red",
+                        "margin-top": "10px",
+                        "margin-left": "17px"
+                    }).fadeIn();
+                    setTimeout(function() {
+                        $('.subscribe_success').fadeOut();
+                        $('.email_txt').val('');
+                    }, 5000);
+                }
+            });
+        });
+    
     </script>
 </body>
 </html>

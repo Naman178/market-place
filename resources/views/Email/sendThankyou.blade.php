@@ -114,7 +114,7 @@
     <?php
         $setting = \App\Models\Settings::where('key', 'site_setting')->first();
     ?>
-    <section>
+    {{-- <section>
         <div class="container">
             <div class="image">
                 @if ($setting && $setting['value']['logo_image'])
@@ -186,6 +186,59 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </section> --}}
+
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+        <!-- Logo Section -->
+        <tr>
+            <td align="center" style="padding: 20px; background-color: #ffffff;">
+                @if ($setting && $setting['value']['logo_image'])
+                    <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                @else
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                @endif
+            </td>
+        </tr>
+        
+        <!-- Header Section -->
+        <tr>
+            <td align="center" bgcolor="#007AC1" style="padding: 20px; color: #ffffff; font-size: 24px; font-weight: bold;">
+                {{ $mailData['title'] ?? '' }}
+            </td>
+        </tr>
+        
+        <!-- Description Section -->
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 20px; font-size: 16px; color: #666666;">
+                <p>Dear {{ $mailData['name'] ?? '' }},</p>
+                <p>Thank you for choosing our services and for topping up your wallet. Your order has been successfully placed.</p>
+                <p>Here are the details of your order:</p>
+                <ul>
+                    <li><strong>Order ID:</strong> {{ $mailData['order_id'] ?? '' }}</li>
+                    <li><strong>Total Order:</strong> {{ $mailData['total_order'] ?? '' }}</li>
+                    <li><strong>Remaining Order:</strong> {{ $mailData['remaining_order'] ?? '' }}</li>
+                    <li><strong>Wallet Balance:</strong> {{ $mailData['wallet_amount'] ?? '' }}</li>
+                </ul>
+                <p>Your order is now in progress. If you need any assistance, please reach out to our customer support team.</p>
+                <p>Thank you for your business!</p>
+                <p><strong>Best regards,<br>Skyfinity Quick Checkout</strong></p>
+            </td>
+        </tr>
+        
+        <!-- Social Media Section -->
+        <tr>
+            <td bgcolor="#007AC1" align="center" style="padding: 20px; color: #ffffff; font-size: 16px;">
+                <p>Stay Up To Date And Follow Us On Social Media</p>
+                <p>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a>
+                    <a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a>
+                </p>
+            </td>
+        </tr>
+    </table>
 </body>
 </html> 

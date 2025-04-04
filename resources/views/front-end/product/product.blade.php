@@ -114,7 +114,7 @@
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
                         <ul class="p-0">
-                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">{{ $category->name}} <span>({{ $category->subcategories_count }})</span> </a></li>
+                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
                         </ul>
                         @endforeach
                     </div>

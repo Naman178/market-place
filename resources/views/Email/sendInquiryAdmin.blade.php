@@ -114,7 +114,7 @@
     <?php
         $setting = \App\Models\Settings::where('key', 'site_setting')->first();
     ?>
-    <section>
+    {{-- <section>
         <div class="container">
             <div class="image">
                 @if ($setting && $setting['value']['logo_image'])
@@ -179,6 +179,69 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </section> --}}
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+        <!-- Logo Section -->
+        <tr>
+            <td align="center" style="padding: 20px; background-color: #ffffff;">
+                @if ($setting && $setting['value']['logo_image'])
+                    <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                @else
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                @endif
+            </td>
+        </tr>
+        
+        <!-- Header Section -->
+        <tr>
+            <td colspan="2" align="center" bgcolor="#007AC1" style="color: #ffffff; font-size: 24px; padding: 20px;">
+                One New Inquiry has been Received
+            </td>
+        </tr>
+        
+        <!-- Inquiry Details -->
+        <tr>
+            <td colspan="2" align="left" style="padding: 10px; font-size: 16px;">
+                Below Mentioned Details are Received in the Contact Form Inquiry
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Email:</td>
+            <td>{{ $mailData['email'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Contact Number:</td>
+            <td>{{ $mailData['contact_number'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Website URL:</td>
+            <td>{{ $mailData['website_url'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Message:</td>
+            <td>{{ $mailData['message'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Website Stack:</td>
+            <td>{{ $mailData['stack'] ?? '' }}</td>
+        </tr>
+        
+        <!-- Footer -->
+        <tr>
+            <td colspan="2" align="center" bgcolor="#007AC1" style="color: #ffffff; font-size: 16px; padding: 10px;">
+                Stay Up To Date And Follow Us On Social Media
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center" style="padding: 10px;">
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a>
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a>
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a>
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a>
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a>
+                <a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a>
+            </td>
+        </tr>
+    </table>
 </body>
 </html> 

@@ -114,7 +114,7 @@
     <?php
         $setting = \App\Models\Settings::where('key', 'site_setting')->first();
     ?>
-    <section>
+    {{-- <section>
         <div class="container">
             <div class="image">
                 @if ($setting && $setting['value']['logo_image'])
@@ -176,6 +176,71 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </section> --}}
+    
+    
+<!-- HIDDEN PREHEADER TEXT -->
+<div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+    Successfully subscribe to newsletter
+</div>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+    <!-- LOGO -->
+    <tr>
+        <td align="center" style="padding: 20px;">
+            @if ($setting && $setting['value']['logo_image'])
+            <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+        @else
+            <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+        @endif
+        </td>
+    </tr>
+    
+    <!-- HEADER -->
+    <tr>
+        <td align="center" bgcolor="#007AC1" style="padding: 20px; color: #ffffff; font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: bold;">
+            Successfully Subscribed to Newsletter
+        </td>
+    </tr>
+    
+    <!-- DESCRIPTION -->
+    <tr>
+        <td align="left" bgcolor="#ffffff" style="padding: 20px; color: #666666; font-family: Helvetica, Arial, sans-serif; font-size: 18px;">
+            <p><b>Hi {{$email}}</b>,</p>
+            <p>Thank you for subscribing to {{$app_name}}! We're thrilled to have you on board 🎉</p>
+            <p>You'll now be the first to receive exclusive updates, expert insights, and special offers straight to your inbox.</p>
+            <p>Stay tuned for exciting content coming your way soon! In the meantime, feel free to explore our 
+                <a href="https://market-place-main.infinty-stage.com/" target="_blank">website</a> and 
+                <a href="https://market-place-main.infinty-stage.com/" target="_blank">blogs</a>.
+            </p>
+            <p>If you ever have any questions or feedback, don't hesitate to reach out to us at 
+                <a href="mailto:info@infinitysoftech.co">info@infinitysoftech.co</a>.
+            </p>
+            <p>Welcome to the community!</p>
+        </td>
+    </tr>
+    
+    <!-- FOOTER -->
+    <tr>
+        <td align="center" bgcolor="#007AC1" style="padding: 20px; color: #ffffff; font-family: Helvetica, Arial, sans-serif; font-size: 16px;">
+            Stay Up To Date And Follow Us On Social Media
+        </td>
+    </tr>
+    <tr>
+        <td align="center" bgcolor="#007AC1" style="padding: 10px;">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
+                    <td style="padding: 0 10px;"><a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html> 

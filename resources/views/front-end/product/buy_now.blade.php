@@ -254,10 +254,10 @@
                     <div class="wsus__sidebar_licence">
                         <h2 class="p-0">
                             @if($item->pricing['fixed_price'] != $item->pricing['sale_price']) 
-                              <span class="old-price">&#8377; <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
+                              <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
                             @endif 
                             
-                            <span class="ml-2">&#8377;
+                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
                             <strong class="new-price" id="price">{{ $item->pricing['sale_price'] ?? 0 }}</strong> </span>
                         </h2>
                         @foreach ($item->features as $feature)
@@ -320,8 +320,8 @@
             </div>
         </div>
         @if ($item->pricing['pricing_type'] === 'recurring')
-        <div class="row justify-content-start bg-white mt-5 ml-22">
-            <div class="col-xl-9 col-lg-7">
+        {{-- <div class="row justify-content-start bg-white mt-5 ml-22"> --}}
+            <div class="col-xl-12 col-lg-12 mt-5">
                 
                     <div class="price-slick-slider">
                         @foreach ($pricingData as $index => $price)
@@ -330,10 +330,10 @@
                                     <div class="price-slide">
                                         <h2 class="p-0">
                                             @if($price->fixed_price != $price->sale_price) 
-                                                <span class="old-price">&#8377; <strong >{{ $price->fixed_price ?? 0 }}</strong> </span>
+                                                <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $price->fixed_price ?? 0 }}</strong> </span>
                                             @endif 
                                             
-                                            <span class="ml-2">&#8377;
+                                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
                                             <strong class="new-price" id="price">{{ $price->sale_price ?? 0 }}</strong> </span>
                                             @if(isset($price->billing_cycle))
                                                 <span class="text-capitalize billing_cycle">per {{ $price->billing_cycle }}</span>
@@ -356,7 +356,7 @@
                                             <li>
                                                 <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
                                             </li>
-                                            <li class="ml-3">
+                                            <li class="ml-1 mt-3">
                                                 <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">
                                                     Add to Cart
                                                 </a>
@@ -373,7 +373,7 @@
                     </div>
                 
             </div>
-        </div>
+        {{-- </div> --}}
         <div class="col-xl-8 col-lg-7">
             <div class="wsus__product_details_text">
                 <ul class="nav" id="pills-tab">

@@ -21,6 +21,8 @@ class Items extends Model
         'created_at',
         'updated_at',
         'sys_state',
+        'trial_days',
+        'currency',
     ];
 
     public function features() {

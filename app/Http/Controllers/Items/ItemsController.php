@@ -98,6 +98,18 @@ class ItemsController extends Controller
                 'sys_state' => '0',
                 $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
             ])->save();
+            
+            if ($request->has('trial_days') && is_numeric($request->trial_days)) {
+                $trialDays = $request->trial_days;
+                $trialEndDate = Carbon::now()->addDays($trialDays)->format('Y-m-d H:i:s');
+                $item->trial_days = $request->trial_days;
+                $item->save();
+            }
+            if($request->has('currency')){
+                $currency = $request->currency;
+                $item->currency = $request->currency;
+                $item->save();
+            }
 
             if ($isUpdate) {
                 ItemsImage::where('item_id', $item->id)->where('sub_id','=',null)->delete();

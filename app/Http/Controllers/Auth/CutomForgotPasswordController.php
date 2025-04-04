@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\User; 
 use Mail; 
 use Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class CutomForgotPasswordController extends Controller
@@ -30,9 +31,14 @@ class CutomForgotPasswordController extends Controller
     */
     public function submitForgetPasswordForm(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users',
+       
+        $response = Http::get('https://disposable.debounce.io', [
+            'email' => $request->email,
         ]);
+        $data = $response->json();
+        if ($data['disposable'] === 'true') {
+            return back()->withErrors(['email' => 'We are not accepting Disposable Email Address please use actual email address or signup with google, github, linkedIn']);
+        }
 
         $token = Str::random(64);
 

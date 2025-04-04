@@ -28,6 +28,12 @@
 @else
     @include('front-end.home-page.section.Category')
 @endif
+@php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+@endphp
 @include('front-end.home-page.section.plugins')
 <div class="carousel-container">
     @include('front-end.home-page.section.Integration')
@@ -618,51 +624,7 @@
                     }, 5000);
                 }
             });
-        })
-        $('.subscribe_btn').on('click',function(){
-            let email = $('.email_txt').val();
-            let submit_url = $(this).attr('data-route');
-            console.log(submit_url);
-            $.ajax({
-                url: submit_url,
-                type: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    email: email
-                },
-                success: function(response) {
-                    $('.email_text').val('');
-                    $('.subscribe_success').text("Successfully subscribed!").css({
-                        "color": "#003473",
-                        "margin-top": "10px",
-                        "margin-left": "17px"
-                    }).fadeIn();
-                    setTimeout(function() {
-                        $('.subscribe_success').fadeOut();
-                    }, 5000);
-                },
-                error: function(xhr, status, error) {
-
-                    let errorMessage = "This email is already subscribed try another email id";
-
-                    if (xhr.status === 422) {
-                        let errors = xhr.responseJSON.errors;
-                        if (errors.email) {
-                            errorMessage = errors.email[0]
-                        }
-                    }
-                    $('.subscribe_success').text(errorMessage).css({
-                        "color": "red",
-                        "margin-top": "10px",
-                        "margin-left": "17px"
-                    }).fadeIn();
-                    setTimeout(function() {
-                        $('.subscribe_success').fadeOut();
-                        $('.email_text').val('');
-                    }, 5000);
-                }
-            });
-        })
+        });
     });
 
 </script>
