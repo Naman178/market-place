@@ -50,6 +50,7 @@ class Comments extends Component
         } else {
             $comments = $this->model
                 ->comments()
+                ->where('item_id',null)
                 ->with('user', 'children.user', 'children.children')
                 ->parent()
                 ->latest()
