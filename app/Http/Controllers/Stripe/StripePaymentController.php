@@ -53,8 +53,22 @@ class StripePaymentController extends Controller
 
         if ($existingCustomer->count() > 0) {
             $customer_id = $existingCustomer->data[0]->id;
-        } else {
-            $customer = \Stripe\Customer::create([
+            $existingSubscriptions = \Stripe\Subscription::all([
+                'customer' => $customer_id,
+                'limit' => 1,
+                'status' => 'active',
+            ]);
+            // If an active subscription exists, delete it
+            if (!empty($existingSubscriptions->data)) {
+                $subscription_id = $existingSubscriptions->data[0]->id;
+                \Stripe\Subscription::retrieve($subscription_id)->cancel(); 
+            }
+            \Stripe\Customer::retrieve($customer_id)->delete();
+        } 
+            sleep(2);
+
+            // Create a new customer
+            $newCustomer = \Stripe\Customer::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'address' => [
@@ -65,8 +79,7 @@ class StripePaymentController extends Controller
                     'country' => $isocode,
                 ],
             ]);
-            $customer_id = $customer->id;
-        }
+            $customer_id = $newCustomer->id;
 
         if ($plan_type === 'recurring') {
             // **Step 1: Create a Product (if not exists)**
@@ -132,7 +145,7 @@ class StripePaymentController extends Controller
         if ($plan_type === 'recurring') {
             $return_url_params['subscription_id'] = $subscription->id;
         }
-        if (!$trial_period_days && $paymentIntent) {
+        if (!$trial_period_days > 0 && $paymentIntent) {
             // Confirm payment if no trial period
             $stripe_payment = $paymentIntent->confirm([
                 'payment_method' => $paymentMethod->id ?? null,
