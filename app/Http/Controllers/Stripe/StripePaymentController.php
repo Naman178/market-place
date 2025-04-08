@@ -88,6 +88,13 @@ class StripePaymentController extends Controller
                 'customer' => $customer_id,
                 'items' => [['price' => $price->id]],
                 'payment_behavior' => 'default_incomplete',
+                'metadata' => [
+                    'product_id' => $product_id,
+                    'user_id' => $user['id'],
+                    'plan_name' => $plan_name,
+                    'quantity' => $quantity,
+                    'order_id' => $product_id,
+                ],
                 'trial_period_days' => $trial_period_days,
                 'expand' => ['latest_invoice.payment_intent'],
             ]);
@@ -395,30 +402,103 @@ class StripePaymentController extends Controller
             return redirect()->route('user-dashboard');
         }
     }
+    // public function handleWebhook(Request $request)
+    // {
+    //     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    //     $payload = $request->all();
+    //     $event = $payload['type'] ?? '';
+
+    //     if ($event === 'invoice.payment_succeeded') {
+    //         $invoice = $payload['data']['object'];
+    //         $subscription_id = $invoice['subscription'];
+    //         $user = Subscription::where('subscription_id', $subscription_id)->first();
+
+    //         if ($user) {
+    //             $this->generateInvoice(
+    //                 $user,
+    //                 $invoice['id'],
+    //                 $invoice['lines']['data'][0]['metadata']['order_id'] ?? null,
+    //                 $invoice['subtotal'] / 100,
+    //                 18, // Assume 18% GST
+    //                 $invoice['discounts'][0]['coupon']['percent_off'] ?? 0,
+    //                 $invoice['discounts'][0]['coupon']['id'] ?? '',
+    //                 $invoice['total'] / 100,
+    //                 $invoice['status']
+    //             );
+    //         }
+    //     }
+
+    //     return response()->json(['status' => 'success']);
+    // }
     public function handleWebhook(Request $request)
     {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $payload = $request->all();
-        $event = $payload['type'] ?? '';
-
-        if ($event === 'invoice.payment_succeeded') {
+        $eventType = $payload['type'] ?? '';
+    
+        if ($eventType === 'invoice.payment_succeeded') {
             $invoice = $payload['data']['object'];
-            $subscription_id = $invoice['subscription'];
+            $subscription_id = $invoice['subscription'] ?? null;
+    
+            if (!$subscription_id) {
+                \Log::warning('Stripe Webhook: Subscription ID missing in invoice');
+                return response()->json(['status' => 'no_subscription'], 400);
+            }
+    
             $user = Subscription::where('subscription_id', $subscription_id)->first();
 
             if ($user) {
+                $lines = $invoice['lines']['data'][0] ?? [];
+                $metadata = $lines['metadata'] ?? [];
+                
+                $product_id = $metadata['product_id'] ?? null;
+                $plan_name = $metadata['plan_name'] ?? null;
+                $quantity = $metadata['quantity'] ?? 1;
+            
+                $stripe_payment_id = $invoice['payment_intent'] ?? null;
+                $stripe_payment_method = $invoice['payment_settings']['payment_method_options']['card']['brand'] ?? 'stripe';
+                $stripe_payment_status = $invoice['status'];
+                $amount_paid = $invoice['total'] / 100;
+            
+                // ✅ Save transaction
+                $tran = Transaction::create([
+                    'user_id' => $user->user_id,
+                    'product_id' => $product_id,
+                    'payment_status' => $stripe_payment_status,
+                    'payment_amount' => $amount_paid,
+                    'razorpay_payment_id' => $stripe_payment_id,
+                    'payment_method' => $stripe_payment_method,
+                    'transaction_id' => $stripe_payment_id,
+                ]);
+            
+                // ✅ Create Order
+                $order = Order::create([
+                    'product_id'=> $product_id,
+                    'user_id' => $user['id'],
+                    'payment_status' => $stripe_payment_status,
+                    'payment_amount' => $amount_paid,
+                    'razorpay_payment_id' => $stripe_payment_id,
+                    'payment_method' => $stripe_payment_method,
+                    'transaction_id' => $tran->id,
+                ]);
+                
+            
+                // ✅ Optional: Generate Invoice
                 $this->generateInvoice(
                     $user,
                     $invoice['id'],
-                    $invoice['lines']['data'][0]['metadata']['order_id'] ?? null,
+                    $order->id,
                     $invoice['subtotal'] / 100,
-                    18, // Assume 18% GST
+                    18,
                     $invoice['discounts'][0]['coupon']['percent_off'] ?? 0,
                     $invoice['discounts'][0]['coupon']['id'] ?? '',
-                    $invoice['total'] / 100,
-                    $invoice['status']
+                    $amount_paid,
+                    $stripe_payment_status
                 );
+            }else {
+                \Log::warning("Stripe Webhook: No user found for subscription ID $subscription_id");
             }
         }
 
