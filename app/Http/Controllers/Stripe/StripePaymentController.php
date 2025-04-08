@@ -476,6 +476,7 @@ class StripePaymentController extends Controller
                 $amount_paid = $invoice['total'] / 100;
             
                 // ✅ Save transaction
+                if(!empty($product_id)){
                 $tran = Transaction::create([
                     'user_id' => $user->user_id,
                     'product_id' => $product_id,
@@ -496,7 +497,7 @@ class StripePaymentController extends Controller
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $tran->id,
                 ]);
-                
+                }
             
                 // ✅ Optional: Generate Invoice
                 $this->generateInvoice(
