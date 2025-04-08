@@ -375,7 +375,7 @@
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
-                    <input type="hidden" name="trial_period_days" id="trial_period_days" value="{{ $plan->trial_days ?? 0}}">
+                    <input type="hidden" name="trial_period_days" id="trial_period_days" value="">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -433,7 +433,7 @@
                         }
                     @endphp
 
-                 @if(Auth::check())
+                 {{-- @if(Auth::check()) --}}
                     <!--<div class="col-md-12">-->
                     <!--     <button-->
                     <!--        class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"-->
@@ -443,7 +443,7 @@
                     <!--        Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} -->
                     <!--    </button>-->
                     <!--</div>-->
-                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                    {{-- <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -453,10 +453,10 @@
                         @else
                             <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
-                    </button>
+                    </button> --}}
                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  {{ $plan->currency ?? 'INR' }} </button> --}}
                      {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
-                @else
+                {{-- @else
                  <div class="col-md-12">
                     <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -468,10 +468,85 @@
                         @else
                             <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
-                    </button>
+                    </button> --}}
                     {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
-                    </div>
+                    {{-- </div>
+                    @endif --}}
+                    @if(Auth::check())
+                        @if($plan->trial_days > 0)
+                            <button type="button"
+                                    class="blue_common_btn border-0 proced_to_pay_btn"
+                                    id="trial_button">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span id="button_text">
+                                    Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                </span>
+                            </button>
+                
+                        @else
+                            <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                            
+                            </button>
+                        @endif
+                    @else
+                        <div class="col-md-12">
+                            @if ($plan->trial_days > 0)
+                                <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_guest">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span id="button_text_guest">
+                                            Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                    </span>
+                                </button>
+                            @else
+                                <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                               
+                                </button>
+                                
+                            @endif
+                        </div>
                     @endif
+                    <button type="button" class="blue_common_btn border-0 proced_to_pay_btn ml-2" id="change_option_button" style="display: none;"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg>
+                    <span> Change Option </span></button>
+                    <div id="trialChoiceModal" class="custom-modal">
+                        <div class="custom-modal-content">
+                            <div class="custom-modal-header">
+                                <h5 class="mt-2">Choose an Option</h5>
+                                <span class="custom-close" id="close_modal">&times;</span>
+                            </div>
+                            <div class="custom-modal-body">
+                                <p>Would you like to start with the free trial or proceed to pay directly?</p>
+                                <div class="button-row">
+                                    <button type="button" id="choose_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg><span> Start Free Trial </span></button>
+                                    <button type="button" id="choose_without_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg><span> Proceed to Pay </span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
                 </div>
             </form>
             </div>
