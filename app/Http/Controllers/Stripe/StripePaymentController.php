@@ -58,12 +58,14 @@ class StripePaymentController extends Controller
                 'limit' => 1,
                 'status' => 'active',
             ]);
+            if($trial_period_days <= 0){
             // If an active subscription exists, delete it
             if (!empty($existingSubscriptions->data)) {
                 $subscription_id = $existingSubscriptions->data[0]->id;
                 \Stripe\Subscription::retrieve($subscription_id)->cancel(); 
             }
             \Stripe\Customer::retrieve($customer_id)->delete();
+        }
         } 
             sleep(2);
 
