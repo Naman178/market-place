@@ -55,10 +55,19 @@ class BlogController extends Controller
                         $destinationPath = public_path('storage/images/');
                         $request->file('blog_image')->move($destinationPath, $blog_originalImageName);
                     }
-            
-                    // Create the blog entry
+
+                    $originalTitle = $request->title;
+                    $title = $originalTitle;
+                    $counter = 1;
+
+                    while (Blog::where('title', $title)->exists()) {
+                        $title = $originalTitle . '-' . $counter;
+                        $counter++;
+                    }
+
+                    // Create blog
                     $save_Blog = Blog::create([
-                        'title' => $request->title,
+                        'title' => $title, 
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
                         'short_description' => $request->shortdescription,
@@ -344,9 +353,11 @@ class BlogController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Section not found'], 404);
     }
-    public function blogDetails($blog_id)
+    public function blogDetails($category, $slug)
     {
-        $blog = Blog::where('status', '1')->where('blog_id', $blog_id)->firstOrFail();
+        $slug = str_replace('-', ' ', $slug);
+        $blog = Blog::where('status', '1')->where('title', $slug)->firstOrFail();
+        $blog_id = $blog->blog_id;
         if (!is_null($blog->related_blogs)) {
             $blog->related_blogs = json_decode($blog->related_blogs); 
         }

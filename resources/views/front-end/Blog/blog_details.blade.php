@@ -68,7 +68,7 @@
                                 @endphp
                                 @if ($relatedBlog)
                                     <li class="border-bottom mt-4">
-                                        <a href="{{ route('blog_details', $relatedBlog->blog_id) }}">
+                                       <a href="{{ route('blog_details', ['category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
                                             <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
                                             <span class="related_blog_title text-capitalize" style="text-align: start; font-weight: 600; font-size: 14px; color: #4d4d4d; font-family: 'Work Sans';"> {{ $relatedBlog->title }}</span>
                                         </a>
@@ -180,14 +180,14 @@
                 // Open the respective social media sharing or login page
                 if (platform === 'facebook') {
                     // Direct share URL
-                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('blog_details', $blog->blog_id)) }}`;
+                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode (route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}`;
 
                     // Open Facebook sharing or login page
                     window.open(url, '_blank').focus();
                     window.open('https://www.facebook.com/', '_blank');
                 } else if (platform === 'twitter') {
                     // Direct share URL
-                    url = `https://twitter.com/intent/tweet?url={{ urlencode(route('blog_details', $blog->blog_id)) }}&text={{ urlencode($blog->title) }}`;
+                    url = `https://twitter.com/intent/tweet?url={{ urlencode (route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}&text={{ urlencode($blog->title) }}`;
 
                     // Open Twitter sharing or login page
                     window.open(url, '_blank').focus();

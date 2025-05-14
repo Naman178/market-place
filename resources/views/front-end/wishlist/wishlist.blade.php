@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
             .wishlist-container {
-                max-width: 1000px;
+                max-width: 1400px;
                 margin: auto;
                 background: #fff;
                 border: 1px dotted #007bff;
