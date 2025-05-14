@@ -369,6 +369,13 @@ class BlogController extends Controller
         return view('front-end.Blog.blog_details',compact('seoData','blog','post','Blogcontents','Blog_category'));
     }
 
+    public function blogIndex(Request $request)
+    {
+        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
+        $Blog_category = Blog_category::get();
+        $seoData = SEO::where('page', 'home')->first();
+        return view('front-end.Blog.blog',compact('Blogs','Blog_category','seoData'));
+    }
 
     public function postComment(Request $request, $blog_id)
     {
