@@ -2,9 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
-                <img class="mt-65" src="{{ asset('front-end/images/Group 5685.png') }}" alt="not found">
-                <h1>Happy <span>Clients</span></h1>
-                <img class="vector2_img" src="{{ asset('front-end/images/Vector 8.png') }}" alt="not found">
+                {{-- <img class="mt-65" src="{{ asset('front-end/images/Group 5685.png') }}" alt="not found"> --}}
+                 <p class="plugin-label">
+                    <span class="label-line"></span> Testimonial
+                 </p>
+                <h1>Happy <span class="underline">Clients</span></h1>
             </div>
         </div>
         <div class="row">

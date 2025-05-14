@@ -5,11 +5,13 @@
 
 <div class="int_bg blog mb-37">
     <div class="container">
-        <img class="" src="front-end/images/Group 1000002961.png" alt="not found">
+        <p class="plugin-label">
+            <span class="label-line"></span> Recent Posts
+        </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Latest From Our <span>Blog</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found">
+                <h1>Latest From Our <span class="underline">Blog</span></h1>
+                {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70">
                 <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><span class="arrow left-arrow"></span></a>

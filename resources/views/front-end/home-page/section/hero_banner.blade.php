@@ -10,8 +10,8 @@ $subcategory = SubCategory::where('sys_state','=','0')->first();
         <div class="real_time_section">
             <div class="d-flex">
                 <div class="real_time">
-                    <h1>Revolutionize Your Pricing with Automation!</h1>
-                    <img class="vector5_img" src="{{ asset('front-end/images/Vector 5.png') }}" alt="not found">
+                    <h1>Revolutionize Your Pricing with <span class="white-underline"> Automation! </span></h1>
+                    {{-- <img class="vector5_img" src="{{ asset('front-end/images/Vector 5.png') }}" alt="not found"> --}}
                     <p>Say goodbye to manual price updates! Our  <b>Gold Price Plugin for WordPress</b> automatically calculates real-time gold, silver, and platinum prices for WooCommerce products. Boost efficiency, reduce errors, and ensure accurate pricing—effortlessly.
                     </p>
                     @if (!empty($category))

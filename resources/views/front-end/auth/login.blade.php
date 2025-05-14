@@ -22,6 +22,9 @@
          .footer-04 .form-control {
              padding: 14px 15px !important;
          }
+          .register-container{
+            max-width: 100% !important;
+        }
     </style>
 @endsection
 @section('content')

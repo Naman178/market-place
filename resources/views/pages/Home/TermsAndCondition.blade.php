@@ -33,13 +33,16 @@
             border: none;
             border-bottom: 1px solid #007ac1;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
 @section('content')
     <div class="cust-page-padding">
         <div class="container register-container"> 
             <div class="title">
-                <h3><span class="txt-black">Terms and </span><span class="color-blue underline-text"> Conditions</span></h3>
+                <h3><span class="txt-black">Terms and </span><span class="color-blue underline"> Conditions</span></h3>
             </div> 
             <div class="row  "> 
                 <div class="terms-and-condition cust-page-padding w-100">          

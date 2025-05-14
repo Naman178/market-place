@@ -13,6 +13,9 @@
         .items-container .row {
             justify-content: start !important;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
 @section('meta')
@@ -30,7 +33,7 @@
 @section('content')
     <div class="container items-container">
         <div class="title">
-            <h3><span class="color-blue underline-text">Products</span></h3>
+            <h3><span class="color-blue underline">Products</span></h3>
         </div>
         {{-- <div class="container" style="padding-left: 330px; padding-right:330px;">
             <div class="row" style="display: flex; justify-content:space-between; align-items:center;">

@@ -56,13 +56,19 @@
             text-align: left !important;
             font-size: 15px;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
+        .register-container{
+            max-width: 100% !important;
+        }
    </style>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
 @section('content')
 <div class="container pt-5 pb-5 register-container">
     <div class="title">
-        <h3><span class="txt-black">Sign</span><span class="color-blue underline-text"> Up</span></h3>
+        <h3><span class="txt-black">Sign</span> <span class="color-blue underline"> Up</span></h3>
     </div>
     <form action="{{ route('user-register-post') }}" method="POST">
        @csrf

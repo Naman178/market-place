@@ -34,6 +34,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\UserProfile\UserProfileController;
 use App\Http\Controllers\Stripe\StripePaymentController;
 use App\Http\Controllers\Razorpay\RazorpayPaymentController;
+use App\Http\Controllers\AdminDashboard\AdminDashboardController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -90,9 +91,7 @@ Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentI
 Route::get('/thankyou', function () { return view('Thankyou.thankyou'); })->name('thankyou');
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.dashboardv1');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     //User Module
     Route::get('/user',[UserController::class,'index'])->name('user-index');

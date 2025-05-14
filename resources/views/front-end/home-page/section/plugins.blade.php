@@ -1,10 +1,15 @@
 <div class="plugins mt-7">
     <img class="frame_img" src="{{ asset('front-end/images/Frame.png') }}" alt="not found">
     <div class="container">
-        <img src="{{ asset('front-end/images/Group 1000002953.png') }}" alt="not found">
+        <p class="plugin-label">
+            <span class="label-line"></span> Plugins
+        </p>
+
         <div class="wordpress_plugin">
-            <h1>Powerful <span>Features</span> <br> to Elevate Your <span>Store</span></h1>
-            <img class="vector_img" src="{{ asset('front-end/images/Vector 2.png') }}" alt="not found">
+            <h1>
+                Powerful <span>Features</span> <br>
+                to Elevate Your <span class="underline">Store</span>
+            </h1>
         </div>
 
         <!-- Ensure all cards are inside a single row -->

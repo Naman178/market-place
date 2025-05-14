@@ -96,6 +96,9 @@
             font-size: 14px;
             color: #333;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
@@ -229,7 +232,7 @@
         <div class="checkout padding">
             <div class="container  register-container">
                 <div class="title">
-                    <h3><span class="txt-black">Profile   </span><span class="color-blue underline-text"> Details</span></h3>
+                    <h3><span class="txt-black">Profile   </span><span class="color-blue underline"> Details</span></h3>
                 </div>   
                 <div class="row justify-content-center">
                     <!-- if user is already logged in -->

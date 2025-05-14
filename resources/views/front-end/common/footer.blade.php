@@ -123,7 +123,7 @@
                     <li><a class="py-1 d-block" href="{{ route('wishlist.index') }}">Wishlist</a></li>
                 </ul>
             </div>
-            <div class="col-md-6 col-lg-4 mb-md-0 mb-4">
+            <div class="col-md-6 col-lg-4 mb-md-0 mb-4 padding-left">
                 <h2 class="footer-heading">Contact</h2>
                 <ul class="list-unstyled">
                     <li>  <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p></li>
@@ -169,7 +169,7 @@
         </div>
     </div>
     <div class="w-100 mt-5 border-top py-5">
-        <div class="container">
+        <div class="container padding-left">
             <div class="row">
                 <div class="col-md-6 col-lg-7">
 

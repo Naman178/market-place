@@ -120,7 +120,9 @@
     .collapsed.faq-link::after {
         transform: rotate(180deg);
     }
-
+    .underline::after{
+        bottom: -45px !important;
+    }
     @media (max-width: 991px) {
         .register-container .title h3{
             font-size: 30px;
@@ -151,7 +153,7 @@
     <div class="faq">
         <div class="container  register-container">
             <div class="title">
-                <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline-text"> Questions</span></h3>
+                <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline"> Questions</span></h3>
             </div> 
             {{-- <div class="d-flex flex-wrap">
                 <div class="faq-heading-row">
