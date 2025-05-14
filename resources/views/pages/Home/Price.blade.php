@@ -1,6 +1,11 @@
 @extends('front-end.common.master')@section('meta')
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
+<style>
+     .underline::after{
+        bottom: -45px !important;
+    }
+</style>
 @endsection
 @section('meta')
 <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
@@ -30,7 +35,7 @@
     </div> --}}
     <div class="container items-container">
         <div class="title">
-            <h3><span class="txt-black">Our</span> <span class="color-blue underline-text">Plans</span></h3>
+            <h3><span class="txt-black">Our</span> <span class="color-blue underline">Plans</span></h3>
         </div>
         <div class="row">
             @foreach ($data['items'] as $key => $item)

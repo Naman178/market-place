@@ -1,7 +1,12 @@
+<style>
+    .underline::after{
+        bottom: -45px !important;
+    }
+</style>
 <div class="plans">
 <div class="container items-container">
     <div class="title">
-        <h3><span class="txt-black">Our</span> <span class="color-blue underline-text">Plans</span></h3>
+        <h3><span class="txt-black">Our</span> <span class="color-blue underline">Plans</span></h3>
     </div>
     <div class="plans-slider">
         @foreach ($data['items'] as $key => $item)

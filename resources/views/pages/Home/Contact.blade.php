@@ -40,13 +40,16 @@
             width: 100% !important;
             max-width: 100% !important;
          }
+         .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
 @section('content')
     <div class="contact-us cust-page-padding">
         <div class="container  register-container">
             <div class="title">
-                <h3><span class="txt-black">Contact  </span><span class="color-blue underline-text"> Us</span></h3>
+                <h3><span class="txt-black">Contact  </span><span class="color-blue underline"> Us</span></h3>
             </div>            
             <div class="row justify-content-center">
                 <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">

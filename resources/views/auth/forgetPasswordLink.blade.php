@@ -1,6 +1,6 @@
 @extends('front-end.common.master')
 @section('title')
-    <title>Skyfinity Quick Checkout | Login</title>
+ Market Place | {{ $seoData->title ?? 'Reset Password' }}
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">

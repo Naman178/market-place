@@ -14,7 +14,7 @@
 @media (min-width: 1880px) {
    
     .circle_img {
-      left: 98% !important;
+      /* left: 98% !important; */
       top: 268rem;
     }
   
@@ -293,6 +293,9 @@
     }
     .padding-left{
         padding-left: 30px !important;
+    }
+   .footer-04 {
+        padding-top:2em !important;
     }
 }
 @media (max-width: 767px) {
@@ -586,7 +589,6 @@
     }
     #menu-toggle {
         right: 5px !important;
-        top: 6px !important;
     }
     .menu-img{
         margin-top: 0 !important;
@@ -599,5 +601,8 @@
     }
     .padding-left{
         padding-left: 15px !important;
+    }
+    .footer-04 {
+        padding-top:1em !important;
     }
 }

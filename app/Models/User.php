@@ -31,7 +31,6 @@ class User extends Authenticatable
         "company_name",
         "contact_number",
         "country_code",
-        "status",
         "sys_state",
         "created_at",
         "updated_at",
@@ -62,7 +61,6 @@ class User extends Authenticatable
     ];
     public function avatar()
     {
-        dd($this->profile_pic);
         return filter_var($this->profile_pic, FILTER_VALIDATE_URL) 
             ? $this->profile_pic 
             : asset('assets/images/faces/' . $this->profile_pic);

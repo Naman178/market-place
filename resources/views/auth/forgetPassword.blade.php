@@ -1,6 +1,6 @@
 @extends('front-end.common.master')
 @section('title')
-    <title>Skyfinity Quick Checkout | Login</title>
+ Market Place | {{ $seoData->title ?? 'Fortgot Password' }}
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
@@ -14,15 +14,18 @@
          .footer-04 .form-control {
              padding: 14px 15px !important;
          }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
 @section('content')
 <div class="forgot_password cust-page-padding">
     <div class="cotainer register-container pt-5 pb-5">
         <div class="title text-center">
-            <h3><span class="txt-black">Forgot</span><span class="color-blue underline-text"> Password</span></h3>
+            <h3><span class="txt-black">Forgot</span> <span class="color-blue underline"> Password</span></h3>
         </div>
-        <div class="row justify-content-center">
+        <div class=" d-flex justify-content-center">
             <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card mb-5">                    
                     {{-- <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                     --}}

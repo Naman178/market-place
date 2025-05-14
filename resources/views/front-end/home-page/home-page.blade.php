@@ -210,7 +210,7 @@
             infinite: true,
             slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false, // Default arrows hidden (we use custom ones)
+            arrows: false,
             dots: false,
             autoplay: true,
             autoplaySpeed: 2000,

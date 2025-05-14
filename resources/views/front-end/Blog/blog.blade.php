@@ -27,11 +27,13 @@
 
 <div class="int_bg blog mb-37">
     <div class="container">
-        <img class="" src="front-end/images/Group 1000002961.png" alt="not found">
+         <p class="plugin-label">
+            <span class="label-line"></span> Recent Posts
+        </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Latest From Our <span>Blog</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found">
+                <h1>Latest From Our <span class="underline">Blog</span></h1>
+                {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70">
                 <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><span class="arrow left-arrow"></span></a>
@@ -71,74 +73,45 @@
 <!-- Slick JS -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
-    function setEqualHeights(selector) {
-    let maxHeight = 0;
+     
+        $(document).ready(function(){
+            $('.blog-slider').slick({
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                arrows: false,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                responsive: [
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            slidesToShow: 2,
+                            dots: true,
+                            arrows: false,
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 1,
+                            dots: true,
+                            arrows: false,
+                        }
+                    }
+                ]
+            });
 
-    // Reset the height to auto for recalculation
-    document.querySelectorAll(selector).forEach(item => {
-        item.style.height = 'auto';
-    });
+            $('#blog-left-arrow-btn').click(function(event) {
+                event.preventDefault();
+                $('.blog-slider').slick('slickPrev');
+            });
 
-    // Find the maximum height
-    document.querySelectorAll(selector).forEach(item => {
-        const height = item.offsetHeight;
-        if (height > maxHeight) {
-            maxHeight = height;
-        }
-    });
-
-    // Apply the maximum height to all items
-    document.querySelectorAll(selector).forEach(item => {
-        item.style.height = `${maxHeight}px`;
-    });
-}
-
-// Call the function on page load and resize
-document.addEventListener('DOMContentLoaded', () => {
-    setEqualHeights('.blog-slider .item');
-});
-
-window.addEventListener('resize', () => {
-    setEqualHeights('.blog-slider .item');
-});
-$(document).ready(function(){
-    $('.blog-slider').slick({
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        arrows: false,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        responsive: [
-            {
-                breakpoint: 991,
-                settings: {
-                    slidesToShow: 2,
-                    dots: true,
-                    arrows: false,
-                }
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 1,
-                    dots: true,
-                    arrows: false,
-                }
-            }
-        ]
-    });
-});
- $(document).ready(function(){
-        $('#blog-left-arrow-btn').click(function(event) {
-            event.preventDefault(); 
-            $('.blog-slider').slick('slickPrev');
+            $('#blog-right-arrow-btn').click(function(event) {
+                event.preventDefault();
+                $('.blog-slider').slick('slickNext');
+            });
         });
 
-        $('#blog-right-arrow-btn').click(function(event) {
-            event.preventDefault(); 
-            $('.blog-slider').slick('slickNext');
-        });
-});
 </script>
 <!-- Integration section end -->
 @endsection

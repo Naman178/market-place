@@ -1,21 +1,18 @@
 @php 
  $site = \App\Models\Settings::where('key', 'site_setting')->first();
 @endphp
-<div class="header-container">
-    <div class="header-row">
-        <div class="col p-0 m-0">
-            <div class="logo-container">
-                <a href="{{ url('/') }}">
-                    @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
-                        <img src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
-                    @else
-                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
-                    @endif
-                </a>
-            </div>
+<div class="container">
+    <div class="header-row py-4">
+        <div class="col p-0 m-0 logo-container">
+            <a href="{{ url('/') }}">
+                @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+                    <img src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
+                @else
+                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                @endif
+            </a>
         </div>
-        <div class="col p-0 m-0">
-            <div class="menu-container menu-1">
+        <div class="col p-0 m-0 menu-container menu-1">
                 <ul>
                     @if (!empty($category))
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}">Products</a></li>
@@ -76,7 +73,6 @@
                     <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/signup') }}">Sign Up</a></li>
                 @endif
                 </ul>
-            </div>
         </div>
 
         <div class="menu-toggle d-lg-none" id="menu-toggle">
