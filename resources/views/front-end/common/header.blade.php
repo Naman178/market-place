@@ -23,6 +23,7 @@
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">FAQs</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth
@@ -97,6 +98,7 @@
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
                 @endif
                 {{-- <li><a href="#">Documentation</a></li> --}}
+                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
                 <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">Faq</a></li>
                 <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                 @auth
