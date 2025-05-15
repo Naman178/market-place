@@ -55,7 +55,7 @@ Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->
 // Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
-Route::get('/product/{categoryOrSubcategory}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/category/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
 Route::post('/reviews/update/{id}', [HomePageController::class, 'reviewsupdate'])->name('reviews.update');
@@ -278,6 +278,9 @@ Route::get('/user-faq', [FAQController::class,'user_index']
 // Price
 Route::get('/user-price', [UserController::class,'user_price']
 )->name('user-price');
+
+// categpry
+Route::get('/category/{slug}', [CategoryController::class, 'categoryDetails'])->name('category_details');
 
 // Blog Details
 Route::get('/blog/{category}/{slug}', [BlogController::class, 'blogDetails'])->name('blog_details');

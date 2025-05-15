@@ -15,9 +15,9 @@
         <div class="col p-0 m-0 menu-container menu-1">
                 <ul>
                     @if (!empty($category))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                     @elseif (!empty($subcategory))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}">Products</a></li>
+                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
@@ -88,10 +88,10 @@
         <!-- Navigation Menu -->
         <div class="menu-container menu-1 d-none d-lg-block">
             <ul>
-                @if ($category)
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
-                @elseif ($subcategory)
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                @if (!empty($category))
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                @elseif (!empty($subcategory))
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                 @endif
                 {{-- <li><a href="#">Documentation</a></li> --}}
                 <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
@@ -145,9 +145,9 @@
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
             @if (!empty($category))
-                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
+                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
             @elseif (!empty($subcategory))
-                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
             @endif
             <li><a href="{{ route('user-faq') }}">FAQs</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>

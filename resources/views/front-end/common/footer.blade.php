@@ -113,10 +113,10 @@
             <div class="col-md-5 col-lg-3 mb-md-0 mb-4 padding-left">
                 <h2 class="footer-heading">Quick Links</h2>
                 <ul class="list-unstyled">
-                    @if ($category)
-                        <li><a class="py-1 d-block" href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">Products</a></li>
-                    @elseif ($subcategory)
-                        <li><a class="py-1 d-block" href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id]) }}">Products</a></li>
+                    @if (!empty($category))
+                        <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                    @elseif (!empty($subcategory))
+                        <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                     @endif
                     <li><a class="py-1 d-block" href="{{ route('user-faq') }}">FAQ</a></li> 
                     <li><a class="py-1 d-block" href="{{ route('contact-us') }}">Contact</a></li>

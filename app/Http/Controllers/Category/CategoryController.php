@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
     function __construct()
@@ -38,10 +39,11 @@ class CategoryController extends Controller
             if ($validator->passes()){
                 if($request->cid == "0"){
                     $image = $this->uploadImage($request->image);
-
+                    $slug = Str::slug($request->name);
                     $save_category = Category::create([
                         'name'=>$request->name,
                         'image'=>$image,
+                        'slug'=>$slug,
                         'sys_state'=>$request->status,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
@@ -57,9 +59,10 @@ class CategoryController extends Controller
                 }else{
                     $category = Category::find($request->cid);
                     $image = $request->hasFile('image') ? $this->uploadImage($request->image) : $request->old_image;
-
+                     $slug = Str::slug($request->name);
                     $category->update([
                         'name'=>$request->name,
+                        'slug'=>$slug,
                         'image'=>$image,
                         'sys_state'=>$request->status,
                         'updated_at' => Carbon::now()
@@ -144,4 +147,9 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function categoryDetails($slug){
+        $category = Category::where('slug', $slug)->first();
+        $item = SubCategory::where('category_id', $category->id)->get();
+        return view('front-end.category.category_details',compact('category','item'));
+    }
 }

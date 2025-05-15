@@ -363,7 +363,7 @@ class BlogController extends Controller
         if (!is_null($blog->related_blogs)) {
             $blog->related_blogs = json_decode($blog->related_blogs); 
         }
-        $post = Post::with('comments.user')->where('id', $blog_id)->first();
+        $post = Post::with('comments.user')->find($blog_id) ?? new Post();
         $Blogcontents = BlogContent::where('blog_id', $blog_id)->get();
         $Blog_category = Blog_category::get();
         $seoData = SEO::where('page', 'home')->first();
