@@ -16,7 +16,8 @@ class Category extends Model
         'image',
         'sys_state',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'slug',
     ];
 
     public function subcategories()

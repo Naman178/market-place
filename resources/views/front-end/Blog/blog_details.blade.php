@@ -98,10 +98,7 @@
                     </div>
                 </div> --}}
                 {{-- <livewire:comments :post="$post"/> --}}
-                @if ($post) 
-                    <livewire:comments :model="$post" />  
-                @endif
-
+               <livewire:comments :model="$post ?? new \App\Models\Post" />
             </div>
         </div>
     </div>

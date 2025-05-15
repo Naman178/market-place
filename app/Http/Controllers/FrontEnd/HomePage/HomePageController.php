@@ -147,12 +147,28 @@ class HomePageController extends Controller
         return response()->json($items);
     }
     
-    public function show($id){
+    public function show( $category,$slug){
+        $subcategory = SubCategory::where('slug', $slug)->value('id');
+        $category = Category::where('id', $subcategory)->first();
+        $slugCategory =  Category::where('slug', $slug)->first();
+
+        if($slugCategory){
+            $id = $slugCategory->id;
+        }
+        else{
+            $id = $category->id;
+        }
+        $category_name = Category::where('id', $id)->value('name');
+
+        $allsubcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->withCount(['items as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])->get();
         $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
-        $categories = Category::where('sys_state', '!=', '-1')->withCount(['Items as products_count' => function ($query) {
-            $query->where('sys_state', '=', '0');
-        }])
-        ->get();
+        $categories = Category::where('sys_state', '!=', '-1')
+            ->withCount(['subcategories as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
         if($subcategories){
             $item = Items::with(['categorySubcategory', 'pricing' , 'order','tags'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
@@ -169,7 +185,7 @@ class HomePageController extends Controller
             ->where('sys_state', '=', '0')
             ->get();
         }
-        return view('front-end.product.product',compact('item','categories'));
+        return view('front-end.product.product',compact('item','categories', 'allsubcategories','category_name'));
     }
     public function buynow($id)
     {

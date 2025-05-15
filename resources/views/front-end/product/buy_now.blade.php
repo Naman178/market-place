@@ -311,9 +311,9 @@
                             <p>
                                 @foreach ($item->tags as $tag)
                                 @if ($category)
-                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')], 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
                                 @elseif ($subcategory)
-                                  <a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id, 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
+                                   <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')], 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
                                 @endif                           
                                 @endforeach
                             </p>

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller
 {
@@ -44,10 +45,12 @@ class SubCategoryController extends Controller
             if ($validator->passes()){
                 if($request->scid == "0"){
                     $image = $this->uploadImage($request->image);
+                    $slug = Str::slug($request->name);
 
                     $save_sub_category = SubCategory::create([
                         'category_id' => $request->parent_category_id,
                         'name' => $request->name,
+                        'slug' => $slug,
                         'image' => $image,
                         'sys_state' => $request->status,
                         'created_at' => Carbon::now(),
@@ -64,10 +67,11 @@ class SubCategoryController extends Controller
                 }else{
                     $sub_category = SubCategory::find($request->scid);
                     $image = $request->hasFile('image') ? $this->uploadImage($request->image) : $request->old_image;
-
+                    $slug = Str::slug($request->name);
                     $sub_category->update([
                         'category_id' => $request->parent_category_id,
                         'name' => $request->name,
+                        'slug' => $slug,
                         'image' => $image,
                         'sys_state' => $request->status,
                         'updated_at' => Carbon::now(),

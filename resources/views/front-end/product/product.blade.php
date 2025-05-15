@@ -117,7 +117,15 @@
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
                         <ul class="p-0">
-                            <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id]) }}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
+                            <li><a href="{{ route('category_details', ['slug' => Str::slug($category->name) ?? '']) }}">{{ $category->name}} <span>({{ $category->countsubcategory ?? 0 }})</span> </a></li>
+                        </ul>
+                        @endforeach
+                    </div>
+                    <div class="wsus__product_sidebar categories">
+                        <h3>Sub Categories</h3>
+                        @foreach ($allsubcategories as $subcategory)
+                        <ul class="p-0">
+                            <li><a href="{{ route('product.list', [ 'category' => $category_name , 'slug' => Str::slug($subcategory->name) ?? '']) }}">{{ $subcategory->name}} <span>({{ $subcategory->countsubcategory ?? 0 }})</span> </a></li>
                         </ul>
                         @endforeach
                     </div>
@@ -127,7 +135,7 @@
                             @foreach ($items->tags as $tag)
                             @foreach ($categories as $category)
                             <ul class="p-0">
-                                <li><a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? '', 'tag' => $tag['tag_name']]) }}">{{ $tag['tag_name'] ?? ''}}</a></li>
+                                <li><a href="{{ route('product.list', ['category' => $category_name, 'slug' => Str::slug($category->name ) ?? ''?? '', 'tag' => $tag['tag_name']]) }}">{{ $tag['tag_name'] ?? ''}}</a></li>
                             </ul>
                             @break
                             @endforeach
