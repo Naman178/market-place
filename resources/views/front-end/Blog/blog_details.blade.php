@@ -98,7 +98,9 @@
                     </div>
                 </div> --}}
                 {{-- <livewire:comments :post="$post"/> --}}
-                <livewire:comments :model="$post" /> 
+                @if ($post) 
+                    <livewire:comments :model="$post" />  
+                @endif
 
             </div>
         </div>

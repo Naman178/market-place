@@ -13,7 +13,6 @@ class Order extends Model
     protected $table = "order__rec_tbl";
 
     protected $fillable = [
-        'id',
         'product_id',
         'user_id',
         'payment_status',

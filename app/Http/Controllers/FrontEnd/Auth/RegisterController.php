@@ -70,8 +70,8 @@ class RegisterController extends Controller
         if($request->ajax()){
          if(!Auth::user()->id){
             $validator = Validator::make($request->all(), [
-                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/min:2',
+                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/min:2',
                 'email' => 'required|email|unique:users',
                 'country_code' => 'required',
                'contact_number' => 'required|digits:10',
@@ -85,8 +85,10 @@ class RegisterController extends Controller
             $message = [                
                 'firstname.required' => 'The First Name Is Required.',
                 'firstname.regex' => 'The First Name should only contain letters and spaces.',
+                'firstname.min' => 'The First Name must be at least 2 characters.',
                 'lastname.required' => 'The Last Name Is Required.',
                 'lastname.regex' => 'The Last Name should only contain letters and spaces.',
+                'lastname.min' => 'The Last Name must be at least 2 characters.',
                 'email.required' => 'The Email Is Required.',
                 'email.email' => 'Please enter a valid email address.',
                 'email.unique' => 'The email has already been taken.',

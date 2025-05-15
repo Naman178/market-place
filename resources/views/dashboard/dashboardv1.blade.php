@@ -129,9 +129,8 @@
                                     <i class="nav-icon i-Gear-2"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="#">Add new user</a>
-                                    <a class="dropdown-item" href="#">View All users</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="{{route('user-edit','new')}}">Add new user</a>
+                                    <a class="dropdown-item" href="{{route('user-index')}}">View All users</a>
                                 </div>
                             </div>
                         </div>

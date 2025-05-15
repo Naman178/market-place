@@ -273,7 +273,6 @@ class StripePaymentController extends Controller
                     ]);
                 }
 
-                $order_id = $order->id;
 
                 $total_order = intval($amount/$per_order_amount);
 
@@ -284,6 +283,7 @@ class StripePaymentController extends Controller
                     'total_order' => $total_order,
                     'remaining_order' => $total_order,
                 ]);
+                $order_id = $order->id;
                 // add data to wallet
                 $keyIds = [];
                 for ($i = 0; $i < $quantity; $i++) {

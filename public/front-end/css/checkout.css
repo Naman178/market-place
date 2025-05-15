@@ -195,3 +195,13 @@
 .text-center {
     text-align: center !important;
 }
+
+@media(max-width: 767px){
+  .padding {
+      padding: 0rem 0 5rem;
+  }
+
+  .register-container .title h3 {
+    font-size: 30px !important;
+}
+}

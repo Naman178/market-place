@@ -28,6 +28,8 @@ class CreateInvoiceTable extends Migration
                 $table->text('total');
                 $table->text('payment_method');
                 $table->text('payment_status');
+                $table->unsignedBigInteger('product_id');
+                $table->integer('quantity');
                 $table->timestamps();
             });
         }

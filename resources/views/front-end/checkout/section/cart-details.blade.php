@@ -127,13 +127,13 @@
                 </h6>
                 <div id="accordion_coupon_code_form" class="accordion-body d-block" data-parent="#accordionCouponCode">
                     <div class="row mt-2">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                         <div class="form-group mb-0">
                             <input class="form-control" type="text" name="coupon_code" id="coupon_code" placeholder="Enter Coupon Code...">
                             <p class="error" id="coupon_code_error"></p>
                         </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <button type="button" class="blue_common_btn border-0 m-0"  id="coupon_code_apply_btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
@@ -389,7 +389,7 @@
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Card Number</label>
-                        <input autocomplete="off" class="form-control card-number" id="card_number" name="card_number" size="20" placeholder="xxxx xxxx xxxx xxxx" type="text" required="">
+                        <input type="number" autocomplete="off" class="form-control card-number" id="card_number" name="card_number" size="20" placeholder="xxxx xxxx xxxx xxxx"  required="">
                         <div class="error" id="card_number_error"></div>
                     </div>
                 </div>
@@ -398,21 +398,21 @@
                 <div class="form-row row">
                     <div class="col-xs-12 col-md-4 form-group expiration">
                         <label class="control-label">Expiration Month</label>
-                        <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month" type="text" required="">
+                        <input  type="number" class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month"  required="">
                         <div class="error" id="card_exp_month_error"></div>
                     </div>
 
                     <!-- Expiration Year -->
                     <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Expiration Year</label>
-                        <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year" type="text" required="">
+                        <input  type="number" class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year"  required="">
                         <div class="error" id="card_exp_year_error"></div>
                     </div>
 
                     <!-- CVC -->
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
-                        <input autocomplete="off" class="form-control card-cvc" id="card_cvc" name="card_cvc" placeholder="ex. 311" size="4" type="text" required="">
+                        <input  type="password" autocomplete="off" class="form-control card-cvc" id="card_cvc" name="card_cvc" placeholder="ex. 311" size="4"  required="">
                         <div class="error" id="card_cvc_error"></div>
                     </div>
                 </div>
@@ -521,7 +521,7 @@
                             @endif
                         </div>
                     @endif
-                    <button type="button" class="blue_common_btn border-0 proced_to_pay_btn ml-2" id="change_option_button" style="display: none;"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <button type="button" class=" mt-3 blue_common_btn border-0 proced_to_pay_btn ml-2" id="change_option_button" style="display: none;"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                     </svg>
