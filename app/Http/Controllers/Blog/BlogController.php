@@ -16,7 +16,7 @@ use App\Models\Post;
 use Carbon\Carbon;
 use Auth;
 use DB;
-use str;
+use Illuminate\Support\Str;
 
 
 class BlogController extends Controller
