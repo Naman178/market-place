@@ -711,6 +711,7 @@ class ComposerStaticInit5866c23753f823859d555686163196cc
         'App\\Http\\Controllers\\APIs\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIs/AuthController.php',
         'App\\Http\\Controllers\\APIs\\KeyController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIs/KeyController.php',
         'App\\Http\\Controllers\\APIs\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIs/UserController.php',
+        'App\\Http\\Controllers\\AdminDashboard\\AdminDashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminDashboard/AdminDashboardController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\CutomForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/CutomForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',

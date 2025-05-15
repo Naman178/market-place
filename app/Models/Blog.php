@@ -22,6 +22,7 @@ class Blog extends Model
         'related_blogs',
         'status',
         'uploaded_by',
+        'slug',
     ];
     
     public function relatedBlogs()

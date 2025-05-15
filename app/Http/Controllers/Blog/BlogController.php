@@ -16,6 +16,7 @@ use App\Models\Post;
 use Carbon\Carbon;
 use Auth;
 use DB;
+use str;
 
 
 class BlogController extends Controller
@@ -64,10 +65,11 @@ class BlogController extends Controller
                         $title = $originalTitle . '-' . $counter;
                         $counter++;
                     }
-
+                    $slug = Str::slug($title);
                     // Create blog
                     $save_Blog = Blog::create([
                         'title' => $title, 
+                        'slug' => $slug, 
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
                         'short_description' => $request->shortdescription,
@@ -179,10 +181,11 @@ class BlogController extends Controller
                     } else {
                         $blog_originalImageName = $Blog->image; 
                     }
-            
+                    $slug = Str::slug($request->title);
                     // Update the blog entry
                     $Blog->update([
                         'title' => $request->title,
+                        'slug' => $slug, 
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
                         'short_description' => $request->shortdescription,
@@ -355,14 +358,12 @@ class BlogController extends Controller
     }
     public function blogDetails($category, $slug)
     {
-        $slug = str_replace('-', ' ', $slug);
-        $blog = Blog::where('status', '1')->where('title', $slug)->firstOrFail();
+        $blog = Blog::where('status', '1')->where('slug', $slug)->first();
         $blog_id = $blog->blog_id;
         if (!is_null($blog->related_blogs)) {
             $blog->related_blogs = json_decode($blog->related_blogs); 
         }
-        $post = Post::with('comments.user')->findOrFail($blog_id);
-
+        $post = Post::with('comments.user')->where('id', $blog_id)->first();
         $Blogcontents = BlogContent::where('blog_id', $blog_id)->get();
         $Blog_category = Blog_category::get();
         $seoData = SEO::where('page', 'home')->first();
