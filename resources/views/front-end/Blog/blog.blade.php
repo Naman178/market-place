@@ -5,6 +5,21 @@
     <!-- Slick Slider CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .blog .item {
+            height: auto !important;
+        }
+        .menu-1{
+            display: none;
+        }
+        .footer-04 .subscribe-form .form-group input::placeholder {
+            color: #fff;
+        }
+        .footer-04 .subscribe-form .form-group .submit {
+            padding: 15px 15px;
+        }
+    </style>
 @endsection
 @section('meta')
     <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
@@ -35,15 +50,11 @@
                 <h1>Latest From Our <span class="underline">Blog</span></h1>
                 {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
             </div>
-            <div class="arrow-container w-70">
-                <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><span class="arrow left-arrow"></span></a>
-                <a href="javascript:void(0)" role="button" data-slide="next" id="blog-right-arrow-btn"><span class="arrow right-arrow"></span></a>
-            </div>
         </div>
         <div id="blogCarousel" >
-            <div class="row blog-slider">
+            <div class="row">
                 @foreach ($Blogs as $blog)
-                    <div class="col-4 match-height-item">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 match-height-item">
                         <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}">
                         <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                         <div class="item">
@@ -61,6 +72,12 @@
                     </div>
                 @endforeach
             </div>
+
+            <!-- Pagination -->
+            <div class="mt-8">
+                {!! $Blogs->links('pagination::bootstrap-5') !!}
+            </div>
+
         </div>
     </div>
 </div>
@@ -69,49 +86,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Slick JS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script>
-     
-        $(document).ready(function(){
-            $('.blog-slider').slick({
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                arrows: false,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                responsive: [
-                    {
-                        breakpoint: 991,
-                        settings: {
-                            slidesToShow: 2,
-                            dots: true,
-                            arrows: false,
-                        }
-                    },
-                    {
-                        breakpoint: 767,
-                        settings: {
-                            slidesToShow: 1,
-                            dots: true,
-                            arrows: false,
-                        }
-                    }
-                ]
-            });
 
-            $('#blog-left-arrow-btn').click(function(event) {
-                event.preventDefault();
-                $('.blog-slider').slick('slickPrev');
-            });
-
-            $('#blog-right-arrow-btn').click(function(event) {
-                event.preventDefault();
-                $('.blog-slider').slick('slickNext');
-            });
-        });
-
-</script>
-<!-- Integration section end -->
 @endsection

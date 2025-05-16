@@ -372,7 +372,7 @@ class BlogController extends Controller
 
     public function blogIndex(Request $request)
     {
-        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
+        $Blogs = Blog::where('status', '1')->with('categoryname')->paginate(9);
         $Blog_category = Blog_category::get();
         $seoData = SEO::where('page', 'home')->first();
         return view('front-end.Blog.blog',compact('Blogs','Blog_category','seoData'));
