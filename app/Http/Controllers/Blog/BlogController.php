@@ -356,7 +356,7 @@ class BlogController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Section not found'], 404);
     }
-    public function blogDetails($category, $slug)
+    public function blogDetails($blog_name, $category, $slug)
     {
         $blog = Blog::where('status', '1')->where('slug', $slug)->first();
         $blog_id = $blog->blog_id;

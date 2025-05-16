@@ -12,15 +12,22 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 @endsection
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $blog->title }} @endsection
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
+<meta name="description" content=" {{ strip_tags($blog->short_description ?? 'Default Description') }}">
 <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+<meta property="og:title" content="{{ $blog->title }}">
+<meta property="og:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
+<meta property="og:type" content="article">
 <meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:type" content="website">
+<meta property="og:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">
+
+<!-- Twitter Cards (optional) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $blog->title }}">
+<meta name="twitter:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
+<meta name="twitter:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">
 @endsection
 @section('content')
 <div class="blog_details" style="background-color: #b1b1b11f;">
@@ -68,7 +75,7 @@
                                 @endphp
                                 @if ($relatedBlog)
                                     <li class="border-bottom mt-4">
-                                       <a href="{{ route('blog_details', ['category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
+                                       <a href="{{ route('blog_details', ['blog_name' => Str::slug($relatedBlog->title),'category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
                                             <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
                                             <span class="related_blog_title text-capitalize" style="text-align: start; font-weight: 600; font-size: 14px; color: #4d4d4d; font-family: 'Work Sans';"> {{ $relatedBlog->title }}</span>
                                         </a>
@@ -179,14 +186,14 @@
                 // Open the respective social media sharing or login page
                 if (platform === 'facebook') {
                     // Direct share URL
-                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode (route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}`;
+                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode (route('blog_details', ['blog_name' =>Str::slug( $blog->title), 'category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}`;
 
                     // Open Facebook sharing or login page
                     window.open(url, '_blank').focus();
                     window.open('https://www.facebook.com/', '_blank');
                 } else if (platform === 'twitter') {
                     // Direct share URL
-                    url = `https://twitter.com/intent/tweet?url={{ urlencode (route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}&text={{ urlencode($blog->title) }}`;
+                    url = `https://twitter.com/intent/tweet?url={{ urlencode (route('blog_details', ['blog_name' => Str::slug($blog->title),'category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}&text={{ urlencode($blog->title) }}`;
 
                     // Open Twitter sharing or login page
                     window.open(url, '_blank').focus();
