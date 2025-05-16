@@ -36,17 +36,48 @@
         }
     </style>
 @endsection
+
+@php 
+    use App\Models\Settings;
+    use App\Models\SEO;
+
+    $seoData = SEO::where('page', 'products')->first();
+
+    $site = Settings::where('key', 'site_setting')->first();
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
 @section('meta')
-    <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
-    </title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-    <meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-    <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+@section('title'){{ $seoData->title ?? 'Products' }} @endsection
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Explore a wide range of products available on Market Place. Find the best deals and latest items now.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'products, deals, Market Place, shop online' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'Products - Market Place' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Explore our product selection and shop online at Market Place.' }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'Products - Market Place' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Explore our product selection and shop online at Market Place.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+@if ($logoImage)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$logoImage) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('content')
     <div class="container items-container">

@@ -1,14 +1,45 @@
 @extends('front-end.common.master')
+@php 
+    $site = \App\Models\Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+
+    // Assuming $seoData is passed from controller or you fetch SEO for sign up page:
+    use App\Models\SEO;
+    $seoData = SEO::where('page', 'sign up')->first();
+@endphp
+
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $seoData->title ?? 'Sign Up' }} @endsection
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'sign up, register, create account, Market Place Main' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'Sign Up - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'Sign Up - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/' . $site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('styles')
    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">

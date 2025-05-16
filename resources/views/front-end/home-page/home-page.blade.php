@@ -1,4 +1,7 @@
 @extends('front-end.common.master')
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
 <!-- Scoped Bootstrap CSS -->
@@ -11,15 +14,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endsection
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $seoData->title ?? 'Home' }} @endsection
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
+<meta name="description" content=" {{ $seoData->description ?? "Welcome to Market Place Main on Infinity Stage – your go-to platform for automated pricing solutions, seamless WooCommerce integration, and real-time gold price updates. Explore expert insights, trending topics, and innovative tools designed to enhance your eCommerce experience. Stay ahead with our curated content and smart pricing automation." }}">
 <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+<meta property="og:title" content="{{ $seoData->title ?? 'Home' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Welcome to Market Place Main on Infinity Stage' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image:type" content="image/jpeg">
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('content')
 @include('front-end.home-page.section.hero_banner')

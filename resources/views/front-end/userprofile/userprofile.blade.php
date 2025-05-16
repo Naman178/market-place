@@ -1,14 +1,39 @@
 @extends('front-end.common.master')
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+ 
+$logoImage = $site['value']['logo_image'] ?? null;
+$ogImage = $logoImage 
+    ? asset('storage/Logo_Settings/' . $logoImage) 
+    : asset('front-end/images/infiniylogo.png');
+@endphp
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $seoData->title ?? 'User Profile'}} @endsection
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'View and update your user profile on Market Place Main. Manage your information, settings, and more in one place.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'user profile, account settings, Market Place Main' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'User Profile - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Access and manage your profile on Market Place Main with ease.' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'User Profile - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Access and manage your profile on Market Place Main with ease.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">

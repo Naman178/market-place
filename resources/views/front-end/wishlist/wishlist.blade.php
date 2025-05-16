@@ -1,4 +1,5 @@
 @extends('front-end.common.master')
+@section('title', 'Wishlist')
 @section('styles')
 <head>
     <meta charset="UTF-8">

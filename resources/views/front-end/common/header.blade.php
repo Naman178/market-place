@@ -20,7 +20,7 @@
                         <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blogs</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('user-faq') }}">FAQs</a></li>
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('contact-us') }}">Contact Us</a></li>
                     @auth

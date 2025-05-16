@@ -1,6 +1,6 @@
 @extends('front-end.common.master')
 @section('title')
- Market Place | {{ $seoData->title ?? 'Fortgot Password' }}
+{{ $seoData->title ?? 'Fortgot Password' }}
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
