@@ -1406,6 +1406,7 @@ div#integrationCarousel .col-4{
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   object-fit: cover;
+  display: block;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
