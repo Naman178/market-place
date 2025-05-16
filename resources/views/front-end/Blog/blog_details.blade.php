@@ -47,12 +47,18 @@
                 <h2 class="text-capitalize">{{ $blog->title }} </h2>
                 <p>{!! $blog->short_description !!} </p>
                 <div class="row mb-4">
-                    <div class="col-md-10">
+                    <div class="col-md-6">
                         Post by: <strong>{{ $blog->uploaded_by }} </strong> |
                         {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
                     </div>
-                    <div class="col-md-2 d-flex justify-content-end align-items-center">
-                        <div class="sharethis-inline-share-buttons"></div>
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                        <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
+                        </a>
+                        <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
+                        </a>
+                        {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                     </div>
 
                 </div>
@@ -122,7 +128,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6826eb4698608700128c9e98&product=inline-share-buttons" async="async"></script>
+{{-- <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6826eb4698608700128c9e98&product=inline-share-buttons" async="async"></script> --}}
 
 <script>
     //  tinymce.init({
