@@ -283,7 +283,7 @@ Route::get('/user-price', [UserController::class,'user_price']
 Route::get('/category/{slug}', [CategoryController::class, 'categoryDetails'])->name('category_details');
 
 // Blog Details
-Route::get('/blog/{category}/{slug}', [BlogController::class, 'blogDetails'])->name('blog_details');
+Route::get('/{blog_name}/{category}/{slug}', [BlogController::class, 'blogDetails'])->name('blog_details');
 Route::get('/blogs', [BlogController::class, 'blogIndex'])->name('blog-index');
 Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');
 Route::post('/share', [BlogController::class, 'sharedatastore'])->name('share.store');

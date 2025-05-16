@@ -52,20 +52,19 @@
             pointer-events: none;
             background-color: #f8f9fa;
         }
-.match-height-item {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+        .match-height-item {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-.match-height-item .blog_p {
-    flex-grow: 1;
-}
+        .match-height-item .blog_p {
+            flex-grow: 1;
+        }
     </style>
 @endsection
 @section('meta')
-    <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
-    </title>
+    @section('title'){{'Blogs'}} @endsection
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,14 +94,14 @@
             <div class="row">
                 @foreach ($Blogs as $blog)
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
-                        <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}">
+                        <a href="{{ route('blog_details', ['blog_name' => Str::slug($blog->title), 'category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}">
                             <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                                 <div class="item match-height-item p-3 bg-white rounded shadow-sm">
                                 <p class="badge">{{ $blog->categoryname->name ?? ''}}</p>
                                 <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
                                 <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
                                 <div class="d-flex">
-                                    <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
+                                    <a href="{{ route('blog_details', ['blog_name' => Str::slug($blog->title), 'category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
                                         <span>Read More</span>
                                         <img class="know_arrow ms-2" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
                                     </a>
