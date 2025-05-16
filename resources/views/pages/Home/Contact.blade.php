@@ -2,17 +2,40 @@
 @php
     use App\Models\SEO;
     $seoData = SEO::where('page','contact us')->first();
+    $site = \App\Models\Settings::where('key', 'site_setting')->first();
+    
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
 @endphp
+ @section('title')
+    {{ $seoData->title ?? 'Contact Us' }}
+@endsection
+
 @section('meta')
-    <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-    <meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-    <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+    {{-- SEO Meta --}}
+    <meta name="description" content="{{ $seoData->description ?? 'Contact Market Place for expert assistance, pricing automation inquiries, or integration support. Reach out today to enhance your eCommerce experience.' }}">
+    <meta name="keywords" content="{{ $seoData->keywords ?? 'contact, support, help, pricing, integration' }}">
+
+    {{-- Open Graph Meta --}}
+    <meta property="og:title" content="{{ $seoData->title ?? 'Contact Us' }}">
+    <meta property="og:description" content="{{ $seoData->description ?? 'Contact Market Place for expert assistance and support.' }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    {{-- Twitter Meta --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoData->title ?? 'Contact Us' }}">
+    <meta name="twitter:description" content="{{ $seoData->description ?? 'Contact Market Place for expert assistance and support.' }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
     <style>
         #message {

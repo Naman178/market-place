@@ -6,18 +6,47 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"/>
 @endsection
+@php
+    use App\Models\SEO;
+    use App\Models\Settings;
+
+    $seoData = SEO::where('page', 'buy now')->first();
+    $site = Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage
+        ? asset('storage/Logo_Settings/' . $logoImage)
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('title'){{ $seoData->title ?? 'Buy Now' }}@endsection
+
 @section('meta')
-    <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
-    </title>
     <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-    <meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-    <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+    {{-- SEO Meta --}}
+    <meta name="description" content="{{ $seoData->description ?? 'Purchase your products now with Market Place. Enjoy fast and secure checkout with amazing deals.' }}">
+    <meta name="keywords" content="{{ $seoData->keywords ?? 'buy now, quick checkout, Market Place products' }}">
+
+    {{-- Open Graph Meta --}}
+    <meta property="og:title" content="{{ $seoData->title ?? 'Buy Now - Market Place' }}">
+    <meta property="og:description" content="{{ $seoData->description ?? 'Secure and instant product purchase experience on Market Place.' }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $ogImage }}">
+
+    {{-- Twitter Meta --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoData->title ?? 'Buy Now - Market Place' }}">
+    <meta name="twitter:description" content="{{ $seoData->description ?? 'Secure and instant product purchase experience on Market Place.' }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
+    @if ($site && $site['value']['logo_image'])
+        <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+    @else
+        <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+    @endif
 @endsection
 @section('content')
 @php
@@ -310,11 +339,19 @@
                         <li><span>Tags</span>
                             <p>
                                 @foreach ($item->tags as $tag)
-                                @if ($category)
-                                <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')], 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
-                                @elseif ($subcategory)
-                                   <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')], 'tag' => $tag['tag_name'] ?? '']) }}"> {{ $tag['tag_name'] ?? '' }}</a>
-                                @endif                           
+                                    @if ($category)
+                                        <a href="{{ route('product.list', [
+                                            'category' => $category->name ?? null,
+                                            'slug' => Str::slug($subcategory['name'] ?? ''),
+                                            'tag' => $tag['tag_name'] ?? ''
+                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
+                                    @elseif ($subcategory)
+                                        <a href="{{ route('product.list', [
+                                            'category' => $category->name ?? null,
+                                            'slug' => Str::slug($subcategory['name'] ?? ''),
+                                            'tag' => $tag['tag_name'] ?? ''
+                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
+                                    @endif
                                 @endforeach
                             </p>
                         </li>

@@ -1,13 +1,46 @@
-@extends('front-end.common.master')@section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:type" content="website">
+@extends('front-end.common.master')
+
+@php 
+    use App\Models\Settings;
+    use App\Models\SEO;
+
+    $seoData = SEO::where('page', 'terms and conditions')->first();
+    $site = Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('title'){{ $seoData->title ?? 'Terms and Conditions' }}@endsection
+
+@section('meta')
+    {{-- SEO Meta --}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ $seoData->description ?? 'Read the terms and conditions of using Market Place Main. Understand your rights and responsibilities as a user.' }}">
+    <meta name="keywords" content="{{ $seoData->keywords ?? 'terms and conditions, legal, user agreement, Market Place Main' }}">
+
+    {{-- Open Graph Meta --}}
+    <meta property="og:title" content="{{ $seoData->title ?? 'Terms and Conditions - Market Place Main' }}">
+    <meta property="og:description" content="{{ $seoData->description ?? 'Understand the legal agreement when using Market Place Main.' }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $ogImage }}">
+
+    {{-- Twitter Meta --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoData->title ?? 'Terms and Conditions - Market Place Main' }}">
+    <meta name="twitter:description" content="{{ $seoData->description ?? 'Understand the legal agreement when using Market Place Main.' }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
+    {{-- Custom Logo for OG --}}
+    @if ($logoImage)
+        <meta property="og:logo" content="{{ asset('storage/Logo_Settings/' . $logoImage) }}" />
+    @else
+        <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+    @endif
 @endsection
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">

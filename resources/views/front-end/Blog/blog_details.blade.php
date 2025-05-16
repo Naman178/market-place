@@ -18,24 +18,26 @@
 @section('title'){{ $blog->title }} @endsection
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content=" {{ strip_tags($blog->short_description ?? 'Default Description') }}">
+<meta name="description" content="{{ strip_tags($blog->short_description ?? 'Default Description') }}">
 <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
+<!-- Open Graph Meta Tags -->
 <meta property="og:title" content="{{ $blog->title }}">
 <meta property="og:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">
+<meta property="og:image:type" content="image/jpeg">
 @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
-<meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
 @else
-<meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
 @endif
 
-<!-- Twitter Cards (optional) -->
+<!-- Optional: Twitter card for other platforms -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $blog->title }}">
 <meta name="twitter:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
-<meta name="twitter:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">
+<meta name="twitter:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">  
 @endsection
 @section('content')
 <div class="blog_details" style="background-color: #b1b1b11f;">
@@ -50,12 +52,14 @@
                         {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
                     </div>
                     <div class="col-md-2 d-flex justify-content-end align-items-center">
-                        <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                        {{-- <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
                         </a>
                         <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
-                        </a>
+                        </a> --}}
+                        <div class="sharethis-inline-share-buttons"></div>
+
                     </div>
 
                 </div>

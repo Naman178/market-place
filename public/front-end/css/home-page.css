@@ -2149,3 +2149,33 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
   margin-top: -3px;
     margin-left: 19rem;
 }
+
+.read_more_btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.text-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  padding-bottom: 4px;
+}
+
+.text-line::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #007AC1;
+  transition: width 0.4s ease-in-out;
+}
+.read_more_btn:hover .text-line::before {
+  width: 100%;
+}

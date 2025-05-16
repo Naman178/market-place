@@ -61,6 +61,10 @@
         .match-height-item .blog_p {
             flex-grow: 1;
         }
+
+        .mb-30{
+                margin-bottom: 30px;
+        }
     </style>
 @endsection
 @section('meta')
@@ -87,13 +91,13 @@
         </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Latest From Our <span class="underline">Blog</span></h1>
+                <h1>Latest From Our <span class="underline">Blogs</span></h1>
             </div>
         </div>
         <div id="blogCarousel">
             <div class="row">
                 @foreach ($Blogs as $blog)
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-30">
                         <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}">
                             <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                                 <div class="item match-height-item p-3 bg-white rounded shadow-sm">
@@ -101,9 +105,11 @@
                                 <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
                                 <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
                                 <div class="d-flex">
-                                    <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
-                                        <span>Read More</span>
-                                        <img class="know_arrow ms-2" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
+                                    <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="read_more_btn">
+                                        <span class="text-line">
+                                            <span class="text">Read More</span>
+                                            <img class="know_arrow mt-0" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
+                                        </span>
                                     </a>
                                 </div>
                             </div>

@@ -29,9 +29,15 @@
                             <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
                             <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
                             <div class="d-flex">
-                                <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
+                                {{-- <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
                                     <span>Read More</span>
                                     <img class="know_arrow d-flex align-items-center" src="front-end/images/blue_arrow.png" alt="not found" style="margin-top: 1px;">
+                                </a> --}}
+                                <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="read_more_btn">
+                                    <span class="text-line">
+                                        <span class="text">Read More</span>
+                                        <img class="know_arrow mt-0" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
+                                    </span>
                                 </a>
                             </div>
                         </div>

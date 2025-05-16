@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+@php
+use App\Models\Category;
+use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+    $setting = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,16 +35,12 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
     <title>Market Place | {{ $seoData->title ?? 'Default Title' }}</title>
-
+    @if ($setting && $setting['value']['site_favicon'])
+        <link rel="icon"  href="{{asset('storage/Logo_Settings/'.$setting['value']['site_favicon'])}}">
+    @endif
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
-    @php
-    use App\Models\Category;
-    use App\Models\SubCategory;
-      $category = Category::where('sys_state','=','0')->first();
-      $subcategory = SubCategory::where('sys_state','=','0')->first();
-      $setting = \App\Models\Settings::where('key', 'site_setting')->first();
-    @endphp
+   
     <style>
         table.dataTable {
             width: 100% !important;
@@ -748,9 +751,9 @@
             left: 0;
         }
 
-        .container {
+        /* .container {
             max-width: 1320px;
-        }
+        } */
 
         .text-white {
             color: #fff !important;

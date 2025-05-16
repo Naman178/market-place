@@ -1,4 +1,43 @@
 @extends('dashboard.dashboard_layout')
+@php 
+    use App\Models\SEO;
+    use App\Models\Settings;
+
+    $seoData = SEO::where('page', 'user dashboard')->first();
+    $site = Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('title'){{ $seoData->title ?? 'User Dashboard' }}@endsection
+
+@section('meta')
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{-- SEO Meta --}}
+    <meta name="description" content="{{ $seoData->description ?? 'Access your dashboard to manage orders, view account activity, and update your preferences on Market Place Main.' }}">
+    <meta name="keywords" content="{{ $seoData->keywords ?? 'user dashboard, account management, Market Place Main' }}">
+
+    {{-- Open Graph Meta --}}
+    <meta property="og:title" content="{{ $seoData->title ?? 'User Dashboard - Market Place Main' }}">
+    <meta property="og:description" content="{{ $seoData->description ?? 'Quickly access and manage your Market Place account through the dashboard.' }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $ogImage }}">
+
+    {{-- Twitter Meta --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoData->title ?? 'User Dashboard - Market Place Main' }}">
+    <meta name="twitter:description" content="{{ $seoData->description ?? 'Quickly access and manage your Market Place account through the dashboard.' }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
+    {{-- Optional Logo Meta (not standard but custom fallback) --}}
+    <meta property="og:logo" content="{{ $ogImage }}" />
+@endsection
 @section('content')
 @php
     $user = auth()->user();
