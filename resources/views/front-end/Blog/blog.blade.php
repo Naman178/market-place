@@ -54,7 +54,7 @@
         <div id="blogCarousel" >
             <div class="row">
                 @foreach ($Blogs as $blog)
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 match-height-item">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 match-height-item mb-5">
                         <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}">
                         <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                         <div class="item">
