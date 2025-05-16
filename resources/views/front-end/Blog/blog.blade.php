@@ -67,18 +67,48 @@
         }
     </style>
 @endsection
+@php 
+    use App\Models\Settings;
+    use App\Models\SEO;
+
+    $site = Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+
+    // Assuming you fetch SEO data for the blogs page like this:
+    $seoData = SEO::where('page', 'blogs')->first();
+@endphp
+
 @section('meta')
-    @section('title'){{'Blogs'}} @endsection
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-    <meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-    <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+@section('title'){{ $seoData->title ?? 'Blogs' }} @endsection
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Explore the latest blogs, insights, and trends on Market Place Main.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'blogs, insights, eCommerce, trends' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'Blogs - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Explore the latest blogs, insights, and trends on Market Place Main.' }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'Blogs - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Explore the latest blogs, insights, and trends on Market Place Main.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
 @endsection
+
 @section('content')
 <!-- Integration section start -->
 @php

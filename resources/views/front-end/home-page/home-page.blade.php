@@ -1,6 +1,10 @@
 @extends('front-end.common.master')
 @php 
  $site = \App\Models\Settings::where('key', 'site_setting')->first();
+  $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
 @endphp
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
@@ -24,6 +28,7 @@
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
 <meta property="og:image:type" content="image/jpeg">
+<meta property="og:image" content="{{ $ogImage }}">
 @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
     <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
 @else
