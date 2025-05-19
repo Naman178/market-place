@@ -286,32 +286,32 @@ class UserController extends Controller
     }
 
     public function orders() {
-        $orders = Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.orders', compact('orders'));
     }
 
     public function downloads() {
-        $orders = Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.downloads', compact('orders'));
     }
 
     public function support() {
-        $wallet = Wallet::where('user_id',auth()->id())->first();
+        $wallet = Wallet::where('user_id',auth()->id())->orderBy('id', 'desc')->first();
         return view('dashboard.support',compact('wallet'));
     }
 
     public function transactions() {
-        $transactions = Transaction::where('user_id', auth()->id())->get();
+        $transactions = Transaction::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.transactions', compact('transactions'));
     }
 
     public function invoice() {
-        $invoice = InvoiceModel::where('user_id',auth()->id())->get();
+        $invoice = InvoiceModel::where('user_id',auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.invoice',compact('invoice'));
     }
 
     public function subscription() {
-        $subscription = SubscriptionRec::get();
+        $subscription = SubscriptionRec::orderBy('id', 'desc')->get();
         // $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
         return view('dashboard.subscription',compact('subscription'));
     }

@@ -23,7 +23,7 @@ class ReviewsController extends Controller
     }
     public function items_list()
     {
-        $items = Items::where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $items = Items::where('sys_state','!=','-1')->orderBy('id','asc')->get();
         return view('pages.reviews.items',compact('items'));
     }
 

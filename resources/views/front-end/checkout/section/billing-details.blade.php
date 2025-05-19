@@ -101,7 +101,7 @@
             <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
             @if($selectedPricing)
             <h5 class="mt-0 mb-2 cart-item-pri">
-                <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
+                <span class="ml-2"> {{  $plan->currency ?? 'INR' }} <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
             </h5>
             @endif
             <h5 class="mt-0 mb-2 cart-item-pri">

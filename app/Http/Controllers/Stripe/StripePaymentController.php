@@ -109,6 +109,7 @@ class StripePaymentController extends Controller
                     'plan_name' => $plan_name,
                     'quantity' => $quantity,
                     'order_id' => $product_id,
+                    'currency' => $currency,
                 ],
                 'trial_period_days' => $trial_period_days,
                 'expand' => ['latest_invoice.payment_intent'],
@@ -142,7 +143,8 @@ class StripePaymentController extends Controller
             'coupon_code' => $coupon_code,
             'discountvalue' => $discountvalue,
             'plan_type' => $plan_type,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'currency' => $currency,
         ];
         if ($plan_type === 'recurring') {
             $return_url_params['subscription_id'] = $subscription->id;
@@ -163,8 +165,85 @@ class StripePaymentController extends Controller
         
             return redirect()->route('user-dashboard')->with('success', 'Subscription confirmed and active!');
         }
+        if ($trial_period_days > 0) {
+            // Handle trial subscription WITHOUT actual payment
+
+            // Simulate Stripe payment data for trial
+            $stripe_payment_id = 'trial_' . uniqid();
+            $stripe_payment_method = 'trial';
+            $stripe_payment_status = 'trialing';
+            $amount_paid = 0;
+
+            // Save transaction with trial status
+            $tran = Transaction::create([
+                'user_id' => $user->id,
+                'product_id' => $product_id,
+                'payment_status' => $stripe_payment_status,
+                'payment_amount' => $amount_paid,
+                'razorpay_payment_id' => $stripe_payment_id,
+                'payment_method' => $stripe_payment_method,
+                'transaction_id' => $stripe_payment_id,
+                'currency' => $currency
+            ]);
+
+            // Create order with trial status
+            $order = Order::create([
+                'product_id' => $product_id,
+                'user_id' => $user->id,
+                'payment_status' => $stripe_payment_status,
+                'payment_amount' => $amount_paid,
+                'razorpay_payment_id' => $stripe_payment_id,
+                'payment_method' => $stripe_payment_method,
+                'transaction_id' => $tran->id,
+                'currency' => $currency
+            ]);
+
+            // Generate keys/license for trial quantity
+            $keyIds = [];
+            for ($i = 0; $i < $quantity; $i++) {
+                $key = Str::random(50);
+                $currentDateTime = Carbon::now();
+                $expireDate = $currentDateTime->copy()->addDays($trial_period_days);
+
+                $keytbl = Key::create([
+                    'key' => $key,
+                    'user_id' => $user->id,
+                    'order_id' => $order->id,
+                    'product_id' => $product_id,
+                    'created_at' => Carbon::now(),
+                    'expire_at' => $expireDate
+                ]);
+                $keyIds[] = $keytbl->id;
+            }
+
+            // Optionally, create CouponUsages if coupon applied during trial
+            if ($coupon_code != '' && $discountvalue != '') {
+                CouponUsages::create([
+                    'coupon_id' => $coupon_code,
+                    'user_id' => $user->id,
+                    'order_id' => $order->id,
+                    'discount_value' => $discountvalue,
+                ]);
+            }
+
+            // You can also generate invoice or other post-order logic here
+            $this->generateInvoice(
+                $user,
+                $stripe_payment_id,
+                $order->id,
+                0,  
+                0,  
+                0,  
+                '', 
+                0,  
+                $stripe_payment_status
+            );
+
+            return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
+        }
+
         // If trial period is set, redirect to the success page without confirming the payment
-        return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');        
+        // return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');        
 
         // $stripe_payment = $paymentIntent->confirm([
         //     'payment_method' => $paymentMethod->id,
@@ -186,6 +265,7 @@ class StripePaymentController extends Controller
 
         $product_id = $_GET['product_id'];
         $amount = $_GET['amount'];
+        $currency = $_GET['currency'];
         $old_amount = $amount;
         $coupon_code = $_GET['coupon_code'];
         $discountvalue = $_GET['discountvalue'];
@@ -219,7 +299,8 @@ class StripePaymentController extends Controller
                 'payment_amount' => $old_amount,
                 'razorpay_payment_id' => $stripe_payment_id,
                 'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id
+                'transaction_id' => $stripe_payment_id,
+                'currency' => $currency
             ]);
 
             $transaction_id = $tran->id;
@@ -261,7 +342,8 @@ class StripePaymentController extends Controller
                     'payment_amount' => $amount,
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
-                    'transaction_id' => $transaction_id
+                    'transaction_id' => $transaction_id,
+                    'currency' => $currency
                 ]);
 
                 if($coupon_code != '' && $discountvalue != ''){
@@ -380,7 +462,8 @@ class StripePaymentController extends Controller
                 'payment_amount' => $old_amount,
                 'razorpay_payment_id' => $stripe_payment_id,
                 'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id
+                'transaction_id' => $stripe_payment_id,
+                'currency' => $currency
             ]);
 
             session()->flash('success', 'Payment Failed');
@@ -395,7 +478,8 @@ class StripePaymentController extends Controller
                 'payment_amount' => $old_amount,
                 'razorpay_payment_id' => $stripe_payment_id,
                 'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id
+                'transaction_id' => $stripe_payment_id,
+                'currency' => $currency
             ]);
 
             session()->flash('success', 'Payment Failed');
@@ -410,7 +494,8 @@ class StripePaymentController extends Controller
                 'payment_amount' => $old_amount,
                 'razorpay_payment_id' => $stripe_payment_id,
                 'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id
+                'transaction_id' => $stripe_payment_id,
+                'currency' => $currency
             ]);
 
             session()->flash('success', 'Payment Failed');
@@ -451,6 +536,7 @@ class StripePaymentController extends Controller
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $payload = $request->all();
+        dd($payload);
         $eventType = $payload['type'] ?? '';
     
         if ($eventType === 'invoice.payment_succeeded') {
@@ -471,6 +557,7 @@ class StripePaymentController extends Controller
                 $product_id = $metadata['product_id'] ?? null;
                 $plan_name = $metadata['plan_name'] ?? null;
                 $quantity = $metadata['quantity'] ?? 1;
+                $currency = $metadata['currency'] ?? 'INR';
             
                 $stripe_payment_id = $invoice['payment_intent'] ?? null;
                 $stripe_payment_method = $invoice['payment_settings']['payment_method_options']['card']['brand'] ?? 'stripe';
@@ -487,6 +574,7 @@ class StripePaymentController extends Controller
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $stripe_payment_id,
+                    'currency' => $currency
                 ]);
             
                 // ✅ Create Order
@@ -498,6 +586,7 @@ class StripePaymentController extends Controller
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $tran->id,
+                    'currency' => $currency
                 ]);
                 }
             

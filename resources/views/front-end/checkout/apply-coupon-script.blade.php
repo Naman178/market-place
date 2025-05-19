@@ -1,68 +1,127 @@
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-        const trialBtn = document.getElementById('trial_button');
+//    document.addEventListener('DOMContentLoaded', function () {
+//         const trialBtn = document.getElementById('trial_button');
+//         const modal = document.getElementById('trialChoiceModal');
+//         const closeModal = document.getElementById('close_modal');
+//         const chooseTrial = document.getElementById('choose_trial');
+//         const choosePay = document.getElementById('choose_without_trial');
+//         const trialPeriodInput = document.getElementById('trial_period_days');
+//         const changeOptionBtn = document.getElementById('change_option_button');
+
+//         trialPeriodInput.value = "0";
+
+//         // Show modal when trial button is clicked (only if not yet submitted)
+//         if (trialBtn) {
+//             trialBtn.addEventListener('click', function (e) {
+//                 if (trialBtn.getAttribute('type') !== 'submit') {
+//                     e.preventDefault(); 
+//                     modal.style.display = 'block';
+//                 }
+//             });
+//         }
+
+//         // "Change Option" button opens modal again
+//         changeOptionBtn.addEventListener('click', function () {
+//             modal.style.display = 'block';
+//         });
+
+//         // Close modal
+//         closeModal.addEventListener('click', function () {
+//             modal.style.display = 'none';
+//         });
+
+//         // Handle "Start Free Trial"
+//         chooseTrial.addEventListener('click', function () {
+//             trialPeriodInput.value = "{{ $plan->trial_days }}"; 
+//             const trialDays = trialPeriodInput.value;
+//             changeButtonToSubmit(trialBtn, `Free Trial for <span class="final_btn_text">${trialDays}</span> Days`);
+//             modal.style.display = 'none';
+//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
+//         });
+
+//         // Handle "Proceed to Pay"
+//         choosePay.addEventListener('click', function () {
+//             trialPeriodInput.value = "0"; 
+//             const finalTotal = "{{ number_format((int) $final_total) }}";
+//             const currency = "{{ $plan->currency ?? 'INR' }}";
+//             changeButtonToSubmit(trialBtn, `Proceed To Pay <span class="final_btn_text">${finalTotal}</span> ${currency}`);
+//             modal.style.display = 'none';
+//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
+//         });
+
+//         // Utility function to change button type and label
+//         function changeButtonToSubmit(button, labelHtml) {
+//             if (!button) return;
+//             button.setAttribute('type', 'submit'); 
+//             button.innerHTML = `
+//                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+//                 </svg>
+//                 <span>${labelHtml}</span>
+//             `;
+//         }
+//     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const trialBtn = document.getElementById('trial_button'); // main button
         const modal = document.getElementById('trialChoiceModal');
         const closeModal = document.getElementById('close_modal');
-        const chooseTrial = document.getElementById('choose_trial');
-        const choosePay = document.getElementById('choose_without_trial');
+        const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
         const trialPeriodInput = document.getElementById('trial_period_days');
-        const changeOptionBtn = document.getElementById('change_option_button');
+        const form = document.getElementById('stripe-form'); 
+
+        const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
 
         trialPeriodInput.value = "0";
 
-        // Show modal when trial button is clicked (only if not yet submitted)
+        function validateFormRequiredFields() {
+            const requiredInputs = form.querySelectorAll('[required]');
+            for (let input of requiredInputs) {
+                if (!input.value || input.value.trim() === '') {
+                    return false; 
+                }
+            }
+            return true; 
+        }
+
+        if (trialDays > 0) {
+            trialPeriodInput.value = trialDays;
+
+            trialBtnModal.type = 'submit';
+
+            if (validateFormRequiredFields()) {
+                form.submit();
+            } else {
+                console.warn('Required fields missing. Form not submitted.');
+            }
+        }
+
         if (trialBtn) {
             trialBtn.addEventListener('click', function (e) {
-                if (trialBtn.getAttribute('type') !== 'submit') {
-                    e.preventDefault(); 
-                    modal.style.display = 'block';
-                }
+                e.preventDefault();
+                modal.style.display = 'block';
             });
         }
 
-        // "Change Option" button opens modal again
-        changeOptionBtn.addEventListener('click', function () {
-            modal.style.display = 'block';
-        });
+        if (closeModal) {
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
 
-        // Close modal
-        closeModal.addEventListener('click', function () {
-            modal.style.display = 'none';
-        });
+        if (trialBtnModal) {
+            trialBtnModal.addEventListener('click', function () {
+                trialPeriodInput.value = trialDays;
+                modal.style.display = 'none';
 
-        // Handle "Start Free Trial"
-        chooseTrial.addEventListener('click', function () {
-            trialPeriodInput.value = "{{ $plan->trial_days }}"; 
-            const trialDays = trialPeriodInput.value;
-            changeButtonToSubmit(trialBtn, `Free Trial for <span class="final_btn_text">${trialDays}</span> Days`);
-            modal.style.display = 'none';
-            changeOptionBtn.style.display = 'inline-flex'; // show the change button
-        });
-
-        // Handle "Proceed to Pay"
-        choosePay.addEventListener('click', function () {
-            trialPeriodInput.value = "0"; 
-            const finalTotal = "{{ number_format((int) $final_total) }}";
-            const currency = "{{ $plan->currency ?? 'INR' }}";
-            changeButtonToSubmit(trialBtn, `Proceed To Pay <span class="final_btn_text">${finalTotal}</span> ${currency}`);
-            modal.style.display = 'none';
-            changeOptionBtn.style.display = 'inline-flex'; // show the change button
-        });
-
-        // Utility function to change button type and label
-        function changeButtonToSubmit(button, labelHtml) {
-            if (!button) return;
-            button.setAttribute('type', 'submit'); 
-            button.innerHTML = `
-                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                </svg>
-                <span>${labelHtml}</span>
-            `;
+                if (validateFormRequiredFields()) {
+                    form.submit();
+                } else {
+                    console.warn('Required fields missing on modal button click.');
+                }
+            });
         }
     });
-
 
     $(document).ready(function() {
         var itemId = "{{ $plan->id }}";

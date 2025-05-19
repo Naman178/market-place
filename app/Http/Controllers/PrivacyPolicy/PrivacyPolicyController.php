@@ -23,7 +23,7 @@ class PrivacyPolicyController extends Controller
     }
     public function index()
     {
-        $privacy_policy = PrivacyPolicy::orderBy('privacy_policy.id', 'desc')
+        $privacy_policy = PrivacyPolicy::orderBy('privacy_policy.id', 'asc')
                             ->get();
         return view('pages.privacy-policy.privacy-policy',compact('privacy_policy'));
     }

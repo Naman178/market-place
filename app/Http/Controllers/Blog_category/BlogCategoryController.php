@@ -23,7 +23,7 @@ class BlogCategoryController extends Controller
     }
     public function index()
     {
-        $Blog_category = Blog_category::orderBy('blog_category.category_id', 'desc')
+        $Blog_category = Blog_category::orderBy('blog_category.category_id', 'asc')
                             ->get();
         return view('pages.BlogCategory.Blog_category',compact('Blog_category'));
     }

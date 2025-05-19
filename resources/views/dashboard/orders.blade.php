@@ -81,7 +81,10 @@
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Amount:</strong></div>
                                                             <div class="ml-2">
-                                                                <p class="mb-0 ml-2"> {{ $order->product->currency ?? '' }} {{ $order->payment_amount ?? '' }} </p>
+                                                                <p class="mb-0 ml-2">
+                                                                    {{ $order->currency ?? 'INR' }}   
+                                                                    {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -23,7 +23,7 @@ class TestimonialController extends Controller
     }
     public function index()
     {
-        $testimonial = Testimonials::orderBy('testimonials.id', 'desc')
+        $testimonial = Testimonials::orderBy('testimonials.id', 'asc')
                             ->get();
         return view('pages.Testimonial.Testimonial',compact('testimonial'));
     }

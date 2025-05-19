@@ -26,7 +26,7 @@ class SubCategoryController extends Controller
     {
         $sub_categories = SubCategory::join('categories__tbl', 'sub_categories__tbl.category_id', '=', 'categories__tbl.id')->select('sub_categories__tbl.*', 'categories__tbl.name as category_name')
                             ->where('sub_categories__tbl.sys_state', '!=', '-1')
-                            ->orderBy('sub_categories__tbl.id', 'desc')
+                            ->orderBy('sub_categories__tbl.id', 'asc')
                             ->get();
         return view('pages.sub-category.sub-category',compact('sub_categories'));
     }
