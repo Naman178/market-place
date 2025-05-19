@@ -62,8 +62,8 @@ class InvoiceController extends Controller
     }
     public function viewOrder()
     {
-        $invoices = InvoiceModel::with(['order.product'])->orderBy('id', 'asc')->get();
-        $order = Order::with(['product'])->get();
+        $invoices = InvoiceModel::with(['order.product'])->orderBy('id', 'desc')->get();
+        $order = Order::with(['product'])->orderBy('id', 'desc')->get();
         return view('pages.Invoice.order',compact('invoices','order'));
     }
     public function orderDetails($id)
