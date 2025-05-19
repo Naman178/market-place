@@ -57,12 +57,12 @@ class InvoiceController extends Controller
     }
     public function index()
     {
-        $invoices = InvoiceModel::with(['order.product'])->get();
+        $invoices = InvoiceModel::with(['order.product'])->orderBy('id', 'desc')->get();
         return view('pages.Invoice.invoice',compact('invoices'));
     }
     public function viewOrder()
     {
-        $invoices = InvoiceModel::with(['order.product'])->get();
+        $invoices = InvoiceModel::with(['order.product'])->orderBy('id', 'desc')->get();
         $order = Order::with(['product'])->get();
         return view('pages.Invoice.order',compact('invoices','order'));
     }

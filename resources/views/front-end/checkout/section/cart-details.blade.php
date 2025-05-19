@@ -526,7 +526,7 @@
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                     </svg>
                     <span> Change Option </span></button>
-                    <div id="trialChoiceModal" class="custom-modal">
+                     <div id="trialChoiceModal" class="custom-modal">
                         <div class="custom-modal-content">
                             <div class="custom-modal-header">
                                 <h5 class="mt-2">Choose an Option</h5>
@@ -535,14 +535,31 @@
                             <div class="custom-modal-body">
                                 <p>Would you like to start with the free trial or proceed to pay directly?</p>
                                 <div class="button-row">
-                                    <button type="button" id="choose_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    {{-- <button type="button" id="choose_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg><span> Start Free Trial </span></button>
                                     <button type="button" id="choose_without_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                    </svg><span> Proceed to Pay </span></button>
+                                    </svg><span> Proceed to Pay </span></button>  --}}
+                                    <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_modal">
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span id="button_text">
+                                            Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                        </span>
+                                    </button>
+                                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn ml-2">
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                                
+                                    </button>
                                 </div>
                             </div>
                         </div>

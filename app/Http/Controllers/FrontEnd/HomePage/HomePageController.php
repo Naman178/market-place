@@ -36,15 +36,15 @@ class HomePageController extends Controller
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         $FAQs = FAQ::get();
-        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
+        $Blogs = Blog::where('status', '1')->with('categoryname')->orderBy('blog_id', 'desc')->get();
         foreach ($Blogs as $blog) {
             $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
             $blog->comments_count = Comments::where('post_id', $blog->blog_id)->count();
             $blog->shares_count = Share::where('blog_id', $blog->blog_id)->count();
         }
         $seoData = SEO::where('page', 'home')->first();
-        $category = Category::where('sys_state','=','0')->get();
-        $subcategory = SubCategory::where('sys_state','=','0')->get();
+        $category = Category::where('sys_state','=','0')->orderBy('id','desc')->get();
+        $subcategory = SubCategory::where('sys_state','=','0')->orderBy('id','desc')->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
         $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
@@ -174,7 +174,7 @@ class HomePageController extends Controller
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                         $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                     })
-                    ->where('sys_state', '=', '0')
+                    ->where('sys_state', '=', '0')->orderBy('id','desc')
                     ->get();
         }
         else{
@@ -182,7 +182,7 @@ class HomePageController extends Controller
             ->whereHas('categorySubcategory', function ($query) use ($id) {
                 $query->where('subcategory_id', $id);
             })
-            ->where('sys_state', '=', '0')
+            ->where('sys_state', '=', '0')->orderBy('id','desc')
             ->get();
         }
         return view('front-end.product.product',compact('item','categories', 'allsubcategories','category_name'));
@@ -314,7 +314,7 @@ class HomePageController extends Controller
     public function wishlistindex()
     {
         $user = auth()->user();
-        $wishlists = Wishlist::where('user_id', $user->id)->with('plan', 'pricing')->get();
+        $wishlists = Wishlist::where('user_id', $user->id)->with('plan', 'pricing')->orderBy('id', 'desc')->get();
         return view('front-end.wishlist.wishlist', compact('wishlists'));
     }
     public function addToWishlist(Request $request)

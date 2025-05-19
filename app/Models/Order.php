@@ -23,6 +23,7 @@ class Order extends Model
         'order_count',
         'order_limit',
         'sys_state',
+        'currency',
         'created_at',
         'updated_at',
     ];

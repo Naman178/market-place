@@ -21,7 +21,7 @@ class SEOController extends Controller
     }
     public function index()
     {
-        $SEO = SEO::orderBy('seo.id', 'desc')
+        $SEO = SEO::orderBy('seo.id', 'asc')
                             ->get();
         return view('pages.SEO.SEO',compact('SEO'));
     }

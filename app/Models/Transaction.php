@@ -20,6 +20,7 @@ class Transaction extends Model
         'payment_method',
         'transaction_id',
         'sys_state',
+        'currency',
         'created_at',
         'updated_at',
     ];

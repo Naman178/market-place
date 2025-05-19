@@ -24,7 +24,7 @@ class SocialMediaController extends Controller
     }
     public function index()
     {
-        $socialmedia = SocialMedia::orderBy('social_media.id', 'desc')
+        $socialmedia = SocialMedia::orderBy('social_media.id', 'asc')
                             ->get();
         return view('pages.SocialMedia.SocialMedia',compact('socialmedia'));
     }

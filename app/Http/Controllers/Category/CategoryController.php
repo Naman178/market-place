@@ -23,7 +23,7 @@ class CategoryController extends Controller
     }
     public function index()
     {
-        $category = Category::where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $category = Category::where('sys_state','!=','-1')->orderBy('id','asc')->get();
         return view('pages.category.category',compact('category'));
     }
 
@@ -149,7 +149,7 @@ class CategoryController extends Controller
 
     public function categoryDetails($slug){
         $category = Category::where('slug', $slug)->first();
-        $item = SubCategory::where('category_id', $category->id)->get();
+        $item = SubCategory::where('category_id', $category->id)->orderBy('id','desc')->get();
         return view('front-end.category.category_details',compact('category','item'));
     }
 }

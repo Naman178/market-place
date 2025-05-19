@@ -30,7 +30,7 @@ class ItemsController extends Controller
     }
     public function index()
     {
-        $items = Items::with(['pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $items = Items::with(['pricing'])->where('sys_state','!=','-1')->orderBy('id','asc')->get();
         return view('pages.items.items',compact('items'));
     }
 
