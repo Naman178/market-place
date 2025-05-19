@@ -150,7 +150,10 @@
                                             <p class="fw-semibold mb-2 text-start">{{ $invoice->coupon->coupon_code }}</p>
                                             <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ round($invoice->discount, 2) ?? '' }}</p>
                                         @endif
-                                        <p class="fw-semibold mb-0 pb-3 text-start">{{ $product->currency ?? '₹' }} {{ round($invoice->total, 2) ?? '' }}</p>
+                                        <p class="fw-semibold mb-0 pb-3 text-start">
+                                            {{ $product->currency ?? '₹' }} {{ round($invoice->total) }}
+                                        </p>
+
                                 </tr>
                             </thead>
                         </table>
