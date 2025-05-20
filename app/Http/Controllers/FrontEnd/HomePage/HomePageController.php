@@ -216,27 +216,27 @@ class HomePageController extends Controller
         $featureData = ItemsFeature::where('item_id', $id)->get();
         $imagesData = ItemsImage::where('item_id', $id)->get();
         
-        // Initialize an array to hold the filtered feature data
         $filteredFeatures = [];
-        $images = [];
-        
-        // Loop through each pricing data to check for matching sub_id in feature data
+
         foreach ($pricingData as $pricing) {
-            // Filter feature data where sub_id matches
             $matchingFeatures = $featureData->filter(function($feature) use ($pricing) {
                 return $feature->sub_id == $pricing->sub_id;
             });
-            $matchingimages = $imagesData->filter(function($image) use ($pricing) {
-                return $image->sub_id == $pricing->sub_id;
-            });
-        
-            // If matching features are found, add them to the filtered list
+
             if ($matchingFeatures->isNotEmpty()) {
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
             }
-            if ($matchingimages->isNotEmpty()) {
-                $images[$pricing->sub_id] = $matchingimages;
+        }
+        $images = [];
+
+        foreach ($imagesData as $image) {
+            $key = $image->sub_id ?? ''; 
+
+            if (!isset($images[$key])) {
+                $images[$key] = collect();
             }
+
+            $images[$key]->push($image);
         }
         return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures', 'orderitem', 'images'));
     }
