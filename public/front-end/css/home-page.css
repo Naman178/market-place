@@ -2189,3 +2189,11 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
     font-weight: 700;
     color: #007AC1;
 }
+.w-30{
+  width: 30%;
+}
+.price-slick-slider .slick-slide img {
+    display: block;
+    margin-right: 15px;
+    height: 85px;
+}

@@ -233,6 +233,8 @@ class HomePageController extends Controller
             // If matching features are found, add them to the filtered list
             if ($matchingFeatures->isNotEmpty()) {
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
+            }
+            if ($matchingimages->isNotEmpty()) {
                 $images[$pricing->sub_id] = $matchingimages;
             }
         }
