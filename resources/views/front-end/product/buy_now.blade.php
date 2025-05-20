@@ -96,7 +96,7 @@
                                     <div class="row">
                                         @foreach ($item->images as $image)
                                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                <img src="{{ asset('public/storage/items_files/' . $image->image) }}" alt="product" class="img-fluid w-100 h-100">
+                                                <img src="{{ asset('public/storage/items_files/' . $image->image_path) }}" alt="product" class="img-fluid w-100 h-100">
                                             </div>
                                         @endforeach
                                     </div>
@@ -403,9 +403,11 @@
                                             @endforeach
                                         @endif
                                         @if (isset($images[$price->sub_id]))
+                                          @foreach ($images[$price->sub_id] as $images)
                                             <div class="wsus__sidebar_pro_img mt_20">
-                                                <img src="{{ asset('public/storage/items_files/' . $images[$price->sub_id]) }}" alt="product" class="img-fluid w-100 h-100">
+                                                <img src="{{ asset('public/storage/items_files/' . $images->image_path) }}" alt="product" class="img-fluid w-100 h-100">
                                             </div>
+                                            @endforeach
                                         @endif
                                         <ul class="button_area mt_50 d-flex flex-wrap mb-0 p-0">
                                             <li>
