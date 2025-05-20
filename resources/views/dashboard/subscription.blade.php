@@ -11,6 +11,8 @@
                         <tr>
                             <th>#</th>
                             <th>Product</th>
+                            <th>Order ID</th>
+                            <th>Invoice ID </th>
                             <th>Subscription start date</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -22,6 +24,8 @@
                                 <tr>
                                     <td> {{ $key + 1 }} </td>
                                     <td> {{ $sub->product->name ?? '' }}</td>
+                                    <td> {{ $sub->order_id ?? 'N/A' }} </td>
+                                    <td> {{ $sub->invoice_id ?? 'N/A' }} </td>
                                     <td> {{ $sub->created_at }} </td>
                                     <td>{{ $sub->status }}</td>
                                     <td>
@@ -43,6 +47,8 @@
                         <tr>
                             <th>#</th>
                             <th>Product</th>
+                            <th>Order ID</th>
+                            <th>Invoice ID </th>
                             <th>Subscription start date</th>
                             <th>Status</th>
                             <th>Action</th>

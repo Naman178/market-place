@@ -48,4 +48,8 @@ class Order extends Model
     public function transaction(){
         return $this->hasOne(Transaction::class,'id','transaction_id');
     }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
 }

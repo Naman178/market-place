@@ -114,7 +114,7 @@
                                         <div class="col-md-6 col-12 p_0">
                                             <div class="accordion" id="accordionRightIcon-{{ $index }}">
                                                 <div class="card mt-4 shadow-sm rounded-lg dot_border">
-                                                    <div class="cart-item-border text-center">{{ $order->product->product_name ?? 'Product Name' }}</div>
+                                                    <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
                                                     {{-- <div class="card mt-4">
                                                         <div class="card-header header-elements-inline">
                                                             <h6
@@ -147,7 +147,7 @@
                                                                         <div class="ml-2 mt-2">
                                                                             <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
                                                                             class="btn blue_common_btn" 
-                                                                            download="{{ $order->product->product_name ?? '' }}">
+                                                                            download="{{ $order->product->name ?? '' }}">
                                                                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -163,8 +163,8 @@
                                                                         <div class="ml-2">
                                                                             <div class="d-flex align-items-center">
                                                                                 <img width="70px" src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}" 
-                                                                                    alt="{{ $order->product->product_name ?? '' }}" class="rounded">
-                                                                                <span class="ml-2">{{ $order->product->product_name ?? '' }}</span>
+                                                                                    alt="{{ $order->product->name ?? '' }}" class="rounded">
+                                                                                <span class="ml-2">{{ $order->product->name ?? '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -267,7 +267,7 @@
                                                 <td data-label="order id "> #{{ $order->id ?? '' }}</td>
                                                 <td data-label="product key "> {{ $order->key->key ?? '' }}</td>
                                                 <td data-label="product file "> <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
-                                                        download="{{ $order->product->product_name ?? '' }}">Download</a>
+                                                        download="{{ $order->product->name ?? '' }}">Download</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -368,7 +368,7 @@
                                                 </td>
                                                 <td data-label="Payment Amount"> {{ $tran->payment_amount ?? '' }} </td>
                                                 <td data-label="Payment Date"> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>
-                                                <td data-label="Plan">{{ $tran->product->product_name ?? '' }}</td>
+                                                <td data-label="Plan">{{ $tran->product->name ?? '' }}</td>
                                                 <td data-label="Payment Id"> {{ $tran->razorpay_payment_id ?? '' }} </td>
                                                 <td data-label="Payment Method"> {{ $tran->payment_method ?? '' }} </td>
                                             </tr>

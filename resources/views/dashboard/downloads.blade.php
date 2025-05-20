@@ -13,6 +13,7 @@
                             <tr role="row">
                                 <th>Order Id</th>
                                 <th>Product Key</th>
+                                <th>Product Name</th>
                                 <th>Product File</th>
                             </tr>
                         </thead>
@@ -21,8 +22,9 @@
                                 <tr role="row">
                                     <td>#{{ $order->id ?? '' }}</td>
                                     <td>{{ $order->key->key ?? '' }}</td>
+                                    <td>{{ $order->product->name ?? '' }}</td>
                                     <td><a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
-                                            download="{{ $order->product->product_name ?? '' }}">Download</a>
+                                            download="{{ $order->product->name ?? '' }}">Download</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -31,6 +33,7 @@
                             <tr role="row">
                                 <th>Order Id</th>
                                 <th>Product Key</th>
+                                <th>Product Name</th>
                                 <th>Product File</th>
                             </tr>
                         </tfoot>

@@ -712,6 +712,14 @@ use App\Models\SubCategory;
             vertical-align: baseline;
             border-radius: .25rem;
         }
+        .badge-info {
+            color: #fff;
+            background-color: #17a2b8;
+        }
+        .badge-primary {
+            color: #fff;
+            background-color: #007bff;
+        }
         .wsus__profile_overview h2 {
             font-weight: 700;
             font-size: 30px;

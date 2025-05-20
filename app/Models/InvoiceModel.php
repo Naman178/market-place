@@ -43,4 +43,8 @@ class InvoiceModel extends Model
         return $this->hasOne(Transaction::class,'id','transaction_id');
     }
 
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
 }
