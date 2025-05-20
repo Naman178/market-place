@@ -40,7 +40,21 @@ class StripePaymentController extends Controller
         $currency = $input['currency'];
         $quantity = $input['final_quantity'];
         $trial_period_days = $input['trial_period_days'] ?? 0;
-        $plan_interval = $input['plan_interval'] ?? 'month';
+        $input_interval = strtolower($input['plan_interval'] ?? 'month');
+
+        switch ($input_interval) {
+            case 'monthly':
+                $plan_interval = 'month';
+                break;
+            case 'yearly':
+                $plan_interval = 'year';
+                break;
+            case 'weekly':
+                $plan_interval = 'week';
+                break;
+            default:
+                $plan_interval = 'month';
+        }
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
