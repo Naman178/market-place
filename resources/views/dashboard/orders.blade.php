@@ -59,7 +59,7 @@
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="d-flex mb-3 align-items-center flex-wrap">
                                                             <div class="text-muted"><strong>Product:</strong></div>
-                                                            <div class="ml-2">
+                                                            <div class="ml-2 d-flex  align-items-center flex-wrap">
                                                                 <img width="70px" src="{{ asset('storage/items_files/' . $order->product->thumbnail_image) }}" 
                                                                     alt="{{ $order->product->name ?? '' }}" class="rounded">
                                                                 <span class="ml-2">{{ $order->product->name ?? '' }}</span>
