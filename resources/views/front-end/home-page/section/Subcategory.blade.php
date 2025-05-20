@@ -4,7 +4,7 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div class="subcategory">
-                <h1>Shop By<span class="underline"> Category</span></h1>
+                <h2>Shop By<span class="underline"> Category</span></h2>
                 {{-- <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">

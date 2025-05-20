@@ -40,6 +40,7 @@ class StripePaymentController extends Controller
         $currency = $input['currency'];
         $quantity = $input['final_quantity'];
         $trial_period_days = $input['trial_period_days'] ?? 0;
+        $plan_interval = $input['plan_interval'] ?? 'month';
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -94,7 +95,7 @@ class StripePaymentController extends Controller
             $price = \Stripe\Price::create([
                 'unit_amount' => $amount,
                 'currency' => $currency,
-                'recurring' => ['interval' => 'month'],
+                'recurring' => ['interval' => $plan_interval],
                 'product' => $product->id,
             ]);
 

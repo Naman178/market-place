@@ -10,7 +10,7 @@
         </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Latest From Our <span class="underline">Blog</span></h1>
+                <h2>Latest From Our <span class="underline">Blog</span></h2>
                 {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70">

@@ -6,7 +6,7 @@
                     <p class="plugin-label">
                         <span class="label-line"></span> 24/7
                     </p>
-                    <h1>Continuous Support and Upgrade Seamless <span class="underline"> Performance</span></h1>
+                    <h2>Continuous Support and Upgrade Seamless <span class="underline"> Performance</span></h2>
                     <p class="integra_p mb-60 mt-3">
                         We believe in delivering long-term value, not just a one-time solution. Our team ensures
                             your products are always up-to-date with the latest features, security patches, and enhancements. <br><br>

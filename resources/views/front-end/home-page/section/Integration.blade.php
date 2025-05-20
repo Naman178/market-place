@@ -6,7 +6,7 @@
         </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Powering Your Business with Smart <span class="underline">  Solutions</span></h1>
+                <h2>Powering Your Business with Smart <span class="underline">  Solutions</span></h2>
             </div>
             <div class="arrow-container w-70">
                 <a href="#integrationCarousel" role="button" data-slide="prev" id="left-arrow-btn"><span

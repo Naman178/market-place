@@ -376,6 +376,7 @@
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="trial_period_days" id="trial_period_days" value="">
+                    <input type="hidden" name="plan_interval" id="plan_interval" value="{{ $plan->pricing->billing_cycle ?? ''}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
@@ -492,7 +493,7 @@
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                 </svg>
-                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                             
                             </button>
                         @endif
@@ -514,7 +515,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg>
-                                    <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                                    <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                                
                                 </button>
                                 
@@ -557,7 +558,7 @@
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                         </svg>
-                                        <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
+                                        <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                                 
                                     </button>
                                 </div>
