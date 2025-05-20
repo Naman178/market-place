@@ -694,7 +694,7 @@ use App\Models\SubCategory;
         }
         .cart-item-border{
             font-size: 15px;
-            width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
+            width: auto; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
         }
         .badge-success {
             color: #fff;
