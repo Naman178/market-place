@@ -95,7 +95,7 @@
                                 <div class="wsus__pro_det_img">
                                     <div class="row">
                                         @foreach ($item->images as $image)
-                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <img src="{{ asset('public/storage/items_files/' . $image->image_path) }}" alt="product" class="img-fluid w-100 h-100">
                                             </div>
                                         @endforeach
@@ -402,15 +402,6 @@
                                             </ul>                                    
                                             @endforeach
                                         @endif
-                                        @if (isset($images[$price->sub_id]) && $images[$price->sub_id]->isNotEmpty())
-                                            <div class="wsus__sidebar_pro_img m-auto w-30 d-flex align-items-center justify-content-center">
-                                                @foreach ($images[$price->sub_id] as $img)
-                                                    <img src="{{ asset('public/storage/items_files/' . $img->image_path) }}"
-                                                        alt="product"
-                                                        class="img-fluid w-100 mr-3">
-                                                @endforeach
-                                            </div>
-                                        @endif
                                         <ul class="button_area mt_50 d-flex flex-wrap mb-0 p-0">
                                             <li>
                                                 <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
@@ -462,6 +453,25 @@
                     <div class="tab-content active" id="pills-home">
                         <div class="wsus__pro_description">
                            {!! $item->html_description !!}
+                             @foreach ($pricingData as $index => $price)
+                                @if (isset($images[$price->sub_id]) && $images[$price->sub_id]->isNotEmpty())
+                                    <div class="wsus__pro_det_img">
+                                        <div class="row">
+                                            @if(isset($price->billing_cycle))
+                                                <h3 class="col-12 text-capitalize">{{ $price->billing_cycle }}</h3>
+                                            @endif
+                                            
+                                            @foreach ($images[$price->sub_id] as $img)
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <img src="{{ asset('public/storage/items_files/' . $img->image_path) }}"
+                                                        alt="product"
+                                                        class="img-fluid w-100 mr-3">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                     <div class="tab-content" id="pills-profile">
