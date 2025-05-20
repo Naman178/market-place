@@ -8,8 +8,8 @@
    <script src="https://js.stripe.com/v3/"></script>
 @endsection
 @section('content')
-<div class="container checkout-container">
-   <div class="checkout padding">
+<div class="checkout-container">
+   <div class="checkout padding container">
       <div class="container">
          <div class="row justify-content-center">
             <!-- if user is already logged in -->

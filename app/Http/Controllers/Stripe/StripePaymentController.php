@@ -52,6 +52,9 @@ class StripePaymentController extends Controller
             case 'weekly':
                 $plan_interval = 'week';
                 break;
+            case 'quarterly':
+                $plan_interval = 'month';
+                break;
             default:
                 $plan_interval = 'month';
         }
@@ -251,7 +254,9 @@ class StripePaymentController extends Controller
                 0,  
                 '', 
                 0,  
-                $stripe_payment_status
+                $stripe_payment_status,
+                $product_id,
+                $quantity,
             );
 
             return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
@@ -697,7 +702,9 @@ class StripePaymentController extends Controller
                         $invoice['discounts'][0]['coupon']['percent_off'] ?? 0,
                         $invoice['discounts'][0]['coupon']['id'] ?? '',
                         $amount_paid,
-                        $stripe_payment_status
+                        $stripe_payment_status,
+                        $product_id,
+                        $quantity
                     );
                 } else {
                     $tran = Transaction::create([
@@ -732,7 +739,9 @@ class StripePaymentController extends Controller
                         $invoice['discounts'][0]['coupon']['percent_off'] ?? 0,
                         $invoice['discounts'][0]['coupon']['id'] ?? '',
                         $amount_paid,
-                        $stripe_payment_status
+                        $stripe_payment_status,
+                        $product_id,
+                        $quantity
                     );
                 }
             } else {
@@ -743,7 +752,7 @@ class StripePaymentController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-    private function generateInvoice($user, $transaction_id, $order_id, $subtotal, $gst_percentage, $discountvalue, $coupon_code, $total_amount, $status)
+    private function generateInvoice($user, $transaction_id, $order_id, $subtotal, $gst_percentage, $discountvalue, $coupon_code, $total_amount, $status, $product_id = null, $quantity = null)
     {
         $today = now();
         $invoicesRes = InvoiceModel::whereDate("created_at", $today->toDateString())->count();
@@ -764,6 +773,8 @@ class StripePaymentController extends Controller
             'total' => $total_amount / 100,
             'payment_method' => "Stripe",
             'payment_status' => $status,
+            'product_id' => $product_id,
+            'quantity' => $quantity,
         ]);
     }
     public function cancelSubscription($id)

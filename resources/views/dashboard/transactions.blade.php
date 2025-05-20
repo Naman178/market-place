@@ -13,6 +13,7 @@
                             <th>#</th>
                             <th>Payment Status</th>
                             <th>Payment Amount</th>
+                            <th>Payment Type</th>
                             <th>Payment Date</th>
                             <th>Plan</th>
                             <th>Payment Id</th>
@@ -30,8 +31,15 @@
                                         {{ $tran->currency ?? 'INR' }}   
                                         {{ number_format(ceil((float) $tran->payment_amount / 100), 2, '.', '') }}
                                     </td>
+                                    <td>
+                                        @if ($tran->pricing->pricing_type == 'recurring')
+                                            {{ $tran->pricing->billing_cycle ?? '' }}
+                                        @else
+                                            {{ $tran->pricing->pricing_type ?? '' }}
+                                        @endif
+                                    </td>
                                     <td> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>
-                                    <td>{{ $tran->product->product_name ?? '' }}</td>
+                                    <td>{{ $tran->product->name ?? '' }}</td>
                                     <td> {{ $tran->razorpay_payment_id ?? '' }} </td>
                                     <td> {{ $tran->payment_method ?? '' }} </td>
                                 </tr>
@@ -43,6 +51,7 @@
                             <th>#</th>
                             <th>Payment Status</th>
                             <th>Payment Amount</th>
+                            <th>Payment Type</th>
                             <th>Payment Date</th>
                             <th>Plan</th>
                             <th>Payment Id</th>

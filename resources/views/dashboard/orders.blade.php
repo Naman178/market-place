@@ -13,7 +13,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="accordion" id="accordionRightIcon-{{ $index }}">
                                     <div class="card mt-4 shadow-sm rounded-lg dot_border">
-                                        <div class="cart-item-border text-center">{{ $order->product->product_name ?? 'Product Name' }}</div>
+                                        <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
                                         {{-- <div class="card mt-4">
                                             <div class="card-header header-elements-inline">
                                                 <h6
@@ -41,12 +41,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="d-flex mb-3">
+                                                        <div class="d-flex mb-3 align-items-center">
                                                             <div class="text-muted"><strong>Product File:</strong></div>
                                                             <div class="ml-2">
                                                                 <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
                                                                 class="btn blue_common_btn" 
-                                                                download="{{ $order->product->product_name ?? '' }}">
+                                                                download="{{ $order->product->name ?? '' }}">
                                                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -56,15 +56,35 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="d-flex mb-3">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="d-flex mb-3 align-items-center flex-wrap">
                                                             <div class="text-muted"><strong>Product:</strong></div>
                                                             <div class="ml-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img width="70px" src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}" 
-                                                                        alt="{{ $order->product->product_name ?? '' }}" class="rounded">
-                                                                    <span class="ml-2">{{ $order->product->product_name ?? '' }}</span>
-                                                                </div>
+                                                                <img width="70px" src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}" 
+                                                                    alt="{{ $order->product->name ?? '' }}" class="rounded">
+                                                                <span class="ml-2">{{ $order->product->name ?? '' }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="d-flex mb-3">
+                                                            <div class="text-muted"><strong>Product Type:</strong></div>
+                                                            <div class="ml-2">
+                                                                <p class="mb-0 ml-2 badge badge-primary text-capitalize">
+                                                                    {{ $order->pricing->pricing_type ?? '' }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="d-flex mb-3">
+                                                            <div class="text-muted"><strong>Product Billng Cycle:</strong></div>
+                                                            <div class="ml-2">
+                                                                @if ($order->pricing->billing_cycle)
+                                                                    <p class="mb-0 ml-2 badge badge-info text-capitalize">
+                                                                        {{ $order->pricing->billing_cycle ?? '' }}
+                                                                    </p>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -72,7 +92,7 @@
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Status:</strong></div>
                                                             <div class="ml-2">
-                                                                <span class="badge badge-success"> {{ $order->payment_status ?? '' }} </span>
+                                                                <span class="badge badge-success text-capitalize"> {{ $order->payment_status ?? '' }} </span>
                                                             </div>
                                                         </div>
                                                     </div>

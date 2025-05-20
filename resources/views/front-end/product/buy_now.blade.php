@@ -91,6 +91,17 @@
                     <div class="tab-content active" id="pills-home">
                         <div class="wsus__pro_description">
                             {!! $item->html_description !!}
+                            @if(isset($item->images))
+                                <div class="wsus__pro_det_img">
+                                    <div class="row">
+                                        @foreach ($item->images as $image)
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                                                <img src="{{ asset('public/storage/items_files/' . $image->image) }}" alt="product" class="img-fluid w-100 h-100">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="tab-content" id="pills-profile">
@@ -362,7 +373,6 @@
         @if ($item->pricing['pricing_type'] === 'recurring')
         {{-- <div class="row justify-content-start bg-white mt-5 ml-22"> --}}
             <div class="col-xl-12 col-lg-12 mt-5">
-                
                     <div class="price-slick-slider">
                         @foreach ($pricingData as $index => $price)
                             <div class="slick-slide">
@@ -391,6 +401,11 @@
                                                 </li>
                                             </ul>                                    
                                             @endforeach
+                                        @endif
+                                        @if (isset($images[$price->sub_id]))
+                                            <div class="wsus__sidebar_pro_img mt_20">
+                                                <img src="{{ asset('public/storage/items_files/' . $images[$price->sub_id]) }}" alt="product" class="img-fluid w-100 h-100">
+                                            </div>
                                         @endif
                                         <ul class="button_area mt_50 d-flex flex-wrap mb-0 p-0">
                                             <li>

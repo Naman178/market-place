@@ -1,5 +1,5 @@
 @extends('front-end.common.master')
-@section('title', 'Checkout')
+@section('title', 'Invoice')
 
 @section('styles')
    <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
@@ -35,9 +35,38 @@
 @php
  use App\Models\Settings;
  $site = Settings::where('key','site_setting')->first();
+    $createdAt = \Carbon\Carbon::parse($invoice->created_at);
+    $nextDueDate = '';
+
+    if ($invoice->pricing->pricing_type == 'recurring') {
+        $billingCycle = $invoice->pricing->billing_cycle;
+
+        switch ($billingCycle) {
+            case 'monthly':
+                $nextDueDate = $createdAt->copy()->addMonth()->format('d-m-Y');
+                break;
+            case 'yearly':
+                $nextDueDate = $createdAt->copy()->addYear()->format('d-m-Y');
+                break;
+            case 'weekly':
+                $nextDueDate = $createdAt->copy()->addWeek()->format('d-m-Y');
+                break;
+            case 'quarterly':
+                $nextDueDate = $createdAt->copy()->addMonths(3)->format('d-m-Y');
+                break;
+            case 'custom':
+                $customDays = $invoice->pricing->custom_cycle_days ?? 0;
+                $nextDueDate = $createdAt->copy()->addDays($customDays)->format('d-m-Y');
+                break;
+            default:
+                $nextDueDate = $createdAt->copy()->addDays(30)->format('d-m-Y');
+        }
+    } else {
+        $nextDueDate = '-';
+    }
 @endphp
-<div class="container checkout-container py-5">
-   <div class="checkout">
+<div class="checkout-container py-5">
+   <div class="checkout container">
       <div class="container">
          <div class="row justify-content-center">
             <div class="col-xl-12 col-md-12 col-12">
@@ -47,9 +76,9 @@
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center mb-4">
                                     @if ($site->value['logo_image'] != null)
-                                        <img src="{{ asset('storage/Logo_Settings/' . $site->value['logo_image']) }}" height="50" width="150" alt="Site Logo">
+                                        <img src="{{ asset('storage/Logo_Settings/' . $site->value['logo_image']) }}" height="50" width="180" alt="Site Logo">
                                     @else
-                                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" height="50" width="150" alt="Site Logo">
+                                        <img src="{{ asset('front-end/images/infiniylogo.png') }}" height="50" width="180" alt="Site Logo">
                                         
                                     @endif
                                 </div>
@@ -65,6 +94,7 @@
                                         <span class="badge bg-danger">{{ ucfirst($invoice->payment_status) }}</span>
                                     @endif
                                 </p>
+                                <p><strong>Next Due Date: </strong> {{ $nextDueDate }}</p>
                                 <a href="{{ route('invoice.download', ['id' => $invoice->id]) }}" target="_blank"
                                     class="btn btn-label-secondary pink-blue-grad-button d-grid w-100 mb-2"> <i class="fas fa-download me-2"></i>  Download Invoice</a>
                             </div>
@@ -137,21 +167,25 @@
                                             $subtot = $invoice->subtotal * $quantity;
                                             // dd($subtot);
                                         @endphp
-                                        <p class="fw-semibold mb-2 pt-3 text-start">{{ $product->currency ?? '₹' }} {{ $invoice->quantity }}</p>
+                                        <p class="fw-semibold mb-2 pt-3 text-start"> {{ $invoice->quantity }}</p>
                                         <p class="fw-semibold mb-2 pt-3 text-start">{{ $product->currency ?? '₹' }} {{ number_format($subtot, 2) }} </p>
                                         @if ($invoice->gst_percentage > 0)
                                             @php
                                                 $taxAmount = ($subtot * $invoice->gst_percentage) / 100;
                                                 $taxAmount = round($taxAmount);
+                                                $total = round($invoice->total);
                                             @endphp
-                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ round($taxAmount, 2) ?? '' }} </p>
+                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ number_format($taxAmount, 2) ?? '' }} </p>
                                         @endif
                                         @if ($invoice->discount > 0)
+                                            @php
+                                                $discount =  round($invoice->discount, 2);
+                                            @endphp
                                             <p class="fw-semibold mb-2 text-start">{{ $invoice->coupon->coupon_code }}</p>
-                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ round($invoice->discount, 2) ?? '' }}</p>
+                                            <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ number_format($discount, 2) ?? '' }}</p>
                                         @endif
                                         <p class="fw-semibold mb-0 pb-3 text-start">
-                                            {{ $product->currency ?? '₹' }} {{ round($invoice->total) }}
+                                            {{ $product->currency ?? '₹' }} {{ number_format($total, 2) }}
                                         </p>
 
                                 </tr>

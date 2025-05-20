@@ -19,6 +19,7 @@ use App\Models\SubCategory;
 use App\Models\Reviews;
 use App\Models\Wishlist;
 use App\Models\ItemsPricing;
+use App\Models\ItemsImage;
 use App\Models\Testimonials;
 use App\Models\SocialMedia;
 use Illuminate\Http\Request;
@@ -213,9 +214,11 @@ class HomePageController extends Controller
             ->get();
         $pricingData = ItemsPricing::where('item_id', $id)->get(); 
         $featureData = ItemsFeature::where('item_id', $id)->get();
+        $imagesData = ItemsImage::where('item_id', $id)->get();
         
         // Initialize an array to hold the filtered feature data
         $filteredFeatures = [];
+        $images = [];
         
         // Loop through each pricing data to check for matching sub_id in feature data
         foreach ($pricingData as $pricing) {
@@ -223,13 +226,17 @@ class HomePageController extends Controller
             $matchingFeatures = $featureData->filter(function($feature) use ($pricing) {
                 return $feature->sub_id == $pricing->sub_id;
             });
+            $matchingimages = $imagesData->filter(function($image) use ($pricing) {
+                return $image->sub_id == $pricing->sub_id;
+            });
         
             // If matching features are found, add them to the filtered list
             if ($matchingFeatures->isNotEmpty()) {
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
+                $images[$pricing->sub_id] = $matchingimages;
             }
         }
-        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures', 'orderitem'));
+        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures', 'orderitem', 'images'));
     }
     public function commentupdate(Request $request, $id)
     {

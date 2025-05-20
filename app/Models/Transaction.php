@@ -32,4 +32,8 @@ class Transaction extends Model
     public function product(){
         return $this->hasOne(Items::class,'id','product_id');
     }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
 }
