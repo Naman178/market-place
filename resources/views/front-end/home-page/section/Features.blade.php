@@ -12,7 +12,7 @@
                     <span class="label-line"></span> Features
                  </p>
                 <div class="integration">
-                    <h1>Why Choose <span class="underline">Infinity Softech?</span></h1>
+                    <h2>Why Choose <span class="underline">Infinity Softech?</span></h2>
                     {{-- <img class="vector2_img" src="{{ asset('front-end/images/Vector 4.png') }}" alt="not found"> --}}
                     <p class="integra_p mb-60 mt-3">
                         At Infinity Softech, we provide cutting-edge digital solutions that simplify your business processes, enhance efficiency, and drive success. Our expertise in web and mobile development ensures you get the best tools for your needs.

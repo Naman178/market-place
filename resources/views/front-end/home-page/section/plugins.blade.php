@@ -6,10 +6,10 @@
         </p>
 
         <div class="wordpress_plugin">
-            <h1>
+            <h2>
                 Powerful <span>Features</span> <br>
                 to Elevate Your <span class="underline">Store</span>
-            </h1>
+            </h2>
         </div>
 
         <!-- Ensure all cards are inside a single row -->
