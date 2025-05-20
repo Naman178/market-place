@@ -95,7 +95,7 @@
                                 <div class="wsus__pro_det_img">
                                     <div class="row">
                                         @foreach ($item->images as $image)
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
                                                 <img src="{{ asset('public/storage/items_files/' . $image->image_path) }}" alt="product" class="img-fluid w-100 h-100">
                                             </div>
                                         @endforeach
