@@ -376,7 +376,6 @@
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="trial_period_days" id="trial_period_days" value="">
-                    <input type="hidden" name="plan_interval" id="plan_interval" value="{{ $plan->pricing->billing_cycle ?? ''}}">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">

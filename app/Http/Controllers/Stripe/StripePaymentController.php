@@ -40,7 +40,7 @@ class StripePaymentController extends Controller
         $currency = $input['currency'];
         $quantity = $input['final_quantity'];
         $trial_period_days = $input['trial_period_days'] ?? 0;
-        $input_interval = strtolower($input['plan_interval'] ?? 'month');
+        $input_interval = strtolower($input['billing_cycle'] ?? 'month');
 
         switch ($input_interval) {
             case 'monthly':
