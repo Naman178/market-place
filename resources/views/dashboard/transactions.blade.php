@@ -28,8 +28,13 @@
                                     <td> {{ $tran->payment_status ? ($tran->payment_status == 'captured' ? 'Success' : $tran->payment_status) : '' }}
                                     </td>
                                     <td> 
-                                        {{ $tran->currency ?? 'INR' }}   
-                                        {{ number_format(ceil((float) $tran->payment_amount / 100), 2, '.', '') }}
+                                        {{ $tran->currency ?? 'INR' }} 
+                                        @if(isset($tran->invoice->discount))
+                                            {{ number_format(ceil((float) $tran->payment_amount / 100), 2, '.', '') }}
+                                        @else
+                                            {{ number_format(((float) $tran->payment_amount / 100), 2, '.', '') }}
+                                        @endif  
+                                        
                                     </td>
                                     <td>
                                         @if ($tran->pricing->pricing_type == 'recurring')

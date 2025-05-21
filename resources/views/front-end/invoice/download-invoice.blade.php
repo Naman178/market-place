@@ -259,6 +259,9 @@
                    @php
                         $total = ceil($invoice->total); 
                         $total = number_format($total, 2); 
+                        if($invoice->discount > 0){
+                            $total = $invoice->total;
+                        }
                     @endphp
                     <td colspan="3">Total Amount</td>
                     <td>  {{ $product->currency ?? 'Rs.'}} {{ $total ?? '' }}
