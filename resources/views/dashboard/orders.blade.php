@@ -103,7 +103,11 @@
                                                             <div class="ml-2">
                                                                 <p class="mb-0 ml-2">
                                                                     {{ $order->currency ?? 'INR' }}   
-                                                                    {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @if(isset($order->invoice->discount))
+                                                                        {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @else
+                                                                         {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @endif
                                                                 </p>
                                                             </div>
                                                         </div>

@@ -69,9 +69,9 @@
                         $itemPrice = (int) $selectedPricing['sale_price'];
                         $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
                         $discount = (int) ($selectedPricing['discount'] ?? 0);
-                        $final_total = $itemPrice + $gst;
+                        $final_total = $itemPrice;
                     @endphp
-                    <p>Total: <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
+                    <p>Total: <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
               
             <!-- </div> -->
         </div>
@@ -83,7 +83,7 @@
         <div class="border-top"></div>
         <div class="d-flex align-items-center justify-content-between">
             <h5 id="items-count">1 Items</h5>
-            <h5> <span class="ml-2"> <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
+            <h5> <span class="ml-2"> <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
         </div>
     </div>
     @endforeach

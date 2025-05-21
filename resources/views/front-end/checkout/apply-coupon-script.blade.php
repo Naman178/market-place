@@ -150,9 +150,11 @@
             let final_total = selectedtotal - selecteddiscount;
             console.log(itemPrice , gst , selecteddiscount, selectedtotal, final_total);
             let formattedTotal = new Intl.NumberFormat('en-IN').format(final_total);
+            $('#amount').val(final_total * 100);
+            $('.final_btn_text').text("INR " + formattedTotal);
             $('#final_total').text("INR " + formattedTotal);
             $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text("Proceed To Pay " + formattedTotal + " INR");
-            $('[name="amount"]').val(selectedtotal * 100);
+            $('[name="amount"]').val(final_total * 100);
             $('[name="discount_value"]').val(selecteddiscount);
             $('[name="final_coupon_code"]').val(selectedCouponId);
             let selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');

@@ -368,7 +368,7 @@
                     @endif
                     <input type="hidden" name="final_quantity" id="final_quantity" value="1">
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
-                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}">
+                    <input type="hidden" class="amount" id="amount" name="amount" value="{{ $final_total * 100 }}">
                     <input type="hidden" id="amount" name="currency" value="{{  $plan->currency ?? 'INR' }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="final_coupon_code" id="final_coupon_code" value="">
@@ -514,7 +514,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg>
-                                    <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                    <span class="final_btn_text"> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                                
                                 </button>
                                 

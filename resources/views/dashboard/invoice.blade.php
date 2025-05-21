@@ -34,7 +34,10 @@
                                     <td> {{ $inv->order->id ?? 'N/A' }} </td>
                                     @php
                                         $total = ceil($inv->total); 
-                                        $total = number_format($total, 2); 
+                                        $total = number_format($total, 2);
+                                        if($inv->discount > 0){
+                                            $total = $inv->total;
+                                        } 
                                     @endphp
                                     <td> {{ $inv->order->product->currency ?? 'Rs.' }} {{ $total ?? '' }}</td>
 
