@@ -315,9 +315,7 @@ class HomePageController extends Controller
 
         // Collect all unique tag IDs from items
         $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
-
-        // Fetch tags linked to those IDs
-        $tags = ItemsTag::whereIn('id', $tagIds)->get();
+        $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
 
         return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
     }
