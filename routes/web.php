@@ -55,6 +55,7 @@ Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->
 // Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
+Route::get('/items/filter', [HomePageController::class, 'filterProducts'])->name('filter_products');
 Route::get('/category/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
