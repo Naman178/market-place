@@ -174,6 +174,9 @@
                                                 $taxAmount = ($subtot * $invoice->gst_percentage) / 100;
                                                 $taxAmount = round($taxAmount);
                                                 $total = round($invoice->total);
+                                                if($invoice->discount > 0){
+                                                    $total = $invoice->total;
+                                                }
                                             @endphp
                                             <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ number_format($taxAmount, 2) ?? '' }} </p>
                                         @endif

@@ -156,9 +156,17 @@
     });
 
     function dynamicCalculation() {
-        let subTotalText = $("#subtotal_amount").data('amount');
-        let subTotal = parseInt(subTotalText.replace(/[^0-9]/g, "")); 
-        let quantity = parseInt($("#quantity").val());
+        let subTotalRaw = $("#subtotal_amount").data('amount'); 
+
+        if (typeof subTotalRaw === 'undefined' || subTotalRaw === null) {
+            console.error("Subtotal amount is missing!");
+            return;
+        }
+
+        let subTotal = parseInt(subTotalRaw); // Convert directly if it's numeric
+
+        let quantity = parseInt($("#quantity").val()) || 1;
+
         
         if (!isNaN(quantity)) {
             setTimeout(function() {
@@ -251,6 +259,7 @@
 
         let finalTotal = quantity * subTotal;
         $("#subtotal_amount").text(currency + ' ' + finalTotal);
+        $('.finaltotals').text(currency + ' ' + finalTotal);
 
         let gstPr = $('#gst_amount').data('pr');
         let gstAmount = (gstPr / 100) * finalTotal;
