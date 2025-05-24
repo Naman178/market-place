@@ -2415,7 +2415,7 @@ div.ql-toolbar.ql-snow{
   margin-top: 25px;
 }
 .wsus__gallery_item_img {
-  height: 290px;
+  height: 230px;
   overflow: hidden;
   border-radius: 8px 8px 0px 0px;
   position: relative;
@@ -3270,7 +3270,7 @@ button:focus {
     display: none; /* Hidden by default */
 }
 
-.wsus__product_sidebar_area {
+/* .wsus__product_sidebar_area {
   box-shadow: 0px 6px 60px 5px rgba(0, 0, 0, 0.08);
   transform-origin: top;
   border-radius: 8px;
@@ -3285,7 +3285,27 @@ button:focus {
   -moz-transition: all linear .3s;
   -ms-transition: all linear .3s;
   -o-transition: all linear .3s;
+} */
+.wsus__product_sidebar_area {
+  box-shadow: 0px 6px 60px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  max-height: 650px;      
+  overflow-y: auto;      
+  transition: all linear .3s;
 }
+
+.subcategory-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 35px;
+}
+
+.subcategory-list.active {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 
 .wsus__product_sidebar {
   padding: 25px;
