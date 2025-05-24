@@ -177,7 +177,7 @@
             </div>
         </div>
     </div> --}}
-<div class="cust-page-padding">
+<div class="cust-page-padding pt-5 pb-5">
     <div class="faq">
         <div class="container  register-container">
             <div class="title">

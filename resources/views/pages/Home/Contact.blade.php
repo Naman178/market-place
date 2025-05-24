@@ -69,7 +69,7 @@
     </style>
 @endsection
 @section('content')
-    <div class="contact-us cust-page-padding">
+    <div class="contact-us pt-5 pb-5 cust-page-padding">
         <div class="container  register-container">
             <div class="title">
                 <h3><span class="txt-black">Contact  </span><span class="color-blue underline"> Us</span></h3>
