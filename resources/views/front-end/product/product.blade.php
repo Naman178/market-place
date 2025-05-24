@@ -202,7 +202,7 @@
             <div class="col-xl-9 col-lg-6 col-md-12">
                 <div id="items-container" class="row">
                 @foreach ($item as $items)
-                <div class="col-xl-5 col-md-12">
+                <div class="col-xl-4 col-md-12">
                     <div class="wsus__gallery_item">
                         <div class="wsus__gallery_item_img">
                             <img src="{{ asset('public/storage/items_files/' . $items->thumbnail_image) }}"
@@ -290,7 +290,7 @@
                         response.forEach(function(item) {
                             // Create the item HTML structure dynamically
                             var itemHTML = `
-                                <div class="col-xl-5 col-md-12">
+                                <div class="col-xl-4 col-md-12">
                                     <div class="wsus__gallery_item">
                                         <div class="wsus__gallery_item_img">
                                             <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -399,7 +399,7 @@
                 if (response.length > 0) {
                     response.forEach(function(item) {
                         var itemHTML = `
-                            <div class="col-xl-5 col-md-12">
+                            <div class="col-xl-4 col-md-12">
                                 <div class="wsus__gallery_item">
                                     <div class="wsus__gallery_item_img">
                                         <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
@@ -451,7 +451,7 @@
             if (response.length > 0) {
                 response.forEach(function(item) {
                     var itemHTML = `
-                        <div class="col-xl-5 col-md-12">
+                        <div class="col-xl-4 col-md-12">
                             <div class="wsus__gallery_item">
                                 <div class="wsus__gallery_item_img">
                                     <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">

@@ -107,6 +107,7 @@
 <meta name="twitter:title" content="{{ $seoData->title ?? 'Blogs - Market Place Main' }}">
 <meta name="twitter:description" content="{{ $seoData->description ?? 'Explore the latest blogs, insights, and trends on Market Place Main.' }}">
 <meta name="twitter:image" content="{{ $ogImage }}">
+<link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
 @endsection
 
 @section('content')
@@ -114,16 +115,11 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="int_bg blog mb-37">
-    <div class="container">
-        <p class="plugin-label">
-            <span class="label-line"></span> Recent Posts
-        </p>
-        <div class="d_flex">
-            <div class="integration">
-                <h1>Latest From Our <span class="underline">Blogs</span></h1>
-            </div>
-        </div>
+<div class="blog pt-5 pb-5 ">
+    <div class="container  register-container">
+        <div class="title">
+            <h3><span class="txt-black">Blogs </span></h3>
+        </div>  
         <div id="blogCarousel">
             <div class="row">
                 @foreach ($Blogs as $blog)

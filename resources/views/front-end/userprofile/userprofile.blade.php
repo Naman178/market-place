@@ -254,7 +254,7 @@ $ogImage = $logoImage
 @endsection
 @section('content')
     <div class="container">
-        <div class="checkout padding">
+        <div class="checkout  pt-5 padding">
             <div class="container  register-container">
                 <div class="title">
                     <h3><span class="txt-black">Profile   </span><span class="color-blue underline"> Details</span></h3>
