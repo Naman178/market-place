@@ -1,6 +1,7 @@
 @php 
  $site = \App\Models\Settings::where('key', 'site_setting')->first();
 @endphp
+<div class="sticky-header">
 <div class="container">
     <div class="header-row py-4">
         <div class="col p-0 m-0 logo-container">
