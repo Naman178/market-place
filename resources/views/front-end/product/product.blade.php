@@ -131,7 +131,7 @@
             </div>
         </div> --}}
         <div class="row">
-            <div class="col-xl-11 col-md-12">
+            <div class="col-xl-12 col-md-12">
                 <div class="wsus__product_page_search">
                     <form id="search_form">
                         @foreach ($categories as $category)
