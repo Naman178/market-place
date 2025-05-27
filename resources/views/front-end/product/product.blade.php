@@ -261,7 +261,7 @@
                     <div class="wsus__gallery_item">
                         <div class="wsus__gallery_item_img">
                             <img src="{{ asset('public/storage/items_files/' . $items->thumbnail_image) }}"
-                                alt="gallery" class="img-fluid w-100">
+                                alt="gallery" class="img-fluid w-100 h-100">
                             <ul class="wsus__gallery_item_overlay">
                                 <li><a target="_blank" href="{{ $items->preview_url }}">Preview</a>
                                 </li>
