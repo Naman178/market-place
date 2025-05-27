@@ -351,7 +351,7 @@
                                 <div class="col-xl-4 col-md-12">
                                     <div class="wsus__gallery_item">
                                         <div class="wsus__gallery_item_img">
-                                            <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
+                                            <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100 h-100">
                                             <ul class="wsus__gallery_item_overlay">
                                                 <li><a target="_blank" href="${item.preview_url}">Preview</a></li>
                                                 <li><a href="/product-details/${item.id}">Buy Now</a></li> <!-- Use direct URL concatenation -->
@@ -493,7 +493,7 @@
                             <div class="col-xl-4 col-md-12">
                                 <div class="wsus__gallery_item">
                                     <div class="wsus__gallery_item_img">
-                                        <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100">
+                                        <img src="{{ asset('public/storage/items_files/') }}/${item.thumbnail_image}" alt="gallery" class="img-fluid w-100 h-100">
                                         <ul class="wsus__gallery_item_overlay">
                                             <li><a target="_blank" href="${item.preview_url}">Preview</a></li>
                                             <li><a href="/product-details/${item.id}">Buy Now</a></li>
@@ -681,7 +681,7 @@
                             <div class="col-xl-4 col-md-6">
                                 <div class="wsus__gallery_item">
                                     <div class="wsus__gallery_item_img">
-                                        <img src="/storage/items_files/${item.thumbnail_image}" alt="${item.name}" class="img-fluid w-100">
+                                        <img src="/storage/items_files/${item.thumbnail_image}" alt="${item.name}" class="img-fluid w-100 h-100">
                                         <ul class="wsus__gallery_item_overlay">
                                             <li><a target="_blank" href="${item.preview_url}">Preview</a></li>
                                             <li><a href="/product-details/${item.id}">Buy Now</a></li>
