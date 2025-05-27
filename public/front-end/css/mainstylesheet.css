@@ -2490,6 +2490,7 @@ div.ql-toolbar.ql-snow{
   width: 100%;
   font-size: 20px;
   font-weight: 700;
+  min-height: 50px;
   text-transform: capitalize;
   color: #333333;
   display: -webkit-box;

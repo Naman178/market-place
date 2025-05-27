@@ -238,6 +238,9 @@
     .header-container{
         padding: 0 !important;
     }
+    .sticky-header {
+       position: relative !important;
+    }
     .wordpress_plugin h1, .wordpress_plugin h1 span {
         font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
         list-style: 25px !important;

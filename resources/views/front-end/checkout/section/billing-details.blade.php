@@ -78,7 +78,7 @@
         <div class="cart-item-options">
             <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}">Remove</a>
             <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
-            <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a>
+            {{-- <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a> --}}
         </div>
         <div class="border-top"></div>
         <div class="d-flex align-items-center justify-content-between">

@@ -377,6 +377,10 @@
   transition: stroke-dashoffset 1s ease-in-out;
 }
 
+.coupon-btn .blue_common_btn svg { 
+  left: 0px;
+}
+
 .blue_common_btn:hover svg {
   stroke-dashoffset: -480;
 }

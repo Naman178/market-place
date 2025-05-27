@@ -146,9 +146,9 @@
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
             @if (!empty($category))
-                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
             @elseif (!empty($subcategory))
-                <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
             @endif
             <li><a href="{{ route('user-faq') }}">FAQs</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
