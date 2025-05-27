@@ -379,6 +379,7 @@
                             // Append the item HTML to the container
                             $("#items-container").append(itemHTML);
                         });
+                        matchItemHeights();
                         document.getElementById('clearFilterButton').style.display = 'block';
                     } else {
                         $('.no-items').removeClass('no-items');
@@ -516,6 +517,7 @@
                         `;
                         $("#items-container").append(itemHTML);
                     });
+                    matchItemHeights();
                     document.getElementById('clearFilterButton').style.display = 'block';
                 } else {
                     $('.no-items').removeClass('no-items');
@@ -701,6 +703,7 @@
                         
                         $('#items-container').append(itemHTML);
                     });
+                    matchItemHeights();
                     $('.no-items').removeClass('no-items');
                     document.getElementById('clearFilterButton').style.display = 'block';
                 } else {
@@ -724,5 +727,29 @@
             }
         });
     });
+    function matchItemHeights() {
+        let items = document.querySelectorAll('.wsus__gallery_item');
+        let maxHeight = 0;
+
+        // Find the tallest item
+        items.forEach(item => {
+            item.style.height = 'auto'; // Reset height to get actual size
+            let itemHeight = item.offsetHeight;
+            if (itemHeight > maxHeight) {
+                maxHeight = itemHeight;
+            }
+        });
+
+        // Apply max height to all items
+        items.forEach(item => {
+            item.style.height = maxHeight + "px";
+        });
+    }
+
+    // Run function when the page loads
+    window.addEventListener('load', matchItemHeights);
+
+    // Run function again when resizing the window
+    window.addEventListener('resize', matchItemHeights);
 </script>
 @endsection
