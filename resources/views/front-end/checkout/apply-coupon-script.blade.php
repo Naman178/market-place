@@ -403,9 +403,11 @@
             });
         // }
         
-        $(".remove-item").on("click", function () {
+       $(document).on("click", ".remove-item", function () {
             let planId = $(this).data("plan-id");
             let pricingId = $(this).data("pricing-id");
+            let categoryName = $(this).data("category"); // Get category name
+            let subcategorySlug = $(this).data("slug"); // Get subcategory slug
 
             $.ajax({
                 url: "{{ route('cart.remove') }}",
@@ -419,11 +421,18 @@
                     if (response.success) {
                         $("#cart-container-" + planId + "-" + pricingId).fadeOut(300, function () {
                             $(this).remove();
-                            location.reload();
-                            recalculateTotals();
+
+                            // After removal, check if cart is empty
+                            if ($(".cart-item").length === 0) {
+                                // Use category and subcategory slug for correct redirect
+                                let redirectUrl = "{{ url('category') }}/" + categoryName + "/" + subcategorySlug;
+                                window.location.href = redirectUrl;
+                            } else {
+                                recalculateTotals();
+                            }
                         });
                     } else {
-                        toastr.error("Error removing item");
+                        toastr.error(response.message || "Error removing item");
                     }
                 },
                 error: function () {
