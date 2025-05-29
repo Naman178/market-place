@@ -134,13 +134,17 @@ class CheckoutController extends Controller
         ];
         session()->put('cart', $cart);
 
+        // $couponCodes = Coupon::where('status', 'active')
+        //     ->withCount('usage')
+        //     ->get()
+        //     ->filter(function ($coupon) {
+        //         return $coupon->usage_count < $coupon->total_redemptions &&
+        //             $coupon->valid_until > now();
+        //     });
         $couponCodes = Coupon::where('status', 'active')
-            ->withCount('usage')
-            ->get()
-            ->filter(function ($coupon) {
-                return $coupon->usage_count < $coupon->total_redemptions &&
-                    $coupon->valid_until > now();
-            });
+        ->withCount('usage')
+        ->where('valid_until', '>', now())
+        ->get(); 
 
         return view('front-end.checkout.checkout', compact(
             'countaries',

@@ -127,10 +127,17 @@
         var itemId = "{{ $plan->id }}";
         console.log("{{ $plan->pricing->fixed_price}}")
         var storeid = localStorage.getItem("itemId");
-        var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
-        var gst = Math.round(
-            parseFloat("{{$totalGST ?? ( $selectedPricing->gst_percentage) / 100 * ($selectedPricing['sale_price'] ?? $selectedPricing->sale_price) }}") || 0
-        );
+        // var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
+        // var gst = Math.round(
+        //     parseFloat("{{$totalGST ?? ( $selectedPricing->gst_percentage) / 100 * ($selectedPricing['sale_price'] ?? $selectedPricing->sale_price) }}") || 0
+        // );
+        let itemPrice = parseFloat($("#sale_price").val()) || 0;
+        let gst = parseFloat($("#gst_percentage").val()) || 0;
+
+        let totalGst = Math.round(itemPrice * gst / 100);
+
+        console.log(itemPrice, gst, totalGst );
+        
         if (itemId != storeid) {
             localStorage.removeItem("selectedCouponId");
             localStorage.removeItem("selectedCouponCode");
@@ -142,13 +149,13 @@
         let selectedCouponId = localStorage.getItem("selectedCouponId");
         let selectedCouponCode = localStorage.getItem("selectedCouponCode");
         // let selectedtotal = localStorage.getItem("selectedtotal");
-        let selectedtotal = (itemPrice + gst).toFixed(2);
+        let selectedtotal = (itemPrice + totalGst).toFixed(2);
         let selecteddiscount = localStorage.getItem("selecteddiscount");
         $("#discount_amount").text("INR " + selecteddiscount);
         
         if (selectedCouponId) {
             let final_total = selectedtotal - selecteddiscount;
-            console.log(itemPrice , gst , selecteddiscount, selectedtotal, final_total);
+            console.log(itemPrice , totalGst , selecteddiscount, selectedtotal, final_total);
             let formattedTotal = new Intl.NumberFormat('en-IN').format(final_total);
             $('#amount').val(final_total * 100);
             $('.final_btn_text').text("INR " + formattedTotal);
@@ -268,16 +275,23 @@
             hideAppliedCouponSection();
 
             // Calculate the total price including GST
-            let fixedPrice = parseFloat("{{ $plan->pricing->sale_price }}");
-            let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
-            let quantity = $('#quantity').text();
-            // console.log(quantity);
+            let fixedPrice = parseFloat($("#sale_price").val()) || 0;
+            let gstPercentage = parseFloat($("#gst_percentage").val()) || 0;
+            let quantity = parseInt($('#quantity').text()) || 1; // Ensure integer
+
             fixedPrice = fixedPrice * quantity;
+
             let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
+
+            console.log(totalWithGst, fixedPrice, gstPercentage, quantity);
+
             let roundedAmount = Math.round(totalWithGst);
 
-            // Format the total
+            // Format the total for Indian locale
             let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
+            console.log('formattedTotal', formattedTotal);
+
+            
 
             // Update the UI with the new final total
             $('#final_total').text("INR " + formattedTotal);
