@@ -205,3 +205,9 @@
     font-size: 30px !important;
 }
 }
+
+.coupon .blue_common_btn svg {
+    left: 0px;
+    position: absolute;
+    width: 101%;
+}

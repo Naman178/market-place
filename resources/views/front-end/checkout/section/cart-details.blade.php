@@ -61,6 +61,8 @@
                 <div class="text-center">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
             <div class="coupon-container card cart-doted-border">
+                <input type="hidden" id="sale_price" value="{{ round($selectedPricing->sale_price) }}"/>
+                <input type="hidden" id="gst_percentage" value="{{round( $selectedPricing->gst_percentage ) }}"/>
                 <div class="card-body mb-3 coupon-overflow">
                     @if ($couponCodes->count() != 0)
                         @php
@@ -73,7 +75,7 @@
                             $autoApplyCoupon = $autoApplyCoupons->sortBy('discount_value')->first();
                         @endphp
 
-                        @foreach ($couponCodes as $item)
+                        {{-- @foreach ($couponCodes as $item)
                             @php
                                 $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
                                 $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
@@ -85,24 +87,63 @@
                                     <input type="hidden" name="discount_coupon_type" id="discount_coupon_type" data-type="{{$item->discount_type}}" value="{{$item->discount_value}}">
                                     <div class="card">
                                         <div class="card-body p-10">
-                                            <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center justify-content-between coupon">
                                                 <div class="font_weight_600">{{$item->coupon_code}}</div>
-                                                {{-- <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
+                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
                                                     {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
                                                     data-coupon-id="{{$item->id}}"
                                                     data-coupon-code="{{$item->coupon_code}}">
                                                     {{ $isAutoApplied ? 'Remove' : 'Apply' }}
-                                                </button> --}}
-                                                <button class="blue_common_btn d-inline-block border-0 m-0 coupon-btn"  {{ $isAutoApplied ? 'remove-btn' : '' }}" 
-                                                    type="button" id="topapplybtn"
-                                                    data-coupon-id="{{$item->id}}"
-                                                    data-coupon-code="{{$item->coupon_code}}">
+                                                </button>
+                                                <button class="blue_common_btn border-0 m-0 coupon-btn {{ $isAutoApplied ? 'remove-btn' : '' }}"
+                                                        type="button"
+                                                        data-coupon-id="{{ $item->id }}"
+                                                        data-coupon-code="{{ $item->coupon_code }}">
                                                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                                     </svg>
-                                                    <span>  {{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
+                                                    <span>{{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach --}}
+                        @foreach ($couponCodes as $item)
+                            @php
+                                $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value . '%';
+                                $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
+                            @endphp
+
+                            <div class="card mt-4 coupon-max-width">
+                                <div class="card-body">
+                                    <h5 class="mt-0">{{ $val }}</h5>
+                                    <p>
+                                        Same fee {{ $val }} for all products in the order.
+                                        You will get {{ $val }} off, up to {{ $item->max_discount }}.
+                                    </p>
+
+                                    <input type="hidden" name="discount_coupon_type" id="discount_coupon_type"
+                                        data-type="{{ $item->discount_type }}" value="{{ $item->discount_value }}">
+
+                                    <div class="card">
+                                        <div class="card-body p-10">
+                                            <div class="d-flex align-items-center justify-content-between coupon">
+                                                <div class="font_weight_600">{{ $item->coupon_code }}</div>
+
+                                                {{-- Always show button --}}
+                                                <button class="blue_common_btn border-0 m-0 coupon-btn {{ $isAutoApplied ? 'remove-btn' : '' }}"
+                                                        type="button"
+                                                        data-coupon-id="{{ $item->id }}"
+                                                        data-coupon-code="{{ $item->coupon_code }}">
+                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                    </svg>
+                                                    <span>{{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
                                                 </button>
                                             </div>
                                         </div>
