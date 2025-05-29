@@ -32,7 +32,7 @@
 <div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
     <p class="mb-0 mt-3" style="position: relative;">
     <div class="mb-5 cart-item-border text-center">Product Details</div>
-    @if (!empty($mergedPricing))
+    {{-- @if (!empty($mergedPricing))
     @foreach ($mergedPricing as $key => $selectedPricing)
     <div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
         <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
@@ -76,9 +76,9 @@
             <!-- </div> -->
         </div>
         <div class="cart-item-options">
-            <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}">Remove</a>
+            <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}"data-category="{{ $categoryName }}" data-slug="{{ $subcategorySlug }}" >Remove</a>
             <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
-            {{-- <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a> --}}
+            <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a>
         </div>
         <div class="border-top"></div>
         <div class="d-flex align-items-center justify-content-between">
@@ -86,8 +86,8 @@
             <h5> <span class="ml-2"> <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
         </div>
     </div>
-    @endforeach
-    @else
+    @endforeach --}}
+    {{-- @else
 
     <div class="row mb-3 pb-3 cart-item">
         <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
@@ -108,8 +108,75 @@
                 Quantity: 1
             </h5>
         </div>
+    </div> --}}
+    {{-- @endif --}}
+    @php
+    $selectedPricing = $cart['pricing'];
+    $plan = $cart['item'];
+
+    $itemPrice = (int) $selectedPricing['sale_price'];
+    $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
+    $discount = (int) ($selectedPricing['discount'] ?? 0);
+    $final_total = $itemPrice;
+@endphp
+
+<div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
+    <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
+        <!-- Product Image -->
+        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
+             alt="{{ $plan->name }}"
+             class="h-30 w-30">
+
+        <!-- Product Details -->
+        <div class="cart-item-details">
+            <h2 class="cart-item-title">{{ $plan->name }}</h2>
+        </div>
+
+        <!-- Price and Quantity -->
+        <p>Each
+            <span class="d-block">
+                {{ $plan->currency ?? 'INR' }}
+                <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong>
+                {{ $selectedPricing['billing_cycle'] ?? '' }}
+            </span>
+        </p>
+
+        <div>
+            <label for="quantity">Quantity:</label>
+            <select class="d-block w-50" id="quantity" onchange="dynamicCalculation()">
+                @for ($i = 1; $i <= 10; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+        </div>
+
+        <p>Total:
+            <strong class="d-block finaltotals">
+                {{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}
+            </strong>
+        </p>
     </div>
-    @endif
+
+    <!-- Remove and Wishlist -->
+    <div class="cart-item-options">
+        <a class="remove-item"
+           data-plan-id="{{ $plan->id }}"
+           data-pricing-id="{{ $selectedPricing['id'] }}"
+           data-category="{{ $categoryName }}"
+           data-slug="{{ $subcategorySlug }}">
+            Remove
+        </a>
+        <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
+    </div>
+
+    <div class="border-top"></div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h5 id="items-count">1 Item</h5>
+        <h5><strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}</strong></h5>
+    </div>
+</div>
+
     
     <!-- <div class="cart-items mt-3">
         @if (!empty($mergedPricing))
