@@ -289,143 +289,8 @@
                     </div>
                 {{-- </div> --}}
             </div>
-            @endif
-        </div>
-        <div class="col-xl-4 col-lg-12 col-md-12">
-            <div class="wsus__sidebar pl_30 xs_pl_0" id="sticky_sidebar">
-                @if ($item->pricing['pricing_type'] === 'one-time')
-                    <div class="wsus__sidebar_licence">
-                        <h2 class="p-0">
-                            @if($item->pricing['fixed_price'] != $item->pricing['sale_price']) 
-                              <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
-                            @endif 
-                            
-                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
-                            <strong class="new-price" id="price">{{ $item->pricing['sale_price'] ?? 0 }}</strong> </span>
-                        </h2>
-                        @foreach ($item->features as $feature)
-                            <ul class="p-0">
-                                <li class="txt-white">
-                                    <div class="d_flex align-items-center">
-                                        <i class="fa fa-check"></i>
-                                        {{ $feature->key_feature ?? '' }}
-                                    </div>
-                                </li>
-                            </ul>
-                        @endforeach
-                        <ul class="button_area mt_50 d-flex flex-wrap mb-0">
-                            <li><a class="white_signup_btn" target="__blank"
-                                    href="{{ $item->preview_url }}">
-                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                    </svg>
-                                    <span>  Live Preview </span></a></li>
-                            <li><a class="common_btn white_signup_btn" href="{{ route("checkout", ["id" => base64_encode($item->id)]) }}" target="_blank"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                            </svg>
-                            <span> add to cart </span></a></li>
-                        </ul>
-                        {{-- <ul class="sell_rating mt_20 d-flex flex-wrap justify-content-between">
-                            <li><i class="far fa-comments" aria-hidden="true"></i> {{ $userCommentsCount ?? 0 }}</li>
-                            <li><i class="far fa-star" aria-hidden="true"></i> {{ $userReviewsCount ?? 0 }}</li>
-                        </ul> --}}
-                    </div>
-                @endif
-                @if ($item->pricing['pricing_type'] == 'one-time')
-                    <div class="wsus__sidebar_pro_info mt_30">
-                @else
-                    <div class="wsus__sidebar_pro_info ">
-                @endif
-                    <h3>product Info</h3>
-                    <ul class="p-0">
-                        <li><span>Released</span> {{ $item->created_at->format('M d, Y') }}</li>
-                        <li><span>Updated</span> {{ $item->updated_at->format('M d, Y') }}</li>
-                        <li><span>File Type</span> Zip</li>
-                        <li><span>High Resolution</span> Yes</li>
-                        <li><span>Cross browser</span> Yes</li>
-                        <li><span>Documentation</span> Yes</li>
-                        <li><span>Responsive</span> Yes</li>
-                        <li><span>Tags</span>
-                            <p>
-                                @foreach ($item->tags as $tag)
-                                    @if ($category)
-                                        <a href="{{ route('product.list', [
-                                            'category' => $category->name ?? null,
-                                            'slug' => Str::slug($subcategory['name'] ?? ''),
-                                            'tag' => $tag['tag_name'] ?? ''
-                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
-                                    @elseif ($subcategory)
-                                        <a href="{{ route('product.list', [
-                                            'category' => $category->name ?? null,
-                                            'slug' => Str::slug($subcategory['name'] ?? ''),
-                                            'tag' => $tag['tag_name'] ?? ''
-                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
-                                    @endif
-                                @endforeach
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @if ($item->pricing['pricing_type'] === 'recurring')
-        {{-- <div class="row justify-content-start bg-white mt-5 ml-22"> --}}
-            <div class="col-xl-12 col-lg-12 mt-5">
-                    <div class="price-slick-slider">
-                        @foreach ($pricingData as $index => $price)
-                            <div class="slick-slide">
-                                <div class="wsus__sidebar_licence mr-2 ml-2">
-                                    <div class="price-slide">
-                                        <h2 class="p-0">
-                                            @if($price->fixed_price != $price->sale_price) 
-                                                <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $price->fixed_price ?? 0 }}</strong> </span>
-                                            @endif 
-                                            
-                                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
-                                            <strong class="new-price" id="price">{{ $price->sale_price ?? 0 }}</strong> </span>
-                                            @if(isset($price->billing_cycle))
-                                                <span class="text-capitalize billing_cycle">per {{ $price->billing_cycle }}</span>
-                                            @endif
-                                        </h2>
-                                        
-                                        @if (isset($filteredFeatures[$price->sub_id]))
-                                            @foreach ($filteredFeatures[$price->sub_id] as $feature)
-                                            <ul class="p-0">
-                                                <li class="txt-white">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fa fa-check"></i>
-                                                        {{ $feature->key_feature ?? '' }}
-                                                    </div>
-                                                </li>
-                                            </ul>                                    
-                                            @endforeach
-                                        @endif
-                                        <ul class="button_area mt_50 d-flex flex-wrap mb-0 p-0">
-                                            <li>
-                                                <a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a>
-                                            </li>
-                                            <li class="ml-1 mt-3">
-                                                <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">
-                                                    Add to Cart
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        {{-- <ul class="sell_rating mt_20 d-flex flex-wrap justify-content-between">
-                                            <li><i class="far fa-comments"></i> {{ $userCommentsCount ?? 0 }}</li>
-                                            <li><i class="far fa-star"></i> {{ $userReviewsCount ?? 0 }}</li>
-                                        </ul> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                
-            </div>
-        {{-- </div> --}}
-        <div class="col-xl-8 col-lg-7">
-            <div class="wsus__product_details_text">
+            @else
+             <div class="wsus__product_details_text">
                 <ul class="nav" id="pills-tab">
                     <li class="nav-item">
                         <button class="nav-link active" id="pills-home-tab" data-target="pills-home">
@@ -647,11 +512,153 @@
                     </div>
                 {{-- </div> --}}
             </div>
+            @endif
         </div>
-        
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-4 col-lg-12 col-md-12">
+            <div class="wsus__sidebar pl_30 xs_pl_0" id="sticky_sidebar">
+                @if ($item->pricing['pricing_type'] === 'one-time')
+                    <div class="wsus__sidebar_licence">
+                        <h2 class="p-0">
+                            @if($item->pricing['fixed_price'] != $item->pricing['sale_price']) 
+                              <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
+                            @endif 
+                            
+                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
+                            <strong class="new-price" id="price">{{ $item->pricing['sale_price'] ?? 0 }}</strong> </span>
+                        </h2>
+                        @if(count($item->features) > 0)
+                            <ul class="p-0 m-0">
+                                <li class="txt-white">
+                                    <div class="d-flex justify-content-between align-items-center accordion-toggle" 
+                                        style="cursor: pointer;" 
+                                        data-target="#item-features-{{ $item->id }}">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-check mr-2"></i>
+                                            {{ $item->features[0]->key_feature ?? '' }}
+                                        </div>
+                                        <i class="fa fa-chevron-down toggle-icon"></i>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            @if(count($item->features) > 1)
+                                <div class="accordion-content" id="item-features-{{ $item->id }}"  style="display: none;">
+                                    <ul class="p-0">
+                                        @foreach ($item->features->slice(1) as $feature)
+                                            <li class="txt-white">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa fa-check mr-2"></i>
+                                                    {{ $feature->key_feature ?? '' }}
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        @endif
+
+                        <ul class="button_area mt_50 d-flex flex-wrap mb-0">
+                            <li><a class="white_signup_btn" target="__blank"
+                                    href="{{ $item->preview_url }}">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span>  Live Preview </span></a></li>
+                            <li><a class="common_btn white_signup_btn" href="{{ route("checkout", ["id" => base64_encode($item->id)]) }}" target="_blank"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                            </svg>
+                            <span> add to cart </span></a></li>
+                        </ul>
+                    </div>
+                @else
+                    @foreach ($pricingData as $index => $price)
+                        <div class="wsus__sidebar_licence {{ $index != 0 ? 'mt_30' : '' }} ml-2">
+                            <div class="price-slide">
+                                <h2 class="p-0">
+                                    @if($price->fixed_price != $price->sale_price) 
+                                        <span class="old-price">{{ $item->currency ?? 'INR' }} <strong>{{ $price->fixed_price ?? 0 }}</strong></span>
+                                    @endif 
+                                    <span class="ml-2">{{ $item->currency ?? 'INR' }} 
+                                    <strong class="new-price" id="price">{{ $price->sale_price ?? 0 }}</strong></span>
+                                    @if(isset($price->billing_cycle))
+                                        <span class="text-capitalize billing_cycle">per {{ $price->billing_cycle }}</span>
+                                    @endif
+                                </h2>
+
+                                @if (isset($filteredFeatures[$price->sub_id]) && count($filteredFeatures[$price->sub_id]) > 0)
+                                    <ul class="p-0 m-0">
+                                        <li class="txt-white">
+                                            <div class="d-flex justify-content-between align-items-center accordion-toggle" style="cursor: pointer;" data-target="#accordion-{{ $index }}">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa fa-check mr-2"></i>
+                                                    {{ $filteredFeatures[$price->sub_id][0]->key_feature ?? '' }}
+                                                </div>
+                                                <i class="fa fa-chevron-down toggle-icon"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    @if(count($filteredFeatures[$price->sub_id]) > 1)
+                                        <div class="accordion-content" id="accordion-{{ $index }}" style="display: none;">
+                                            <ul class="p-0">
+                                                @foreach($filteredFeatures[$price->sub_id]->slice(1) as $feature)
+                                                    <li class="txt-white">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fa fa-check mr-2"></i>
+                                                            {{ $feature->key_feature ?? '' }}
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                @endif
+
+                                <ul class="button_area d-flex flex-wrap mb-0 p-0">
+                                    <li><a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a></li>
+                                    <li class="ml-1 mt-3">
+                                        <a class="common_btn" href="{{ route('checkout', ['id' => base64_encode($item->id), 'pricing_id' => $price->id]) }}" target="_blank">Add to Cart</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    @endforeach
+                 @endif
+                    <div class="wsus__sidebar_pro_info mt_30">
+                    <h3>product Info</h3>
+                    <ul class="p-0">
+                        <li><span>Released</span> {{ $item->created_at->format('M d, Y') }}</li>
+                        <li><span>Updated</span> {{ $item->updated_at->format('M d, Y') }}</li>
+                        <li><span>File Type</span> Zip</li>
+                        <li><span>High Resolution</span> Yes</li>
+                        <li><span>Cross browser</span> Yes</li>
+                        <li><span>Documentation</span> Yes</li>
+                        <li><span>Responsive</span> Yes</li>
+                        <li><span>Tags</span>
+                            <p>
+                                @foreach ($item->tags as $tag)
+                                    @if ($category)
+                                        <a href="{{ route('product.list', [
+                                            'category' => $category->name ?? null,
+                                            'slug' => Str::slug($subcategory['name'] ?? ''),
+                                            'tag' => $tag['tag_name'] ?? ''
+                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
+                                    @elseif ($subcategory)
+                                        <a href="{{ route('product.list', [
+                                            'category' => $category->name ?? null,
+                                            'slug' => Str::slug($subcategory['name'] ?? ''),
+                                            'tag' => $tag['tag_name'] ?? ''
+                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
+                                    @endif
+                                @endforeach
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        @endif
     </div>
 </div>
 @endsection
@@ -975,7 +982,31 @@ function cancelEdit(reviewId) {
     document.querySelector(`.review-cancel-btn-${reviewId}`).classList.add('d-none');
     document.querySelector(`.review-edit-btn-${reviewId}`).classList.remove('d-none');
 }
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".accordion-toggle").forEach(function(toggle) {
+        toggle.addEventListener("click", function() {
+            const target = document.querySelector(this.getAttribute("data-target"));
+            const icon = this.querySelector('.toggle-icon');
 
+            if (target.style.display === "none" || target.style.display === "") {
+                target.style.display = "block"; // Show content
+                
+                let height = target.scrollHeight + "px";
+                target.style.overflow = "hidden"; // Prevent layout shift
+                target.animate([{ height: "0px" }, { height: height }], { duration: 400, easing: "ease-out" });
+
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                target.animate([{ height: target.scrollHeight + "px" }, { height: "0px" }], { duration: 400, easing: "ease-in" })
+                    .onfinish = () => target.style.display = "none"; // Hide after animation
+
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+    });
+});
 
 </script>   
 @endsection
