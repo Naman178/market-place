@@ -355,11 +355,18 @@
                     }
                 }
 
+                // function handleBlur(input) {
+                //     const label = input.nextElementSibling;
+                //     if (input.value.trim() === "") {
+                //         label.style.color = "red";
+                //         label.style.top = input.id === "email"  : "35%"; // Email stays 18% on error, others at 35%
+                //     }
+                // }
                 function handleBlur(input) {
                     const label = input.nextElementSibling;
                     if (input.value.trim() === "") {
                         label.style.color = "red";
-                        label.style.top = input.id === "email" ? "18%" : "35%"; // Email stays 18% on error, others at 35%
+                        label.style.top = "35%"; // Uniform for all fields now, including email
                     }
                 }
 
@@ -378,7 +385,8 @@
                                 errorDiv.style.display = "block";
                             }
                             input.style.borderColor = "red";
-                            label.style.top = input.id === "email" ? "18%" : "35%";
+                            // label.style.top = input.id === "email" ? "18%" : "35%";
+                            label.style.top = "35%";
                             label.style.fontSize = "1rem";
                             label.style.color = "red";
                         } else {

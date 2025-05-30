@@ -421,7 +421,7 @@
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
-                        <input class="form-control" size="4" type="text" id="name_on_card" required="">
+                        <input class="form-control" size="4" type="text" id="name_on_card" required>
                         <div class="error" id="name_on_card_error"></div>
                     </div>
                 </div>
@@ -430,7 +430,8 @@
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Card Number</label>
-                        <input type="number" autocomplete="off" class="form-control card-number" id="card_number" name="card_number" size="20" placeholder="xxxx xxxx xxxx xxxx"  required="">
+                        <input type="text" autocomplete="off" class="form-control card-number" id="card_number" 
+                            name="card_number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" required>
                         <div class="error" id="card_number_error"></div>
                     </div>
                 </div>
@@ -439,21 +440,24 @@
                 <div class="form-row row">
                     <div class="col-xs-12 col-md-4 form-group expiration">
                         <label class="control-label">Expiration Month</label>
-                        <input  type="number" class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month"  required="">
+                        <input type="text" class="form-control card-expiry-month" placeholder="MM" 
+                            id="card_exp_month" maxlength="2" name="card_month" required>
                         <div class="error" id="card_exp_month_error"></div>
                     </div>
 
                     <!-- Expiration Year -->
                     <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Expiration Year</label>
-                        <input  type="number" class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year"  required="">
+                        <input type="text" class="form-control card-expiry-year" placeholder="YY" 
+                            id="card_exp_year" maxlength="2" name="card_year" required>
                         <div class="error" id="card_exp_year_error"></div>
                     </div>
 
                     <!-- CVC -->
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
-                        <input  type="password" autocomplete="off" class="form-control card-cvc" id="card_cvc" name="card_cvc" placeholder="ex. 311" size="4"  required="">
+                        <input type="password" autocomplete="off" class="form-control card-cvc" 
+                            id="card_cvc" name="card_cvc" placeholder="ex. 311" maxlength="3" required>
                         <div class="error" id="card_cvc_error"></div>
                     </div>
                 </div>
@@ -550,7 +554,7 @@
                                     </span>
                                 </button>
                             @else
-                                <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                                <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn" id="guestProceedToPay">
                                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

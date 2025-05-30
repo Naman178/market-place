@@ -15,6 +15,7 @@ use Stripe\Stripe;
 use App\Models\ContactsCountryEnum;
 use App\Models\SEO;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Stripe\StripePaymentController;
 use Stripe\Charge;
 class RegisterController extends Controller
 {
@@ -67,21 +68,22 @@ class RegisterController extends Controller
     }
 
     public function userCreateCheckout(Request $request){
-        if($request->ajax()){
-         if(!Auth::user()->id){
-            $validator = Validator::make($request->all(), [
-                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/min:2',
-                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/min:2',
+        $data = $request->all();
+         if (!Auth::check()) {
+          $validator = Validator::make($request->all(), [
+                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/|min:2',
+                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/|min:2',
                 'email' => 'required|email|unique:users',
                 'country_code' => 'required',
-               'contact_number' => 'required|digits:10',
+                'contact_number' => 'required|digits:10',
                 'country' => 'required',
-                'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                 'city' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'postal' => 'required|digits_between:5,6',
+                'postal_code' => 'required|digits_between:5,6',
                 'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'company_website' => 'required|url',
-            ], 
+          ],
+
             $message = [                
                 'firstname.required' => 'The First Name Is Required.',
                 'firstname.regex' => 'The First Name should only contain letters and spaces.',
@@ -96,12 +98,12 @@ class RegisterController extends Controller
                 'contact.required' => 'Please Add Your Contact Number.',
                 'contact.digits' => 'The Contact Number must be exactly 10 digits.',
                 'country.required' => 'Please Select Any One Country.',
-                'address_line_one.required' => 'Please Add Your Address.',
-                'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+                'address_line1.required' => 'Please Add Your Address.',
+                'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                 'city.required' => 'The City Is Required.',
                 'city.regex' => 'The City name should only contain letters and spaces.',
-                'postal.required' => 'The Postal Code Is Required.',
-                'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
+                'postal_code.required' => 'The Postal Code Is Required.',
+                'postal_code.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
                 'company_name.required' => 'The Company Name is required.',
                 'company_name.regex' => 'The Company Name should only contain letters and spaces.',
                 'company_website.required' => 'Please enter a valid URL for the company website.',
@@ -160,78 +162,111 @@ class RegisterController extends Controller
                Mail::to($email)->send(new WelcomeEmail($save_user, $pass));
                 if ($save_user) {
                             
-                                // Set your secret key
-                                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                                // // Set your secret key
+                                // \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
                             
-                                // Get payment token from Stripe.js
-                                $token = $request->stripeToken;
-                                try {
+                                // // Get payment token from Stripe.js
+                                // $token = $request->stripeToken;
+                                // try {
                             
-                                    // Create a customer in Stripe
-                                  $customer = \Stripe\Customer::create([
-                                        'name' => $request->name,
-                                        'email' => $request->email,
-                                         'address' => [
-                                            'line1' => $request->address_line_one,
-                                            'line2' => $request->address_line_two,
-                                            'city' => $request->city,
-                                            'postal_code' => $request->postal_code,
-                                            'country' => $request->country,
-                                        ],
-                                    ]);
-                                      $customer_id = $customer->id;
-                                    // $customer = \Stripe\Customer::retrieve($customer_id);
-                                    // $customer->source = $token;
-                                    // $customer->save();
+                                //     // Create a customer in Stripe
+                                //   $customer = \Stripe\Customer::create([
+                                //         'name' => $request->name,
+                                //         'email' => $request->email,
+                                //          'address' => [
+                                //             'line1' => $request->address_line_one,
+                                //             'line2' => $request->address_line_two,
+                                //             'city' => $request->city,
+                                //             'postal_code' => $request->postal_code,
+                                //             'country' => $request->country,
+                                //         ],
+                                //     ]);
+                                //       $customer_id = $customer->id;
+                                //     // $customer = \Stripe\Customer::retrieve($customer_id);
+                                //     // $customer->source = $token;
+                                //     // $customer->save();
                             
-                                    // $stripe_payment = Charge::create ([
-                                    //     "amount" => $request->amount * 100,
-                                    //     "currency" => "AED",            
-                                    //     'customer' => $customer_id,
-                                    //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
-                                    // ]);   
-                                $paymentIntent = \Stripe\PaymentIntent::create([
-                                    'amount' => $request->amount * 100,
-                                    'currency' => "INR",
-                                    'customer' => $customer_id,
-                                    'payment_method_types' => ['card'],
-                                    'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
-                                ]);
+                                //     // $stripe_payment = Charge::create ([
+                                //     //     "amount" => $request->amount * 100,
+                                //     //     "currency" => "AED",            
+                                //     //     'customer' => $customer_id,
+                                //     //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
+                                //     // ]);   
+                                // $paymentIntent = \Stripe\PaymentIntent::create([
+                                //     'amount' => $request->amount * 100,
+                                //     'currency' => "INR",
+                                //     'customer' => $customer_id,
+                                //     'payment_method_types' => ['card'],
+                                //     'description' => 'Payment For the Market Place Checkout Wallet',
+                                // ]);
                                 
-                                $paymentMethod = \Stripe\PaymentMethod::create([
-                                    'type' => 'card',
-                                    'card' => [
-                                        'token' => $request->stripeToken,
-                                    ],
-                                ]);
+                                // $paymentMethod = \Stripe\PaymentMethod::create([
+                                //     'type' => 'card',
+                                //     'card' => [
+                                //         'token' => $request->stripeToken,
+                                //     ],
+                                // ]);
             
                                     
-                                    // Payment successful
+                                //     // Payment successful
+                                //     return response()->json([
+                                //         "success" => true,
+                                //         "message" => "Payment has been successfully processed.",
+                                //     ]);
+                                // } catch (\Stripe\Exception\CardException $e) {
+                                //     // Handle card errors
+                                //     return response()->json([
+                                //         "error" => "Card error: " . $e->getMessage(),
+                                //     ]);
+                                // } catch (\Stripe\Exception\RateLimitException $e) {
+                                //     // Too many requests made to the API too quickly
+                                //     return response()->json([
+                                //         "error" => "Too many requests: " . $e->getMessage(),
+                                //     ]);
+                                // } catch (\Stripe\Exception\InvalidRequestException $e) {
+                                //     // Invalid parameters were supplied to Stripe's API
+                                //     return response()->json([
+                                //         "error" => "Invalid request: " . $e->getMessage(),
+                                //     ]);
+                                // } catch (\Exception $e) {
+                                //     // Payment failed
+                                //     return response()->json([
+                                //         "error" => "An error occurred: " . $e->getMessage(),
+                                //     ]);
+                                // }
+                                $stripeController = new StripePaymentController();
+                                $stripeRequest = new Request($request->all());
+
+                                $paymentResponse = $stripeController->stripePost($stripeRequest);
+                                $stripeResult = json_decode($paymentResponse->getContent(), true);
+
+                                if (!empty($stripeResult['success']) && $stripeResult['success']) {
+                                    if (Auth::attempt($customCredentials)) {
+                                        $save_user->assignRole('User');
+
+                                        if (isset($stripeResult['redirect_url'])) {
+                                            return response()->json([
+                                                'success' => true,
+                                                'requires_action' => true,
+                                                'redirect_url' => $stripeResult['redirect_url'],
+                                            ]);
+                                        }
+
+                                        return response()->json([
+                                            'success' => true,
+                                            'message' => 'User created and payment successful!',
+                                        ]);
+                                    } else {
+                                        return response()->json([
+                                            'error' => 'User created but failed to log in.',
+                                        ]);
+                                    }
+                                } else {
                                     return response()->json([
-                                        "success" => true,
-                                        "message" => "Payment has been successfully processed.",
-                                    ]);
-                                } catch (\Stripe\Exception\CardException $e) {
-                                    // Handle card errors
-                                    return response()->json([
-                                        "error" => "Card error: " . $e->getMessage(),
-                                    ]);
-                                } catch (\Stripe\Exception\RateLimitException $e) {
-                                    // Too many requests made to the API too quickly
-                                    return response()->json([
-                                        "error" => "Too many requests: " . $e->getMessage(),
-                                    ]);
-                                } catch (\Stripe\Exception\InvalidRequestException $e) {
-                                    // Invalid parameters were supplied to Stripe's API
-                                    return response()->json([
-                                        "error" => "Invalid request: " . $e->getMessage(),
-                                    ]);
-                                } catch (\Exception $e) {
-                                    // Payment failed
-                                    return response()->json([
-                                        "error" => "An error occurred: " . $e->getMessage(),
+                                        'error' => $stripeResult['message'] ?? 'Payment failed.',
                                     ]);
                                 }
+
                             }
                 if (Auth::attempt($customCredentials)) {
                     $save_user->assignRole('User');
@@ -257,9 +292,9 @@ class RegisterController extends Controller
                         'country_code' => 'required',
                        'contact_number' => 'required|digits:10',
                         'country' => 'required',
-                        'address_line_one' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+                        'address_line_1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
                         'city' => 'required|regex:/^[a-zA-Z\s]+$/',
-                        'postal' => 'required|digits_between:5,6',
+                        'postal_code' => 'required|digits_between:5,6',
                         'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
                         'company_website' => 'required|url',
                     ], 
@@ -274,12 +309,12 @@ class RegisterController extends Controller
                         'contact.required' => 'Please Add Your Contact Number.',
                         'contact.digits' => 'The Contact Number must be exactly 10 digits.',
                         'country.required' => 'Please Select Any One Country.',
-                        'address_line_one.required' => 'Please Add Your Address.',
-                        'address_line_one.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+                        'address_line_1.required' => 'Please Add Your Address.',
+                        'address_line_1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
                         'city.required' => 'The City Is Required.',
                         'city.regex' => 'The City name should only contain letters and spaces.',
-                        'postal.required' => 'The Postal Code Is Required.',
-                        'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
+                        'postal_code.required' => 'The Postal Code Is Required.',
+                        'postal_code.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
                         'company_name.required' => 'The Company Name is required.',
                         'company_name.regex' => 'The Company Name should only contain letters and spaces.',
                         'company_website.required' => 'Please enter a valid URL for the company website.',
@@ -303,73 +338,92 @@ class RegisterController extends Controller
                                 "company_website" => $request->company_website,
                                 "company_name" => $request->company_name,
                                 "country" => $request->country,
-                                "address_line1" => $request->address_line_one,
-                                "address_line2" => $request->address_line_two,
+                                "address_line1" => $request->address_line1,
+                                "address_line2" => $request->address_line2,
                                 "city" => $request->city,
                                 "postal_code" => $request->postal_code
                             ]);
                         }
         
-                        // Set your secret key
-                        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                        // // Set your secret key
+                        // \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
                     
-                        // Get payment token from Stripe.js
-                        $token = $request->stripeToken;
-                        try {
-                            // Create a customer in Stripe
-                            $customer = \Stripe\Customer::create([
-                                'name' => $request->name,
-                                'email' => $request->email,
-                                    'address' => [
-                                    'line1' => $request->address_line_one,
-                                    'line2' => $request->address_line_two,
-                                    'city' => $request->city,
-                                    'postal_code' => $request->postal_code,
-                                    'country' => $request->country,
-                                ],
-                            ]);
-                            $customer_id = $customer->id;
-                            // $customer = \Stripe\Customer::retrieve($customer_id);
-                            // $customer->source = $token;
-                            // $customer->save();
+                        // // Get payment token from Stripe.js
+                        // $token = $request->stripeToken;
+                        // try {
+                        //     // Create a customer in Stripe
+                        //     $customer = \Stripe\Customer::create([
+                        //         'name' => $request->name,
+                        //         'email' => $request->email,
+                        //             'address' => [
+                        //             'line1' => $request->address_line_one,
+                        //             'line2' => $request->address_line_two,
+                        //             'city' => $request->city,
+                        //             'postal_code' => $request->postal_code,
+                        //             'country' => $request->country,
+                        //         ],
+                        //     ]);
+                        //     $customer_id = $customer->id;
+                        //     // $customer = \Stripe\Customer::retrieve($customer_id);
+                        //     // $customer->source = $token;
+                        //     // $customer->save();
                     
-                            // $stripe_payment = Charge::create ([
-                            //     "amount" => $request->amount * 100,
-                            //     "currency" => "AED",            
-                            //     'customer' => $customer_id,
-                            //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
-                            // ]);   
-                            $paymentIntent = \Stripe\PaymentIntent::create([
-                                'amount' => $request->amount * 100,
-                                'currency' => "INR",
-                                'customer' => $customer_id,
-                                'payment_method_types' => ['card'],
-                                'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
-                            ]);
+                        //     // $stripe_payment = Charge::create ([
+                        //     //     "amount" => $request->amount * 100,
+                        //     //     "currency" => "AED",            
+                        //     //     'customer' => $customer_id,
+                        //     //     "description" => "Payment For the Skyfinity Quick Checkout Wallet" 
+                        //     // ]);   
+                        //     $paymentIntent = \Stripe\PaymentIntent::create([
+                        //         'amount' => $request->amount * 100,
+                        //         'currency' => "INR",
+                        //         'customer' => $customer_id,
+                        //         'payment_method_types' => ['card'],
+                        //         'description' => 'Payment For the Market Place Checkout Wallet',
+                        //     ]);
                             
-                            $paymentMethod = \Stripe\PaymentMethod::create([
-                                'type' => 'card',
-                                'card' => [
-                                    'token' => $request->stripeToken,
-                                ],
-                            ]);
+                        //     $paymentMethod = \Stripe\PaymentMethod::create([
+                        //         'type' => 'card',
+                        //         'card' => [
+                        //             'token' => $request->stripeToken,
+                        //         ],
+                        //     ]);
 
-                            // Payment successful
+                        //     // Payment successful
+                        //     return response()->json([
+                        //         "success" => true,
+                        //         "message" => "Payment has been successfully processed.",
+                        //     ]);
+                         $stripeController = new StripePaymentController();
+
+                        // Create a new Request instance with the Stripe data only (or use $request directly if it has the needed data)
+                        $stripeRequest = new Request($request->all()); // Or only pass stripe-related data if you want
+
+                        // Call the stripePost method
+                        $paymentResponse = $stripeController->stripePost($stripeRequest);
+
+                        // The response from stripePost is a Response object, get JSON content
+                        $stripeResult = json_decode($paymentResponse->getContent(), true);
+
+                        if (!empty($stripeResult['success']) && $stripeResult['success'] === true) {
                             return response()->json([
                                 "success" => true,
                                 "message" => "Payment has been successfully processed.",
                             ]);
-                                
-                        } catch (\Exception $e) {
-                            // Payment failed
+                        } else {
                             return response()->json([
-                                "error" => $e->getMessage(),
+                                "error" => $stripeResult['message'] ?? 'Payment processing failed.',
                             ]);
-                        }
+                        }             
+                        // } catch (\Exception $e) {
+                        //     // Payment failed
+                        //     return response()->json([
+                        //         "error" => $e->getMessage(),
+                        //     ]);
+                        // }
                     }
                 }
-            }
-        }        
+            } 
     }
     
     public function postRegistration(Request $request)

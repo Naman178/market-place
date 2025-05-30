@@ -302,6 +302,7 @@
     </div>
     @endauth
     <div class="mb-5 cart-item-border text-center">Billing Details</div>
+    <form id="guest-checkout-form">
     <div class="row mt-2">
         <!-- First Name -->
         <div class="col-md-6">
@@ -346,7 +347,7 @@
         <!-- Contact Number -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="number" name="contact" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
+                <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
                 <label for="contact" class="floating-label">Contact Number</label>
                 <div class="error" id="contact_error"></div>
             </div>
@@ -373,7 +374,7 @@
         <!-- Address Line 1 -->
         <div class="col-md-12">
             <div class="form-group">
-                <input type="text" name="address_line_one" id="address_line_one" class="form-control" placeholder=" " value="{{ optional($user)->address_line1 }}" />
+                <input type="text" name="address_line1" id="address_line_one" class="form-control" placeholder=" " value="{{ optional($user)->address_line1 }}" />
                 <label for="address_line_one" class="floating-label">Address Line 1</label>
                 <div class="error" id="address_line_one_error"></div>
             </div>
@@ -382,7 +383,7 @@
         <!-- Address Line 2 -->
         <div class="col-md-12">
             <div class="form-group">
-                <input type="text" name="address_line_two" id="address_line_two" class="form-control" placeholder=" " value="{{ optional($user)->address_line2 }}" />
+                <input type="text" name="address_line2" id="address_line_two" class="form-control" placeholder=" " value="{{ optional($user)->address_line2 }}" />
                 <label for="address_line_two" class="floating-label">Address Line 2</label>
                 <div class="error" id="address_line_two_error"></div>
             </div>
@@ -394,7 +395,7 @@
                 <select name="country" id="country" class="form-control select-input">
                     <option value="0">Select Country</option>
                     @foreach($countaries as $countery)
-                    <option value="{{ $countery->id }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
+                    <option value="{{ $countery->name }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
                     @endforeach
                 </select>
                 <div class="error" id="country_error"></div>
@@ -413,10 +414,11 @@
         <!-- Postal Code -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="postal" id="postal" class="form-control" placeholder=" " value="{{ optional($user)->postal_code }}" />
+                <input type="text" name="postal_code" id="postal" class="form-control" placeholder=" " value="{{ optional($user)->postal_code }}" />
                 <label for="postal" class="floating-label">Zip / Postal Code</label>
                 <div class="error" id="postal_error"></div>
             </div>
         </div>
     </div>
+    </form>
 </div>

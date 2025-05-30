@@ -110,14 +110,6 @@ class CheckoutController extends Controller
         $categoryName = $category ? $category->name : 'Unknown Category';
         $subcategorySlug = $subcategory ? $subcategory->slug : 'unknown-slug';
 
-        // ❌ Prevent adding a second plan if one already exists
-        if (session()->has('cart')) {
-            $existingCart = session('cart');
-            if ($existingCart['plan_id'] !== $plan->id) {
-                return back()->with('error', 'You can only add one plan to the cart at a time.');
-            }
-        }
-
         $selectedPricing = $pricingId
             ? ItemsPricing::find($pricingId)
             : $plan->pricing()->first();

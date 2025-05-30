@@ -1,3 +1,4 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
 //    document.addEventListener('DOMContentLoaded', function () {
 //         const trialBtn = document.getElementById('trial_button');
@@ -481,4 +482,87 @@
             console.log("Updated Totals:", newSubtotal, newGST, newDiscount, finalTotal);
         }
     });
+document.addEventListener('DOMContentLoaded', function () {
+    const guestPayButton = document.getElementById('guestProceedToPay');
+
+    if (!guestPayButton) return;
+
+    Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");
+
+    guestPayButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const guestForm = document.getElementById('guest-checkout-form');
+        const stripeForm = document.getElementById('stripe-form');
+
+        if (!guestForm || !stripeForm) {
+            alert('Required forms not found.');
+            return;
+        }
+
+        const cardData = {
+            number: document.getElementById('card_number').value,
+            cvc: document.getElementById('card_cvc').value,
+            exp_month: document.getElementById('card_exp_month').value,
+            exp_year: document.getElementById('card_exp_year').value,
+            name: document.getElementById('name_on_card').value,
+        };
+
+        Stripe.card.createToken(cardData, function (status, response) {
+            if (response.error) {
+                alert(response.error.message);
+                return;
+            }
+
+            const token = response.id;
+
+            const combinedFormData = new FormData(guestForm);
+            new FormData(stripeForm).forEach((value, key) => {
+                combinedFormData.append(key, value);
+            });
+
+            combinedFormData.append('stripeToken', token);
+
+            const payload = {};
+            combinedFormData.forEach((value, key) => {
+                payload[key] = value;
+            });
+
+        fetch("{{ route('user-create-checkout') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async response => {
+                try {
+                    const data = await response.json(); // Attempt JSON parsing
+                    return data;
+                } catch (error) {
+                    throw new Error("Invalid response format: Expected JSON, received something else.");
+                }
+            })
+            .then(data => {
+                if (data.success) {
+                   if (data.requires_action && data.redirect_url && data.redirect_url.url) {
+                    console.log("Redirect URL:", data.redirect_url.url);
+                        window.location.replace(data.redirect_url.url); // Correct reference to the actual URL
+                    } else {
+                        toastr.success('Checkout completed!');
+                        window.location.href = "/user-dashboard";
+                    }
+                } else {
+                    toastr.error(data.message || data.error || 'Something went wrong.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                toastr.error('Error during checkout. Check console for details.');
+            });
+        });
+    });
+});
+
 </script>
