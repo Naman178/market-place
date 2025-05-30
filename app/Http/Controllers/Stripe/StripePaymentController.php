@@ -61,7 +61,12 @@ class StripePaymentController extends Controller
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $user = auth()->user();
+        if (auth()->check()) {
+            $user = auth()->user();
+        } else {
+            $user = User::latest()->first();
+        }
+
         $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
 
         $existingCustomer = \Stripe\Customer::all([
@@ -92,8 +97,8 @@ class StripePaymentController extends Controller
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'address' => [
-                    'line1' => $user['address_line_1'],
-                    'line2' => $user['address_line_2'],
+                    'line1' => $user['address_line_1'] ?? $user['address_line1'],
+                    'line2' => $user['address_line_2'] ?? $user['address_line2'],
                     'city' => $user['city'],
                     'postal_code' => $user['zip'],
                     'country' => $isocode,
@@ -167,23 +172,46 @@ class StripePaymentController extends Controller
         if ($plan_type === 'recurring') {
             $return_url_params['subscription_id'] = $subscription->id;
         }
+        
+        if (auth()->check()) {
         if (!$trial_period_days > 0 && $paymentIntent) {
             // Confirm payment if no trial period
             $stripe_payment = $paymentIntent->confirm([
                 'payment_method' => $paymentMethod->id ?? null,
                 'return_url' => route('stripe-payment-3d', $return_url_params),
             ]);
-        
+            
             if ($stripe_payment->status === 'requires_action') {
                 $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
 
                 echo "<script>window.location.href = '$authenticationUrl';</script>";
                 exit;
             }
-        
-            return redirect()->route('user-dashboard')->with('success', 'Subscription confirmed and active!');
+          }
+          }
+        else{
+            if (!$trial_period_days > 0 && $paymentIntent) {
+                $stripePayment = $paymentIntent->confirm([
+                    'payment_method' => $paymentMethod,
+                    'return_url' => route('stripe-payment-3d', ['user_id' => $user->id] + $return_url_params),
+                ]);
+
+                if ($stripePayment->status === 'requires_action') {
+                    return response()->json([
+                        'success' => true,
+                        'requires_action' => true,
+                        'redirect_url' => [
+                            'url' => $paymentIntent->next_action->redirect_to_url->url
+                        ]
+                    ]);
+                }
+            }
+        }
+        if (!auth()->check() && $user->id) {
+            auth()->loginUsingId($request->id);
         }
         if ($trial_period_days > 0) {
+            
             // Handle trial subscription WITHOUT actual payment
 
             // Simulate Stripe payment data for trial
@@ -258,8 +286,12 @@ class StripePaymentController extends Controller
                 $product_id,
                 $quantity,
             );
-
-            return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
+            if (auth()->check()) {
+                return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
+            }
+            else{
+                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            }
         }
 
         // If trial period is set, redirect to the success page without confirming the payment
@@ -280,7 +312,13 @@ class StripePaymentController extends Controller
 
     public function stripeAfterPayment(Request $request){
 
-        $user = auth()->user();
+        if (auth()->check()) {
+            $user = auth()->user();
+        } 
+        if (!auth()->check() && $request->user_id) {
+            auth()->loginUsingId($request->user_id);
+        }
+
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $product_id = $_GET['product_id'];
@@ -471,7 +509,12 @@ class StripePaymentController extends Controller
             $request->session()->forget('amount');
 
             session()->flash('success', 'Payment Successfull!');
+            if (auth()->check()) {
             return redirect()->route('invoice-preview', ['id' => $invoice->id]);
+             }
+            else{
+                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            }
         }
         elseif($stripe_payment_status === 'requires_payment_method'){
 
@@ -487,7 +530,13 @@ class StripePaymentController extends Controller
             ]);
 
             session()->flash('success', 'Payment Failed');
+            if (auth()->check()) {
             return redirect()->route('user-dashboard');
+             }
+            else{
+                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            }
+
         }
         elseif($stripe_payment_status === 'failed'){
 
@@ -503,7 +552,12 @@ class StripePaymentController extends Controller
             ]);
 
             session()->flash('success', 'Payment Failed');
+            if (auth()->check()) {
             return redirect()->route('user-dashboard');
+             }
+            else{
+                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            }
         }
         else{
 
@@ -519,7 +573,12 @@ class StripePaymentController extends Controller
             ]);
 
             session()->flash('success', 'Payment Failed');
+            if (auth()->check()) {
             return redirect()->route('user-dashboard');
+            }
+            else{
+                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            }
         }
     }
     // public function handleWebhook(Request $request)
