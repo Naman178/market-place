@@ -543,9 +543,9 @@
 
                             @if(count($item->features) > 1)
                                 <div class="accordion-content" id="item-features-{{ $item->id }}"  style="display: none;">
-                                    <ul class="p-0">
+                                    <ul class="mt-2">
                                         @foreach ($item->features->slice(1) as $feature)
-                                            <li class="txt-white">
+                                            <li class="txt-white mt-2">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa fa-check mr-2"></i>
                                                     {{ $feature->key_feature ?? '' }}
@@ -587,24 +587,32 @@
                                     @endif
                                 </h2>
 
-                                @if (isset($filteredFeatures[$price->sub_id]) && count($filteredFeatures[$price->sub_id]) > 0)
+                                @php
+                                    $priceFeatures = $filteredFeatures[$price->sub_id] ?? collect();
+                                @endphp
+
+                                @if ($priceFeatures->count() > 0)
+                                    {{-- Show first feature --}}
                                     <ul class="p-0 m-0">
                                         <li class="txt-white">
                                             <div class="d-flex justify-content-between align-items-center accordion-toggle" style="cursor: pointer;" data-target="#accordion-{{ $index }}">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa fa-check mr-2"></i>
-                                                    {{ $filteredFeatures[$price->sub_id][0]->key_feature ?? '' }}
+                                                    {{ $priceFeatures[0]->key_feature ?? '' }}
                                                 </div>
-                                                <i class="fa fa-chevron-down toggle-icon"></i>
+                                                @if ($priceFeatures->count() > 1)
+                                                    <i class="fa fa-chevron-down toggle-icon"></i>
+                                                @endif
                                             </div>
                                         </li>
                                     </ul>
 
-                                    @if(count($filteredFeatures[$price->sub_id]) > 1)
+                                    {{-- Show rest of features --}}
+                                    @if ($priceFeatures->count() > 1)
                                         <div class="accordion-content" id="accordion-{{ $index }}" style="display: none;">
-                                            <ul class="p-0">
-                                                @foreach($filteredFeatures[$price->sub_id]->slice(1) as $feature)
-                                                    <li class="txt-white">
+                                            <ul class="mt-2">
+                                                @foreach ($priceFeatures->slice(1) as $feature)
+                                                    <li class="txt-white mt-3">
                                                         <div class="d-flex align-items-center">
                                                             <i class="fa fa-check mr-2"></i>
                                                             {{ $feature->key_feature ?? '' }}
@@ -615,6 +623,7 @@
                                         </div>
                                     @endif
                                 @endif
+
 
                                 <ul class="button_area d-flex flex-wrap mb-0 p-0">
                                     <li><a class="live" target="__blank" href="{{ $item->preview_url }}">Live Preview</a></li>
