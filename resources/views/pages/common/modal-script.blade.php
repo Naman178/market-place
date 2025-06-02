@@ -755,6 +755,7 @@
                             $('#category_error').text(response.error['category_id'] || '');
                             $('#category_error').text(response.error['category_id'] || '');
                             $('#image_error').text(response.error['item_images'] || '');
+                            $('#trial_error').text(response.error['trial_days'] || '');
 
                             $('#name').addClass(response.error['name']?'is-invalid':'');
                             $('#item_preview_url').addClass(response.error['preview_url']?'is-invalid':'');

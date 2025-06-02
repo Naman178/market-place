@@ -100,8 +100,11 @@ class ItemsController extends Controller
             ])->save();
             
             $trialDays = is_numeric($request->trial_days) ? (int) $request->trial_days : 0;
-            $item->trial_days = $trialDays;
-            $item->save();
+            if ($trialDays >= 0) {
+                $item->trial_days = $trialDays;
+                $item->save();
+            }
+
             if($request->has('currency')){
                 $currency = $request->currency;
                 $item->currency = $request->currency;
@@ -370,7 +373,8 @@ class ItemsController extends Controller
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
-            'gst_percentage' => 'required|numeric'
+            'gst_percentage' => 'required|numeric',
+            'trial_days' => 'required|integer|min:0',
         ];
 
         if ($request->item_id == "0" || $request->item_id_type == 'new') {
@@ -390,6 +394,7 @@ class ItemsController extends Controller
             'subcategory_id.required' => 'The subcategory field is required.',
             'item_images.*.required_without_all'=>'At least one image is required.',
             'item_images.required'=>'At least one image is required.',
+            'trial_days.min' => 'Trial days cannot be negative.',
         ];
 
         return Validator::make($request->all(), $rules, $customMessages);

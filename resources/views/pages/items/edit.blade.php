@@ -508,6 +508,7 @@
                         <div class="col-md-12 form-group">
                             <label for="trial_label">Trial Days</label>
                             <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" value="{{ old('trial_days', $item->trial_days) }}">
+                            <div class="error" style="color:red;" id="trial_error"></div>
                         </div>
                     </div>
                 </div>
@@ -586,7 +587,8 @@
                         <div class="card-body">
                             <div class="col-md-12 form-group">
                                 <label for="trial_label">Trial Days</label>
-                                <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" min="1" required>
+                                <input type="number" class="form-control" id="trial_days" name="trial_days" placeholder="Enter number of trial days" required>
+                                <div class="error" style="color:red;" id="trial_error"></div>
                             </div>
                         </div>
                     </div>
