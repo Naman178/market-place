@@ -92,8 +92,6 @@
 
             if (validateFormRequiredFields()) {
                 form.submit();
-            } else {
-                console.warn('Required fields missing. Form not submitted.');
             }
         }
 
@@ -117,8 +115,130 @@
 
                 if (validateFormRequiredFields()) {
                     form.submit();
+                }
+            });
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const trialBtn = document.getElementById('trial_button_guest');
+        const modal = document.getElementById('trialChoiceModal');
+        const closeModal = document.getElementById('close_modal');
+        const trialBtnModal = document.getElementById('trial_button_modal_guest'); 
+        const payBtn = document.getElementById('trialguestProceedToPay'); 
+        const trialPeriodInput = document.getElementById('trial_period_days');
+        const stripeForm = document.getElementById('stripe-form');
+        const guestForm = document.getElementById('guest-checkout-form');
+
+        const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
+        trialPeriodInput.value = "0";
+
+        function validateFormRequiredFields() {
+            const requiredInputs = stripeForm.querySelectorAll('[required]');
+            for (let input of requiredInputs) {
+                if (!input.value || input.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");
+
+        function handleGuestStripeCheckout() {
+            const cardData = {
+                number: document.getElementById('card_number').value,
+                cvc: document.getElementById('card_cvc').value,
+                exp_month: document.getElementById('card_exp_month').value,
+                exp_year: document.getElementById('card_exp_year').value,
+                name: document.getElementById('name_on_card').value,
+            };
+
+            Stripe.card.createToken(cardData, function (status, response) {
+                if (response.error) {
+                    toastr.error(response.error.message);
+                    return;
+                }
+
+                const token = response.id;
+
+                const combinedFormData = new FormData(guestForm);
+                new FormData(stripeForm).forEach((value, key) => {
+                    combinedFormData.append(key, value);
+                });
+
+                combinedFormData.append('stripeToken', token);
+
+                const payload = {};
+                combinedFormData.forEach((value, key) => {
+                    payload[key] = value;
+                });
+
+                fetch("{{ route('user-create-checkout') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(async response => {
+                    try {
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        throw new Error("Invalid response format: Expected JSON.");
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        if (data.requires_action && data.redirect_url?.url) {
+                            window.location.replace(data.redirect_url.url);
+                        } else {
+                            window.location.href = "/user-dashboard";
+                        }
+                    } else {
+                        toastr.error(data.message || data.error || 'Something went wrong.');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    toastr.error('Error during checkout. Check console for details.');
+                });
+            });
+        }
+
+        // 🟢 Proceed to Pay (normal payment)
+        if (payBtn) {
+            payBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!guestForm || !stripeForm) {
+                    toastr.error('Required forms not found.');
+                    return;
+                }
+                handleGuestStripeCheckout();
+            });
+        }
+
+        // 🟢 Free Trial Modal flow
+        if (trialBtn && trialBtnModal && closeModal) {
+            trialBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (validateFormRequiredFields()) {
+                    modal.style.display = 'block';
                 } else {
-                    console.warn('Required fields missing on modal button click.');
+                    toastr.error("Please fill in all required fields before starting the free trial.");
+                }
+            });
+
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            trialBtnModal.addEventListener('click', function () {
+                if (validateFormRequiredFields()) {
+                    trialPeriodInput.value = trialDays;
+                    modal.style.display = 'none';
+                    handleGuestStripeCheckout();
                 }
             });
         }
@@ -496,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const stripeForm = document.getElementById('stripe-form');
 
         if (!guestForm || !stripeForm) {
-            alert('Required forms not found.');
+            toastr.error('Required forms not found.');
             return;
         }
 
@@ -510,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         Stripe.card.createToken(cardData, function (status, response) {
             if (response.error) {
-                alert(response.error.message);
+                toastr.error(response.error.message);
                 return;
             }
 

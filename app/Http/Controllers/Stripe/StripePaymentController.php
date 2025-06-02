@@ -208,7 +208,7 @@ class StripePaymentController extends Controller
             }
         }
         if (!auth()->check() && $user->id) {
-            auth()->loginUsingId($request->id);
+            auth()->loginUsingId($user->id);
         }
         if ($trial_period_days > 0) {
             
