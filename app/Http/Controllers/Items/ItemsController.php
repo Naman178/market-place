@@ -374,7 +374,7 @@ class ItemsController extends Controller
             'fixed_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
             'gst_percentage' => 'required|numeric',
-            'trial_days' => 'required|integer|min:0',
+            'trial_days' => 'nullable|integer|min:0'
         ];
 
         if ($request->item_id == "0" || $request->item_id_type == 'new') {
