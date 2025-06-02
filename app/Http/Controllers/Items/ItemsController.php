@@ -99,12 +99,9 @@ class ItemsController extends Controller
                 $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
             ])->save();
             
-            if ($request->has('trial_days') && is_numeric($request->trial_days)) {
-                $trialDays = $request->trial_days;
-                $trialEndDate = Carbon::now()->addDays($trialDays)->format('Y-m-d H:i:s');
-                $item->trial_days = $request->trial_days;
-                $item->save();
-            }
+            $trialDays = is_numeric($request->trial_days) ? (int) $request->trial_days : 0;
+            $item->trial_days = $trialDays;
+            $item->save();
             if($request->has('currency')){
                 $currency = $request->currency;
                 $item->currency = $request->currency;

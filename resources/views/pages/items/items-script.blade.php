@@ -273,6 +273,24 @@
 
         $(document).on('click','#addrecurringcardbtn',function(e){
             $val = $('#addrecurringcardoption .card').length;
+                const selectedValues = [];
+
+            $('.itembillingcycle').each(function () {
+                const selected = $(this).val();
+                if (selected) selectedValues.push(selected);
+            });
+            let selectOptions = `
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="yearly">Yearly</option>
+            `;
+
+            const $wrapper = $('<div>' + selectOptions + '</div>');
+
+            // Disable options already selected
+            selectedValues.forEach(val => {
+                $wrapper.find(`option[value="${val}"]`).attr('disabled', true);
+            });
             var html = `
             <div class="error-message"></div>
             <div class="col-lg-4 col-12">
@@ -326,10 +344,7 @@
                             <div class="col-md-12 form-group billingcyclecontainer" id="billingcyclecontainer">
                                 <h5>Billing Cycle</h5>
                                 <select name="itembillingcycle" id="itembillingcycle" class="form-control itembillingcycle select2" style="width: 100%;">
-                                    <option value="monthly">Monthly</option>
-                                    <option value="quarterly">Quarterly</option>
-                                    <option value="yearly">Yearly</option>
-                                    <option value="custom">Custom</option>
+                                    ${$wrapper.html()}~
                                 </select>
                             </div>
 
@@ -381,6 +396,7 @@
             </div>
             `;
             $('#addrecurringcardoption').append(html);
+            $('#addrecurringcardoption .itembillingcycle').last().select2();
         });
 
         $(document).on('click','#removerecurringcardbtn',function(){

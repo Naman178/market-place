@@ -716,7 +716,7 @@
                             <option value="monthly" {{ isset($item->pricing->billing_cycle) && $item->pricing->billing_cycle == 'monthly' ? 'selected' : '' }}>Monthly</option>
                             <option value="quarterly" {{ isset($item->pricing->billing_cycle) && $item->pricing->billing_cycle == 'quarterly' ? 'selected' : '' }}>Quarterly</option>
                             <option value="yearly" {{ isset($item->pricing->billing_cycle) && $item->pricing->billing_cycle == 'yearly' ? 'selected' : '' }}>Yearly</option>
-                            <option value="custom" {{ isset($item->pricing->billing_cycle) && $item->pricing->billing_cycle == 'custom' ? 'selected' : '' }}>Custom</option>
+                            {{-- <option value="custom" {{ isset($item->pricing->billing_cycle) && $item->pricing->billing_cycle == 'custom' ? 'selected' : '' }}>Custom</option> --}}
                         </select>
                     </div>
                     @if (!empty($item) && !empty($item->pricing) && $item->pricing->billing_cycle == 'custom')
@@ -876,7 +876,7 @@
                                 <option value="monthly" {{ isset($subproduct->billing_cycle) && $subproduct->billing_cycle == 'monthly' ? 'selected' : '' }}>Monthly</option>
                                 <option value="quarterly" {{ isset($subproduct->billing_cycle) && $subproduct->billing_cycle == 'quarterly' ? 'selected' : '' }}>Quarterly</option>
                                 <option value="yearly" {{ isset($subproduct->billing_cycle) && $subproduct->billing_cycle == 'yearly' ? 'selected' : '' }}>Yearly</option>
-                                <option value="custom" {{ isset($subproduct->billing_cycle) && $subproduct->billing_cycle == 'custom' ? 'selected' : '' }}>Custom</option>
+                                {{-- <option value="custom" {{ isset($subproduct->billing_cycle) && $subproduct->billing_cycle == 'custom' ? 'selected' : '' }}>Custom</option> --}}
                             </select>
                         </div>
                         @if ($subproduct->billing_cycle == 'custom')
@@ -1041,6 +1041,18 @@
         var expiryDateInput = document.getElementById("expiryDate");
         var today = new Date().toISOString().split("T")[0];
         expiryDateInput.setAttribute("min", today);
+    });
+    $(document).ready(function () {
+        $('.itembillingcycle').each(function () {
+            var selectedVal = $(this).val();
+            $(this).find('option').each(function () {
+                if ($(this).val() === selectedVal) {
+                    $(this).hide(); 
+                } else {
+                    $(this).show(); 
+                }
+            });
+        });
     });
 </script>
 @endsection
