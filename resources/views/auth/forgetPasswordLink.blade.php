@@ -31,7 +31,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">  
                                 
-                                <input type="text" id="email_address" class="form-control" name="email" required placeholder="">
+                                <input type="email" id="email_address" class="form-control" name="email" required placeholder="">
                                 <label for="email_address" class="floating-label">E-Mail Address</label>
                                 @if ($errors->has('email'))
                                     <span class="error">{{ $errors->first('email') }}</span>
@@ -85,62 +85,91 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const inputFields = document.querySelectorAll(".form-control");
-        // Function to handle floating label
+
+        // Function to handle floating label behavior
         function updateFloatingLabel(input) {
-            const label = input.nextElementSibling; // Get the corresponding label
-            if (input.value.trim() !== "") {
-                label.style.top = "50%";
-                label.style.fontSize = "1rem";
-                label.style.color = "#70657b";
-            } else {
-                label.style.top = "50%";
-                label.style.fontSize = "1rem";
-                label.style.color = "#70657b"; // Ensure this style on initial load if empty
-            }
-        }
-  
-        function handleBlur(input) {
             const label = input.nextElementSibling;
-            if (input.value.trim() === "") {
-                label.style.color = "red"; // Set red when empty on blur
-                label.style.top = "35%"; // Set label top position when empty on blur
-            }
-        }
-  
-        // Initialize labels on page load
-        inputFields.forEach(input => {
-            updateFloatingLabel(input);
-            const label = input.nextElementSibling;
-            // Blur event: Check if empty & show error
-            input.addEventListener("blur", function () {
             const errorDiv = document.getElementById(input.id + "_error");
-  
-            if (!input.value.trim()) {
-                if (errorDiv) { // ✅ Check if errorDiv exists
-                    errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                    errorDiv.style.display = "block";
-                }
-                input.style.borderColor = "red";
+            const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+            if (input.value.trim() !== "") {
+                label.style.top = "-1%";
+                label.style.fontSize = "0.8rem";
+                label.style.color = "#70657b";
+                input.style.borderColor = "#ccc";
+            } else if (input === document.activeElement) {
                 label.style.top = "35%";
                 label.style.fontSize = "1rem";
                 label.style.color = "red";
+            } else if (hasError) {
+                label.style.top = "35%";
+                label.style.fontSize = "14px";
+                label.style.color = "red";
+                input.style.borderColor = "red"; 
             } else {
-                if (errorDiv) {
-                    errorDiv.style.display = "none";
-                }
-                input.style.borderColor = "#ccc";
+                label.style.top = "50%";
+                label.style.fontSize = "14px";
                 label.style.color = "#70657b";
+                input.style.borderColor = "#ccc";
             }
-        });
-            // Focus event: Float label
+        }
+
+        // Initialize labels and error handling on page load
+        inputFields.forEach(input => {
+            const errorDiv = document.getElementById(input.id + "_error");
+
+            updateFloatingLabel(input);
+
+            // Blur event: Validate input & show error
+            input.addEventListener("blur", function () {
+                const value = input.value.trim();
+                const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+
+                if (!value) {
+                    errorDiv.textContent = `${labelText} is required!`;
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                    errorDiv.textContent = "Please enter a valid email address!";
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else {
+                    errorDiv.textContent = "";
+                    errorDiv.style.display = "none";
+                    input.style.borderColor = "#ccc"; 
+                }
+
+                updateFloatingLabel(input);
+            });
+
+            // Input event: Validate dynamically
+            input.addEventListener("input", function () {
+                const value = input.value.trim();
+                if (!value) {
+                    errorDiv.textContent = `${labelText} is required!`;
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                    errorDiv.textContent = "Please enter a valid email address!";
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else {
+                    errorDiv.textContent = "";
+                    errorDiv.style.display = "none";
+                    input.style.borderColor = "#ccc"; 
+                }
+                updateFloatingLabel(input);
+            });
+
+            // Focus event: If error exists, keep label and border red
             input.addEventListener("focus", function () {
                 const label = input.nextElementSibling;
+
                 label.style.top = "-1%";
                 label.style.fontSize = "0.8rem";
-                if (input.value.trim() !== "") {
-                    label.style.color = "#70657b";
-                    input.style.borderColor = "#70657b";
-                } else {
+                input.style.borderColor = "#ccc";
+
+                if (errorDiv && errorDiv.textContent.trim() !== "") {
                     label.style.color = "red";
                     input.style.borderColor = "red";
                 }

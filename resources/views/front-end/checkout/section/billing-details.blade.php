@@ -325,7 +325,7 @@
         <!-- Email -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="email" id="email" class="form-control" placeholder=" " value="{{ optional($user)->email }}" />
+                <input type="email" name="email" id="email" class="form-control" placeholder=" " value="{{ optional($user)->email }}" />
                 <label for="email" class="floating-label">Email</label>
                 <div class="error" id="email_error"></div>
             </div>

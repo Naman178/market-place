@@ -187,62 +187,117 @@
         });
         document.addEventListener("DOMContentLoaded", function () {
             const inputFields = document.querySelectorAll(".form-control");
-            // Function to handle floating label
+
             function updateFloatingLabel(input) {
-                const label = input.nextElementSibling; // Get the corresponding label
-                if (input.value.trim() !== "") {
-                    label.style.top = "50%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "#70657b";
-                } else {
-                    label.style.top = "50%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "#70657b"; // Ensure this style on initial load if empty
-                }
-            }
-    
-            function handleBlur(input) {
                 const label = input.nextElementSibling;
-                if (input.value.trim() === "") {
-                    label.style.color = "red"; // Set red when empty on blur
-                    label.style.top = "35%"; // Set label top position when empty on blur
-                }
-            }
-    
-            // Initialize labels on page load
-            inputFields.forEach(input => {
-                updateFloatingLabel(input);
-                const label = input.nextElementSibling;
-                // Blur event: Check if empty & show error
-                input.addEventListener("blur", function () {
                 const errorDiv = document.getElementById(input.id + "_error");
-    
-                if (!input.value.trim()) {
-                    if (errorDiv) { // ✅ Check if errorDiv exists
-                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                        errorDiv.style.display = "block";
-                    }
-                    input.style.borderColor = "red";
+
+                if (input.value.trim() !== "") {
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
+                } else if (errorDiv && errorDiv.textContent.trim() !== "") {
                     label.style.top = "35%";
                     label.style.fontSize = "1rem";
                     label.style.color = "red";
+                    input.style.borderColor = "red";
                 } else {
-                    if (errorDiv) {
-                        errorDiv.style.display = "none";
-                    }
-                    input.style.borderColor = "#ccc";
+                    label.style.top = "50%";
+                    label.style.fontSize = "1rem";
                     label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
                 }
-            });
-                // Focus event: Float label
+            }
+
+            inputFields.forEach(input => {
+                const errorDiv = document.getElementById(input.id + "_error");
+
+                updateFloatingLabel(input);
+
+                input.addEventListener("blur", function () {
+                    const value = input.value.trim();
+                    if (!value) {
+                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                        errorDiv.textContent = "Please enter a valid email address!";
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                    } else {
+                        errorDiv.textContent = "";
+                        errorDiv.style.display = "none";
+                        input.style.borderColor = "#ccc";
+                    }
+                    updateFloatingLabel(input);
+                });
+
+                input.addEventListener("input", function () {
+                    const value = input.value.trim();
+
+                    if (input.id === "full_name") {
+                        this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+                        if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+                            errorDiv.textContent = "Only letters and spaces are allowed!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                        } else {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                            input.style.borderColor = "#ccc";
+                        }
+                    }
+                    if(input.id === "email") {
+                        if (!/^\S+@\S+\.\S+$/.test(this.value)) {
+                            errorDiv.textContent = "Please enter a valid email address!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                        } else {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                            input.style.borderColor = "#ccc";
+                        }
+                    }
+
+                    if (input.id === "contact_number") {
+                        this.value = this.value.replace(/[^0-9]/g, "");
+                        if (this.value.length > 10) {
+                            this.value = this.value.slice(0, 10); // Limits to only 10 digits
+                        }
+                        if (!/^\d{10}$/.test(this.value)) {
+                            errorDiv.textContent = "Contact number must be exactly 10 digits!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                        } else {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                            input.style.borderColor = "#ccc";
+                        }
+                    }
+                    if (input.id === "website_url") {
+                        const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-z.]{2,6})(\/[^\s]*)?$/;
+                        if (!urlPattern.test(this.value)) {
+                            errorDiv.textContent = "Please enter a valid URL!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                        } else {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                            input.style.borderColor = "#ccc";
+                        }
+                    }
+
+                    updateFloatingLabel(input);
+                });
+
                 input.addEventListener("focus", function () {
                     const label = input.nextElementSibling;
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
-                    if (input.value.trim() !== "") {
-                        label.style.color = "#70657b";
-                        input.style.borderColor = "#70657b";
-                    } else {
+                    input.style.borderColor = "#ccc";
+
+                    if (errorDiv && errorDiv.textContent.trim() !== "") {
                         label.style.color = "red";
                         input.style.borderColor = "red";
                     }

@@ -1401,63 +1401,73 @@ use App\Models\SubCategory;
                 document.getElementById('list-settings-list').click(); // Trigger the list-settings tab
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
+       document.addEventListener("DOMContentLoaded", function () {
             const inputFields = document.querySelectorAll(".form-control");
-            
-            // Function to handle floating label
+
+            // Function to handle floating label updates
             function updateFloatingLabel(input) {
                 const label = input.nextElementSibling;
                 const errorDiv = document.getElementById(input.id + "_error");
-                const hasError = !input.value.trim() && errorDiv.textContent;
-                
+                const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
                 if (input.value.trim() !== "") {
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
                     label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
                 } else if (input === document.activeElement) {
                     label.style.top = "35%";
                     label.style.fontSize = "1rem";
                     label.style.color = "red";
                 } else if (hasError) {
-                    // Keep label red if there's an error message
                     label.style.top = "35%";
                     label.style.fontSize = "14px";
                     label.style.color = "red";
+                    input.style.borderColor = "red"; // Highlight error state
                 } else {
+                    label.style.top = "50%";
                     label.style.fontSize = "14px";
                     label.style.color = "#70657b";
-                    label.style.top = "50%"; 
+                    input.style.borderColor = "#ccc";
                 }
             }
 
-            // Initialize labels on page load
+            // Initialize labels and error handling on page load
             inputFields.forEach(input => {
+                const errorDiv = document.getElementById(input.id + "_error");
+
                 updateFloatingLabel(input);
 
-                // Blur event: Check if empty & show error
+                // Blur event: Validate input & show error
                 input.addEventListener("blur", function () {
-                    const errorDiv = document.getElementById(input.id + "_error");
                     if (!input.value.trim()) {
                         errorDiv.textContent = input.name.replace("_", " ") + " is required!";
                         errorDiv.style.display = "block";
                         input.style.borderColor = "red";
                     } else {
-                        errorDiv.textContent = ""; // Clear error message
+                        errorDiv.textContent = "";
                         errorDiv.style.display = "none";
                         input.style.borderColor = "#ccc";
                     }
                     updateFloatingLabel(input);
                 });
 
-                // Focus event: Float label
+                // Input event: Validate dynamically
+                input.addEventListener("input", function () {
+                    const value = input.value.trim();
+
+                    updateFloatingLabel(input);
+                });
+
+                // Focus event: If error exists, keep label and border red
                 input.addEventListener("focus", function () {
                     const label = input.nextElementSibling;
+
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
-                    if (input.value.trim() !== "") {
-                        label.style.color = "#70657b";
-                        input.style.borderColor = "#70657b";
-                    } else {
+                    input.style.borderColor = "#ccc";
+
+                    if (errorDiv && errorDiv.textContent.trim() !== "") {
                         label.style.color = "red";
                         input.style.borderColor = "red";
                     }

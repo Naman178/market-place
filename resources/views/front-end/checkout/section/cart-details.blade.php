@@ -456,7 +456,7 @@
                     <!-- CVC -->
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
-                        <input type="password" autocomplete="off" class="form-control card-cvc" 
+                        <input type="text" autocomplete="off" class="form-control card-cvc" 
                             id="card_cvc" name="card_cvc" placeholder="ex. 311" maxlength="3" required>
                         <div class="error" id="card_cvc_error"></div>
                     </div>
