@@ -339,83 +339,82 @@
         });
             document.addEventListener("DOMContentLoaded", function () {
                 const inputFields = document.querySelectorAll(".form-control");
-                // Function to handle floating label
-                function updateFloatingLabel(input) {
-                    const label = input.nextElementSibling; // Get the label
-                    const errorMessage = document.getElementById(input.id + "_error_message");
 
-                    if (input.value.trim() !== "" || (errorMessage && errorMessage.textContent.trim() !== "")) {
-                        label.style.top = input.id === "email" ? "18%" : "50%"; // Email: 18%, Others: 50%
-                        label.style.fontSize = "1rem";
+                function updateFloatingLabel(input) {
+                    const label = input.nextElementSibling;
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+                    if (input.value.trim() !== "") {
+                        label.style.top = "-1%";
+                        label.style.fontSize = "0.8rem";
                         label.style.color = "#70657b";
+                        input.style.borderColor = "#ccc";
+                    } else if (hasError) {
+                        label.style.top = "35%";
+                        label.style.fontSize = "1rem";
+                        label.style.color = "red";
+                        input.style.borderColor = "red";
                     } else {
                         label.style.top = "50%";
                         label.style.fontSize = "1rem";
                         label.style.color = "#70657b";
+                        input.style.borderColor = "#ccc";
                     }
                 }
 
-                // function handleBlur(input) {
-                //     const label = input.nextElementSibling;
-                //     if (input.value.trim() === "") {
-                //         label.style.color = "red";
-                //         label.style.top = input.id === "email"  : "35%"; // Email stays 18% on error, others at 35%
-                //     }
-                // }
-                function handleBlur(input) {
-                    const label = input.nextElementSibling;
-                    if (input.value.trim() === "") {
-                        label.style.color = "red";
-                        label.style.top = "35%"; // Uniform for all fields now, including email
-                    }
-                }
-
-                // Initialize labels on page load
                 inputFields.forEach(input => {
+                    const errorDiv = document.getElementById(input.id + "_error");
+
                     updateFloatingLabel(input);
-                    const label = input.nextElementSibling;
 
                     input.addEventListener("blur", function () {
-                        const errorDiv = document.getElementById(input.id + "_error");
-                        const errorMessage = document.getElementById(input.id + "_error_message");
-
-                        if (!input.value.trim()) {
-                            if (errorDiv) {
-                                errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                                errorDiv.style.display = "block";
-                            }
+                        const value = input.value.trim();
+                        if (!value) {
+                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                            errorDiv.style.display = "block";
                             input.style.borderColor = "red";
-                            // label.style.top = input.id === "email" ? "18%" : "35%";
-                            label.style.top = "35%";
-                            label.style.fontSize = "1rem";
-                            label.style.color = "red";
                         } else {
-                            if (errorDiv) {
-                                errorDiv.style.display = "none";
-                            }
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
                             input.style.borderColor = "#ccc";
-                            label.style.color = "#70657b";
                         }
+                        updateFloatingLabel(input);
+                    });
 
-                        // If Laravel error message exists, keep the label at 18%
-                        if (errorMessage && errorMessage.textContent.trim() !== "") {
-                            label.style.top = "18%";
+                    input.addEventListener("input", function () {
+                        const value = input.value.trim();
+
+                        if (input.id === "firstname" || input.id === "last_name") {
+                            // Ensure only letters and spaces are allowed
+                            this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+                            if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+                                errorDiv.textContent = "Only letters and spaces are allowed!";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                            } else {
+                                errorDiv.textContent = "";
+                                errorDiv.style.display = "none";
+                                input.style.borderColor = "#ccc";
+                            }
                         }
+                        updateFloatingLabel(input);
                     });
 
                     input.addEventListener("focus", function () {
+                        const label = input.nextElementSibling;
                         label.style.top = "-1%";
                         label.style.fontSize = "0.8rem";
-                        if (input.value.trim() !== "") {
-                            label.style.color = "#70657b";
-                            input.style.borderColor = "#70657b";
-                        } else {
+                        input.style.borderColor = "#ccc";
+
+                        if (errorDiv && errorDiv.textContent.trim() !== "") {
                             label.style.color = "red";
                             input.style.borderColor = "red";
                         }
                     });
                 });
             });
+
             $('#country').select2();
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
