@@ -198,7 +198,7 @@
                     label.style.color = "#70657b";
                     input.style.borderColor = "#ccc";
                 } else if (errorDiv && errorDiv.textContent.trim() !== "") {
-                    label.style.top = "35%";
+                    label.style.top = input.id === "message" ? "45%" : "35%";
                     label.style.fontSize = "1rem";
                     label.style.color = "red";
                     input.style.borderColor = "red";
