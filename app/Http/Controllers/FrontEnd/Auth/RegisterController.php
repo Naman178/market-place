@@ -261,12 +261,7 @@ class RegisterController extends Controller
                                             'error' => 'User created but failed to log in.',
                                         ]);
                                     }
-                                } else {
-                                    return response()->json([
-                                        'error' => $stripeResult['message'] ?? 'Payment failed.',
-                                    ]);
-                                }
-
+                                } 
                             }
                 if (Auth::attempt($customCredentials)) {
                     $save_user->assignRole('User');

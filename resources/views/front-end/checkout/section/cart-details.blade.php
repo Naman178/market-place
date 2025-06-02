@@ -588,6 +588,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg><span> Proceed to Pay </span></button>  --}}
+                                    @if(Auth::check())
                                     <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_modal">
                                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
@@ -605,6 +606,26 @@
                                         <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                                 
                                     </button>
+                                    @else
+                                      <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_modal_guest">
+                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                            </svg>
+                                            <span id="button_text">
+                                                Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                            </span>
+                                        </button>
+                                        <button type="button" class="blue_common_btn border-0 proced_to_pay_btn ml-2" id="trialguestProceedToPay">
+                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                            </svg>
+                                            <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                    
+                                        </button>
+                                        
+                                    @endif
                                 </div>
                             </div>
                         </div>
