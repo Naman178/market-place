@@ -195,7 +195,7 @@
         <!-- DESCRIPTION -->
         <tr>
             <td align="left" style="padding: 20px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #333; line-height: 24px;">
-                <p>Thank you for registering in Skyfinity Quick Checkout.</p>
+                <p>Thank you for registering in Market Place Checkout.</p>
                 <p>Please use the credentials below to log in to your account:</p>
                 <p><strong>Email:</strong> {{ $mailData['email'] }}</p>
                 <p><strong>Password:</strong> {{ $mailData['password'] }}</p>

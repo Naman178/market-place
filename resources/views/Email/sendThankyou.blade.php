@@ -221,7 +221,7 @@
                 </ul>
                 <p>Your order is now in progress. If you need any assistance, please reach out to our customer support team.</p>
                 <p>Thank you for your business!</p>
-                <p><strong>Best regards,<br>Skyfinity Quick Checkout</strong></p>
+                <p><strong>Best regards,<br>Market Place Checkout</strong></p>
             </td>
         </tr>
         

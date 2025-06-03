@@ -106,48 +106,85 @@ class StripePaymentController extends Controller
             ]);
             $customer_id = $newCustomer->id;
 
+        // if ($plan_type === 'recurring') {
+        //     // **Step 1: Create a Product (if not exists)**
+        //     $product = \Stripe\Product::create([
+        //         'name' => $plan_name,
+        //         'type' => 'service',
+        //     ]);
+
+        //     // **Step 2: Create a Price for the Subscription**
+        //     $price = \Stripe\Price::create([
+        //         'unit_amount' => $amount,
+        //         'currency' => $currency,
+        //         'recurring' => ['interval' => $plan_interval],
+        //         'product' => $product->id,
+        //     ]);
+
+        //     // **Step 3: Create Subscription**
+        //     $subscription = \Stripe\Subscription::create([
+        //         'customer' => $customer_id,
+        //         'items' => [['price' => $price->id]],
+        //         'payment_behavior' => 'default_incomplete',
+        //         'metadata' => [
+        //             'product_id' => $product_id,
+        //             'user_id' => $user['id'],
+        //             'plan_name' => $plan_name,
+        //             'quantity' => $quantity,
+        //             'order_id' => $product_id,
+        //             'currency' => $currency,
+        //         ],
+        //         'trial_period_days' => $trial_period_days,
+        //         'expand' => ['latest_invoice.payment_intent'],
+        //     ]);
+
+        //     $paymentIntent = $subscription->latest_invoice->payment_intent;
+
+        // } 
         if ($plan_type === 'recurring') {
-            // **Step 1: Create a Product (if not exists)**
-            $product = \Stripe\Product::create([
-                'name' => $plan_name,
-                'type' => 'service',
-            ]);
+            for ($i = 0; $i < $quantity; $i++) {
+                // Step 1: Create a Product (if not exists)
+                $product = \Stripe\Product::create([
+                    'name' => $plan_name,
+                    'type' => 'service',
+                ]);
 
-            // **Step 2: Create a Price for the Subscription**
-            $price = \Stripe\Price::create([
-                'unit_amount' => $amount,
-                'currency' => $currency,
-                'recurring' => ['interval' => $plan_interval],
-                'product' => $product->id,
-            ]);
-
-            // **Step 3: Create Subscription**
-            $subscription = \Stripe\Subscription::create([
-                'customer' => $customer_id,
-                'items' => [['price' => $price->id]],
-                'payment_behavior' => 'default_incomplete',
-                'metadata' => [
-                    'product_id' => $product_id,
-                    'user_id' => $user['id'],
-                    'plan_name' => $plan_name,
-                    'quantity' => $quantity,
-                    'order_id' => $product_id,
+                // Step 2: Create a Price for the Subscription
+                $price = \Stripe\Price::create([
+                    'unit_amount' => $amount,
                     'currency' => $currency,
-                ],
-                'trial_period_days' => $trial_period_days,
-                'expand' => ['latest_invoice.payment_intent'],
-            ]);
+                    'recurring' => ['interval' => $plan_interval],
+                    'product' => $product->id,
+                ]);
 
-            $paymentIntent = $subscription->latest_invoice->payment_intent;
+                // Step 3: Create Subscription
+                $subscription = \Stripe\Subscription::create([
+                    'customer' => $customer_id,
+                    'items' => [['price' => $price->id]],
+                    'payment_behavior' => 'default_incomplete',
+                    'metadata' => [
+                        'product_id' => $product_id,
+                        'user_id' => $user['id'],
+                        'plan_name' => $plan_name,
+                        'quantity' => $quantity,
+                        'order_id' => $product_id,
+                        'currency' => $currency,
+                    ],
+                    'trial_period_days' => $trial_period_days,
+                    'expand' => ['latest_invoice.payment_intent'],
+                ]);
 
-        } else {
+                $paymentIntent = $subscription->latest_invoice->payment_intent;
+            }
+        }
+        else {
             // **One-time payment**
             $paymentIntent = \Stripe\PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
                 'customer' => $customer_id,
                 'payment_method_types' => ['card'],
-                'description' => 'Payment For the Skyfinity Quick Checkout Wallet',
+                'description' => 'Payment For the Market Place Checkout Wallet',
             ]);
         }
 
@@ -211,16 +248,12 @@ class StripePaymentController extends Controller
             auth()->loginUsingId($user->id);
         }
         if ($trial_period_days > 0) {
-            
-            // Handle trial subscription WITHOUT actual payment
-
-            // Simulate Stripe payment data for trial
+            // Create transaction with trial status
             $stripe_payment_id = 'trial_' . uniqid();
             $stripe_payment_method = 'trial';
             $stripe_payment_status = 'trialing';
             $amount_paid = 0;
 
-            // Save transaction with trial status
             $tran = Transaction::create([
                 'user_id' => $user->id,
                 'product_id' => $product_id,
@@ -232,34 +265,31 @@ class StripePaymentController extends Controller
                 'currency' => $currency
             ]);
 
-            // Create order with trial status
-            $order = Order::create([
-                'product_id' => $product_id,
-                'user_id' => $user->id,
-                'payment_status' => $stripe_payment_status,
-                'payment_amount' => $amount_paid,
-                'razorpay_payment_id' => $stripe_payment_id,
-                'payment_method' => $stripe_payment_method,
-                'transaction_id' => $tran->id,
-                'currency' => $currency
-            ]);
-
-            // Generate keys/license for trial quantity
-            $keyIds = [];
+            // For each quantity, create a trial order + key
             for ($i = 0; $i < $quantity; $i++) {
-                $key = Str::random(50);
-                $currentDateTime = Carbon::now();
-                $expireDate = $currentDateTime->copy()->addDays($trial_period_days);
+                $order = Order::create([
+                    'product_id' => $product_id,
+                    'user_id' => $user->id,
+                    'payment_status' => $stripe_payment_status,
+                    'payment_amount' => $amount_paid,
+                    'razorpay_payment_id' => $stripe_payment_id,
+                    'payment_method' => $stripe_payment_method,
+                    'transaction_id' => $tran->id,
+                    'currency' => $currency
+                ]);
 
-                $keytbl = Key::create([
+                // Generate a license/key for each order
+                $key = Str::random(50);
+                $expireDate = now()->addDays($trial_period_days);
+
+                Key::create([
                     'key' => $key,
                     'user_id' => $user->id,
                     'order_id' => $order->id,
                     'product_id' => $product_id,
-                    'created_at' => Carbon::now(),
+                    'created_at' => now(),
                     'expire_at' => $expireDate
                 ]);
-                $keyIds[] = $keytbl->id;
             }
 
             // Optionally, create CouponUsages if coupon applied during trial
@@ -393,92 +423,189 @@ class StripePaymentController extends Controller
             // }
             // else{
                 // add data to order id
+            //     $order = Order::create([
+            //         'product_id'=> $product_id,
+            //         'user_id' => $user['id'],
+            //         'payment_status' => $stripe_payment_status,
+            //         'payment_amount' => $amount,
+            //         'razorpay_payment_id' => $stripe_payment_id,
+            //         'payment_method' => $stripe_payment_method,
+            //         'transaction_id' => $transaction_id,
+            //         'currency' => $currency
+            //     ]);
+
+            //     if($coupon_code != '' && $discountvalue != ''){
+            //         $usage = CouponUsages::create([
+            //             'coupon_id'=>$coupon_code,
+            //             'user_id'=>$user['id'],
+            //             'order_id'=>$order->id,
+            //             'discount_value'=>$discountvalue,
+            //         ]);
+            //     }
+
+
+            //     $total_order = intval($amount/$per_order_amount);
+
+            //     $wallet = Wallet::create([
+            //         'user_id' => $user['id'],
+            //         'product_id' => $product_id,
+            //         'wallet_amount' => $amount,
+            //         'total_order' => $total_order,
+            //         'remaining_order' => $total_order,
+            //     ]);
+            //     $order_id = $order->id;
+            //     // add data to wallet
+            //     $keyIds = [];
+            //     for ($i = 0; $i < $quantity; $i++) {
+            //         // Key generation and add data to the key table.
+            //         $key = Str::random(50);
+            //         $currentDateTime = Carbon::now();
+            //         $oneYearLater = $currentDateTime->addYear();
+                
+            //         $keytbl = Key::create([
+            //             'key' => $key,
+            //             'user_id' => $user['id'],
+            //             'order_id' => $order_id,
+            //             'product_id' => $product_id,
+            //             'created_at' => Carbon::now(),
+            //             'expire_at' => $oneYearLater
+            //         ]);
+            //         $keyIds[] = $keytbl->id;
+            //     }
+            //     $keyIdsString = implode(',', $keyIds);
+            //     // dd(2,$order , $keytbl);
+            // // }
+
+            // $wallet_mail = Wallet::where('user_id', $user['id'])->first();
+            // $order_mail = Order::where('user_id', $user['id'])->first();
+
+            // $mailData = [
+            //     'title' => 'Thank You for Topping Up and Placing Your Order!',
+            //     'name' => $user['name'],
+            //     'order_id' => $order_mail->id,
+            //     'total_order' => $wallet_mail->total_order,
+            //     'remaining_order' => $wallet_mail->remaining_order,
+            //     'wallet_amount' => $wallet_mail->wallet_amount,
+            // ];
+            // if ($plan_type === 'recurring') {
+            //     $subscription_id = $_GET['subscription_id'] ?? null;
+            //     if ($subscription_id) {
+            //         Subscription::create([
+            //             'user_id' => $user['id'],
+            //             'subscription_id' => $subscription_id,
+            //             'product_id' => $product_id,
+            //             'status' => 'active',
+            //             'key_id' => $keyIdsString
+            //         ]);
+            //     }
+            // }
+
+            // $today = now();
+            // $invoicesRes = InvoiceModel::whereDate("created_at", $today->toDateString())->count();
+            // $temp_inv_num = $invoicesRes + 1;
+            // $formatted_temp_inv_num = str_pad($temp_inv_num, 2, "0", STR_PAD_LEFT);
+            // $temp_date = date("d") . date("m") . date("y");
+            // $invoiceNo ="INV" . $temp_date . $formatted_temp_inv_num;
+
+            // $invoice = InvoiceModel::create([
+            //     'orderid' => $order_id,
+            //     'user_id' => $user['id'],
+            //     'transaction_id' => $transaction_id,
+            //     'invoice_number' => $invoiceNo,
+            //     'subtotal' => $subtotal,
+            //     'gst_percentage' => $gst_percentage,
+            //     'discount_type' => 'percentage',
+            //     'discount' => $discountvalue,
+            //     'applied_coupon' => $coupon_code,
+            //     'total' => $old_amount / 100,
+            //     'payment_method' => "Stripe",
+            //     'payment_status' => $stripe_payment_status,
+            //     'product_id' => $product_id,
+            //     'quantity' => $quantity
+            // ]);
+            // if($plan_type === 'recurring'){
+            //     $subscription_rec = SubscriptionRec::create([
+            //         'user_id' => $user['id'],
+            //         'product_id' => $product_id,
+            //         'order_id' => $order_id,
+            //         'invoice_id' => $invoice->id,
+            //         'key_id' => $keyIdsString,
+            //         'status' => 'active',
+            //     ]);
+            // }
+            // Mail::to($user['email'])->send(new SendThankyou($mailData));
+
+            // $request->session()->forget('cart');
+            // $request->session()->forget('product_id');
+            // $request->session()->forget('amount');
+
+            // session()->flash('success', 'Payment Successfull!');
+            // if (auth()->check()) {
+            // return redirect()->route('invoice-preview', ['id' => $invoice->id]);
+            //  }
+            // else{
+            //     return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            // }
+            $order_ids = [];
+            $key_ids = [];
+
+            for ($i = 0; $i < $quantity; $i++) {
+                // 1. Create Order
                 $order = Order::create([
-                    'product_id'=> $product_id,
-                    'user_id' => $user['id'],
+                    'product_id' => $product_id,
+                    'user_id' =>  $user['id'],
                     'payment_status' => $stripe_payment_status,
-                    'payment_amount' => $amount,
+                    'payment_amount' => $amount / $quantity,
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $transaction_id,
                     'currency' => $currency
                 ]);
+                $order_ids[] = $order->id;
 
-                if($coupon_code != '' && $discountvalue != ''){
-                    $usage = CouponUsages::create([
-                        'coupon_id'=>$coupon_code,
-                        'user_id'=>$user['id'],
-                        'order_id'=>$order->id,
-                        'discount_value'=>$discountvalue,
-                    ]);
-                }
-
-
-                $total_order = intval($amount/$per_order_amount);
-
-                $wallet = Wallet::create([
-                    'user_id' => $user['id'],
+                // 2. Create Key
+                $key = Str::random(50);
+                $expireDate = now()->addYear();
+                $keytbl = Key::create([
+                    'key' => $key,
+                    'user_id' =>  $user['id'],
+                    'order_id' => $order->id,
                     'product_id' => $product_id,
-                    'wallet_amount' => $amount,
-                    'total_order' => $total_order,
-                    'remaining_order' => $total_order,
+                    'created_at' => now(),
+                    'expire_at' => $expireDate
                 ]);
-                $order_id = $order->id;
-                // add data to wallet
-                $keyIds = [];
-                for ($i = 0; $i < $quantity; $i++) {
-                    // Key generation and add data to the key table.
-                    $key = Str::random(50);
-                    $currentDateTime = Carbon::now();
-                    $oneYearLater = $currentDateTime->addYear();
-                
-                    $keytbl = Key::create([
-                        'key' => $key,
-                        'user_id' => $user['id'],
-                        'order_id' => $order_id,
-                        'product_id' => $product_id,
-                        'created_at' => Carbon::now(),
-                        'expire_at' => $oneYearLater
-                    ]);
-                    $keyIds[] = $keytbl->id;
+                $key_ids[] = $keytbl->id;
+
+                // 3. Subscription per order (if recurring)
+                if ($plan_type === 'recurring') {
+                    $subscription_id = $_GET['subscription_id'] ?? null;
+                    if ($subscription_id) {
+                        Subscription::create([
+                            'user_id' => $user['id'],
+                            'subscription_id' => $subscription_id,
+                            'product_id' => $product_id,
+                            'status' => 'active',
+                            'key_id' => $keytbl->id,
+                            'order_id' => $order->id
+                        ]);
+                    }
                 }
-                $keyIdsString = implode(',', $keyIds);
-                // dd(2,$order , $keytbl);
-            // }
 
-            $wallet_mail = Wallet::where('user_id', $user['id'])->first();
-            $order_mail = Order::where('user_id', $user['id'])->first();
-
-            $mailData = [
-                'title' => 'Thank You for Topping Up and Placing Your Order!',
-                'name' => $user['name'],
-                'order_id' => $order_mail->id,
-                'total_order' => $wallet_mail->total_order,
-                'remaining_order' => $wallet_mail->remaining_order,
-                'wallet_amount' => $wallet_mail->wallet_amount,
-            ];
-            if ($plan_type === 'recurring') {
-                $subscription_id = $_GET['subscription_id'] ?? null;
-                if ($subscription_id) {
-                    Subscription::create([
-                        'user_id' => $user['id'],
-                        'subscription_id' => $subscription_id,
-                        'product_id' => $product_id,
-                        'status' => 'active',
-                        'key_id' => $keyIdsString
+                // 4. Coupon usage
+                if ($coupon_code && $discountvalue) {
+                    CouponUsages::create([
+                        'coupon_id' => $coupon_code,
+                        'user_id' =>  $user['id'],
+                        'order_id' => $order->id,
+                        'discount_value' => $discountvalue,
                     ]);
                 }
             }
 
-            $today = now();
-            $invoicesRes = InvoiceModel::whereDate("created_at", $today->toDateString())->count();
-            $temp_inv_num = $invoicesRes + 1;
-            $formatted_temp_inv_num = str_pad($temp_inv_num, 2, "0", STR_PAD_LEFT);
-            $temp_date = date("d") . date("m") . date("y");
-            $invoiceNo ="INV" . $temp_date . $formatted_temp_inv_num;
-
+            // ✅ 5. Create ONE Invoice AFTER the loop
+            $invoiceNo = 'INV' . now()->format('dmy') . str_pad(1, 2, '0', STR_PAD_LEFT);
             $invoice = InvoiceModel::create([
-                'orderid' => $order_id,
+                'orderid' => implode(',', $order_ids),
                 'user_id' => $user['id'],
                 'transaction_id' => $transaction_id,
                 'invoice_number' => $invoiceNo,
@@ -493,28 +620,38 @@ class StripePaymentController extends Controller
                 'product_id' => $product_id,
                 'quantity' => $quantity
             ]);
-            if($plan_type === 'recurring'){
-                $subscription_rec = SubscriptionRec::create([
-                    'user_id' => $user['id'],
-                    'product_id' => $product_id,
-                    'order_id' => $order_id,
-                    'invoice_id' => $invoice->id,
-                    'key_id' => $keyIdsString,
-                    'status' => 'active',
-                ]);
+
+            // ✅ 6. Create SubscriptionRec only once (optional - based on how you use it)
+            if ($plan_type === 'recurring') {
+                foreach ($order_ids as $idx => $order_id) {
+                    SubscriptionRec::create([
+                        'user_id' => $user['id'],
+                        'product_id' => $product_id,
+                        'order_id' => $order_id,
+                        'invoice_id' => $invoice->id,
+                        'key_id' => $key_ids[$idx],
+                        'status' => 'active',
+                    ]);
+                }
             }
-            // Mail::to($user['email'])->send(new SendThankyou($mailData));
+            // Create or update wallet for total amount and quantity
+            $wallet = Wallet::updateOrCreate(
+                ['user_id' => $user['id'], 'product_id' => $product_id],
+                [
+                    'wallet_amount' => $amount,
+                    'total_order' => $quantity,
+                    'remaining_order' => $quantity,
+                ]
+            );
+
+            // Clear cart session, etc.
             $request->session()->forget('cart');
             $request->session()->forget('product_id');
             $request->session()->forget('amount');
 
-            session()->flash('success', 'Payment Successfull!');
-            if (auth()->check()) {
-            return redirect()->route('invoice-preview', ['id' => $invoice->id]);
-             }
-            else{
-                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
-            }
+            session()->flash('success', 'Payment successful and subscriptions/orders created!');
+
+            return redirect()->route('user-dashboard');
         }
         elseif($stripe_payment_status === 'requires_payment_method'){
 
@@ -869,7 +1006,7 @@ class StripePaymentController extends Controller
             }
             return redirect()->back()->with('success', 'Subscription canceled successfully.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             return redirect()->back()->with('error', 'Error canceling subscription: ' . $e->getMessage());
         }
     }
