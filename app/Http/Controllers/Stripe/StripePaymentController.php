@@ -1015,88 +1015,87 @@ class StripePaymentController extends Controller
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
+            // Retrieve subscription record
             $subscription = SubscriptionRec::find($id);
-
-            if ($subscription && $subscription->status === 'cancel') {
-                $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
-
-                if ($stripeSubscription) {
-                    $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
-
-                    if (!empty($subscriptionStripe) && isset($subscriptionStripe->id)) {
-                        if ($subscriptionStripe->status === 'canceled') {
-                            // Customer ID from the canceled subscription
-                            $customerId = $subscriptionStripe->customer;
-
-                            // Fetch customer's payment methods (cards)
-                            $paymentMethods = \Stripe\PaymentMethod::all([
-                                'customer' => $customerId,
-                                'type' => 'card',
-                            ]);
-
-                            if (count($paymentMethods->data) === 0) {
-                                // No payment methods attached - throw an error
-                                throw new \Exception('Customer has no attached payment methods. Please add a payment method first.');
-                            }
-
-                            // Use the first payment method found as default
-                            $defaultPaymentMethodId = $paymentMethods->data[0]->id;
-
-                            // Create a new subscription with default payment method
-                            $newSubscription = \Stripe\Subscription::create([
-                                'customer' => $customerId,
-                                'items' => [
-                                    [
-                                        'price' => $subscriptionStripe->items->data[0]->price->id,
-                                    ]
-                                ],
-                                'default_payment_method' => $defaultPaymentMethodId,
-                            ]);
-
-                            // Update Stripe subscription ID and status in your DB
-                            $stripeSubscription->update([
-                                'subscription_id' => $newSubscription->id,
-                                'status' => 'active'
-                            ]);
-                        } else {
-                            // Subscription is active but canceled at period end, so just reactivate
-                            \Stripe\Subscription::update($subscriptionStripe->id, [
-                                'cancel_at_period_end' => false
-                            ]);
-                            $stripeSubscription->update(['status' => 'active']);
-                        }
-                    }
-                }
-
-                // Update local subscription record to active
-                $subscription->update(['status' => 'active']);
-
-                // Update related user subscription record
-                $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
-                if ($userSubscription) {
-                    $userSubscription->update(['status' => 'active']);
-                }
-
-                // Restore key expiration date and system state
-                $key_id = $subscription->key_id;
-                if ($key_id) {
-                    $key = Key::find($key_id);
-                    if ($key) {
-                        $key->update([
-                            'expire_at' => now()->addDays(30),
-                            'sys_state' => '0',
-                        ]);
-                    }
-                }
-
-                return redirect()->back()->with('success', 'Subscription reactivated successfully.');
+            if (!$subscription || $subscription->status !== 'cancel') {
+                return redirect()->back()->with('error', 'Subscription not found or already active.');
             }
 
-            return redirect()->back()->with('error', 'Subscription not found or already active.');
+            // Find Stripe subscription
+            $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+            if (!$stripeSubscription) {
+                return redirect()->back()->with('error', 'Stripe subscription record not found.');
+            }
 
+            // Retrieve Stripe subscription details
+            $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
+            if (empty($subscriptionStripe) || !isset($subscriptionStripe->id)) {
+                return redirect()->back()->with('error', 'Invalid Stripe subscription ID.');
+            }
+
+            if ($subscriptionStripe->status === 'canceled') {
+                // Get customer ID from the canceled subscription
+                $customerId = $subscriptionStripe->customer;
+
+                // Fetch customer's payment methods
+                $paymentMethods = \Stripe\PaymentMethod::all([
+                    'customer' => $customerId,
+                    'type' => 'card',
+                ]);
+
+                if (count($paymentMethods->data) === 0) {
+                    throw new \Exception('Customer has no attached payment methods. Please add a payment method first.');
+                }
+
+                // Use the first available payment method
+                $defaultPaymentMethodId = $paymentMethods->data[0]->id;
+
+                // Create a new subscription with default payment method
+                $newSubscription = Subscription::create([
+                    'customer' => $customerId,
+                    'items' => [
+                        ['price' => $subscriptionStripe->items->data[0]->price->id]
+                    ],
+                    'default_payment_method' => $defaultPaymentMethodId,
+                ]);
+
+                // Update the database with new subscription details
+                $stripeSubscription->update([
+                    'subscription_id' => $newSubscription->id,
+                    'status' => 'active'
+                ]);
+            } else {
+                // Reactivate an active subscription scheduled for cancellation
+                \Stripe\Subscription::update($subscriptionStripe->id, [
+                    'cancel_at_period_end' => false
+                ]);
+                $stripeSubscription->update(['status' => 'active']);
+            }
+
+            // Update local database records
+            $subscription->update(['status' => 'active']);
+            $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+            if ($userSubscription) {
+                $userSubscription->update(['status' => 'active']);
+            }
+
+            // Restore key expiration date and system state
+            $key_id = $subscription->key_id;
+            if ($key_id) {
+                $key = Key::find($key_id);
+                if ($key) {
+                    $key->update([
+                        'expire_at' => now()->addDays(30),
+                        'sys_state' => '0',
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Subscription reactivated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error reactivating subscription: ' . $e->getMessage());
         }
     }
+
 
 }

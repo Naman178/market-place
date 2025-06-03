@@ -31,15 +31,17 @@
                                     <td>
                                         @if ($sub->status === 'active')
                                             <a href="{{ route('subscription.cancel', ['id' => $sub->id]) }}"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to cancel this subscription?');">
-                                                Stop
+                                            class="btn btn-danger btn-sm subscription-action"
+                                            data-action="cancel"
+                                            data-url="{{ route('subscription.cancel', ['id' => $sub->id]) }}">
+                                            Stop
                                             </a>
                                         @else
                                             <a href="{{ route('subscription.reactivate', ['id' => $sub->id]) }}"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Are you sure you want to reactivate this subscription?');">
-                                                Re-Active
+                                            class="btn btn-success btn-sm subscription-action"
+                                            data-action="reactivate"
+                                            data-url="{{ route('subscription.reactivate', ['id' => $sub->id]) }}">
+                                            Re-Active
                                             </a>
                                         @endif
                                     </td>
