@@ -1025,23 +1025,41 @@ class StripePaymentController extends Controller
 
                     if (!empty($subscriptionStripe) && isset($subscriptionStripe->id)) {
                         if ($subscriptionStripe->status === 'canceled') {
-                            // Fully canceled - create a new subscription
-                            $newSubscription = \Stripe\Subscription::create([
-                                'customer' => $subscriptionStripe->customer,
-                                'items' => [
-                                    [
-                                        'price' => $subscriptionStripe->items->data[0]->price->id
-                                    ]
-                                ],
+                            // Customer ID from the canceled subscription
+                            $customerId = $subscriptionStripe->customer;
+
+                            // Fetch customer's payment methods (cards)
+                            $paymentMethods = \Stripe\PaymentMethod::all([
+                                'customer' => $customerId,
+                                'type' => 'card',
                             ]);
 
-                            // Update Stripe subscription ID in your DB
+                            if (count($paymentMethods->data) === 0) {
+                                // No payment methods attached - throw an error
+                                throw new \Exception('Customer has no attached payment methods. Please add a payment method first.');
+                            }
+
+                            // Use the first payment method found as default
+                            $defaultPaymentMethodId = $paymentMethods->data[0]->id;
+
+                            // Create a new subscription with default payment method
+                            $newSubscription = \Stripe\Subscription::create([
+                                'customer' => $customerId,
+                                'items' => [
+                                    [
+                                        'price' => $subscriptionStripe->items->data[0]->price->id,
+                                    ]
+                                ],
+                                'default_payment_method' => $defaultPaymentMethodId,
+                            ]);
+
+                            // Update Stripe subscription ID and status in your DB
                             $stripeSubscription->update([
                                 'subscription_id' => $newSubscription->id,
                                 'status' => 'active'
                             ]);
                         } else {
-                            // Not fully canceled, just cancel_at_period_end = true
+                            // Subscription is active but canceled at period end, so just reactivate
                             \Stripe\Subscription::update($subscriptionStripe->id, [
                                 'cancel_at_period_end' => false
                             ]);
@@ -1050,15 +1068,16 @@ class StripePaymentController extends Controller
                     }
                 }
 
-                // Update local records
+                // Update local subscription record to active
                 $subscription->update(['status' => 'active']);
 
+                // Update related user subscription record
                 $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
                 if ($userSubscription) {
                     $userSubscription->update(['status' => 'active']);
                 }
 
-                // Restore key expiration and system state
+                // Restore key expiration date and system state
                 $key_id = $subscription->key_id;
                 if ($key_id) {
                     $key = Key::find($key_id);
