@@ -70,48 +70,6 @@ class RegisterController extends Controller
     public function userCreateCheckout(Request $request){
         $data = $request->all();
          if (!Auth::check()) {
-          $validator = Validator::make($request->all(), [
-                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/|min:2',
-                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/|min:2',
-                'email' => 'required|email|unique:users',
-                'country_code' => 'required',
-                'contact_number' => 'required|digits:10',
-                'country' => 'required',
-                'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
-                'city' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'postal_code' => 'required|digits_between:5,6',
-                'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'company_website' => 'required|url',
-          ],
-
-            $message = [                
-                'firstname.required' => 'The First Name Is Required.',
-                'firstname.regex' => 'The First Name should only contain letters and spaces.',
-                'firstname.min' => 'The First Name must be at least 2 characters.',
-                'lastname.required' => 'The Last Name Is Required.',
-                'lastname.regex' => 'The Last Name should only contain letters and spaces.',
-                'lastname.min' => 'The Last Name must be at least 2 characters.',
-                'email.required' => 'The Email Is Required.',
-                'email.email' => 'Please enter a valid email address.',
-                'email.unique' => 'The email has already been taken.',
-                'country_code.required' => 'Please Select Any One Country Code.',
-                'contact.required' => 'Please Add Your Contact Number.',
-                'contact.digits' => 'The Contact Number must be exactly 10 digits.',
-                'country.required' => 'Please Select Any One Country.',
-                'address_line1.required' => 'Please Add Your Address.',
-                'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
-                'city.required' => 'The City Is Required.',
-                'city.regex' => 'The City name should only contain letters and spaces.',
-                'postal_code.required' => 'The Postal Code Is Required.',
-                'postal_code.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
-                'company_name.required' => 'The Company Name is required.',
-                'company_name.regex' => 'The Company Name should only contain letters and spaces.',
-                'company_website.required' => 'Please enter a valid URL for the company website.',
-                'company_website.url' => 'Please enter a valid company website URL.',
-            ]);
-            if ($validator->fails()){
-                return response()->json(['errors' => $validator->errors()]);
-            }else{
                 $name = $request->firstname .' '.$request->lastname;
                 $fname = $request->firstname;
                 $lname = $request->lastname;
@@ -276,53 +234,8 @@ class RegisterController extends Controller
                     return response()->json(['error'=> 'Error in login in user' ]);
                 }      
             }
-            
-         }
          else{
-                if($request->ajax()){
-                    $validator = Validator::make($request->all(), [
-                        'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                        'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                        'email' => 'required|email',
-                        'country_code' => 'required',
-                       'contact_number' => 'required|digits:10',
-                        'country' => 'required',
-                        'address_line_1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
-                        'city' => 'required|regex:/^[a-zA-Z\s]+$/',
-                        'postal_code' => 'required|digits_between:5,6',
-                        'company_name' => 'required|regex:/^[a-zA-Z\s]+$/',
-                        'company_website' => 'required|url',
-                    ], 
-                    $message = [                
-                        'firstname.required' => 'The First Name Is Required.',
-                        'firstname.regex' => 'The First Name should only contain letters and spaces.',
-                        'lastname.required' => 'The Last Name Is Required.',
-                        'lastname.regex' => 'The Last Name should only contain letters and spaces.',
-                        'email.required' => 'The Email Is Required.',
-                        'email.email' => 'Please enter a valid email address.',
-                        'country_code.required' => 'Please Select Any One Country Code.',
-                        'contact.required' => 'Please Add Your Contact Number.',
-                        'contact.digits' => 'The Contact Number must be exactly 10 digits.',
-                        'country.required' => 'Please Select Any One Country.',
-                        'address_line_1.required' => 'Please Add Your Address.',
-                        'address_line_1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
-                        'city.required' => 'The City Is Required.',
-                        'city.regex' => 'The City name should only contain letters and spaces.',
-                        'postal_code.required' => 'The Postal Code Is Required.',
-                        'postal_code.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
-                        'company_name.required' => 'The Company Name is required.',
-                        'company_name.regex' => 'The Company Name should only contain letters and spaces.',
-                        'company_website.required' => 'Please enter a valid URL for the company website.',
-                        'company_website.url' => 'Please enter a valid company website URL.',
-                    ]);
-                    
-                    if ($validator->fails()){
-                        return response()->json([
-                            'error'=> $validator->errors()->first(),
-                        ])
-                        ->setStatusCode(500);
-                    }
-                    else{
+              
                         $user = User::find(Auth::user()->id);
                         if($user){
                             $user->update([
@@ -417,9 +330,7 @@ class RegisterController extends Controller
                         //     ]);
                         // }
                     }
-                }
-            } 
-    }
+            }
     
     public function postRegistration(Request $request)
     {
