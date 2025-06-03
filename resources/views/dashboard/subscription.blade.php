@@ -36,7 +36,11 @@
                                                 Stop
                                             </a>
                                         @else
-                                            <span class="text-danger">Subscription Already Canceled</span>
+                                            <a href="{{ route('subscription.reactivate', ['id' => $sub->id]) }}"
+                                                class="btn btn-success btn-sm"
+                                                onclick="return confirm('Are you sure you want to reactivate this subscription?');">
+                                                Re-Active
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>
