@@ -99,12 +99,12 @@
 
         inputFields.forEach(input => {
             const errorDiv = document.getElementById(input.id + "_error");
+            const label = input.nextElementSibling;
             let hasInteracted = false;
 
             updateFloatingLabel(input);
-
+            
             input.addEventListener("focus", function () {
-                const label = input.nextElementSibling;
                 label.style.top = "-1%";
                 label.style.fontSize = "14px";
 
@@ -118,44 +118,92 @@
 
                 hasInteracted = true;
             });
-            const nameOnCardInput = document.getElementById("name_on_card");
-            const nameOnCardError = document.getElementById("name_on_card_error");
-
-            if (nameOnCardInput) {
-                nameOnCardInput.addEventListener("input", function () {
-                    // Ensure only letters and spaces are allowed
-                    this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
-
-                    // Validate input dynamically
-                    if (!/^[a-zA-Z\s]+$/.test(this.value)) {
-                        nameOnCardError.textContent = "Only letters and spaces are allowed!";
-                        nameOnCardError.style.display = "block";
-                        this.style.borderColor = "red";
-                    } else {
-                        nameOnCardError.textContent = "";
-                        nameOnCardError.style.display = "none";
-                        this.style.borderColor = "#ccc"; // Restore normal border when valid
-                    }
-                });
-            }
-
 
             input.addEventListener("blur", function () {
                 hasInteracted = true;
                 const value = input.value.trim();
-                const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+                const labelText = (input.labels && input.labels.length > 0) ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+
+                // Reset label color first
+                label.style.color = "#70657b";
 
                 if (!value) {
                     errorDiv.textContent = `${labelText} is required!`;
                     errorDiv.style.display = "block";
                     input.style.borderColor = "red";
-                } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-                    errorDiv.textContent = "Please enter a valid email address!";
-                    errorDiv.style.display = "block";
-                    input.style.borderColor = "red";
+                    label.style.color = "red";
                 } else {
+                    // Validation for specific fields
+                    if (["firstname", "lastname", "company_name", "city"].includes(input.id)) {
+                        if (!/^[a-zA-Z\s]+$/.test(value)) {
+                            errorDiv.textContent = `${labelText} should only contain letters and spaces.`;
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        } else if (value.length < 2 && (input.id === "firstname" || input.id === "lastname")) {
+                            errorDiv.textContent = `${labelText} must be at least 2 characters.`;
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+                    }
+
+                    if (input.id === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                        errorDiv.textContent = "Please enter a valid email address!";
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                        label.style.color = "red";
+                        return;
+                    }
+
+                    if (input.id === "contact") {
+                        if (!/^\d{10}$/.test(value)) {
+                            errorDiv.textContent = "The Contact Number must be exactly 10 digits.";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+                    }
+
+                    if (input.id === "postal") {
+                        if (!/^\d{5,6}$/.test(value)) {
+                            errorDiv.textContent = "The Postal Code must be 5 or 6 digits long.";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+                    }
+
+                    if (input.id === "address_line_one") {
+                        if (!/^[a-zA-Z0-9\s,.\-]+$/.test(value)) {
+                            errorDiv.textContent = "The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+                    }
+
+                    if (input.id === "company_website") {
+                        try {
+                            new URL(value);
+                        } catch (_) {
+                            errorDiv.textContent = "Please enter a valid company website URL.";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+                    }
+
                     errorDiv.textContent = "";
+                    errorDiv.style.display = "none";
                     input.style.borderColor = "#ccc";
+                    label.style.color = "#70657b";
                 }
 
                 updateFloatingLabel(input);
@@ -163,27 +211,116 @@
 
             input.addEventListener("input", function () {
                 const value = input.value.trim();
-                const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+                const labelText = (input.labels && input.labels.length > 0) ? input.labels[0].textContent : input.name.replace(/_/g, " ");
 
                 if (hasInteracted) {
+                    // Reset label color first
+                    label.style.color = "#70657b";
+
                     if (!value) {
                         errorDiv.textContent = `${labelText} is required!`;
                         errorDiv.style.display = "block";
                         input.style.borderColor = "red";
-                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-                        errorDiv.textContent = "Please enter a valid email address!";
-                        errorDiv.style.display = "block";
-                        input.style.borderColor = "red";
+                        label.style.color = "red";
                     } else {
+                        if (["firstname", "lastname", "company_name", "city"].includes(input.id)) {
+                            if (!/^[a-zA-Z\s]+$/.test(value)) {
+                                errorDiv.textContent = `${labelText} should only contain letters and spaces.`;
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            } else if (value.length < 2 && (input.id === "firstname" || input.id === "lastname")) {
+                                errorDiv.textContent = `${labelText} must be at least 2 characters.`;
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            }
+                        }
+
+                        if (input.id === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                            errorDiv.textContent = "Please enter a valid email address!";
+                            errorDiv.style.display = "block";
+                            input.style.borderColor = "red";
+                            label.style.color = "red";
+                            return;
+                        }
+
+                        if (input.id === "contact") {
+                            if (!/^\d{10}$/.test(value)) {
+                                errorDiv.textContent = "The Contact Number must be exactly 10 digits.";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            }
+                        }
+
+                        if (input.id === "postal") {
+                            if (!/^\d{5,6}$/.test(value)) {
+                                errorDiv.textContent = "The Postal Code must be 5 or 6 digits long.";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            }
+                        }
+
+                        if (input.id === "address_line_one") {
+                            if (!/^[a-zA-Z0-9\s,.\-]+$/.test(value)) {
+                                errorDiv.textContent = "The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            }
+                        }
+
+                        if (input.id === "company_website") {
+                            try {
+                                new URL(value);
+                            } catch (_) {
+                                errorDiv.textContent = "Please enter a valid company website URL.";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                                label.style.color = "red";
+                                return;
+                            }
+                        }
+
                         errorDiv.textContent = "";
+                        errorDiv.style.display = "none";
                         input.style.borderColor = "#ccc";
+                        label.style.color = "#70657b";
                     }
                 }
 
                 updateFloatingLabel(input);
             });
         });
+
+        // Special handling for "name_on_card" input separately
+        const nameOnCardInput = document.getElementById("name_on_card");
+        const nameOnCardError = document.getElementById("name_on_card_error");
+
+        if (nameOnCardInput) {
+            nameOnCardInput.addEventListener("input", function () {
+                this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+
+                if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+                    nameOnCardError.textContent = "Only letters and spaces are allowed!";
+                    nameOnCardError.style.display = "block";
+                    this.style.borderColor = "red";
+                } else {
+                    nameOnCardError.textContent = "";
+                    nameOnCardError.style.display = "none";
+                    this.style.borderColor = "#ccc";
+                }
+            });
+        }
     });
+
 </script>
 <script>
     $(document).ready(function() {
