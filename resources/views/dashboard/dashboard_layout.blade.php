@@ -930,6 +930,34 @@ use App\Models\SubCategory;
 </head>
 <body>
     @include('front-end.common.header')
+    <div id="trialChoiceModal" class="custom-modal" style="display:none;">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+        <h5 class="mt-2" id="modalTitle">Choose an Option</h5>
+        <span class="custom-close" id="close_modal">&times;</span>
+        </div>
+        <div class="custom-modal-body" id="modalBody">
+        Are you sure you want to perform this action?
+        </div>
+        <div class="custom-modal-footer mt-3">
+        <button id="modalCancelBtn" class="blue_common_btn">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+            </svg>
+            <span class="d-block">Cancel</span>
+        </button>
+        <button id="modalConfirmBtn" class="blue_common_btn">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+            </svg>
+            <span class="d-block">Confirm</span>
+        </button>
+        </div>
+    </div>
+    </div>
+
 
     <!-- Profile Header -->
     <div class="wsus__profile_header" style="background: #0274b8;">
@@ -1487,6 +1515,63 @@ use App\Models\SubCategory;
         } else {
             console.log('Menu toggle elements not found');
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('trialChoiceModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModal = document.getElementById('close_modal');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+            let currentUrl = null; // URL to redirect on confirm
+
+            // When any subscription-action button is clicked
+            document.querySelectorAll('.subscription-action').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+
+                    const action = this.dataset.action; // cancel or reactivate
+                    currentUrl = this.dataset.url;
+
+                    // Customize modal text based on action
+                    if (action === 'cancel') {
+                        modalTitle.textContent = 'Cancel Subscription';
+                        modalBody.textContent = 'Are you sure you want to cancel this subscription?';
+                        modalConfirmBtn.textContent = 'Cancel Subscription';
+                        modalConfirmBtn.classList.remove('btn-success');
+                        modalConfirmBtn.classList.add('btn-danger');
+                    } else if (action === 'reactivate') {
+                        modalTitle.textContent = 'Reactivate Subscription';
+                        modalBody.textContent = 'Are you sure you want to reactivate this subscription?';
+                        modalConfirmBtn.textContent = 'Reactivate Subscription';
+                        modalConfirmBtn.classList.remove('btn-danger');
+                        modalConfirmBtn.classList.add('btn-success');
+                    }
+
+                    // Show modal
+                    modal.style.display = 'block';
+                });
+            });
+
+            // Close modal handlers
+            closeModal.onclick = () => modal.style.display = 'none';
+            modalCancelBtn.onclick = () => modal.style.display = 'none';
+
+            // Confirm button handler - redirect to URL
+            modalConfirmBtn.onclick = () => {
+                if (currentUrl) {
+                    window.location.href = currentUrl;
+                }
+            };
+
+            // Close modal if user clicks outside modal content
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        });
+
     </script>
 
 </body>
