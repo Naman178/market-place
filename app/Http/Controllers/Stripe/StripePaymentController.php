@@ -1010,4 +1010,74 @@ class StripePaymentController extends Controller
             return redirect()->back()->with('error', 'Error canceling subscription: ' . $e->getMessage());
         }
     }
+    public function reactivateSubscription($id)
+    {
+        try {
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $subscription = SubscriptionRec::find($id);
+
+            if ($subscription && $subscription->status === 'cancel') {
+                $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+
+                if ($stripeSubscription) {
+                    $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
+
+                    if (!empty($subscriptionStripe) && isset($subscriptionStripe->id)) {
+                        if ($subscriptionStripe->status === 'canceled') {
+                            // Fully canceled - create a new subscription
+                            $newSubscription = \Stripe\Subscription::create([
+                                'customer' => $subscriptionStripe->customer,
+                                'items' => [
+                                    [
+                                        'price' => $subscriptionStripe->items->data[0]->price->id
+                                    ]
+                                ],
+                            ]);
+
+                            // Update Stripe subscription ID in your DB
+                            $stripeSubscription->update([
+                                'subscription_id' => $newSubscription->id,
+                                'status' => 'active'
+                            ]);
+                        } else {
+                            // Not fully canceled, just cancel_at_period_end = true
+                            \Stripe\Subscription::update($subscriptionStripe->id, [
+                                'cancel_at_period_end' => false
+                            ]);
+                            $stripeSubscription->update(['status' => 'active']);
+                        }
+                    }
+                }
+
+                // Update local records
+                $subscription->update(['status' => 'active']);
+
+                $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+                if ($userSubscription) {
+                    $userSubscription->update(['status' => 'active']);
+                }
+
+                // Restore key expiration and system state
+                $key_id = $subscription->key_id;
+                if ($key_id) {
+                    $key = Key::find($key_id);
+                    if ($key) {
+                        $key->update([
+                            'expire_at' => now()->addDays(30),
+                            'sys_state' => '0',
+                        ]);
+                    }
+                }
+
+                return redirect()->back()->with('success', 'Subscription reactivated successfully.');
+            }
+
+            return redirect()->back()->with('error', 'Subscription not found or already active.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error reactivating subscription: ' . $e->getMessage());
+        }
+    }
+
 }
