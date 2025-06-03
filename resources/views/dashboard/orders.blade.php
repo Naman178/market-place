@@ -105,8 +105,10 @@
                                                                     {{ $order->currency ?? 'INR' }}   
                                                                     @if(isset($order->invoice->discount))
                                                                         {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @elseif($order->payment_amount)
+                                                                         {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
                                                                     @else
-                                                                         {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                        {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
                                                                     @endif
                                                                 </p>
                                                             </div>

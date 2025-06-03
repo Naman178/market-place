@@ -194,7 +194,7 @@
         <!-- CONTENT -->
         <tr>
             <td bgcolor="#ffffff" style="padding: 20px; color: #666666; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                <p>Thank you for registering with Skyfinity Quick Checkout!</p>
+                <p>Thank you for registering with Market Place Checkout!</p>
                 <p>Please use the credentials below to log in to your account:</p>
                 <p><strong>Email:</strong> {{ $user->email }}</p>
                 <p><strong>Password:</strong> {{ $generatedPassword }}</p>

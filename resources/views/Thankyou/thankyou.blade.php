@@ -13,7 +13,7 @@
                 appreciate your trust in our services and value your business.</p>
             <p>If you have any questions or need further assistance, please feel free to contact our customer support team.
                 They are available to assist you with any inquiries you may have.</p>
-            <p class="mb-5">Thank you for choosing Skyfinity Quick Checkout for your wallet top-up. We look forward to
+            <p class="mb-5">Thank you for choosing Market Place Checkout for your wallet top-up. We look forward to
                 serving you again in the future!</p>
             <a href="/" class="pink-blue-grad-button">Go to Dashboard</a>
             <a href="https://infinty-stage.com/user-dashboard#wallet" class="pink-blue-grad-button">Go to Wallet</a>

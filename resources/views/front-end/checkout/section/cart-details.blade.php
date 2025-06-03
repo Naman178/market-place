@@ -299,7 +299,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($totalSubtotal) }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ $totalSubtotal }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
                 </div>
             </div>
 
@@ -345,7 +345,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($selectedPricing->sale_price) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($selectedPricing->sale_price) }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($selectedPricing->sale_price) }}</h5>
                 </div>
             </div>
             
@@ -354,7 +354,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing->gst_percentage ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
                 </div>
             </div>
             
@@ -439,7 +439,7 @@
                 <!-- Expiration Month -->
                 <div class="form-row row">
                     <div class="col-xs-12 col-md-4 form-group expiration">
-                        <label class="control-label">Expiration Month</label>
+                        <label class="control-label">Exp. Month</label>
                         <input type="text" class="form-control card-expiry-month" placeholder="MM" 
                             id="card_exp_month" maxlength="2" name="card_month" required>
                         <div class="error" id="card_exp_month_error"></div>
@@ -447,7 +447,7 @@
 
                     <!-- Expiration Year -->
                     <div class="col-xs-12 col-md-4 form-group expiration required">
-                        <label class="control-label">Expiration Year</label>
+                        <label class="control-label">Exp. Year</label>
                         <input type="text" class="form-control card-expiry-year" placeholder="YY" 
                             id="card_exp_year" maxlength="2" name="card_year" required>
                         <div class="error" id="card_exp_year_error"></div>
@@ -527,7 +527,7 @@
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                 </svg>
                                 <span id="button_text">
-                                    Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                    Free Trial for {{ $plan->trial_days }} Days
                                 </span>
                             </button>
                 
@@ -550,7 +550,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg>
                                     <span id="button_text_guest">
-                                            Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                            Free Trial for {{ $plan->trial_days }}Days
                                     </span>
                                 </button>
                             @else
@@ -559,7 +559,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg>
-                                    <span class="final_btn_text"> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                    <span class="final_btn_text"> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span></span> {{ $plan->currency ?? 'INR' }} </span>
                                
                                 </button>
                                 
@@ -594,8 +594,8 @@
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                         </svg>
-                                        <span id="button_text">
-                                            Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                        <span id="button_text" class="d-block">
+                                            Free Trial for {{ $plan->trial_days }} Days
                                         </span>
                                     </button>
                                     <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn ml-2">
@@ -603,7 +603,7 @@
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                         </svg>
-                                        <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                        <span> Proceed To Pay <span class="final_btn_text d-block"> {{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }} </span></span>  </span>
                                 
                                     </button>
                                     @else
@@ -612,8 +612,8 @@
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                             </svg>
-                                            <span id="button_text">
-                                                Free Trial for <span class="final_btn_text">{{ $plan->trial_days }}</span> Days
+                                            <span id="button_text" class="d-block">
+                                                Free Trial for{{ $plan->trial_days }} Days
                                             </span>
                                         </button>
                                         <button type="button" class="blue_common_btn border-0 proced_to_pay_btn ml-2" id="trialguestProceedToPay">
@@ -621,7 +621,7 @@
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                             </svg>
-                                            <span> Proceed To Pay {{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                            <span> Proceed To Pay <span class="final_btn_text d-block">{{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }}</span> </span>  </span>
                                     
                                         </button>
                                         

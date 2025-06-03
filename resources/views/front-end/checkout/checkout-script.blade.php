@@ -352,22 +352,22 @@
     });
 
     function dynamicCalculation() {
-        let subTotalRaw = $("#subtotal_amount").data('amount'); 
+        let subTotalRaw = $("#subtotal_amount").data('amount');
+        console.log("Raw subtotal:", subTotalRaw);
 
-        if (typeof subTotalRaw === 'undefined' || subTotalRaw === null) {
-            console.error("Subtotal amount is missing!");
-            return;
-        }
+        let subTotalClean = subTotalRaw.toString().replace(/,/g, '');
+        let subTotal = parseInt(subTotalClean);
 
-        let subTotal = parseInt(subTotalRaw); // Convert directly if it's numeric
+        console.log("Parsed subtotal:", subTotal); 
 
         let quantity = parseInt($("#quantity").val()) || 1;
 
-        
+        console.log(quantity, subTotal);
+
         if (!isNaN(quantity)) {
             setTimeout(function() {
                 continueCalculation(quantity, subTotal);
-            }, 1000)
+            }, 1000);
             $("#items-count").text(quantity + " Items");
         } else {
             console.error("Quantity is undefined or invalid.");

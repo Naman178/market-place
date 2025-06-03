@@ -32,6 +32,6 @@ class SendNewUserPassword extends Mailable
     {
         return $this->markdown('Email.sendNewPassword')
         ->with('mailData', $this->mailData)
-        ->subject('Welcome to Skyfinity Quick Checkout! ');
+        ->subject('Welcome to Market Place Checkout! ');
     }
 }

@@ -1229,8 +1229,8 @@ use App\Models\SubCategory;
                 key: "{{ env('RAZORPAY_KEY') }}",
                 amount: amount * 100,
                 currency: currency,
-                name: "Skyfinity Quick Checkout",
-                description: "Payment For The Topup of Skyfinity Quick Checkout Wallet",
+                name: "Market Place Checkout",
+                description: "Payment For The Topup of Market Place Checkout Wallet",
                 image: "@if ($setting && $setting['value']['logo_image']) {{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }} @else {{ asset('front-end/images/infiniylogo.png') }} @endif",
                 prefill: {
                     name: name,
