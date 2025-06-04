@@ -144,7 +144,7 @@
                                                             @php
                                                                 $subscriptionId = $order->subscription->id ?? '';
                                                             @endphp
-                                                            <div class="button-container">
+                                                            {{-- <div class="button-container">
                                                                 @if ($order->pricing->pricing_type == 'recurring')
                                                                     @if ($order->subscription->status == 'active') 
                                                                         <!-- Stop AutoPay Button -->
@@ -192,7 +192,61 @@
                                                                         <span>Deactivate Product</span>
                                                                     </button>
                                                                 @endif
-                                                            </div>
+                                                            </div> --}}
+                                                            <div class="button-container">
+                                                                    @if ($order->pricing->pricing_type == 'recurring')
+                                                                        @if ($order->subscription->status == 'active') 
+                                                                            <!-- Stop AutoPay Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/cancel-auto-pay/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Stop AutoPay</span>
+                                                                                </button>
+                                                                            </form>
+
+                                                                            <!-- Cancel Subscription Immediately Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/reactivate/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Cancel Subscription Immediately</span>
+                                                                                </button>
+                                                                            </form>
+                                                                        @else   
+                                                                            <!-- Reactivate Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/reactivate/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-success">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Reactivate</span>
+                                                                                </button>
+                                                                            </form>
+                                                                        @endif
+                                                                    @else
+                                                                        <!-- Deactivate Product Button -->
+                                                                        <form method="POST" action="{{ url('/deactivate-product/' . $order->key->id) }}" style="display:inline;">
+                                                                            @csrf
+                                                                            <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                </svg>
+                                                                                <span>Deactivate Product</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
+                                                                </div>
+
                                                         </div>
                                                     </div>
                                                 </div> <!-- Row End -->
