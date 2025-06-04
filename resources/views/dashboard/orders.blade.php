@@ -139,6 +139,62 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="d-flex mb-3">
+                                                            @php
+                                                                $subscriptionId = $order->subscription->id ?? '';
+                                                            @endphp
+                                                            <div class="button-container">
+                                                                @if ($order->pricing->pricing_type == 'recurring')
+                                                                    @if ($order->subscription->status == 'active') 
+                                                                        <!-- Stop AutoPay Button -->
+                                                                        <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                            data-url="/subscription/cancel-auto-pay/{{ $subscriptionId }}"
+                                                                            data-message="Are you sure you want to stop auto-renewal?">
+                                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                            </svg>
+                                                                            <span>Stop AutoPay</span>
+                                                                        </button>
+
+                                                                        <!-- Cancel Subscription Immediately Button -->
+                                                                        <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                            data-url="/subscription/reactivate/{{ $subscriptionId }}"
+                                                                            data-message="This will cancel your subscription immediately. Are you sure?">
+                                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                            </svg>
+                                                                            <span>Cancel Subscription Immediately</span>
+                                                                        </button>
+                                                                    @else   
+                                                                        <!-- Reactivate Button -->
+                                                                        <button class="blue_common_btn btn btn-sm btn-outline-success confirm-btn"
+                                                                            data-url="/subscription/reactivate/{{ $subscriptionId }}"
+                                                                            data-message="Do you want to reactivate your subscription?">
+                                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                            </svg>
+                                                                            <span>Reactivate</span>
+                                                                        </button>
+                                                                    @endif
+                                                                @else
+                                                                    <!-- Deactivate Product Button -->
+                                                                    <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                        data-url="/deactivate-product/{{ $order->key->id }}"
+                                                                        data-message="This will permanently disable access. No refunds will be issued. Continue?">
+                                                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                        </svg>
+                                                                        <span>Deactivate Product</span>
+                                                                    </button>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div> <!-- Row End -->
                                             </div>
                                         </div>

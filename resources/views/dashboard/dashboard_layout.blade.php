@@ -931,7 +931,7 @@ use App\Models\SubCategory;
 </head>
 <body>
     @include('front-end.common.header')
-    <div id="trialChoiceModal" class="custom-modal" style="display:none;">
+    {{-- <div id="trialChoiceModal" class="custom-modal" style="display:none;">
     <div class="custom-modal-content">
         <div class="custom-modal-header">
         <h5 class="mt-2" id="modalTitle">Choose an Option</h5>
@@ -957,6 +957,31 @@ use App\Models\SubCategory;
         </button>
         </div>
     </div>
+    </div> --}}
+    <div id="trialChoiceModal" class="custom-modal" style="display:none;">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h5 class="mt-2" id="modalTitle">Confirmation</h5>
+                <span class="custom-close" id="close_modal" style="cursor:pointer;">&times;</span>
+            </div>
+            <div class="custom-modal-body" id="modalBody">
+                <!-- Message will be inserted here dynamically -->
+            </div>
+            <div class="custom-modal-footer mt-3" style="text-align: center;">
+                <button id="modalCancelBtn" class="btn btn-sm blue_common_btn"> 
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Cancel</span>
+                </button>
+                <button id="modalConfirmBtn" class="btn btn-sm blue_common_btn"> 
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Yes, Proceed</span>
+                </button>
+            </div>
+        </div>
     </div>
 
 
@@ -1073,6 +1098,7 @@ use App\Models\SubCategory;
     <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
     //   $(document).ready(function () {
     //         $('.data-table').DataTable({
@@ -1516,6 +1542,127 @@ use App\Models\SubCategory;
         } else {
             console.log('Menu toggle elements not found');
         }
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const modal = document.getElementById('trialChoiceModal');
+        //     const modalTitle = document.getElementById('modalTitle');
+        //     const modalBody = document.getElementById('modalBody');
+        //     const closeModal = document.getElementById('close_modal');
+        //     const modalCancelBtn = document.getElementById('modalCancelBtn');
+        //     const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+        //     let currentAction = null;
+        //     let currentUrl = null;
+
+        //     document.querySelectorAll('.subscription-action').forEach(button => {
+        //         button.addEventListener('click', function(event) {
+        //             event.preventDefault();
+
+        //             currentAction = this.dataset.action;
+        //             currentUrl = this.dataset.url;
+        //             const startDate = this.dataset.start || '-';
+        //             const endDate = this.dataset.end || '-';
+
+        //             if (currentAction === 'cancel') {
+        //                 modalTitle.textContent = 'Cancel Subscription';
+        //                 modalBody.innerHTML = `
+        //                     Are you sure you want to cancel this subscription?<br><br>
+        //                     <strong>Start Date:</strong> ${startDate}<br>
+        //                     <strong>End Date:</strong> ${endDate}<br><br>
+        //                     <span class="text-danger">Note:</span> Subscription will remain active until <strong>${endDate}</strong>.
+        //                 `;
+        //                 modalConfirmBtn.textContent = 'Cancel Subscription';
+        //                 modalConfirmBtn.classList.remove('btn-success');
+        //                 modalConfirmBtn.classList.add('btn-danger');
+        //             } else if (currentAction === 'reactivate') {
+        //                 modalTitle.textContent = 'Reactivate Subscription';
+        //                 modalBody.textContent = 'Are you sure you want to reactivate this subscription?';
+        //                 modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                 modalConfirmBtn.classList.remove('btn-danger');
+        //                 modalConfirmBtn.classList.add('btn-success');
+        //             }
+
+        //             modal.style.display = 'block';
+        //         });
+        //     });
+
+        //     closeModal.onclick = () => modal.style.display = 'none';
+        //     modalCancelBtn.onclick = () => modal.style.display = 'none';
+
+        //     modalConfirmBtn.onclick = async () => {
+        //         modalConfirmBtn.disabled = true;
+        //         modalConfirmBtn.textContent = 'Processing...';
+
+        //         if (!currentUrl) {
+        //             toastr.error('No URL to call');
+        //             modalConfirmBtn.disabled = false;
+        //             modalConfirmBtn.textContent = currentAction === 'cancel' ? 'Cancel Subscription' : 'Reactivate Subscription';
+        //             return;
+        //         }
+
+        //         if (currentAction === 'reactivate') {
+        //             try {
+        //                 const stripe = Stripe("{{ config('services.stripe.key') }}");
+        //                 const elements = stripe.elements();
+        //                 const card = elements.create('card');
+        //                 card.mount('#card-element');
+
+        //                 // Wait for modal confirm click
+        //                 modalConfirmBtn.onclick = async () => {
+        //                     modalConfirmBtn.disabled = true;
+        //                     modalConfirmBtn.textContent = 'Processing...';
+
+        //                     const { token, error } = await stripe.createToken(card);
+
+        //                     if (error) {
+        //                         document.getElementById('card-errors').textContent = error.message;
+        //                         modalConfirmBtn.disabled = false;
+        //                         modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                         return;
+        //                     }
+
+        //                     // Send token to Laravel via POST
+        //                     const response = await fetch(currentUrl, {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json',
+        //                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //                         },
+        //                         body: JSON.stringify({
+        //                             stripeToken: token.id
+        //                         })
+        //                     });
+
+        //                     const data = await response.json();
+
+        //                     if (data.success && data.redirect_url) {
+        //                         window.location.href = data.redirect_url;
+        //                     } else if (data.success) {
+        //                         toastr.success(data.message || 'Subscription reactivated!');
+        //                         window.location.reload();
+        //                     } else {
+        //                         toastr.error(data.message || 'Reactivation failed.');
+        //                     }
+
+        //                     modalConfirmBtn.disabled = false;
+        //                     modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                 };
+        //             } catch (err) {
+        //                 toastr.error('Error preparing Stripe card input: ' + err.message);
+        //             }
+        //         }
+        //         else if (currentAction === 'cancel') {
+        //             // For cancel, just redirect normally
+        //             window.location.href = currentUrl;
+        //         }
+        //     };
+
+        //     window.onclick = (event) => {
+        //         if (event.target === modal) {
+        //             modal.style.display = 'none';
+        //         }
+        //     };
+        // });
+
         document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('trialChoiceModal');
             const modalTitle = document.getElementById('modalTitle');
@@ -1524,120 +1671,39 @@ use App\Models\SubCategory;
             const modalCancelBtn = document.getElementById('modalCancelBtn');
             const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
-            let currentAction = null;
-            let currentUrl = null;
+            let targetUrl = ''; // Store URL temporarily
 
-            document.querySelectorAll('.subscription-action').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
+            document.querySelectorAll('.confirm-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    targetUrl = this.getAttribute('data-url');
+                    const message = this.getAttribute('data-message');
 
-                    currentAction = this.dataset.action;
-                    currentUrl = this.dataset.url;
-
-                    if (currentAction === 'cancel') {
-                        modalTitle.textContent = 'Cancel Subscription';
-                        modalBody.textContent = 'Are you sure you want to cancel this subscription?';
-                        modalConfirmBtn.textContent = 'Cancel Subscription';
-                        modalConfirmBtn.classList.remove('btn-success');
-                        modalConfirmBtn.classList.add('btn-danger');
-                    } else if (currentAction === 'reactivate') {
-                        modalTitle.textContent = 'Reactivate Subscription';
-                        modalBody.textContent = 'Are you sure you want to reactivate this subscription?';
-                        modalConfirmBtn.textContent = 'Reactivate Subscription';
-                        modalConfirmBtn.classList.remove('btn-danger');
-                        modalConfirmBtn.classList.add('btn-success');
-                    }
-
+                    modalTitle.innerText = 'Please Confirm';
+                    modalBody.innerText = message;
                     modal.style.display = 'block';
                 });
             });
 
-            closeModal.onclick = () => modal.style.display = 'none';
-            modalCancelBtn.onclick = () => modal.style.display = 'none';
+            // Close modal on Cancel or X
+            closeModal.addEventListener('click', () => modal.style.display = 'none');
+            modalCancelBtn.addEventListener('click', () => modal.style.display = 'none');
 
-            modalConfirmBtn.onclick = async () => {
-                modalConfirmBtn.disabled = true;
-                modalConfirmBtn.textContent = 'Processing...';
-
-                if (!currentUrl) {
-                    alert('No URL to call');
-                    modalConfirmBtn.disabled = false;
-                    modalConfirmBtn.textContent = currentAction === 'cancel' ? 'Cancel Subscription' : 'Reactivate Subscription';
-                    return;
+            // On Confirm, redirect to target URL
+            modalConfirmBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = targetUrl;
                 }
+            });
 
-                if (currentAction === 'reactivate') {
-                    try {
-                        const response = await fetch(currentUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        });
-                        const data = await response.json();
-
-                        if (!data.success) {
-                            alert(data.message || 'Error reactivating subscription');
-                            modal.style.display = 'none';
-                            return;
-                        }
-
-                        // Handle 3DS redirect
-                        if (data.payment_status === 'requires_action' && data.redirect_url) {
-                            window.location.href = data.redirect_url;
-                            return;
-                        }
-
-                        // Handle payment via Stripe.js for client secret
-                        if ((data.payment_status === 'requires_payment_method' || data.payment_status === 'incomplete') && data.client_secret) {
-                            const stripe = Stripe("{{ config('services.stripe.key') }}");
-
-                            const {error, paymentIntent} = await stripe.confirmCardPayment(data.client_secret);
-
-                            if (error) {
-                                alert('Payment failed: ' + error.message);
-                                modal.style.display = 'none';
-                                return;
-                            }
-
-                            if (paymentIntent && paymentIntent.status === 'succeeded') {
-                                alert('Subscription payment successful and activated!');
-                                window.location.reload();
-                                return;
-                            }
-                        }
-
-                        if (data.payment_status === 'succeeded' || data.payment_status === 'active') {
-                            alert('Subscription is active.');
-                            window.location.reload();
-                            return;
-                        }
-
-                        alert(data.message || 'Subscription reactivation status unknown.');
-                        modal.style.display = 'none';
-
-                    } catch (err) {
-                        alert('Error processing subscription: ' + err.message);
-                        modal.style.display = 'none';
-                    } finally {
-                        modalConfirmBtn.disabled = false;
-                        modalConfirmBtn.textContent = 'Reactivate Subscription';
-                    }
-                } else if (currentAction === 'cancel') {
-                    // For cancel, just redirect normally
-                    window.location.href = currentUrl;
-                }
-            };
-
-            window.onclick = (event) => {
-                if (event.target === modal) {
+            // Optional: close modal on outside click
+            window.addEventListener('click', function (e) {
+                if (e.target === modal) {
                     modal.style.display = 'none';
                 }
-            };
+            });
         });
-
-
     </script>
 
 </body>

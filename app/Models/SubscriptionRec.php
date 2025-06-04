@@ -26,4 +26,8 @@ class SubscriptionRec extends Model
     public function key(){
         return $this->hasOne(Key::class,'id','key_id');
     }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
 }
