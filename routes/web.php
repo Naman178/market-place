@@ -218,7 +218,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
     Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
     Route::get('/subscription/cancel/{id}', [StripePaymentController::class, 'cancelSubscription'])->name('subscription.cancel');
-    Route::get('/subscription/reactivate/{id}', [StripePaymentController::class, 'reactivateSubscription'])->name('subscription.reactivate');
+    Route::post('/subscription/reactivate/{id}', [StripePaymentController::class, 'reactivateSubscription'])->name('subscription.reactivate');
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
