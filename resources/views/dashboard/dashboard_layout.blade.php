@@ -1663,7 +1663,7 @@ use App\Models\SubCategory;
         //     };
         // });
 
-        document.addEventListener('DOMContentLoaded', function () {
+       document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('trialChoiceModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
@@ -1671,7 +1671,7 @@ use App\Models\SubCategory;
             const modalCancelBtn = document.getElementById('modalCancelBtn');
             const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
-            let targetUrl = ''; // Store URL temporarily
+            let targetUrl = '';
 
             document.querySelectorAll('.confirm-btn').forEach(button => {
                 button.addEventListener('click', function (e) {
@@ -1685,19 +1685,29 @@ use App\Models\SubCategory;
                 });
             });
 
-            // Close modal on Cancel or X
             closeModal.addEventListener('click', () => modal.style.display = 'none');
             modalCancelBtn.addEventListener('click', () => modal.style.display = 'none');
 
-            // On Confirm, redirect to target URL
             modalConfirmBtn.addEventListener('click', function () {
                 modal.style.display = 'none';
                 if (targetUrl) {
-                    window.location.href = targetUrl;
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = targetUrl;
+
+                    // Add CSRF token
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
 
-            // Optional: close modal on outside click
             window.addEventListener('click', function (e) {
                 if (e.target === modal) {
                     modal.style.display = 'none';
