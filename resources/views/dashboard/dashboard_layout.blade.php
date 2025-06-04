@@ -1672,11 +1672,13 @@ use App\Models\SubCategory;
             const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
             let targetUrl = '';
+            let clickedButton = null; // Track clicked button
 
             document.querySelectorAll('.confirm-btn').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
                     targetUrl = this.getAttribute('data-url');
+                    clickedButton = this; // Save clicked button
                     const message = this.getAttribute('data-message');
 
                     modalTitle.innerText = 'Please Confirm';
@@ -1704,6 +1706,12 @@ use App\Models\SubCategory;
                     form.appendChild(csrfInput);
 
                     document.body.appendChild(form);
+                    
+                    // Hide the clicked button before submitting
+                    if (clickedButton && clickedButton.classList.contains('autopay-btn')) {
+                        clickedButton.style.display = 'none';
+                    }
+
                     form.submit();
                 }
             });
