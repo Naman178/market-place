@@ -149,6 +149,8 @@
                                                                 @if ($order->pricing->pricing_type == 'recurring')
                                                                     {{-- @if ($order->subscription->status == 'active')  --}}
                                                                         <!-- Stop AutoPay Button -->
+                                                                        @if ($order->subscription->status == 'active' && $order->subscription->status != 'renewal_off')
+
                                                                         <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn autopay-btn"
                                                                             data-url="/subscription/cancel-auto-pay/{{ $subscriptionId }}"
                                                                             data-message="Are you sure you want to stop auto-renewal?">
@@ -158,6 +160,7 @@
                                                                             </svg>
                                                                             <span>Stop AutoPay</span>
                                                                         </button>
+                                                                        @endif
 
                                                                         <!-- Cancel Subscription Immediately Button -->
                                                                         <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
