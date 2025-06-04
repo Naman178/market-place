@@ -1010,92 +1010,235 @@ class StripePaymentController extends Controller
             return redirect()->back()->with('error', 'Error canceling subscription: ' . $e->getMessage());
         }
     }
-    public function reactivateSubscription($id)
-    {
-        try {
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    // public function reactivateSubscription($id)
+    // {
+    //     try {
+    //         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            // Retrieve subscription record
-            $subscription = SubscriptionRec::find($id);
-            if (!$subscription || $subscription->status !== 'cancel') {
-                return redirect()->back()->with('error', 'Subscription not found or already active.');
+    //         $subscription = SubscriptionRec::find($id);
+    //         if (!$subscription) {
+    //             return redirect()->back()->with('error', 'Subscription not found.');
+    //         }
+
+    //         $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+    //         if (!$stripeSubscription || empty($stripeSubscription->subscription_id)) {
+    //             return redirect()->back()->with('error', 'Stripe subscription not found.');
+    //         }
+
+    //         $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
+    //         if (!$subscriptionStripe || empty($subscriptionStripe->customer)) {
+    //             return redirect()->back()->with('error', 'Stripe customer ID is missing.');
+    //         }
+
+    //         $paymentMethods = \Stripe\PaymentMethod::all([
+    //             'customer' => $subscriptionStripe->customer,
+    //             'type' => 'card'
+    //         ]);
+
+    //         if (empty($paymentMethods->data)) {
+    //             return redirect()->back()->with('error', 'No payment method found for this customer.');
+    //         }
+
+    //         $defaultPaymentMethod = $paymentMethods->data[0]->id;
+    //         Customer::update(
+    //             $subscriptionStripe->customer,
+    //             ['invoice_settings' => ['default_payment_method' => $defaultPaymentMethod]]
+    //         );
+
+    //         if (empty($subscriptionStripe->items->data[0]->price->id)) {
+    //             return redirect()->back()->with('error', 'Missing Stripe price ID.');
+    //         }
+
+    //         $newSubscription = \Stripe\Subscription::create([
+    //             'customer' => $subscriptionStripe->customer,
+    //             'items' => [['price' => $subscriptionStripe->items->data[0]->price->id]],
+    //             'default_payment_method' => $defaultPaymentMethod,
+    //             'payment_behavior' => 'allow_incomplete',
+    //             'expand' => ['latest_invoice.payment_intent']
+    //         ]);
+
+    //         if (isset($newSubscription->latest_invoice) && isset($newSubscription->latest_invoice->id)) {
+    //             $invoice = \Stripe\Invoice::retrieve($newSubscription->latest_invoice->id);
+    //             if ($invoice->status === 'draft') {
+    //                 $invoice->finalizeInvoice();
+    //             }
+    //         }
+
+            // $subscription->update([
+            //     'status' => 'active',
+            //     'subscription_id' => $newSubscription->id,
+            // ]);
+
+            // $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+            // if ($userSubscription) {
+            //     $userSubscription->update([
+            //         'status' => 'active',
+            //         'subscription_id' => $newSubscription->id,
+            //     ]);
+            // }
+
+            // $key_id = $subscription->key_id;
+            // if ($key_id) {
+            //     $key = Key::find($key_id);
+            //     if ($key) {
+            //         $key->update([
+            //             'expire_at' => now()->addMonth(),
+            //             'sys_state' => '0',
+            //         ]);
+            //     }
+            // }
+
+            // return redirect()->back()->with('success', 'Subscription reactivated and product activated successfully.');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Error reactivating subscription: ' . $e->getMessage());
+    //     }
+    // }
+public function reactivateSubscription($id)
+{
+    try {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        // 1. Find local subscription record
+        $subscription = SubscriptionRec::find($id);
+        if (!$subscription) {
+            return response()->json(['success' => false, 'message' => 'Subscription not found.']);
+        }
+
+        // 2. Find Stripe subscription record linked to local subscription
+        $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
+        if (!$stripeSubscription || empty($stripeSubscription->subscription_id)) {
+            return response()->json(['success' => false, 'message' => 'Stripe subscription not found.']);
+        }
+
+        // 3. Retrieve Stripe subscription details
+        $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
+        if (!$subscriptionStripe || empty($subscriptionStripe->customer)) {
+            return response()->json(['success' => false, 'message' => 'Stripe customer ID is missing.']);
+        }
+
+        // 4. If subscription is active, no need to reactivate
+        if ($subscriptionStripe->status === 'active') {
+            return response()->json(['success' => true, 'message' => 'Subscription is already active.']);
+        }
+
+        // 5. If subscription is incomplete (means payment incomplete), return client_secret for frontend payment confirmation
+        if ($subscriptionStripe->status === 'incomplete') {
+            $paymentIntent = $subscriptionStripe->latest_invoice->payment_intent;
+            $clientSecret = $paymentIntent->client_secret ?? null;
+            $paymentStatus = $paymentIntent->status ?? null;
+            $nextAction = $paymentIntent->next_action ?? null;
+
+            $response = [
+                'success' => true,
+                'message' => 'Subscription payment is incomplete. Please complete payment.',
+                'client_secret' => $clientSecret,
+                'subscription_id' => $subscriptionStripe->id,
+                'payment_status' => $paymentStatus,
+            ];
+
+            // If 3DS authentication required and redirect URL exists, send it too
+            if ($paymentStatus === 'requires_action' && isset($nextAction->redirect_to_url->url)) {
+                $response['redirect_url'] = $nextAction->redirect_to_url->url;
             }
 
-            // Find Stripe subscription
-            $stripeSubscription = Subscription::where('key_id', $subscription->key_id)->first();
-            if (!$stripeSubscription) {
-                return redirect()->back()->with('error', 'Stripe subscription record not found.');
+            return response()->json($response);
+        }
+
+        // 6. If canceled, create a new subscription for the customer
+        if ($subscriptionStripe->status === 'canceled') {
+            $customerId = $subscriptionStripe->customer;
+
+            // Get price ID from the first subscription item
+            $priceId = $subscriptionStripe->items->data[0]->price->id ?? null;
+            if (!$priceId) {
+                return response()->json(['success' => false, 'message' => 'Price ID not found in old subscription.']);
             }
 
-            // Retrieve Stripe subscription details
-            $subscriptionStripe = \Stripe\Subscription::retrieve($stripeSubscription->subscription_id);
-            if (empty($subscriptionStripe) || !isset($subscriptionStripe->id)) {
-                return redirect()->back()->with('error', 'Invalid Stripe subscription ID.');
-            }
+            // Get customer's default payment method
+            $customer = \Stripe\Customer::retrieve($customerId);
+            $paymentMethodId = $customer->invoice_settings->default_payment_method;
 
-            if ($subscriptionStripe->status === 'canceled') {
-                // Get customer ID from the canceled subscription
-                $customerId = $subscriptionStripe->customer;
-
-                // Fetch customer's payment methods
+            // If no default payment method, try to get any saved card
+            if (!$paymentMethodId) {
                 $paymentMethods = \Stripe\PaymentMethod::all([
                     'customer' => $customerId,
                     'type' => 'card',
+                    'limit' => 1,
                 ]);
-
-                if (count($paymentMethods->data) === 0) {
-                    throw new \Exception('Customer has no attached payment methods. Please add a payment method first.');
-                }
-
-                // Use the first available payment method
-                $defaultPaymentMethodId = $paymentMethods->data[0]->id;
-
-                // Create a new subscription with default payment method
-                $newSubscription = Subscription::create([
-                    'customer' => $customerId,
-                    'items' => [
-                        ['price' => $subscriptionStripe->items->data[0]->price->id]
-                    ],
-                    'default_payment_method' => $defaultPaymentMethodId,
-                ]);
-
-                // Update the database with new subscription details
-                $stripeSubscription->update([
-                    'subscription_id' => $newSubscription->id,
-                    'status' => 'active'
-                ]);
-            } else {
-                // Reactivate an active subscription scheduled for cancellation
-                \Stripe\Subscription::update($subscriptionStripe->id, [
-                    'cancel_at_period_end' => false
-                ]);
-                $stripeSubscription->update(['status' => 'active']);
+                $paymentMethodId = $paymentMethods->data[0]->id ?? null;
             }
 
-            // Update local database records
-            $subscription->update(['status' => 'active']);
+            if (!$paymentMethodId) {
+                return response()->json(['success' => false, 'message' => 'No payment method available for this customer.']);
+            }
+
+            // Create new subscription with payment_behavior = default_incomplete (requires 3DS confirmation)
+            $newSubscription = \Stripe\Subscription::create([
+                'customer' => $customerId,
+                'items' => [['price' => $priceId]],
+                'default_payment_method' => $paymentMethodId,
+                'payment_behavior' => 'default_incomplete',
+                'expand' => ['latest_invoice.payment_intent'],
+            ]);
+
+            // Update local Stripe subscription record with new subscription id & status
+            $stripeSubscription->subscription_id = $newSubscription->id;
+            $stripeSubscription->status = $newSubscription->status;
+            $stripeSubscription->save();
+
+            // Update local subscription record and related Key
+            $subscription->update([
+                'status' => 'pending', // pending until payment confirmed
+                'subscription_id' => $newSubscription->id,
+            ]);
+
             $userSubscription = Subscription::where('key_id', $subscription->key_id)->first();
             if ($userSubscription) {
-                $userSubscription->update(['status' => 'active']);
+                $userSubscription->update([
+                    'status' => 'pending',
+                    'subscription_id' => $newSubscription->id,
+                ]);
             }
 
-            // Restore key expiration date and system state
             $key_id = $subscription->key_id;
             if ($key_id) {
                 $key = Key::find($key_id);
                 if ($key) {
                     $key->update([
-                        'expire_at' => now()->addDays(30),
+                        'expire_at' => now()->addMonth(),
                         'sys_state' => '0',
                     ]);
                 }
             }
 
-            return redirect()->back()->with('success', 'Subscription reactivated successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error reactivating subscription: ' . $e->getMessage());
+            $paymentIntent = $newSubscription->latest_invoice->payment_intent;
+            $clientSecret = $paymentIntent->client_secret ?? null;
+            $paymentStatus = $paymentIntent->status ?? null;
+            $nextAction = $paymentIntent->next_action ?? null;
+
+            $response = [
+                'success' => true,
+                'message' => 'Subscription reactivated. Please complete payment.',
+                'client_secret' => $clientSecret,
+                'subscription_id' => $newSubscription->id,
+                'payment_status' => $paymentStatus,
+            ];
+
+            // If 3DS authentication required and redirect URL exists, send it too
+            if ($paymentStatus === 'requires_action' && isset($nextAction->redirect_to_url->url)) {
+                $response['redirect_url'] = $nextAction->redirect_to_url->url;
+            }
+
+            return response()->json($response);
         }
+
+        // Other statuses
+        return response()->json(['success' => false, 'message' => 'Subscription cannot be reactivated in current state: ' . $subscriptionStripe->status]);
+
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
+}
 
 
 }

@@ -27,6 +27,7 @@ use App\Models\SubCategory;
     <script src="{{ asset('front-end/js/jquery-3.3.1.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
     <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
@@ -1523,24 +1524,23 @@ use App\Models\SubCategory;
             const modalCancelBtn = document.getElementById('modalCancelBtn');
             const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
-            let currentUrl = null; // URL to redirect on confirm
+            let currentAction = null;
+            let currentUrl = null;
 
-            // When any subscription-action button is clicked
             document.querySelectorAll('.subscription-action').forEach(button => {
                 button.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevent default link behavior
+                    event.preventDefault();
 
-                    const action = this.dataset.action; // cancel or reactivate
+                    currentAction = this.dataset.action;
                     currentUrl = this.dataset.url;
 
-                    // Customize modal text based on action
-                    if (action === 'cancel') {
+                    if (currentAction === 'cancel') {
                         modalTitle.textContent = 'Cancel Subscription';
                         modalBody.textContent = 'Are you sure you want to cancel this subscription?';
                         modalConfirmBtn.textContent = 'Cancel Subscription';
                         modalConfirmBtn.classList.remove('btn-success');
                         modalConfirmBtn.classList.add('btn-danger');
-                    } else if (action === 'reactivate') {
+                    } else if (currentAction === 'reactivate') {
                         modalTitle.textContent = 'Reactivate Subscription';
                         modalBody.textContent = 'Are you sure you want to reactivate this subscription?';
                         modalConfirmBtn.textContent = 'Reactivate Subscription';
@@ -1548,29 +1548,95 @@ use App\Models\SubCategory;
                         modalConfirmBtn.classList.add('btn-success');
                     }
 
-                    // Show modal
                     modal.style.display = 'block';
                 });
             });
 
-            // Close modal handlers
             closeModal.onclick = () => modal.style.display = 'none';
             modalCancelBtn.onclick = () => modal.style.display = 'none';
 
-            // Confirm button handler - redirect to URL
-            modalConfirmBtn.onclick = () => {
-                if (currentUrl) {
+            modalConfirmBtn.onclick = async () => {
+                modalConfirmBtn.disabled = true;
+                modalConfirmBtn.textContent = 'Processing...';
+
+                if (!currentUrl) {
+                    alert('No URL to call');
+                    modalConfirmBtn.disabled = false;
+                    modalConfirmBtn.textContent = currentAction === 'cancel' ? 'Cancel Subscription' : 'Reactivate Subscription';
+                    return;
+                }
+
+                if (currentAction === 'reactivate') {
+                    try {
+                        const response = await fetch(currentUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        });
+                        const data = await response.json();
+
+                        if (!data.success) {
+                            alert(data.message || 'Error reactivating subscription');
+                            modal.style.display = 'none';
+                            return;
+                        }
+
+                        // Handle 3DS redirect
+                        if (data.payment_status === 'requires_action' && data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                            return;
+                        }
+
+                        // Handle payment via Stripe.js for client secret
+                        if ((data.payment_status === 'requires_payment_method' || data.payment_status === 'incomplete') && data.client_secret) {
+                            const stripe = Stripe("{{ config('services.stripe.key') }}");
+
+                            const {error, paymentIntent} = await stripe.confirmCardPayment(data.client_secret);
+
+                            if (error) {
+                                alert('Payment failed: ' + error.message);
+                                modal.style.display = 'none';
+                                return;
+                            }
+
+                            if (paymentIntent && paymentIntent.status === 'succeeded') {
+                                alert('Subscription payment successful and activated!');
+                                window.location.reload();
+                                return;
+                            }
+                        }
+
+                        if (data.payment_status === 'succeeded' || data.payment_status === 'active') {
+                            alert('Subscription is active.');
+                            window.location.reload();
+                            return;
+                        }
+
+                        alert(data.message || 'Subscription reactivation status unknown.');
+                        modal.style.display = 'none';
+
+                    } catch (err) {
+                        alert('Error processing subscription: ' + err.message);
+                        modal.style.display = 'none';
+                    } finally {
+                        modalConfirmBtn.disabled = false;
+                        modalConfirmBtn.textContent = 'Reactivate Subscription';
+                    }
+                } else if (currentAction === 'cancel') {
+                    // For cancel, just redirect normally
                     window.location.href = currentUrl;
                 }
             };
 
-            // Close modal if user clicks outside modal content
             window.onclick = (event) => {
                 if (event.target === modal) {
                     modal.style.display = 'none';
                 }
             };
         });
+
 
     </script>
 
