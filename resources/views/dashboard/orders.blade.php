@@ -147,7 +147,7 @@
                                                             <div class="button-container">
                                                                  @if (isset($order->subscription) && $order->subscription)
                                                                 @if ($order->pricing->pricing_type == 'recurring')
-                                                                    @if ($order->subscription->status == 'active') 
+                                                                    {{-- @if ($order->subscription->status == 'active')  --}}
                                                                         <!-- Stop AutoPay Button -->
                                                                         <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
                                                                             data-url="/subscription/cancel-auto-pay/{{ $subscriptionId }}"
@@ -169,7 +169,7 @@
                                                                             </svg>
                                                                             <span>Cancel Subscription Immediately</span>
                                                                         </button>
-                                                                    @else   
+                                                                    {{-- @else   
                                                                         <!-- Reactivate Button -->
                                                                         <button class="blue_common_btn btn btn-sm btn-outline-success confirm-btn"
                                                                             data-url="/subscription/reactivate/{{ $subscriptionId }}"
@@ -180,7 +180,7 @@
                                                                             </svg>
                                                                             <span>Reactivate</span>
                                                                         </button>
-                                                                    @endif
+                                                                    @endif --}}
                                                                 @else
                                                                     <!-- Deactivate Product Button -->
                                                                     <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
