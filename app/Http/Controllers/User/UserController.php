@@ -286,7 +286,11 @@ class UserController extends Controller
     }
 
     public function orders() {
-        $orders = Order::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+        $orders = Order::with('subscription')
+                    ->where('user_id', auth()->id())
+                    ->orderBy('id', 'desc')
+                    ->get();
+        
         return view('dashboard.orders', compact('orders'));
     }
 

@@ -53,6 +53,6 @@ class Order extends Model
         return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
     }
     public function subscription(){
-        return $this->hasOne(SubscriptionRec::class,'product_id','product_id');
+        return $this->hasOne(SubscriptionRec::class,'order_id','id');
     }
 }
