@@ -144,7 +144,8 @@
                                                             @php
                                                                 $subscriptionId = $order->subscription->id ?? '';
                                                             @endphp
-                                                            {{-- <div class="button-container">
+                                                            <div class="button-container">
+                                                                 @if (isset($order->subscription) && $order->subscription)
                                                                 @if ($order->pricing->pricing_type == 'recurring')
                                                                     @if ($order->subscription->status == 'active') 
                                                                         <!-- Stop AutoPay Button -->
@@ -192,8 +193,10 @@
                                                                         <span>Deactivate Product</span>
                                                                     </button>
                                                                 @endif
-                                                            </div> --}}
-                                                            <div class="button-container">
+                                                                @endif
+                                                            </div>
+                                                            {{-- <div class="button-container">
+                                                                @if (isset($order->subscription) && $order->subscription)
                                                                     @if ($order->pricing->pricing_type == 'recurring')
                                                                         @if ($order->subscription->status == 'active') 
                                                                             <!-- Stop AutoPay Button -->
@@ -245,7 +248,8 @@
                                                                             </button>
                                                                         </form>
                                                                     @endif
-                                                                </div>
+                                                                @endif
+                                                                </div> --}}
 
                                                         </div>
                                                     </div>
