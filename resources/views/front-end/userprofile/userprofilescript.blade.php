@@ -69,134 +69,130 @@
 
 // JavaScript/jQuery code to validate ERP Profile Form
 
-    $(document).ready(function () {
-        const form = $('#profile_form');
-        const submitBtn = $('.erp-profile-form');
-        const inputFields = form.find('.form-control').not('#profile_pic');
+  $(document).ready(function () {
+    const form = $('#profile_form');
+    const submitBtn = $('.erp-profile-form');
+    const inputFields = form.find('.form-control').not('#profile_pic');
 
-        function updateFloatingLabel(input) {
-            const label = $(input).next('label');
-            const errorDiv = $('#' + input.id + '_error');
+    function updateFloatingLabel(input) {
+        const label = $(input).next('label');
+        const errorDiv = $('#' + input.id + '_error');
 
-            if ($(input).val().trim() !== '') {
-                label.css({ top: '-1%', fontSize: '0.8rem', color: '#70657b' });
-                $(input).css('border-color', '#ccc');
-            } else if (errorDiv.text().trim() !== '') {
-                label.css({ top: '35%', fontSize: '1rem', color: 'red' });
-                $(input).css('border-color', 'red');
-            } else {
-                label.css({ top: '50%', fontSize: '1rem', color: '#70657b' });
-                $(input).css('border-color', '#ccc');
-            }
-        }
-
-        function validateInput(input) {
-            const errorDiv = $('#' + input.id + '_error');
-            const value = $(input).val().trim();
-
-            if (!value) {
-                errorDiv.text(input.name.replace('_', ' ') + ' is required!').show();
-                $(input).css('border-color', 'red');
-                updateFloatingLabel(input);
-                return false;
-            }
-
-            if (input.type === 'email' && !/^\S+@\S+\.\S+$/.test(value)) {
-                errorDiv.text('Please enter a valid email address!').show();
-                $(input).css('border-color', 'red');
-                updateFloatingLabel(input);
-                return false;
-            }
-
-            if (input.id === 'firstname' && !/^[a-zA-Z\s]+$/.test(value)) {
-                errorDiv.text('Only letters and spaces are allowed!').show();
-                $(input).css('border-color', 'red');
-                updateFloatingLabel(input);
-                return false;
-            }
-
-            if (input.id === 'contact' && !/^\d{10}$/.test(value)) {
-                errorDiv.text('Contact number must be 10 digits!').show();
-                $(input).css('border-color', 'red');
-                updateFloatingLabel(input);
-                return false;
-            }
-
-            errorDiv.text('').hide();
+        if ($(input).val().trim() !== '') {
+            label.css({ top: '-1%', fontSize: '0.8rem', color: '#70657b' });
             $(input).css('border-color', '#ccc');
+        } else if (errorDiv.text().trim() !== '') {
+            label.css({ top: '35%', fontSize: '1rem', color: 'red' });
+            $(input).css('border-color', 'red');
+        } else {
+            label.css({ top: '50%', fontSize: '1rem', color: '#70657b' });
+            $(input).css('border-color', '#ccc');
+        }
+    }
+
+    function validateInput(input) {
+        const errorDiv = $('#' + input.id + '_error');
+        const value = $(input).val().trim();
+        const name = input.name.replace(/_/g, ' ');
+
+        if (!value) {
+            errorDiv.text(`${name} is required!`).show();
+            $(input).css('border-color', 'red');
             updateFloatingLabel(input);
-            return true;
+            return false;
         }
 
-        inputFields.each(function () {
-            updateFloatingLabel(this);
-
-            $(this).on('blur input', () => validateInput(this));
-
-            $(this).on('focus', function () {
-                const label = $(this).next('label');
-                const errorDiv = $('#' + this.id + '_error');
-
-                label.css({ top: '-1%', fontSize: '0.8rem', color: '#70657b' });
-                $(this).css('border-color', '#ccc');
-
-                if (errorDiv.text().trim() !== '') {
-                    label.css('color', 'red');
-                    $(this).css('border-color', 'red');
-                }
-            });
-        });
-
-        function sendAjaxRequest(formData, url) {
-            $('#preloader').show();
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    $('#preloader').hide();
-                    if (response.success) {
-                        toastr.success(response.success);
-                        setTimeout(() => location.reload(), 1500);
-                    } else if (response.error) {
-                        $.each(response.error, function (key, value) {
-                            toastr.error(value);
-                        });
-                    }
-                },
-                error: function () {
-                    $('#preloader').hide();
-                    toastr.error('An error occurred. Please try again.');
-                }
-            });
+        if (input.type === 'email' && !/^\S+@\S+\.\S+$/.test(value)) {
+            errorDiv.text('Please enter a valid email address!').show();
+            $(input).css('border-color', 'red');
+            updateFloatingLabel(input);
+            return false;
         }
 
-        submitBtn.on('click', function (e) {
-            e.preventDefault();
+        if (input.id === 'firstname' && !/^[a-zA-Z\s]+$/.test(value)) {
+            errorDiv.text('Only letters and spaces are allowed!').show();
+            $(input).css('border-color', 'red');
+            updateFloatingLabel(input);
+            return false;
+        }
 
-            let formIsValid = true;
+        if (input.id === 'contact' && !/^\d{10}$/.test(value)) {
+            errorDiv.text('Contact number must be 10 digits!').show();
+            $(input).css('border-color', 'red');
+            updateFloatingLabel(input);
+            return false;
+        }
 
-            inputFields.each(function () {
-                if (!validateInput(this)) formIsValid = false;
-            });
+        errorDiv.text('').hide();
+        $(input).css('border-color', '#ccc');
+        updateFloatingLabel(input);
+        return true;
+    }
 
-            if (!formIsValid) {
-                let firstError = $('.error:visible').first();
-                if (firstError.length) {
-                    firstError[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                return;
+    inputFields.each(function () {
+        updateFloatingLabel(this);
+        $(this).on('blur input', () => validateInput(this));
+
+        $(this).on('focus', function () {
+            const label = $(this).next('label');
+            const errorDiv = $('#' + this.id + '_error');
+            label.css({ top: '-1%', fontSize: '0.8rem', color: '#70657b' });
+            $(this).css('border-color', '#ccc');
+            if (errorDiv.text().trim() !== '') {
+                label.css('color', 'red');
+                $(this).css('border-color', 'red');
             }
-
-            let formData = new FormData(form[0]);
-            let url = form.data('url');
-
-            sendAjaxRequest(formData, url);
         });
     });
 
+    function sendAjaxRequest(formData, url) {
+        $('#preloader').show();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#preloader').hide();
+                if (response.success) {
+                    toastr.success(response.success);
+                    setTimeout(() => location.reload(), 1500);
+                } else if (response.error) {
+                    $.each(response.error, function (key, value) {
+                        $(`#${key}_error`).text(value).show();
+                        $(`#${key}`).css('border-color', 'red');
+                        $(`#${key}`).next('label').css({ color: 'red' });
+                    });
+                }
+            },
+            error: function () {
+                $('#preloader').hide();
+                toastr.error('An error occurred. Please try again.');
+            }
+        });
+    }
+
+    submitBtn.on('click', function (e) {
+        e.preventDefault();
+        let formIsValid = true;
+
+        inputFields.each(function () {
+            if (!validateInput(this)) formIsValid = false;
+        });
+
+        if (!formIsValid) {
+            let firstError = $('.error:visible').first();
+            if (firstError.length) {
+                firstError[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        const formData = new FormData(form[0]);
+        const url = form.data('url');
+        sendAjaxRequest(formData, url);
+    });
+});
 
 </script>
