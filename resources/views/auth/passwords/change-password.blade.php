@@ -12,6 +12,38 @@
     .select2-container {
        width: 150px;
     }
+    .form-group {
+        position: relative;
+    }
+
+    .toggle-button {
+        position: absolute;
+        top: 70%;
+        right: 12px; 
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .eye-icon {
+        width: 20px;
+        height: 20px;
+        color: #888;
+    }
+    button:focus{
+            outline: none;
+        }
+    @media (max-width: 480px) {
+        .eye-icon {
+            width: 1rem; /* 16px */
+            height: 1rem;
+        }
+    }
 </style>
 @endsection
 @section('main-content')
@@ -59,6 +91,15 @@
                         <div class="col-md-12 form-group">
                             <label for="fname">Current Password</label>
                             <input id="current-password" type="password" class="form-control" name="current-password" required>
+                              <button type="button" class="toggle-button" data-toggle="password" aria-label="Toggle Password Visibility">
+                                <!-- Eye icon SVG -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
                             @if ($errors->has('current-password'))
                                 <div class="error" style="color:red;">
                                     {{ $errors->first('current-password') }}
@@ -68,6 +109,16 @@
                         <div class="col-md-12 form-group">
                             <label for="lname">New Password</label>
                             <input id="new-password" type="password" class="form-control" name="new-password" required>
+                             <button type="button" class="toggle-button" data-toggle="password-new" aria-label="Toggle Password Visibility">
+
+                                <!-- Eye icon SVG -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
                             @if ($errors->has('new-password'))
                                 <div class="error" style="color:red;" >
                                     {{ $errors->first('new-password') }}
@@ -77,6 +128,16 @@
                         <div class="col-md-12 form-group">
                             <label for="lname">Confirm New Password</label>
                             <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
+                             <button type="button" class="toggle-button" data-toggle="password-confirm" aria-label="Toggle Password Visibility">
+
+                                <!-- Eye icon SVG -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>

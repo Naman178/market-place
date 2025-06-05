@@ -57,12 +57,19 @@ class UserController extends Controller
     public function store(Request $request){
         if($request->ajax()){
             if($request->id == "0"){
+                $existingUser = User::where('email', $request->email)->where('status', 0)->first();
+
+                $emailRules = ['required', 'email'];
+
+                if ($existingUser && $request->status != -1) {
+                    $emailRules[] = 'unique:users,email';
+                }
                 $validator = Validator::make($request->all(), [
                     'fname' => 'required',
                     'lname' => 'required',
-                    'email' => 'required|email|unique:users,email',
+                    'email' => $emailRules,
                     'password' => 'required|same:confirm_password|min:6',
-                    'roles' => 'required'
+                    'roles' => 'required',
                 ]);
                 if ($validator->passes()){
                     $name = $request->fname .' '.$request->lname;
@@ -203,25 +210,25 @@ class UserController extends Controller
 
     public function contactUs(Request $request){
         if($request->ajax()){
-            $validator = Validator::make($request->all(), [
-                'full_name' => 'required',
-                'email' => 'required|email',
-                'contact_number' => 'required|numeric',
-                'website_url' => 'required|url',
-                'message' => 'required',
-            ], [
-                'full_name.required' => 'Full Name is required.',
-                'email.required' => 'Email is required.',
-                'email.email' => 'Please provide a valid email address.',
-                'contact_number.required' => 'Contact Number is required.',
-                'website_url.required' => 'Website URL is required.',
-                'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
-                'message.required' => 'Message is required.',
-            ]);
-            if ($validator->fails()){
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-            }
-            else{
+            // $validator = Validator::make($request->all(), [
+            //     'full_name' => 'required',
+            //     'email' => 'required|email',
+            //     'contact_number' => 'required|numeric',
+            //     'website_url' => 'required|url',
+            //     'message' => 'required',
+            // ], [
+            //     'full_name.required' => 'Full Name is required.',
+            //     'email.required' => 'Email is required.',
+            //     'email.email' => 'Please provide a valid email address.',
+            //     'contact_number.required' => 'Contact Number is required.',
+            //     'website_url.required' => 'Website URL is required.',
+            //     'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
+            //     'message.required' => 'Message is required.',
+            // ]);
+            // if ($validator->fails()){
+            //     return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            // }
+            // else{
                 $full_name = $request->full_name;
                 $email = $request->email;
                 $contact_number = $request->contact_number;
@@ -259,7 +266,7 @@ class UserController extends Controller
                     'type' => 'Add',
                     'data' => $userinquiry
                 ]);
-            }        
+            // }        
         }
     }
     public function userDashboard(){

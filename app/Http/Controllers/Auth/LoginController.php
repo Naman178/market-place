@@ -26,11 +26,11 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected function redirectTo()
+   protected function redirectTo()
     {
-
-        if (auth()->user() && auth()->user()->name === 'Super Admin') {
-            return '/dashboard'; 
+        $user = auth()->user();
+        if ($user && strcasecmp(trim($user->name), 'Super Admin') === 0) {
+            return '/dashboard';
         }
         return RouteServiceProvider::HOME;
     }

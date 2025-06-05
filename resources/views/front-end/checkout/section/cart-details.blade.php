@@ -421,7 +421,7 @@
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
-                        <input class="form-control" size="4" type="text" id="name_on_card" required>
+                        <input class="form-control" size="4" type="text" id="name_on_card">
                         <div class="error" id="name_on_card_error"></div>
                     </div>
                 </div>
@@ -431,7 +431,7 @@
                     <div class="col-md-12 form-group">
                         <label class="control-label">Card Number</label>
                         <input type="text" autocomplete="off" class="form-control card-number" id="card_number" 
-                            name="card_number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" required>
+                            name="card_number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
                         <div class="error" id="card_number_error"></div>
                     </div>
                 </div>
@@ -441,7 +441,7 @@
                     <div class="col-xs-12 col-md-4 form-group expiration">
                         <label class="control-label">Exp. Month</label>
                         <input type="text" class="form-control card-expiry-month" placeholder="MM" 
-                            id="card_exp_month" maxlength="2" name="card_month" required>
+                            id="card_exp_month" maxlength="2" name="card_month">
                         <div class="error" id="card_exp_month_error"></div>
                     </div>
 
@@ -449,7 +449,7 @@
                     <div class="col-xs-12 col-md-4 form-group expiration required">
                         <label class="control-label">Exp. Year</label>
                         <input type="text" class="form-control card-expiry-year" placeholder="YY" 
-                            id="card_exp_year" maxlength="2" name="card_year" required>
+                            id="card_exp_year" maxlength="2" name="card_year">
                         <div class="error" id="card_exp_year_error"></div>
                     </div>
 
@@ -457,7 +457,7 @@
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
                         <input type="text" autocomplete="off" class="form-control card-cvc" 
-                            id="card_cvc" name="card_cvc" placeholder="ex. 311" maxlength="3" required>
+                            id="card_cvc" name="card_cvc" placeholder="ex. 311" maxlength="3">
                         <div class="error" id="card_cvc_error"></div>
                     </div>
                 </div>

@@ -18,6 +18,19 @@
     .dropdown-menu.show{
         left: -100% !important;
     }
+   .eye-icon {
+        top: -7px;
+        left: -6px;
+        width: 20px;
+        height: 20px;
+        position: relative;
+        color: #888;
+        vertical-align: middle;
+    }
+    .password button:focus, .confirm_password button:focus {
+        outline: none;
+    }
+
 </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
@@ -117,14 +130,29 @@
                             {!! Form::select('roles[]', $roles,[], array('class' => 'form-control', 'id' => 'roles')) !!}
                             <div class="error" style="color:red;" id="roles_error"></div>
                         </div>
-                        <div class="col-md-12 form-group">
+                       <div class="col-md-12 form-group password" style="position: relative;">
                             <label for="password">Password</label>
-                            {!! Form::password('password', array('placeholder' => 'Enter Password','class' => 'form-control', 'id' => 'password')) !!}
+                            {!! Form::password('password', ['placeholder' => 'Enter Password', 'class' => 'form-control', 'id' => 'password']) !!}
+                            <button type="button" class="toggle-button" data-toggle="password" aria-label="Toggle Password Visibility" style="position: absolute; right: 15px; top: 38px; background: none; border: none; cursor: pointer; padding: 0;">
+                                <!-- default icon: eye open -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="eye-icon" width="24" height="24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
                             <div class="error" style="color:red;" id="password_error"></div>
                         </div>
-                        <div class="col-md-12 form-group">
+
+                        <div class="col-md-12 form-group confirm_password" style="position: relative;">
                             <label for="confirm_password">Confirm Password</label>
-                            {!! Form::password('confirm_password', array('placeholder' => 'Enter Confirm Password','class' => 'form-control' , 'id' => 'confirm_password')) !!}
+                            {!! Form::password('confirm_password', ['placeholder' => 'Enter Confirm Password', 'class' => 'form-control', 'id' => 'confirm_password']) !!}
+                            <button type="button" class="toggle-button" data-toggle="confirm_password" aria-label="Toggle Confirm Password Visibility" style="position: absolute; right: 15px; top: 38px; background: none; border: none; cursor: pointer; padding: 0;">
+                                <!-- default icon: eye open -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="eye-icon" width="24" height="24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
                             <div class="error" style="color:red;" id="confirm_password_error"></div>
                         </div>
                         <div class="col-md-12 form-group">

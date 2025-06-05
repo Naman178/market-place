@@ -67,7 +67,7 @@
 @endsection
 @section('scripts')
 <script>
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const inputFields = document.querySelectorAll(".form-control");
 
     function updateFloatingLabel(input) {
@@ -76,21 +76,32 @@
 
         const hasError = errorDiv && errorDiv.textContent.trim() !== "";
 
-        if (input.value.trim() !== "") {
+        // Custom disposable email error check
+        const isDisposableEmailError =
+            input.id === "email" &&
+            document.getElementById("email_error_message") &&
+            document.getElementById("email_error_message").textContent.includes("Disposable Email");
+
+        if (isDisposableEmailError) {
+            label.style.top = "22px";
+            label.style.fontSize = "14px";
+            label.style.color = "red";
+            input.style.borderColor = "red";
+        } else if (input.value.trim() !== "") {
             label.style.top = "-1%";
             label.style.fontSize = "14px";
             label.style.color = "#70657b";
-            input.style.borderColor = "#ccc"; // Default border color
+            input.style.borderColor = "#ccc";
         } else if (hasError) {
             label.style.top = "35%";
             label.style.fontSize = "14px";
             label.style.color = "red";
-            input.style.borderColor = "red"; // Show red border for errors
+            input.style.borderColor = "red";
         } else {
             label.style.top = "50%";
             label.style.fontSize = "14px";
             label.style.color = "#70657b";
-            input.style.borderColor = "#ccc"; // Default border when no errors
+            input.style.borderColor = "#ccc";
         }
     }
 
@@ -98,19 +109,19 @@
         const errorDiv = document.getElementById(input.id + "_error");
         let hasInteracted = false;
 
-        updateFloatingLabel(input);
+        updateFloatingLabel(input); // initial load
 
         input.addEventListener("focus", function () {
             const label = input.nextElementSibling;
             label.style.top = "-1%";
             label.style.fontSize = "14px";
-            input.style.borderColor = "#ccc"; // Always reset to default on focus
+            input.style.borderColor = "#ccc";
 
             if (!hasInteracted || input.value.trim() !== "") {
                 label.style.color = "#70657b";
             } else if (errorDiv && errorDiv.textContent.trim() !== "") {
                 label.style.color = "red";
-                input.style.borderColor = "red"; // Show red border **only for errors**
+                input.style.borderColor = "red";
             }
 
             hasInteracted = true;
@@ -119,12 +130,12 @@
         input.addEventListener("blur", function () {
             hasInteracted = true;
             const value = input.value.trim();
-            const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+            const labelText = input.labels?.[0]?.textContent || input.name.replace(/_/g, " ");
 
             if (!value) {
                 errorDiv.textContent = `${labelText} is required!`;
                 errorDiv.style.display = "block";
-                input.style.borderColor = "red"; // Show red border only when error exists
+                input.style.borderColor = "red";
             } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
                 errorDiv.textContent = "Please enter a valid email address!";
                 errorDiv.style.display = "block";
@@ -132,7 +143,7 @@
             } else {
                 errorDiv.textContent = "";
                 errorDiv.style.display = "none";
-                input.style.borderColor = "#ccc"; // Reset border when valid
+                input.style.borderColor = "#ccc";
             }
 
             updateFloatingLabel(input);
@@ -140,13 +151,13 @@
 
         input.addEventListener("input", function () {
             const value = input.value.trim();
-            const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+            const labelText = input.labels?.[0]?.textContent || input.name.replace(/_/g, " ");
 
             if (hasInteracted) {
                 if (!value) {
                     errorDiv.textContent = `${labelText} is required!`;
                     errorDiv.style.display = "block";
-                    input.style.borderColor = "red"; // Keep error visible
+                    input.style.borderColor = "red";
                 } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
                     errorDiv.textContent = "Please enter a valid email address!";
                     errorDiv.style.display = "block";
@@ -154,15 +165,14 @@
                 } else {
                     errorDiv.textContent = "";
                     errorDiv.style.display = "none";
-                    input.style.borderColor = "#ccc"; // Restore normal border when valid
+                    input.style.borderColor = "#ccc";
                 }
             }
 
             updateFloatingLabel(input);
         });
     });
-});
-            
+});       
   $('#country').select2();
   $('#country_code').select2();
 </script>

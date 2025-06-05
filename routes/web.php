@@ -74,7 +74,7 @@ Route::post('/checkout/process-payment', [CheckoutController::class, "processPay
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get("/register", [RegisterController::class, "register"])->name("register");
 Route::post("/signup/store", [RegisterController::class, "register"])->name("registerUser");
-Route::get('/user-login', [LoginController::class, 'index'])->name('user-login');
+Route::get('/user-login', [LoginController::class, 'index'])->middleware('guest')->name('user-login');
 Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post');
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
