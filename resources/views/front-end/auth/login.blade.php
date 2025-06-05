@@ -58,6 +58,36 @@
           .register-container{
             max-width: 100% !important;
         }
+        .form-group {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 50%;
+            right: 12px; /* adjust spacing from the right edge */
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+            color: #888;
+        }
+        @media (max-width: 480px) {
+            .eye-icon {
+                width: 1rem; /* 16px */
+                height: 1rem;
+            }
+        }
+
     </style>
 @endsection
 @section('content')
@@ -125,7 +155,6 @@
                                     'placeholder' => '',
                                     'class' => 'form-control',
                                     'id' => 'email',
-                                    'required' => 'required',
                                 ]) !!}
                                 <label for="email" class="floating-label">Email</label>
                                 @error('email')
@@ -136,15 +165,23 @@
                                 <div class="error" id="email_error"></div>
                             </div>
                         </div>
-                        <div class="">
-                            <div class="form-group">
+                       <div class="">
+                            <div class="form-group" style="position: relative;">
                                 {!! Form::password('password', [
                                     'placeholder' => '',
                                     'class' => 'form-control',
-                                    'id' => 'password',
-                                    'required' => 'required',
+                                    'id' => 'password-field-1',
                                 ]) !!}
-                                <label for="password" class="floating-label">Password</label>
+                                <label for="password-field-1" class="floating-label">Password</label>
+                               <button type="button" class="toggle-button" data-toggle="password-field-1" aria-label="Toggle Password Visibility">
+                                    <!-- Eye icon SVG -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -152,7 +189,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                          <button type="button" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -200,99 +237,143 @@
             });
         });
         document.addEventListener("DOMContentLoaded", function () {
-            const inputFields = document.querySelectorAll(".form-control");
+            const form = document.querySelector("form[action='{{ route('user-login-post') }}']");
+            // Select inputs with .form-control class AND filter those that have an id attribute (non-empty)
+            const inputFields = Array.from(document.querySelectorAll(".form-control")).filter(input => input.id && input.id.trim() !== '');
+            const loginBtn = document.getElementById("login-btn");
+
+            function getLabelText(input) {
+                const label = document.querySelector(`label[for="${input.id}"]`);
+                return label ? label.textContent.trim() : input.name || input.id || 'This field';
+            }
 
             function updateFloatingLabel(input) {
                 const label = input.nextElementSibling;
                 const errorDiv = document.getElementById(input.id + "_error");
                 const hasError = errorDiv && errorDiv.textContent.trim() !== "";
 
+                if (!label) return;
+
                 if (input.value.trim() !== "") {
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
-                    label.style.color = "#70657b";
-                    input.style.borderColor = "#ccc"; // Default border color when valid
+                    label.style.color = hasError ? "red" : "#70657b";
+                    input.style.borderColor = hasError ? "red" : "#ccc";
                 } else if (hasError) {
                     label.style.top = "35%";
-                    label.style.fontSize = "1rem";
+                    label.style.fontSize = "14px";
                     label.style.color = "red";
-                    input.style.borderColor = "red"; // Apply red border when there's an error
+                    input.style.borderColor = "red";
                 } else {
                     label.style.top = "50%";
-                    label.style.fontSize = "1rem";
+                    label.style.fontSize = "14px";
                     label.style.color = "#70657b";
-                    input.style.borderColor = "#ccc"; // Ensure default border when no errors
+                    input.style.borderColor = "#ccc";
                 }
             }
 
-            inputFields.forEach(input => {
-                const errorDiv = document.getElementById(input.id + "_error");
-                let hasInteracted = false;
+            function validateInput(input) {
+                console.log("Validating input:", input.id);
 
+                if (!input.id) {
+                    console.warn("Skipping validation: input has no id", input);
+                    return true; // skip validation or change as needed
+                }
+
+                const errorDiv = document.getElementById(input.id + "_error");
+                if (!errorDiv) {
+                    console.warn("No error div found for input:", input.id);
+                    return false;
+                }
+
+                const rawValue = input.value;
+                const value = (typeof rawValue === 'string') ? rawValue.trim() : '';
+
+                const labelText = getLabelText(input);
+                let valid = true;
+
+                if (!value) {
+                    errorDiv.textContent = `${labelText} is required!`;
+                    valid = false;
+                } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                    errorDiv.textContent = "Please enter a valid email address!";
+                    valid = false;
+                } else {
+                    errorDiv.textContent = "";
+                }
+
+                errorDiv.style.display = valid ? "none" : "block";
+                input.style.borderColor = valid ? "#ccc" : "red";
                 updateFloatingLabel(input);
 
-                input.addEventListener("focus", function () {
+                return valid;
+            }
+
+            // Attach events only to filtered inputs with valid IDs
+            inputFields.forEach(input => {
+                input.addEventListener("blur", () => validateInput(input));
+                input.addEventListener("input", () => validateInput(input));
+                input.addEventListener("focus", () => {
                     const label = input.nextElementSibling;
+                    if (!label) return;
+
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
-                    input.style.borderColor = "#ccc"; // Always reset to normal on focus
 
-                    if (!hasInteracted || input.value.trim() !== "") {
-                        label.style.color = "#70657b";
-                    } else if (errorDiv && errorDiv.textContent.trim() !== "") {
-                        label.style.color = "red";
-                        input.style.borderColor = "red"; // Show red border **only when an error exists**
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+                    label.style.color = hasError ? "red" : "#70657b";
+                    input.style.borderColor = hasError ? "red" : "#70657b";
+                });
+            });
+
+            // Validate all on submit button click
+            loginBtn.addEventListener("click", function () {
+                let formIsValid = true;
+                inputFields.forEach(input => {
+                    if (!validateInput(input)) {
+                        formIsValid = false;
                     }
-
-                    hasInteracted = true;
                 });
 
-                input.addEventListener("blur", function () {
-                    hasInteracted = true;
-                    const value = input.value.trim();
-                    const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+                if (formIsValid) {
+                    form.submit();
+                }
+            });
 
-                    if (!value) {
-                        errorDiv.textContent = `${labelText} is required!`;
-                        errorDiv.style.display = "block";
-                        input.style.borderColor = "red"; // Apply red border only when an error exists
-                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-                        errorDiv.textContent = "Please enter a valid email address!";
-                        errorDiv.style.display = "block";
-                        input.style.borderColor = "red";
-                    } else {
-                        errorDiv.textContent = "";
-                        errorDiv.style.display = "none";
-                        input.style.borderColor = "#ccc"; // Reset border when valid
-                    }
+            // Initial label setup for all filtered inputs
+            inputFields.forEach(input => updateFloatingLabel(input));
+        });
 
-                    updateFloatingLabel(input);
-                });
+       const eyeIcons = {
+            open: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd"/>
+                    </svg>`,
+            closed: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3.53 2.47a.75.75 0 00-1.06 1.06l18 18a.75.75 0 101.06-1.06l-18-18zM22.676 12.553a11.249 11.249 0 01-2.631 4.31l-3.099-3.099a5.25 5.25 0 00-6.71-6.71L7.759 4.577a11.217 11.217 0 014.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113z"/>
+                        <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0115.75 12zM12.53 15.713l-4.243-4.244a3.75 3.75 0 004.243 4.243z"/>
+                        <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 00-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 016.75 12z"/>
+                    </svg>`
+            };
 
-                input.addEventListener("input", function () {
-                    const value = input.value.trim();
-                    const labelText = input.labels && input.labels.length > 0 ? input.labels[0].textContent : input.name.replace(/_/g, " ");
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.toggle-button').forEach(button => {
+                const inputId = button.getAttribute('data-toggle');
+                const input = document.getElementById(inputId);
+                if (!input) return;
 
-                    if (hasInteracted) {
-                        if (!value) {
-                            errorDiv.textContent = `${labelText} is required!`;
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red"; // Keep error visible
-                        } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-                            errorDiv.textContent = "Please enter a valid email address!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc"; // Restore normal border when valid
-                        }
-                    }
+                // Set initial icon (eye open)
+                button.innerHTML = eyeIcons.open;
 
-                    updateFloatingLabel(input);
+                button.addEventListener('click', () => {
+                const isOpen = button.classList.toggle('open');
+                input.type = isOpen ? 'text' : 'password';
+                button.innerHTML = isOpen ? eyeIcons.closed : eyeIcons.open;
                 });
             });
         });
+
         $('#country').select2();
         $('#country_code').select2();
   </script>

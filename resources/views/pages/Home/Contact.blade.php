@@ -149,161 +149,176 @@
     </div>
 @endsection
 @section('scripts') 
-    <script>
-         $('.send-inquiry').click(function(e) {
-            e.preventDefault();
-            $('#preloader').show();
-            let full_name = $('#full_name').val();
-            let email = $('#email').val();
-            let contact_number = $('#contact_number').val();
-            let website_url = $('#website_url').val();
-            let message = $('#message').val();
-            let stack = $('#stack').val();
-            $.ajax({
-                url: "{{ route('contactUs-send') }}",
-                type: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    full_name: full_name,
-                    email: email,
-                    contact_number: contact_number,
-                    website_url: website_url,
-                    message: message,
-                    stack: stack,
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        toastr.success(response.success);
-                        location.reload();
-                    } else if (response.error) {
-                        // Show individual validation errors
-                        $.each(response.error, function(key, value) {
-                            toastr.error(value);
-                        });
-                    }
-                }
-            });            
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputFields = document.querySelectorAll(".form-control");
+<script>
+$(document).ready(function () {
+    // Initialize select2
+    $('#stack').select2();
 
-            function updateFloatingLabel(input) {
-                const label = input.nextElementSibling;
-                const errorDiv = document.getElementById(input.id + "_error");
+    const inputFields = $(".form-control").not('#stack'); // exclude select2 input for validation here
+    const form = $("#contactForm");
+    const submitBtn = $("#submitBtn");
 
-                if (input.value.trim() !== "") {
-                    label.style.top = "-1%";
-                    label.style.fontSize = "0.8rem";
-                    label.style.color = "#70657b";
-                    input.style.borderColor = "#ccc";
-                } else if (errorDiv && errorDiv.textContent.trim() !== "") {
-                    label.style.top = input.id === "message" ? "45%" : "35%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "red";
-                    input.style.borderColor = "red";
-                } else {
-                    label.style.top = "50%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "#70657b";
-                    input.style.borderColor = "#ccc";
-                }
-            }
+    function updateFloatingLabel(input) {
+        const label = $(input).next('label');
+        const errorDiv = $("#" + input.id + "_error");
 
-            inputFields.forEach(input => {
-                const errorDiv = document.getElementById(input.id + "_error");
+        if ($(input).val().trim() !== "") {
+            label.css({ top: "-1%", fontSize: "0.8rem", color: "#70657b" });
+            $(input).css("border-color", "#ccc");
+        } else if (errorDiv.text().trim() !== "") {
+            label.css({ top: input.id === "message" ? "45%" : "35%", fontSize: "1rem", color: "red" });
+            $(input).css("border-color", "red");
+        } else {
+            label.css({ top: "50%", fontSize: "1rem", color: "#70657b" });
+            $(input).css("border-color", "#ccc");
+        }
+    }
 
+    function validateInput(input) {
+        const errorDiv = $("#" + input.id + "_error");
+        const value = $(input).val().trim();
+
+        if (!value) {
+            errorDiv.text(input.name.replace("_", " ") + " is required!").show();
+            $(input).css("border-color", "red");
+            updateFloatingLabel(input);
+            return false;
+        }
+
+        if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+            errorDiv.text("Please enter a valid email address!").show();
+            $(input).css("border-color", "red");
+            updateFloatingLabel(input);
+            return false;
+        }
+
+        if (input.id === "full_name" && !/^[a-zA-Z\s]+$/.test(value)) {
+            errorDiv.text("Only letters and spaces are allowed!").show();
+            $(input).css("border-color", "red");
+            updateFloatingLabel(input);
+            return false;
+        }
+
+        if (input.id === "contact_number" && !/^\d{10}$/.test(value)) {
+            errorDiv.text("Contact number must be exactly 10 digits!").show();
+            $(input).css("border-color", "red");
+            updateFloatingLabel(input);
+            return false;
+        }
+
+        if (input.id === "website_url") {
+            const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-z.]{2,6})(\/[^\s]*)?$/;
+            if (!urlPattern.test(value)) {
+                errorDiv.text("Please enter a valid URL!").show();
+                $(input).css("border-color", "red");
                 updateFloatingLabel(input);
+                return false;
+            }
+        }
 
-                input.addEventListener("blur", function () {
-                    const value = input.value.trim();
-                    if (!value) {
-                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                        errorDiv.style.display = "block";
-                        input.style.borderColor = "red";
-                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-                        errorDiv.textContent = "Please enter a valid email address!";
-                        errorDiv.style.display = "block";
-                        input.style.borderColor = "red";
-                    } else {
-                        errorDiv.textContent = "";
-                        errorDiv.style.display = "none";
-                        input.style.borderColor = "#ccc";
-                    }
-                    updateFloatingLabel(input);
-                });
+        errorDiv.text("").hide();
+        $(input).css("border-color", "#ccc");
+        updateFloatingLabel(input);
+        return true;
+    }
 
-                input.addEventListener("input", function () {
-                    const value = input.value.trim();
+    // Attach event listeners to inputs
+    inputFields.each(function () {
+        updateFloatingLabel(this);
 
-                    if (input.id === "full_name") {
-                        this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
-                        if (!/^[a-zA-Z\s]+$/.test(this.value)) {
-                            errorDiv.textContent = "Only letters and spaces are allowed!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
-                        }
-                    }
-                    if(input.id === "email") {
-                        if (!/^\S+@\S+\.\S+$/.test(this.value)) {
-                            errorDiv.textContent = "Please enter a valid email address!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
-                        }
-                    }
+        $(this).on("blur input", () => validateInput(this));
 
-                    if (input.id === "contact_number") {
-                        this.value = this.value.replace(/[^0-9]/g, "");
-                        if (this.value.length > 10) {
-                            this.value = this.value.slice(0, 10); // Limits to only 10 digits
-                        }
-                        if (!/^\d{10}$/.test(this.value)) {
-                            errorDiv.textContent = "Contact number must be exactly 10 digits!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
-                        }
-                    }
-                    if (input.id === "website_url") {
-                        const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-z.]{2,6})(\/[^\s]*)?$/;
-                        if (!urlPattern.test(this.value)) {
-                            errorDiv.textContent = "Please enter a valid URL!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
-                        }
-                    }
+        $(this).on("focus", () => {
+            const label = $(this).next('label');
+            const errorDiv = $("#" + this.id + "_error");
 
-                    updateFloatingLabel(input);
-                });
+            label.css({ top: "-1%", fontSize: "0.8rem", color: "#70657b" });
+            $(this).css("border-color", "#ccc");
 
-                input.addEventListener("focus", function () {
-                    const label = input.nextElementSibling;
-                    label.style.top = "-1%";
-                    label.style.fontSize = "0.8rem";
-                    input.style.borderColor = "#ccc";
-
-                    if (errorDiv && errorDiv.textContent.trim() !== "") {
-                        label.style.color = "red";
-                        input.style.borderColor = "red";
-                    }
-                });
-            });
+            if (errorDiv.text().trim() !== "") {
+                label.css("color", "red");
+                $(this).css("border-color", "red");
+            }
         });
-        $('#stack').select2();
+    });
+
+    // Validate select2 dropdown
+    function validateStack() {
+        const stackSelect = $('#stack');
+        const stackError = $('#stack_error');
+
+        if (!stackSelect.val()) {
+            stackError.text("Please select your tech stack!").show();
+            stackSelect.next('.select2-container').find('.select2-selection').css('border-color', 'red');
+            return false;
+        } else {
+            stackError.text("").hide();
+            stackSelect.next('.select2-container').find('.select2-selection').css('border-color', '#ccc');
+            return true;
+        }
+    }
+
+    $('#stack').on('change', validateStack);
+
+    submitBtn.on("click", function (e) {
+        e.preventDefault();
+
+        let formIsValid = true;
+
+        // Validate all inputs
+        inputFields.each(function () {
+            if (!validateInput(this)) formIsValid = false;
+        });
+
+        // Validate stack
+        if (!validateStack()) formIsValid = false;
+
+        if (!formIsValid) {
+            // Scroll to first error message visible
+            let firstError = $(".error:visible").first();
+            if (firstError.length) {
+                firstError[0].scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            return;
+        }
+
+        // If valid, send AJAX
+        sendAjaxRequest();
+    });
+
+    function sendAjaxRequest() {
+        $('#preloader').show();
+
+        $.ajax({
+            url: "{{ route('contactUs-send') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                full_name: $('#full_name').val(),
+                email: $('#email').val(),
+                contact_number: $('#contact_number').val(),
+                website_url: $('#website_url').val(),
+                message: $('#message').val(),
+                stack: $('#stack').val(),
+            },
+            dataType: 'json',
+            success: function (response) {
+                $('#preloader').hide();
+                if (response.success) {
+                    toastr.success(response.success);
+                    setTimeout(() => location.reload(), 1500);
+                } else if (response.error) {
+                    $.each(response.error, function (key, value) {
+                        toastr.error(value);
+                    });
+                }
+            },
+            error: function () {
+                $('#preloader').hide();
+                toastr.error("An error occurred. Please try again.");
+            }
+        });
+    }
+});
     </script>
 @endsection

@@ -165,6 +165,9 @@
                                         @php
                                             $quantity = $invoice->quantity ?? 1;
                                             $subtot = $invoice->subtotal * $quantity;
+                                            $taxAmount = 0;
+                                            $discount = 0;
+                                            $total = round($invoice->total);
                                             // dd($subtot);
                                         @endphp
                                         <p class="fw-semibold mb-2 pt-3 text-start"> {{ $invoice->quantity }}</p>

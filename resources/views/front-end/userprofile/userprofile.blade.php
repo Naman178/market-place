@@ -131,71 +131,81 @@ $ogImage = $logoImage
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-                 const inputFields = document.querySelectorAll(".custom-css");
-                 
-                 // Function to handle floating label
-                 function updateFloatingLabel(input) {
-                     const label = input.nextElementSibling; // Get the corresponding label
-                     if (label) { 
-                        if (input.value && input.value.trim() !== "") {
-                            label.style.top = "-1%";
-                            label.style.fontSize = "0.8rem";
-                            label.style.color = "#70657b";
-                        } else {
-                            label.style.top = "35%";
-                            label.style.fontSize = "1rem";
-                            label.style.color = "red";
+    {{-- <script>
+       document.addEventListener("DOMContentLoaded", function () {
+            const inputFields = document.querySelectorAll(".custom-css");
+
+            function updateFloatingLabel(input) {
+                const label = input.nextElementSibling;
+                const errorDiv = document.getElementById(input.id + "_error");
+                const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+                if (!label) return;
+
+                if (input.value.trim() !== "") {
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
+                } else if (hasError) {
+                    label.style.top = "35%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "red";
+                    input.style.borderColor = "red";
+                } else {
+                    label.style.top = "35%";
+                    label.style.fontSize = "1rem";
+                    label.style.color = "red";
+                    input.style.borderColor = "red";
+                }
+            }
+
+            inputFields.forEach(input => {
+                const errorDiv = document.getElementById(input.id + "_error");
+
+                // Initialize floating label
+                updateFloatingLabel(input);
+
+                // Blur: validate input and show/hide error
+                input.addEventListener("blur", function () {
+                    if (!input.value.trim()) {
+                        if (errorDiv) {
+                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                            errorDiv.style.display = "block";
                         }
+                        input.style.borderColor = "red";
+                    } else {
+                        if (errorDiv) {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                        }
+                        input.style.borderColor = "#ccc";
                     }
-                     if (input.value.trim() !== "") {
-                         label.style.top = "-1%";
-                         label.style.fontSize = "0.8rem";
-                         label.style.color = "#70657b";
-                     } else {
-                         label.style.top = "35%";
-                         label.style.fontSize = "1rem";
-                         label.style.color = "red";
-                     }
-                 }
-     
-                 // Initialize labels on page load
-                 inputFields.forEach(input => {
-                     updateFloatingLabel(input);
-     
-                     // Blur event: Check if empty & show error
-                     input.addEventListener("blur", function () {
-                         const errorDiv = document.getElementById(input.id + "_error");
-                         if (!input.value.trim()) {
-                             errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                             errorDiv.style.display = "block";
-                             input.style.borderColor = "red";
-                         } else {
-                             errorDiv.style.display = "none";
-                             input.style.borderColor = "#ccc";
-                         }
-                         updateFloatingLabel(input);
-                     });
-     
-                     // Focus event: Float label
-                     input.addEventListener("focus", function () {
-                         const label = input.nextElementSibling;
-                         label.style.top = "-1%";
-                         label.style.fontSize = "0.8rem";
-                         if (input.value.trim() !== "") {
-                             label.style.color = "#70657b";
-                             input.style.borderColor = "#70657b";
-                         } else{
-                             label.style.color = "red";
-                             input.style.borderColor = "red";
-                         }
-                     });
-                 });
-             });
+                    updateFloatingLabel(input);
+                });
+
+                // Focus: show floating label
+                input.addEventListener("focus", function () {
+                    const label = input.nextElementSibling;
+                    if (!label) return;
+
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+
+                    if (input.value.trim() !== "") {
+                        label.style.color = "#70657b";
+                        input.style.borderColor = "#70657b";
+                    } else {
+                        const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#ccc";
+                    }
+                });
+            });
+        });
         //  $('#country').select2();
         //  $('#country_code').select2();
-    </script>
+    </script> --}}
     
     <script>
         $(document).ready(function () {

@@ -69,36 +69,36 @@
         const closeModal = document.getElementById('close_modal');
         const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
         const trialPeriodInput = document.getElementById('trial_period_days');
-        const form = document.getElementById('stripe-form'); 
+        const form = document.getElementById('stripe-form');
+        const form2 = document.getElementById('guest-checkout-form');
 
         const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
 
         trialPeriodInput.value = "0";
 
-        function validateFormRequiredFields() {
+        function validateFormRequiredFields(form) {
             const requiredInputs = form.querySelectorAll('[required]');
             for (let input of requiredInputs) {
                 if (!input.value || input.value.trim() === '') {
-                    return false; 
+                    return false;
                 }
             }
-            return true; 
+            return true;
         }
 
-        if (trialDays > 0) {
-            trialPeriodInput.value = trialDays;
-
-            trialBtnModal.type = 'submit';
-
-            if (validateFormRequiredFields()) {
-                form.submit();
-            }
-        }
 
         if (trialBtn) {
             trialBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                modal.style.display = 'block';
+
+                const form1Valid = form ? validateFormRequiredFields(form) : true;
+                const form2Valid = form2 ? validateFormRequiredFields(form2) : true;
+
+                if (form1Valid && form2Valid) {
+                    modal.style.display = 'block';
+                } else {
+                    toastr.error('Please fill all the form details.');
+                }
             });
         }
 
@@ -113,12 +113,15 @@
                 trialPeriodInput.value = trialDays;
                 modal.style.display = 'none';
 
-                if (validateFormRequiredFields()) {
+                if (validateFormRequiredFields(form)) {
                     form.submit();
+                } else {
+                    toastr.error('Please fill all the form details.');
                 }
             });
         }
     });
+
     function showLoader() {
         const loader = document.getElementById('loader-overlay');
         if (loader) loader.style.display = 'flex';
@@ -704,5 +707,72 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Helper: validate a single input
+        function validateInput(input) {
+            const errorDiv = document.getElementById(input.id + '_error');
+            const val = input.value.trim();
+            let valid = true;
+            let errorMsg = '';
 
+            if (!val) {
+                errorMsg = 'This field is required';
+                valid = false;
+            } else {
+                if (input.id === 'card_number') {
+                if (!/^\d{16}$/.test(val)) {
+                    errorMsg = 'Card number must be 16 digits';
+                    valid = false;
+                }
+                }
+                // Add other field validations as needed
+            }
+
+            if (!valid) {
+                errorDiv.textContent = errorMsg;
+                errorDiv.style.display = 'block';
+                input.style.borderColor = 'red';
+            } else {
+                errorDiv.textContent = '';
+                errorDiv.style.display = 'none';
+                input.style.borderColor = '#ccc';
+            }
+
+            return valid;
+        }
+
+        // Validate all inputs in a form
+        function validateForm(form) {
+            let valid = true;
+            const inputs = form.querySelectorAll('.form-control');
+
+            inputs.forEach(input => {
+                if (!validateInput(input)) valid = false;
+            });
+
+            return valid;
+        }
+
+        // Attach submit handler to both forms
+        ['stripe-form', 'guest-checkout-form'].forEach(formId => {
+            const form = document.getElementById(formId);
+            if (!form) return;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); 
+                if (validateForm(form)) {
+                form.submit();
+                } else {
+                const firstError = form.querySelector('.error[style*="block"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                }
+            });
+
+            form.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', () => validateInput(input));
+            });
+        });
+    });
 </script>

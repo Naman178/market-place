@@ -13,6 +13,10 @@ class LoginController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->route('user-dashboard');
+        }
+
         session(['url.intended' => url()->previous()]);
         $seoData = SEO::where('page','login')->first();
         return view('front-end.auth.login', compact('seoData'));
@@ -20,10 +24,10 @@ class LoginController extends Controller
     }
     public function postLogin(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+        // $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required',
+        // ]);
    
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -36,7 +40,7 @@ class LoginController extends Controller
                 else{
                     return redirect()->intended($intendedUrl);
                 }
-            } else if (Auth::user()->name('Super Admin')) { 
+            } else if (Auth::user() && Auth::user()->name === 'Super Admin') {
                 return $intendedUrl ? redirect()->intended($intendedUrl) : redirect()->intended('/dashboard')->withSuccess('You have Successfully logged in as Super Admin');
             }
             else {

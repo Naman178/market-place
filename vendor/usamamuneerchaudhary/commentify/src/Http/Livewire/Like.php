@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Like extends Component
 {
@@ -23,6 +24,9 @@ class Like extends Component
 
     public function like(): void
     {
+        if (!auth()->check()) {
+           $this->redirect(route('user-login'));
+        }
         $ip = request()->ip();
         $userAgent = request()->userAgent();
         if ($this->comment->isLiked()) {
