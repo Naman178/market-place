@@ -145,8 +145,8 @@
                                                                 $subscriptionId = $order->subscription->id ?? '';
                                                             @endphp
                                                             <div class="button-container">
-                                                                @if (isset($order->subscription) && $order->subscription)
                                                                     @if ($order->pricing->pricing_type == 'recurring')
+                                                                      @if (isset($order->subscription) && $order->subscription)
                                                                             <!-- Stop AutoPay Button -->
                                                                             @if ($order->subscription->status == 'active' && $order->subscription->status != 'renewal_off')
 
@@ -183,6 +183,7 @@
                                                                                     <span>Reactivate</span>
                                                                                 </button>
                                                                             @endif
+                                                                        @endif
                                                                     @else
                                                                         <!-- Deactivate Product Button -->
                                                                         <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
@@ -195,7 +196,6 @@
                                                                             <span>Deactivate Product</span>
                                                                         </button>
                                                                     @endif
-                                                                @endif
                                                             </div>
                                                             {{-- <div class="button-container">
                                                                 @if (isset($order->subscription) && $order->subscription)
