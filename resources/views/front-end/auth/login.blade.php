@@ -170,9 +170,9 @@
                                 {!! Form::password('password', [
                                     'placeholder' => '',
                                     'class' => 'form-control',
-                                    'id' => 'password-field-1',
+                                    'id' => 'password',
                                 ]) !!}
-                                <label for="password-field-1" class="floating-label">Password</label>
+                            <label for="password" class="floating-label">Password</label>
                                <button type="button" class="toggle-button" data-toggle="password-field-1" aria-label="Toggle Password Visibility">
                                     <!-- Eye icon SVG -->
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
