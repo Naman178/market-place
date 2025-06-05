@@ -1058,23 +1058,6 @@ class StripePaymentController extends Controller
                 'expire_at' => now(),
                 'sys_state' => 1,
             ]);
-
-            // Cancel associated Stripe subscription if exists
-            $subscription = Subscription::where('key_id', $keyId)->first();
-            if ($subscription) {
-                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-                $subscriptionStripe = \Stripe\Subscription::retrieve($subscription->subscription_id);
-
-                if (!empty($subscriptionStripe) && isset($subscriptionStripe->id) && $subscriptionStripe->status !== 'canceled') {
-                    $subscriptionStripe->cancel();
-                }
-
-                // Update local DB status
-                $subscription->update(['status' => 'canceled']);
-                SubscriptionRec::where('key_id', $keyId)->update(['status' => 'canceled']);
-            }
-
             return redirect()->back()->with('success' , 'Product deactivated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error deactivating product: ' . $e->getMessage());
