@@ -164,7 +164,6 @@
                     const input = document.getElementById(inputId);
                     if (!input) return;
 
-                    // Set default icon (eye open)
                     button.innerHTML = eyeIcons.open;
 
                     button.addEventListener('click', () => {

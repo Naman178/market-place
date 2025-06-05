@@ -131,7 +131,7 @@ $ogImage = $logoImage
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-    {{-- <script>
+    <script>
        document.addEventListener("DOMContentLoaded", function () {
             const inputFields = document.querySelectorAll(".custom-css");
 
@@ -205,7 +205,7 @@ $ogImage = $logoImage
         });
         //  $('#country').select2();
         //  $('#country_code').select2();
-    </script> --}}
+    </script>
     
     <script>
         $(document).ready(function () {
