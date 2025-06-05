@@ -185,16 +185,18 @@
                                                                             @endif
                                                                         @endif
                                                                     @else
-                                                                        <!-- Deactivate Product Button -->
-                                                                        <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
-                                                                            data-url="/deactivate-product/{{ $order->key->id }}"
-                                                                            data-message="This will permanently disable access. No refunds will be issued. Continue?">
-                                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                                                            </svg>
-                                                                            <span>Deactivate Product</span>
-                                                                        </button>
+                                                                        @if ($order->key->expire_at > now() && $order->key->sys_state == 0)
+                                                                            <!-- Deactivate Product Button -->
+                                                                            <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                                data-url="/deactivate-product/{{ $order->key->id }}"
+                                                                                data-message="This will permanently disable access. No refunds will be issued. Continue?">
+                                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                </svg>
+                                                                                <span>Deactivate Product</span>
+                                                                            </button>
+                                                                        @endif
                                                                     @endif
                                                             </div>
                                                             {{-- <div class="button-container">

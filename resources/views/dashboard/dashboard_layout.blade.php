@@ -1707,11 +1707,6 @@ use App\Models\SubCategory;
                     form.appendChild(csrfInput);
 
                     document.body.appendChild(form);
-                    
-                    // Hide the clicked button before submitting
-                    if (clickedButton && clickedButton.classList.contains('autopay-btn')) {
-                        clickedButton.style.display = 'none';
-                    }
 
                     form.submit();
                 }
