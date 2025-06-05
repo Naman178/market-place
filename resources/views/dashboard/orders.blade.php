@@ -162,7 +162,7 @@
                                                                             @endif
                                                                             @if ($order->subscription->status == 'active')
                                                                                 <!-- Cancel Subscription Immediately Button -->
-                                                                                <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                                <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn use-get-method"
                                                                                     data-url="/subscription/cancel/{{ $subscriptionId }}"
                                                                                     data-message="This will cancel your subscription immediately. Are you sure?">
                                                                                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">

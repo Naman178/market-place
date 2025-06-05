@@ -1694,7 +1694,8 @@ use App\Models\SubCategory;
                 modal.style.display = 'none';
                 if (targetUrl) {
                     const form = document.createElement('form');
-                    form.method = 'POST';
+                    const useGet = clickedButton && clickedButton.classList.contains('use-get-method');
+                    form.method = useGet ? 'GET' : 'POST';
                     form.action = targetUrl;
 
                     // Add CSRF token
