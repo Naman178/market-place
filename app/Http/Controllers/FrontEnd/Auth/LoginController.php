@@ -28,11 +28,12 @@ class LoginController extends Controller
         //     'email' => 'required',
         //     'password' => 'required',
         // ]);
-   
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $intendedUrl = session()->get('url.intended');
-    
+            if (Auth::user() && Auth::user()->name === 'Super Admin') {
+                return redirect()->route('dashboard')->withSuccess('You have successfully logged in as Super Admin');
+            }
             if ($intendedUrl) {
                 if($intendedUrl == "https://market-place-main.infinty-stage.com/"){
                      return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
@@ -40,9 +41,7 @@ class LoginController extends Controller
                 else{
                     return redirect()->intended($intendedUrl);
                 }
-            } else if (Auth::user() && Auth::user()->name === 'Super Admin') {
-                return $intendedUrl ? redirect()->intended($intendedUrl) : redirect()->intended('/dashboard')->withSuccess('You have Successfully logged in as Super Admin');
-            }
+            } 
             else {
                 return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
             }

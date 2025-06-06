@@ -103,7 +103,7 @@ class SocialMediaController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'required|string|max:255',
         ];
         return Validator::make($request->all(), $rules);

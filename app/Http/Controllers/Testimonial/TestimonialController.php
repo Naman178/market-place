@@ -104,7 +104,7 @@ class TestimonialController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'designation' => 'required|string|max:255',
             'message' => 'required|string',
         ];
