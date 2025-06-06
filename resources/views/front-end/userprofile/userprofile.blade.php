@@ -142,9 +142,9 @@ $ogImage = $logoImage
 
                 if (!label) return;
 
-                if (input.value.trim() !== "") {
+               if (input.value.trim() !== "") {
                     label.style.top = "-1%";
-                    label.style.fontSize = "0.8rem";
+                    label.style.fontSize = "14px";
                     label.style.color = "#70657b";
                     input.style.borderColor = "#ccc";
                 } else if (hasError) {
@@ -153,10 +153,10 @@ $ogImage = $logoImage
                     label.style.color = "red";
                     input.style.borderColor = "red";
                 } else {
-                    label.style.top = "35%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "red";
-                    input.style.borderColor = "red";
+                    label.style.top = "50%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
                 }
             }
 
@@ -202,6 +202,89 @@ $ogImage = $logoImage
                     }
                 });
             });
+            function validateInput(input) {
+                const errorDiv = document.getElementById(input.id + "_error");
+                if (!input.value.trim()) {
+                    errorDiv.textContent = input.name.replace(/_/g, " ") + " is required!";
+                    input.classList.add('is-invalid');
+                    return false;
+                } else {
+                    errorDiv.textContent = "";
+                    input.classList.remove('is-invalid');
+                    return true;
+                }
+            }
+            document.querySelectorAll('.custom-css').forEach(input => {
+                input.addEventListener('blur', () => validateInput(input));
+            });
+
+            $(document).on("click", ".erp-profile-form", function(e) {
+                e.preventDefault(); // Prevent any default action or form submit
+
+                // Trigger blur on all inputs to validate all
+                $(".custom-css").each(function() {
+                    this.dispatchEvent(new Event('blur'));
+                });
+
+                // If any invalid inputs exist, stop submission
+                if ($('.custom-css.is-invalid').length > 0) {
+                    return; // Stop AJAX submit if errors exist
+                }
+
+                var submitUrl = $('#profile_form').data("url");
+                var formData = new FormData($('#profile_form')[0]);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $("#preloader").show();
+
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+
+                        if (response.success) {
+                            localStorage.setItem('successMessage', response.success);
+                            window.location.href = "{{ route('profile') }}";  // Redirect only if success
+                        } else if (response.error) {
+                            // Show server-side validation errors, no redirect
+                            handleErrorMessages(response.error);
+                            $.each(response.error, function(key, value) {
+                                toastr.error(value);
+                            });
+                            // Do NOT reload or redirect here — stay on page
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+            });
+
+
+            function handleErrorMessages(errors) {
+                $('#firstname_error').text(errors.firstname || '');
+                $('#lastname_error').text(errors.lastname || '');
+                $('#email_error').text(errors.email || '');
+                $('#contact_error').text(errors.contact || '');
+                $('#company_name_error').text(errors.company_name || '');
+                $('#company_website_error').text(errors.company_website || '');
+                $('#city_error').text(errors.city || '');
+                $('#postal_error').text(errors.postal || '');
+                $('#address_line_one_error').text(errors.address_line_one || '');
+                $('#profile_pic_error').text(errors.profile_pic || '');
+            }
         });
         //  $('#country').select2();
         //  $('#country_code').select2();

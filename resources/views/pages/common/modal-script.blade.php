@@ -1024,8 +1024,15 @@
         });
 
         function handleFormErrors(errors) {
+            $('.error').text(''); // Clear all errors first
+            $('.input-error').removeClass('is-invalid');
+            $('#designation_error').text(errors['designation'] || '');
+            $('#message_error').text(errors['message'] || '');
+            $('#keyword_error').text(errors['keyword'] || '');
+            $('#page_error').text(errors['page'] || '');
             $('#name_error').text(errors['name'] || '');
             $('#image_error').text(errors['image'] || '');
+            $('#link_error').text(errors['link'] || '');
             $('#status_error').text(errors['status'] || '');
             $('#parent_category_error').text(errors['parent_category_id'] || '');
             $('#description_error').text(errors['description'] || '');
@@ -1034,6 +1041,38 @@
             $('#sub_category_name').addClass(errors['name']?'is-invalid':'');
             $('#parent_category').addClass(errors['parent_category_id']?'is-invalid':'');
             $('.image-input-wrapper').addClass(errors['image']?'is-invalid':'');
+            if(errors['title']) {
+                $('#title_error').text(errors['title'][0]);
+                $('#title').addClass('is-invalid');
+            }
+            if(errors['category']) {
+                $('#category_error').text(errors['category'][0]);
+                $('#category').addClass('is-invalid');
+            }
+           if(errors['blog_image']) {
+                $('#blog_image_error').text(errors['blog_image'][0]);
+                $('#Blog_image').addClass('is-invalid');
+            }
+            if(errors['shortdescription']) {
+                $('#shortdescription_error').text(errors['shortdescription'][0]);
+                $('#shortdescription').addClass('is-invalid');
+            }
+            if(errors['long_description']) {
+                $('#long_description_error').text(errors['long_description'][0]);
+                $('#long_description').addClass('is-invalid');
+            }
+            if(errors['related_blog']) {
+                $('#related_blog_error').text(errors['related_blog'][0]);
+                $('#related_blog').addClass('is-invalid');
+            }
+            if(errors['question']) {
+                $('#question_error').text(errors['question'][0]);
+                $('#question').addClass('is-invalid');
+            }
+            if(errors['answer']) {
+                $('#answer_error').text(errors['answer'][0]);
+                $('#answer').addClass('is-invalid');
+            }
         }
     });
 

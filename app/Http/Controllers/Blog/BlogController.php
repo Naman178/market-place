@@ -307,11 +307,11 @@ class BlogController extends Controller
         $rules = [
             'title' => 'required|string|max:255',
             'category' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'short_description' => 'string',
-            'long_description' => 'string',
-            'related_blog' => 'array', 
-            'related_blog.*' => 'exists:blog,blog_id',
+            'blog_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shortdescription' => 'required|string',  
+            'long_description' => 'required|string',
+            'related_blog' => 'required|array|min:1',
+            'related_blog.*' => 'exists:blogs,blog_id', 
         ];
         return Validator::make($request->all(), $rules);
     }

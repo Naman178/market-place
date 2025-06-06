@@ -84,6 +84,8 @@ class SEOController extends Controller
         $rules = [
             'title' => 'required',
             'page' => 'required',
+            'description' => 'required',
+            'keyword'   => 'required',
         ];
         return Validator::make($request->all(), $rules);
     }

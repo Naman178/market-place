@@ -21,6 +21,16 @@
     .image-input {
         display: none;
     }
+    .previewImgCls {
+        width: 200px;
+        height: 150px;
+        object-fit: contain;
+        display: none;
+    }
+
+    .previewImgCls.show {
+        display: inline-block;
+    }
 </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
@@ -48,13 +58,13 @@
                         <input type="hidden" id="scid" class="erp-id" value="{{$Blog_category->category_id}}" name="scid" />
                         <input type="hidden" id="old_image" value="{{ $Blog_category->image }}" name="old_image" />
                         <div class="row">
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 <label for="title_label">Name</label>
                                 <input placeholder="Enter Name" class="form-control input-error" id="name" name="name" type="text" value="{{ $Blog_category->name }}">
                                 <div class="error" style="color:red;" id="name_error"></div>
                             </div>
-                            <div class="form-group col-md-6 input-file-col">
-                                <?php $showImagePrev = (!empty($Blog_category->image)) ? 'display:inline-block' : ''; ?>
+                            <div class="form-group col-md-12 input-file-col">
+                                <?php $showImagePrev = (!empty($Blog_category->image)) ? 'display:inline-block; width:200px; height:150px; object-fit:contain;' : ''; ?>
                                 <label for="Blog_category_image_label">Upload Image</label>
                                 <label class="form-control filelabel image-input-wrapper">
                                     <input type="hidden" name="old_image" value="@if(!empty($Blog_category->image)){{$Blog_category->image}}@endif">
@@ -84,7 +94,7 @@
                 <form class="erp-Blog_category-submit" id="Blog_category_form" enctype="multipart/form-data" data-url="{{route('Blog_category-store')}}" data-id="scid">
                     <input type="hidden" id="scid" class="erp-id" name="scid" value="0" />
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label for="title_label">Name</label>
                             {!! Form::text('name', null, array('placeholder' => 'Enter Name','class' => 'form-control input-error filelabel image-input-wrapper' , 'id' => 'name')) !!}
                             <div class="error" style="color:red;" id="name_error"></div>
@@ -98,7 +108,7 @@
                             
                             <div class="error" style="color:red;" id="image_error"></div>
                         </div> --}}
-                        <div class="form-group col-md-6 input-file-col">
+                        <div class="form-group col-md-12 input-file-col">
                             <label for="Blog_category_image_label">Upload Image</label>
                             <label class="form-control filelabel image-input-wrapper">
                                 <input type="hidden" name="old_image" value="">

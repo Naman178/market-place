@@ -179,14 +179,14 @@
                                                 <td>{{$user->email ?? ''}}</td>
                                                 <td>
                                                     @php
-                                                        switch ($user->sys_state) {
+                                                        switch ($user->status) {
                                                             case '0':
-                                                                $badgeClass = 'badge-success';  
-                                                                $statusText = 'Active';
-                                                                break;
-                                                            case '1':
                                                                 $badgeClass = 'badge-warning'; 
                                                                 $statusText = 'Inactive';
+                                                                break;
+                                                            case '1':
+                                                                $badgeClass = 'badge-success';  
+                                                                $statusText = 'Active';
                                                                 break;
                                                             case '-1':
                                                                 $badgeClass = 'badge-danger';   

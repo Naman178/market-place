@@ -80,7 +80,7 @@ class PrivacyPolicyController extends Controller
     private function validateRequest(Request $request)
     {
         $rules = [
-            'title' => 'required',
+            'name' => 'required',
             // 'description' => 'required',
         ];
         return Validator::make($request->all(), $rules);
