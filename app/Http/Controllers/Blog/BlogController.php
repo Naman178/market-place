@@ -307,11 +307,23 @@ class BlogController extends Controller
         $rules = [
             'title' => 'required|string|max:255',
             'category' => 'required|string',
-            'blog_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'shortdescription' => 'required|string',  
-            'long_description' => 'required|string',
-            'related_blog' => 'required|array|min:1',
-            'related_blog.*' => 'exists:blogs,blog_id', 
+            'blog_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shortdescription' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The short description field is required.');
+                    }
+                },
+            ],
+            'long_description' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The long description field is required.');
+                    }
+                },
+            ],
         ];
         return Validator::make($request->all(), $rules);
     }

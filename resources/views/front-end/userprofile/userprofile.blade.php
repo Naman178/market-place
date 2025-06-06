@@ -78,6 +78,7 @@ $ogImage = $logoImage
         #profile_pic_title{
             font-size: 12px;
             margin-bottom: 2px;
+            overflow: auto;
         }
     </style>
     
@@ -85,6 +86,8 @@ $ogImage = $logoImage
         .filelabel {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            height: auto;
             gap: 10px;
             cursor: pointer;
         }
@@ -113,7 +116,7 @@ $ogImage = $logoImage
 
         .previewImgCls {
             width: 120px;
-            height: 120px;
+            height: 75px;
             object-fit: contain;
             display: none;
         }

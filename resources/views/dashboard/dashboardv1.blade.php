@@ -205,7 +205,7 @@
                                                     <a href="{{route('user-edit',$user->id)}}" class="text-success mr-2">
                                                         <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                                                     </a>
-                                                    <a href="{{route('user-delete',$user->id)}}" class="text-danger delete-user-btn mr-2">
+                                                    <a href="javascript:void(0);" data-url="{{ route('user-delete', $user->id) }}" class="text-danger delete-user-btn mr-2">
                                                         <i class="nav-icon i-Close-Window font-weight-bold"></i>
                                                     </a>
                                                 </td>
