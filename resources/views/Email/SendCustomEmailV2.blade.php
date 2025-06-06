@@ -412,12 +412,12 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                     <td align="center"
                                                                                         style="padding: 0px; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;">
                                                                                         @if ($setting && $setting['value']['logo_image'])
-                                                                                            <img src="{{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
+                                                                                            <img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/'.$setting['value']['logo_image']) }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
                                                                                             alt="Logo"
                                                                                             width="8rem"
                                                                                             height="41">
                                                                                         @else
-                                                                                            <img src="{{ asset('front-end/images/infiniylogo.png') }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
+                                                                                            <img src="{{ url('https://market-place-main.infinty-stage.com/front-end/images/infiniylogo.png') }}" style="display: block; width: 150px; height: 41px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 0px;"
                                                                                             alt="Logo"
                                                                                             width="8rem"
                                                                                             height="41">
@@ -561,7 +561,7 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                             rel="noopener noreferrer">
                                                                                             <img style="height: 24px; width: 24px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
                                                                                                 alt="Facebook Icon"
-                                                                                                src="{{ asset('storage/Logo_Settings/facebook.png') }}"
+                                                                                                src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/facebook.png') }}"
                                                                                                 data-icon-name="Facebook"
                                                                                                 height="24"
                                                                                                 width="24">
@@ -573,7 +573,7 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                             rel="noopener noreferrer">
                                                                                             <img style="height: 24px; width: 24px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
                                                                                                 alt="Twitter Icon"
-                                                                                                src="{{ asset('storage/Logo_Settings/twitter.png') }}"
+                                                                                                src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/twitter.png') }}"
                                                                                                 data-icon-name="Twitter"
                                                                                                 height="24"
                                                                                                 width="24">
@@ -585,7 +585,7 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                             rel="noopener noreferrer">
                                                                                             <img style="height: 24px; width: 24px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
                                                                                                 alt="Instagram Icon"
-                                                                                                src="{{ asset('storage/Logo_Settings/instagram.png') }}"
+                                                                                                src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/instagram.png') }}"
                                                                                                 data-icon-name="Instagram"
                                                                                                 height="24"
                                                                                                 width="24">
@@ -597,7 +597,7 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                             rel="noopener noreferrer">
                                                                                             <img style="height: 24px; width: 24px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
                                                                                                 alt="YouTube Icon"
-                                                                                                src="{{ asset('storage/Logo_Settings/youtube.png') }}"
+                                                                                                src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/youtube.png') }}"
                                                                                                 data-icon-name="YouTube"
                                                                                                 height="24"
                                                                                                 width="24">
@@ -609,7 +609,7 @@ border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
                                                                                             rel="noopener noreferrer">
                                                                                             <img style="height: 24px; width: 24px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
                                                                                                 alt="LinkedIn Icon"
-                                                                                                src="{{ asset('storage/Logo_Settings/linkedin.png') }}"
+                                                                                                src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/linkedin.png') }}"
                                                                                                 data-icon-name="LinkedIn"
                                                                                                 height="24"
                                                                                                 width="24">

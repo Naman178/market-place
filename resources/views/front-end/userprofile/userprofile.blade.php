@@ -105,13 +105,19 @@ $ogImage = $logoImage
             background-color: #292B46;
         }
         
-        .previewImgCls {
-            width: 100px;
-            height: 40px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            object-fit: cover;
+       .image-input-wrapper {
+            padding: 10px;
+            min-height: 100px;
+            position: relative;
         }
+
+        .previewImgCls {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            display: none;
+        }
+
         
         .hidepreviewimg {
             display: none;
@@ -327,19 +333,23 @@ $ogImage = $logoImage
     
     <script>
         function previewImage(event) {
-            var reader = new FileReader();
-            var fileInput = event.target;
-            var fileNameSpan = document.getElementById('file_name');
-            
-            reader.onload = function() {
-                var preview = document.getElementById('preview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-            
-            fileNameSpan.textContent = fileInput.files[0].name;
+            const preview = document.getElementById('preview');
+            const fileInput = event.target;
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+
+                    // Add class to expand wrapper
+                    fileInput.closest('.image-input-wrapper').classList.add('show-preview');
+                };
+                reader.readAsDataURL(file);
+            }
         }
+
     </script>
     
     
