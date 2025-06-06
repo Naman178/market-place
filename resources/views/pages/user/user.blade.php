@@ -73,7 +73,7 @@
                                         <a class="dropdown-item" href="{{route('user-edit',$list->id)}}"><i class="nav-icon i-Pen-2 font-weight-bold" aria-hidden="true"> </i> Edit</a>
                                     @endcan
                                     @can('user-delete')
-                                        <a class="dropdown-item" href="{{route('user-delete',$list->id)}}"><i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"> </i> Delete</a>
+                                        <a href="javascript:void(0);"  class="dropdown-item delete-user-btn"  data-url="{{ route('user-delete', $list->id) }}"> <i class="nav-icon i-Close-Window font-weight-bold" aria-hidden="true"></i> Delete </a>
                                     @endcan
                                     </div>
                                 </td>
@@ -101,8 +101,30 @@
 @section('page-js')
     <script src="{{asset('assets/js/vendor/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatables.script.js')}}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @section('bottom-js')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.delete-user-btn').click(function(event) {
+            event.preventDefault(); // prevent default link behavior
+            var submitURL = $(this).data("url");
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this user?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#f44336',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = submitURL;
+                }
+            });
+        });
+    });
 </script>
 @endsection

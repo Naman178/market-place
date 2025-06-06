@@ -16,6 +16,20 @@
             }
         });
     });
+    document.getElementById("Blog_image").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("Blog_image_prev");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove("hidepreviewimg");
+                preview.classList.add("show");
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // document.getElementById('image').addEventListener('change', function(event) {
     //     document.getElementById('image-previews').innerHTML = '';

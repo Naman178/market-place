@@ -69,7 +69,7 @@
                             <label for="mailSubject">Enter Subject:</label>
                             <input type="text" id="mailSubject" class="form-control" placeholder="Enter subject">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="maildesc">
                             <label for="desc">Description</label>
                             <div id="desc" class="form-control" style="height:150px;"></div>
                         </div>

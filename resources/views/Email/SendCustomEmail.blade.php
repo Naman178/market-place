@@ -138,7 +138,7 @@
 
 <body>
     <?php
-    $setting = \App\Models\Settings::where('key', 'footer_settings')->first();
+    $setting = \App\Models\Settings::where('key','site_setting')->first();
     ?>
     {{-- <section>
         <div class="container">
