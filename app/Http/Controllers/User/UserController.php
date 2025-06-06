@@ -30,7 +30,7 @@ use App\Models\UserInquiry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     function __construct()
@@ -57,12 +57,15 @@ class UserController extends Controller
     public function store(Request $request){
         if($request->ajax()){
             if($request->id == "0"){
-                $existingUser = User::where('email', $request->email)->where('status', 0)->first();
+                $existingUser = User::where('email', $request->email)->first();
 
-                $emailRules = ['required', 'email'];
+                $emailRules = ['email']; 
 
-                if ($existingUser && $request->status != -1) {
-                    $emailRules[] = 'unique:users,email';
+                if ($existingUser && $existingUser->sys_state == -1) {
+                    $emailRules = ['email'];
+                }
+                else{
+                    $emailRules = ['email', Rule::unique('users')];
                 }
                 $validator = Validator::make($request->all(), [
                     'fname' => 'required',
@@ -120,7 +123,10 @@ class UserController extends Controller
 
                     DB::table('model_has_roles')->where('model_id',$request->id)->delete();
                     $user->assignRole($request->roles);
-
+                    session()->flash('user_status_update', [
+                        'user_id' => $user->id,
+                        'status' => $request->status,
+                    ]);
                     session()->flash('success', 'User Updated successfully!');
                     return response()->json([
                         'success' => 'User updated successfully!',

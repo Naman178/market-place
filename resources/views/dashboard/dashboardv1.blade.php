@@ -205,7 +205,7 @@
                                                     <a href="{{route('user-edit',$user->id)}}" class="text-success mr-2">
                                                         <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                                                     </a>
-                                                    <a href="{{route('user-delete',$user->id)}}" class="text-danger mr-2">
+                                                    <a href="{{route('user-delete',$user->id)}}" class="text-danger delete-user-btn mr-2">
                                                         <i class="nav-icon i-Close-Window font-weight-bold"></i>
                                                     </a>
                                                 </td>
@@ -350,4 +350,43 @@
     <script src="{{ asset('assets/js/vendor/echarts.min.js') }}"></script>
     <script src="{{ asset('assets/js/es5/echart.options.min.js') }}"></script>
     <script src="{{ asset('assets/js/es5/dashboard.v1.script.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
+
+@section('bottom-js')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.delete-user-btn').click(function(event) {
+            event.preventDefault(); // prevent default link behavior
+            var submitURL = $(this).data("url");
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this user?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#f44336',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = submitURL;
+                }
+            });
+        });
+    });
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            document.body.style.transition = 'opacity 0.5s';
+            document.body.style.opacity = 0;
+
+            setTimeout(() => {
+            window.location.reload();
+            }, 500);
+        }
+    });
+
+</script>
+@endsection
+

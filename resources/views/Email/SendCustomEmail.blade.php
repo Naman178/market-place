@@ -215,9 +215,9 @@
     <tr>
         <td align="center" style="padding: 20px;">
             @if ($setting && $setting['value']['logo_image'])
-                <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                <img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
             @else
-                <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                <img src="{{ url('https://market-place-main.infinty-stage.com/front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
             @endif
         </td>
     </tr>
@@ -235,11 +235,11 @@
             <p>Connect With Us</p>
             <table border="0" cellpadding="5" cellspacing="0">
                 <tr>
-                    <td><img src="{{ asset('storage/Logo_Settings/support.png') }}" alt="support" width="25"></td>
+                    <td><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/support.png') }}" alt="support" width="25"></td>
                     <td><a href="tel:04132331199" style="color: #ffffff; text-decoration: none;">0413 - 2331199</a></td>
                 </tr>
                 <tr>
-                    <td><img src="{{ asset('storage/Logo_Settings/pin.png') }}" alt="pin" width="25"></td>
+                    <td><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/pin.png') }}" alt="pin" width="25"></td>
                     <td><a href="#" style="color: #ffffff; text-decoration: none;">First Floor, 32, Kamatchi Amman Kovil Street, White Town, Puducherry, 605001.</a></td>
                 </tr>
             </table>
@@ -252,12 +252,12 @@
             <p>Stay Up To Date And Follow Us On Social Media</p>
             <table border="0" cellpadding="5" cellspacing="0">
                 <tr>
-                    <td><a href="https://www.facebook.com/vnetindia"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
-                    <td><a href="https://api.whatsapp.com/send/?phone=%2B916374180749&text&type=phone_number&app_absent=0"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
-                    <td><a href="https://www.instagram.com/vnetindia/"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
-                    <td><a href="https://twitter.com/vnetindia"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
-                    <td><a href="https://www.linkedin.com/company/vnetindia"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
-                    <td><a href="https://www.youtube.com/channel/UCCg8T7067jaGOcO11mfkRwQ"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
+                    <td><a href="https://www.facebook.com/vnetindia"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
+                    <td><a href="https://api.whatsapp.com/send/?phone=%2B916374180749&text&type=phone_number&app_absent=0"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
+                    <td><a href="https://www.instagram.com/vnetindia/"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
+                    <td><a href="https://twitter.com/vnetindia"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
+                    <td><a href="https://www.linkedin.com/company/vnetindia"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
+                    <td><a href="https://www.youtube.com/channel/UCCg8T7067jaGOcO11mfkRwQ"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
                 </tr>
             </table>
         </td>
