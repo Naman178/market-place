@@ -82,7 +82,7 @@
                     {{-- <h1 class="text-center feature_heading">Terms and Conditions</h1> --}}
                     @foreach ($term_conditions as  $term_condition)
                         <h4>{{ $term_condition->title ?? '' }}</h4>        
-                        <p>{{ $term_condition->description ?? '' }}</p>
+                        <p>{!! $term_condition->description ?? '' !!}</p>
                         <hr>
                     @endforeach
                 </div>
