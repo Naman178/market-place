@@ -251,7 +251,6 @@
         });
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.querySelector("form[action='{{ route('user-login-post') }}']");
-            // Select inputs with .form-control class AND filter those that have an id attribute (non-empty)
             const inputFields = Array.from(document.querySelectorAll(".form-control")).filter(input => input.id && input.id.trim() !== '');
             const loginBtn = document.getElementById("login-btn");
 
@@ -327,7 +326,20 @@
                 return valid;
             }
 
-            // Attach events only to filtered inputs with valid IDs
+            function validateFormAndSubmit() {
+                let formIsValid = true;
+                inputFields.forEach(input => {
+                    if (!validateInput(input)) {
+                        formIsValid = false;
+                    }
+                });
+
+                if (formIsValid) {
+                    form.submit();
+                }
+            }
+
+            // Input events
             inputFields.forEach(input => {
                 input.addEventListener("blur", () => validateInput(input));
                 input.addEventListener("input", () => validateInput(input));
@@ -343,26 +355,24 @@
                     label.style.color = hasError ? "red" : "#70657b";
                     input.style.borderColor = hasError ? "red" : "#70657b";
                 });
-            });
 
-            // Validate all on submit button click
-            loginBtn.addEventListener("click", function () {
-                let formIsValid = true;
-                inputFields.forEach(input => {
-                    if (!validateInput(input)) {
-                        formIsValid = false;
+                // Enter key event
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // prevent default Enter behavior
+                        validateFormAndSubmit(); // use same logic as button
                     }
                 });
-
-                if (formIsValid) {
-                    form.submit();
-                }
             });
 
-            // Initial label setup for all filtered inputs
+            // Click event on Sign In button
+            loginBtn.addEventListener("click", function () {
+                validateFormAndSubmit();
+            });
+
+            // Set floating label on page load
             inputFields.forEach(input => updateFloatingLabel(input));
         });
-
        const eyeIcons = {
             open: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
                     <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
