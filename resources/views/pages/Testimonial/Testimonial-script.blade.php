@@ -100,7 +100,14 @@
         });
 
         quill.on('text-change', function () {
-            $('#message').val(quill.root.innerHTML);
+            const content = quill.root.innerHTML;
+            $('#message').val(content);
+
+            // Remove validation error if user modifies content
+            if (content.trim() !== '') {
+                $('#message_error').text('');
+                $('#message').removeClass('is-invalid');
+            }
         });
     });
 </script>

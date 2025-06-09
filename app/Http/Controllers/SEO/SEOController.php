@@ -93,7 +93,7 @@ class SEOController extends Controller
 
     public function remove($id)
     {
-        DB::table("SEO")->where('id',$id)->delete();
+        DB::table("seo")->where('id',$id)->delete();
         return redirect()->back()
         ->with([
             'success' => trans('custom.SEO_delete_success'),

@@ -79,7 +79,7 @@ class TermAndConditionController extends Controller
     private function validateRequest(Request $request)
     {
         $rules = [
-            'name' => 'required',
+            'title' => 'required',
             'description' => 'required',
         ];
         return Validator::make($request->all(), $rules);

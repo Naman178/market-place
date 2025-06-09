@@ -135,7 +135,7 @@
        @csrf
        <input type="hidden" name="recaptcha" id="recaptcha">
         <div class="row justify-content-center">
-            <d<div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card">
                     <div class=" mb-1">
                         <div class="text-center mt-2">
@@ -169,7 +169,7 @@
                     </div>
                     <div class=" mt-4">
                         <div class="form-group">
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="" required/>
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
                             <label for="firstname" class="floating-label">First Name</label>
                             <div class="error" id="firstname_error"></div>
                             @error('firstname')
@@ -180,8 +180,8 @@
                     <div class="">
                         <div class="form-group">
                             {{-- <label for="last_name">Last Name</label> --}}
-                            <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
-                            <label for="firstname" class="floating-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="">
+                            <label for="last_name" class="floating-label">Last Name</label>
                             @error('last_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -190,7 +190,7 @@
                     </div>
                     <div class="">
                         <div class="form-group">
-                            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
                             <label for="email" class="floating-label">Email</label>
                             @error('email')
                                 <div class="text-danger" id="email_error_message">{{ $message }}</div>
@@ -200,9 +200,9 @@
                     </div>
                    <div class="">
                         <div class="form-group mb-1" style="position: relative;">
-                            <input type="password" class="form-control" id="password-field-2" name="password" required>
-                            <label for="password-field-2" class="floating-label">Password</label>
-                         <button type="button" class="toggle-button" data-toggle="password-field-2" aria-label="Toggle Password Visibility">
+                            <input type="password" class="form-control" id="password" name="password">
+                            <label for="password" class="floating-label">Password</label>
+                         <button type="button" class="toggle-button" data-toggle="password" aria-label="Toggle Password Visibility">
                                 <!-- Eye icon SVG -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
                                     <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
@@ -223,7 +223,7 @@
                                 <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input" checked>
                                 <span for="promotionsSubscriber" class="text-left d-block text-white mt-3 mb-2 ml-2 cursor-pointer">Send me tips, trends, freebies, updates & offers. <br> You can unsubscribe at any time.</span> 
                             </div> 
-                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                            <button type="button" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -376,67 +376,174 @@
                 console.error("reCAPTCHA error:", error);
             });
         });
+            // document.addEventListener("DOMContentLoaded", function () {
+            //     const inputFields = document.querySelectorAll(".form-control");
+
+            //     function updateFloatingLabel(input) {
+            //         const label = input.nextElementSibling;
+            //         const errorDiv = document.getElementById(input.id + "_error");
+            //         const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+            //         // Specific check for disposable email message
+            //         const isDisposableEmailError =
+            //             input.id === "email" &&
+            //             document.getElementById("email_error_message") &&
+            //             document.getElementById("email_error_message").textContent.includes("Disposable Email");
+
+            //         if (isDisposableEmailError) {
+            //             label.style.top = "22px";
+            //             label.style.fontSize = "0.8rem";
+            //             label.style.color = "red";
+            //             input.style.borderColor = "red";
+            //         } else if (input.value.trim() !== "") {
+            //             label.style.top = "-1%";
+            //             label.style.fontSize = "0.8rem";
+            //             label.style.color = "#70657b";
+            //             input.style.borderColor = "#ccc";
+            //         } else if (hasError) {
+            //             label.style.top = "35%";
+            //             label.style.fontSize = "1rem";
+            //             label.style.color = "red";
+            //             input.style.borderColor = "red";
+            //         } else {
+            //             label.style.top = "50%";
+            //             label.style.fontSize = "1rem";
+            //             label.style.color = "#70657b";
+            //             input.style.borderColor = "#ccc";
+            //         }
+            //     }
+
+            //     inputFields.forEach(input => {
+            //         const errorDiv = document.getElementById(input.id + "_error");
+
+            //         updateFloatingLabel(input);
+
+            //         input.addEventListener("blur", function () {
+            //             const value = input.value.trim();
+            //             if (!value) {
+            //                 errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+            //                 errorDiv.style.display = "block";
+            //                 input.style.borderColor = "red";
+            //             } else {
+            //                 errorDiv.textContent = "";
+            //                 errorDiv.style.display = "none";
+            //                 input.style.borderColor = "#ccc";
+            //             }
+            //             updateFloatingLabel(input);
+            //         });
+
+            //         input.addEventListener("input", function () {
+            //             const value = input.value.trim();
+
+            //             if (input.id === "firstname" || input.id === "last_name") {
+            //                 this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+            //                 if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+            //                     errorDiv.textContent = "Only letters and spaces are allowed!";
+            //                     errorDiv.style.display = "block";
+            //                     input.style.borderColor = "red";
+            //                 } else {
+            //                     errorDiv.textContent = "";
+            //                     errorDiv.style.display = "none";
+            //                     input.style.borderColor = "#ccc";
+            //                 }
+            //             }
+            //             updateFloatingLabel(input);
+            //         });
+
+            //         input.addEventListener("focus", function () {
+            //             const label = input.nextElementSibling;
+            //             label.style.top = "-1%";
+            //             label.style.fontSize = "0.8rem";
+            //             input.style.borderColor = "#ccc";
+
+            //             if (errorDiv && errorDiv.textContent.trim() !== "") {
+            //                 label.style.color = "red";
+            //                 input.style.borderColor = "red";
+            //             }
+            //         });
+            //     });
+            // });
             document.addEventListener("DOMContentLoaded", function () {
-                const inputFields = document.querySelectorAll(".form-control");
+                const form = document.querySelector("form[action='{{ route('user-register-post') }}']");
+                const inputFields = Array.from(document.querySelectorAll(".form-control")).filter(input => input.id && input.id.trim() !== '');
+                const loginBtn = document.getElementById("login-btn");
+
+                function getLabelText(input) {
+                    const label = document.querySelector(`label[for="${input.id}"]`);
+                    return label ? label.textContent.trim() : input.name || input.id || 'This field';
+                }
 
                 function updateFloatingLabel(input) {
                     const label = input.nextElementSibling;
                     const errorDiv = document.getElementById(input.id + "_error");
                     const hasError = errorDiv && errorDiv.textContent.trim() !== "";
 
-                    // Specific check for disposable email message
-                    const isDisposableEmailError =
-                        input.id === "email" &&
-                        document.getElementById("email_error_message") &&
-                        document.getElementById("email_error_message").textContent.includes("Disposable Email");
+                    if (!label) return;
 
-                    if (isDisposableEmailError) {
-                        label.style.top = "22px";
-                        label.style.fontSize = "0.8rem";
-                        label.style.color = "red";
-                        input.style.borderColor = "red";
-                    } else if (input.value.trim() !== "") {
+                    if (input.value.trim() !== "") {
                         label.style.top = "-1%";
                         label.style.fontSize = "0.8rem";
-                        label.style.color = "#70657b";
-                        input.style.borderColor = "#ccc";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#ccc";
                     } else if (hasError) {
                         label.style.top = "35%";
-                        label.style.fontSize = "1rem";
+                        label.style.fontSize = "14px";
                         label.style.color = "red";
                         input.style.borderColor = "red";
                     } else {
                         label.style.top = "50%";
-                        label.style.fontSize = "1rem";
+                        label.style.fontSize = "14px";
                         label.style.color = "#70657b";
                         input.style.borderColor = "#ccc";
                     }
                 }
 
-                inputFields.forEach(input => {
-                    const errorDiv = document.getElementById(input.id + "_error");
+                function validateInput(input) {
+                    console.log("Validating input:", input.id);
 
+                    if (!input.id) {
+                        console.warn("Skipping validation: input has no id", input);
+                        return true;
+                    }
+
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    if (!errorDiv) {
+                        console.warn("No error div found for input:", input.id);
+                        return false;
+                    }
+
+                    const rawValue = input.value;
+                    const value = (typeof rawValue === 'string') ? rawValue.trim() : '';
+
+                    const labelText = getLabelText(input);
+                    let valid = true;
+
+                    if (!value) {
+                        errorDiv.textContent = `${labelText} is required!`;
+                        valid = false;
+                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                        errorDiv.textContent = "Please enter a valid email address!";
+                        valid = false;
+                    } else {
+                        errorDiv.textContent = "";
+                    }
+
+                    errorDiv.style.display = valid ? "none" : "block";
+                    input.style.borderColor = valid ? "#ccc" : "red";
                     updateFloatingLabel(input);
 
-                    input.addEventListener("blur", function () {
-                        const value = input.value.trim();
-                        if (!value) {
-                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                            errorDiv.style.display = "block";
-                            input.style.borderColor = "red";
-                        } else {
-                            errorDiv.textContent = "";
-                            errorDiv.style.display = "none";
-                            input.style.borderColor = "#ccc";
-                        }
-                        updateFloatingLabel(input);
-                    });
+                    return valid;
+                }
 
+                inputFields.forEach(input => {
+                    input.addEventListener("blur", () => validateInput(input));
                     input.addEventListener("input", function () {
                         const value = input.value.trim();
+                        const errorDiv = document.getElementById(input.id + "_error");
 
+                        // Validation for firstname and last_name (only letters and spaces allowed)
                         if (input.id === "firstname" || input.id === "last_name") {
-                            this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+                            this.value = this.value.replace(/[^a-zA-Z\s]/g, ""); // Remove invalid characters
                             if (!/^[a-zA-Z\s]+$/.test(this.value)) {
                                 errorDiv.textContent = "Only letters and spaces are allowed!";
                                 errorDiv.style.display = "block";
@@ -447,21 +554,42 @@
                                 input.style.borderColor = "#ccc";
                             }
                         }
+
+                        validateInput(input);
                         updateFloatingLabel(input);
                     });
 
-                    input.addEventListener("focus", function () {
+                    input.addEventListener("focus", () => {
                         const label = input.nextElementSibling;
+                        if (!label) return;
+
                         label.style.top = "-1%";
                         label.style.fontSize = "0.8rem";
-                        input.style.borderColor = "#ccc";
 
-                        if (errorDiv && errorDiv.textContent.trim() !== "") {
-                            label.style.color = "red";
-                            input.style.borderColor = "red";
-                        }
+                        const errorDiv = document.getElementById(input.id + "_error");
+                        const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#70657b";
                     });
                 });
+
+                loginBtn.addEventListener("click", function () {
+                    let formIsValid = true;
+                    inputFields.forEach(input => {
+                        if (!validateInput(input)) {
+                            formIsValid = false;
+                        }
+                    });
+
+                    if (formIsValid) {
+                        loginBtn.setAttribute("type", "submit"); // Change button type to submit
+                        form.submit();
+                    } else {
+                        loginBtn.setAttribute("type", "button"); // Keep button type as button
+                    }
+                });
+
+                inputFields.forEach(input => updateFloatingLabel(input));
             });
 
             $('#country').select2();

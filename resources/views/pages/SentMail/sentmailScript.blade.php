@@ -92,6 +92,24 @@
 
     }
 
+    // Remove error when user changes input
+    $(document).on('input change', '#manualEmail, #mailSubject', function () {
+        $(this).removeClass('is-invalid');
+        $(this).next('.error').remove();
+    });
+
+    // For select2 (emailSelect)
+    $('#emailSelect').on('change', function () {
+        $(this).removeClass('is-invalid');
+        $(this).next('.select2-container').next('.error').remove();
+    });
+
+    descEditor.on('text-change', function () {
+        const content = descEditor.root.innerHTML.trim();
+        if (content !== '') {
+            $('#maildesc').next('.error').remove();
+        }
+    });
 
 
     $(document).on('click', '.email-form-btn', function(e) {

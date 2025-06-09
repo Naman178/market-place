@@ -335,19 +335,19 @@ class RegisterController extends Controller
     public function postRegistration(Request $request)
     {
         // dd($request->all());
-        $request->validate([
-            'firstname' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users', // Check for unique email
-            // 'country_code' => 'required|string',
-            // 'company_name' => 'required|string|max:255',
-            // 'company_website' => 'nullable|url|max:255',
-            // 'address_line1' => 'required|string|max:255',
-            // 'address_line2' => 'nullable|string|max:255',
-            // 'city' => 'required|string|max:255',
-            // 'postal_code' => 'required|string|max:20',
-            'password' => 'required|string|min:8', // Add confirmation rule if applicable
-        ]);
+        // $request->validate([
+        //     'firstname' => 'required|string|max:255',
+        //     'last_name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users', // Check for unique email
+        //     // 'country_code' => 'required|string',
+        //     // 'company_name' => 'required|string|max:255',
+        //     // 'company_website' => 'nullable|url|max:255',
+        //     // 'address_line1' => 'required|string|max:255',
+        //     // 'address_line2' => 'nullable|string|max:255',
+        //     // 'city' => 'required|string|max:255',
+        //     // 'postal_code' => 'required|string|max:20',
+        //     'password' => 'required|string|min:8', // Add confirmation rule if applicable
+        // ]);
         $response = Http::get('https://disposable.debounce.io', [
             'email' => $request->email,
         ]);
