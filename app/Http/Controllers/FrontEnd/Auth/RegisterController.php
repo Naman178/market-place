@@ -119,6 +119,7 @@ class RegisterController extends Controller
                         'address_line2' => $request->address_line2,
                         'city' => $request->city,
                         'postal_code' => $request->postal_code,
+                        'status' => 1,
                         'gstin' => $request->gst,
                     ]);
                     $save_user = $existingUser;
@@ -453,6 +454,7 @@ class RegisterController extends Controller
                 'name' => $name,
                 'fname' => $fname,
                 'lname' => $lname,
+                'status' => 1,
                 'password' => $password,
                 'subscribe_to_promotions' => $subscribeToPromotions,
             ]);
