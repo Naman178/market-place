@@ -428,11 +428,11 @@ class RegisterController extends Controller
         
         $password = Hash::make($request['password']);
         
-        $save_user = User::create([
-            'name'=>$name , 
-            'email'=>$email , 
-            'fname'=> $fname , 
-            'lname'=>$lname , 
+        // $save_user = User::create([
+        //     'name'=>$name , 
+        //     'email'=>$email , 
+        //     'fname'=> $fname , 
+        //     'lname'=>$lname , 
         //     'country_code'=>$country_code, 
         //    'contact_number'=>$contact , 
         //     'company_name'=>$company_name, 
@@ -443,9 +443,34 @@ class RegisterController extends Controller
         //     'city'=>$city,
         //     'postal_code'=>$postal,
         //     'gstin'=>$gst,
-            'password'=>$password,
-            'subscribe_to_promotions'=>$subscribeToPromotions
-        ]);
+        //     'password'=>$password,
+        //     'subscribe_to_promotions'=>$subscribeToPromotions
+        // ]);
+        if ($existingUser && $existingUser->sys_state == -1) {
+            // Reactivate soft-deleted user
+            $existingUser->update([
+                'sys_state' => 0,
+                'name' => $name,
+                'fname' => $fname,
+                'lname' => $lname,
+                'password' => $password,
+                'subscribe_to_promotions' => $subscribeToPromotions,
+            ]);
+            $save_user = $existingUser;
+        } elseif (!$existingUser) {
+            // Create new user
+            $save_user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'fname' => $fname,
+                'lname' => $lname,
+                'password' => $password,
+                'subscribe_to_promotions' => $subscribeToPromotions,
+            ]);
+        } else {
+            // Email already taken
+            return back()->withErrors(['email' => 'Email is already in use. Please login instead.']);
+        }
         
         // if($save_user){
 
