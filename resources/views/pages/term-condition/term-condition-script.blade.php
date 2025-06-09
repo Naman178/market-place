@@ -34,7 +34,14 @@
         });
 
         quill.on('text-change', function () {
-            $('#description').val(quill.root.innerHTML);
+            const content = quill.root.innerHTML;
+            $('#description').val(content);
+
+            // Remove validation error if user modifies content
+            if (content.trim() !== '') {
+                $('#description_error').text('');
+                $('#description').removeClass('is-invalid');
+            }
         });
     });
 </script>

@@ -34,7 +34,14 @@
         });
 
         quill.on('text-change', function () {
-            $('#answer').val(quill.root.innerHTML);
+            const content = quill.root.innerHTML;
+            $('#answer').val(content);
+
+            // Remove validation error if user modifies content
+            if (content.trim() !== '') {
+                $('#answer_error').text('');
+                $('#answer').removeClass('is-invalid');
+            }
         });
     });
 </script>
