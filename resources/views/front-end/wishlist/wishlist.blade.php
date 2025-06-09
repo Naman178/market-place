@@ -141,7 +141,10 @@
                     gap: 10px; /* Reduce the gap */
                 }
             }
-
+            .wishlist{
+                margin-top:33px !important;
+                margin-bottom: 33px !important;
+            }
     </style>
 </head>
 @endsection
