@@ -105,7 +105,7 @@ class RegisterController extends Controller
                 if ($existingUser && $existingUser->sys_state == -1) {
                     // Reactivate the user
                     $existingUser->update([
-                        'sys_state' => 0, 
+                        'sys_state' => "0", 
                         'password' => $password,
                         'name' => $request->firstname . ' ' . $request->lastname,
                         'fname' => $request->firstname,
@@ -449,7 +449,7 @@ class RegisterController extends Controller
         if ($existingUser && $existingUser->sys_state == -1) {
             // Reactivate soft-deleted user
             $existingUser->update([
-                'sys_state' => 0,
+                'sys_state' =>"0",
                 'name' => $name,
                 'fname' => $fname,
                 'lname' => $lname,
