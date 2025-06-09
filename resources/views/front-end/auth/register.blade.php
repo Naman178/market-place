@@ -496,6 +496,11 @@
                         label.style.color = "#70657b";
                         input.style.borderColor = "#ccc";
                     }
+                    const toggleButton = input.parentElement.querySelector('.toggle-button');
+                    if (toggleButton) {
+                        // If error is shown, push eye icon slightly lower
+                        toggleButton.style.top = hasError ? '37%' : '50%';
+                    }
                 }
 
                 function validateInput(input) {
