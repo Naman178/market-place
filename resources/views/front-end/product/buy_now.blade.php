@@ -598,7 +598,7 @@
                                             <div class="d-flex justify-content-between align-items-center accordion-toggle" style="cursor: pointer;" data-target="#accordion-{{ $index }}">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa fa-check mr-2"></i>
-                                                    {{ $priceFeatures[0]->key_feature ?? '' }}
+                                                    {{ !empty($priceFeatures) ? ($priceFeatures[0]->key_feature ?? ($priceFeatures[1]->key_feature ?? 'No features available')) : 'No features available' }}
                                                 </div>
                                                 @if ($priceFeatures->count() > 1)
                                                     <i class="fa fa-chevron-down toggle-icon"></i>
