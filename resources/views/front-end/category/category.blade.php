@@ -1,4 +1,46 @@
-@extends('front-end.common.master')@section('meta')
+@extends('front-end.common.master')
+@php 
+    use App\Models\Settings;
+    use App\Models\SEO;
+
+    $seoData = SEO::where('page', 'products')->first();
+
+    $site = Settings::where('key', 'site_setting')->first();
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('meta')
+@section('title'){{ $seoData->title ?? 'Products' }} @endsection
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Explore a wide range of products available on Market Place. Find the best deals and latest items now.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'products, deals, Market Place, shop online' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'Products - Market Place' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Explore our product selection and shop online at Market Place.' }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'Products - Market Place' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Explore our product selection and shop online at Market Place.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+@if ($logoImage)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$logoImage) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
+@endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
     <style>
@@ -13,24 +55,16 @@
         .items-container .row {
             justify-content: start !important;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
-@section('meta')
-    <title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
-    </title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-    <meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-    <meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
-@endsection
+
 @section('content')
     <div class="container items-container">
         <div class="title">
-            <h3><span class="color-blue underline-text">Products</span></h3>
+            <h3><span class="color-blue underline">Products</span></h3>
         </div>
         {{-- <div class="container" style="padding-left: 330px; padding-right:330px;">
             <div class="row" style="display: flex; justify-content:space-between; align-items:center;">
@@ -71,7 +105,7 @@
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
                         <ul class="p-0">
-                            <li><a href="{{ route('product.list', ['category' => $category->id]) }}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
+                            <li> <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')]) }}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
                         </ul>
                         @endforeach
                     </div>

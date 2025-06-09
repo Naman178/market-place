@@ -3,9 +3,10 @@
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 <div class="integration">
-                    <img class="mt-65" src="{{ asset('front-end/images/Group 1000002959.png') }}" alt="not found">
-                    <h1>Continuous Support and Upgrade Seamless<span> Performance</span></h1>
-                    <img class="vector2_img" src="{{ asset('front-end/images/Vector 4.png') }}" alt="not found">
+                    <p class="plugin-label">
+                        <span class="label-line"></span> 24/7
+                    </p>
+                    <h2>Continuous Support and Upgrade Seamless <span class="underline"> Performance</span></h2>
                     <p class="integra_p mb-60 mt-3">
                         We believe in delivering long-term value, not just a one-time solution. Our team ensures
                             your products are always up-to-date with the latest features, security patches, and enhancements. <br><br>
@@ -38,7 +39,7 @@
                 </div>
                 <div class="signup-wrapper">
                     @if (!empty($category))
-                    <a href="{{ route('product.list', ['categoryOrSubcategory' => $category->id ?? null]) }}" class="blue_common_btn"> 
+                    <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -48,7 +49,7 @@
                             </span> --}}
                     </a>
                 @elseif (!empty($subcategory))
-                    <a href="{{ route('product.list', ['categoryOrSubcategory' => $subcategory->id ?? null]) }}" class="blue_common_btn"> 
+                     <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

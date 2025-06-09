@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\NewsletterMail;
 use App\Models\Comments;
 use App\Models\Newsletter;
+use App\Models\Order;
 use App\Models\Settings;
 use App\Models\Share;
 use App\Models\Items;
@@ -18,10 +19,14 @@ use App\Models\SubCategory;
 use App\Models\Reviews;
 use App\Models\Wishlist;
 use App\Models\ItemsPricing;
+use App\Models\ItemsImage;
 use App\Models\Testimonials;
 use App\Models\SocialMedia;
+use App\Models\ItemsTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
+use Usamamuneerchaudhary\Commentify\Models\Comment;
 use Mail;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
@@ -33,15 +38,15 @@ class HomePageController extends Controller
     {
         $data['items'] = Items::with(['features', 'tags', 'images', 'categorySubcategory', 'pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
         $FAQs = FAQ::get();
-        $Blogs = Blog::where('status', '1')->with('categoryname')->get();
+        $Blogs = Blog::where('status', '1')->with('categoryname')->orderBy('blog_id', 'desc')->get();
         foreach ($Blogs as $blog) {
             $blog->category_name = Blog_category::where('category_id',$blog->category)->value('name');
-            $blog->comments_count = Comments::where('blog_id', $blog->blog_id)->count();
+            $blog->comments_count = Comments::where('post_id', $blog->blog_id)->count();
             $blog->shares_count = Share::where('blog_id', $blog->blog_id)->count();
         }
         $seoData = SEO::where('page', 'home')->first();
-        $category = Category::where('sys_state','=','0')->get();
-        $subcategory = SubCategory::where('sys_state','=','0')->get();
+        $category = Category::where('sys_state','=','0')->orderBy('id','desc')->get();
+        $subcategory = SubCategory::where('sys_state','=','0')->orderBy('id','desc')->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
         $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
@@ -143,30 +148,176 @@ class HomePageController extends Controller
         $items = $query->get();
         return response()->json($items);
     }
-    
-    public function show($id){
-        $subcategories = SubCategory::where('category_id', $id)->where('sys_state', '=', '0')->get();
-        $categories = Category::where('sys_state', '!=', '-1')->withCount(['Items as products_count' => function ($query) {
-            $query->where('sys_state', '=', '0');
-        }])
-        ->get();
-        if($subcategories){
-            $item = Items::with(['categorySubcategory', 'pricing' , 'order','tags'])
+    public function filterProducts(Request $request)
+    {
+        $query = Items::with(['categorySubcategory', 'pricing', 'reviews', 'tags'])
+            ->where('sys_state', '=', '0')
+            ->leftJoin('items_pricing__tbl', function ($join) {
+                $join->on('items__tbl.id', '=', 'items_pricing__tbl.item_id')
+                    ->whereIn('items_pricing__tbl.pricing_type', ['one-time', 'recurring']);
+            })
+            ->select('items__tbl.*')
+            ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price')
+            ->groupBy('items__tbl.id');
+
+        // Detect if any filter is applied
+        $filtersApplied = false;
+
+        // Keyword Search
+        if (!empty($request->keyword)) {
+            $filtersApplied = true;
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('items__tbl.name', 'LIKE', "%$keyword%")
+                ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%")
+                ->orWhereHas('tags', function ($query) use ($keyword) {
+                    $query->where('tag_name', 'LIKE', "%$keyword%");
+                })
+                ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) {
+                    $query->where('name', 'LIKE', "%$keyword%");
+                })
+                ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) {
+                    $query->where('name', 'LIKE', "%$keyword%");
+                })
+                ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]);
+            });
+        }
+
+        // Filter by categories
+        if (!empty($request->categories)) {
+            $filtersApplied = true;
+            $subcategories = SubCategory::whereIn('category_id', $request->categories)
+                ->where('sys_state', '=', '0')
+                ->pluck('id');
+
+            $query->whereHas('categorySubcategory', function ($q) use ($subcategories) {
+                $q->whereIn('subcategory_id', $subcategories);
+            });
+        }
+
+        // Filter by subcategories
+        if (!empty($request->subcategories)) {
+            $filtersApplied = true;
+            $query->whereHas('categorySubcategory', function ($q) use ($request) {
+                $q->whereIn('subcategory_id', $request->subcategories);
+            });
+        }
+
+        // Filter by tags
+        if (!empty($request->tags) && is_array($request->tags) && count(array_filter($request->tags)) > 0) {
+            $filtersApplied = true;
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->whereIn('tag_name', $request->tags);
+            });
+        }
+
+        // Filter by price
+        if ($request->has('price') && (int)$request->price > 0) {
+            $filtersApplied = true;
+            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price]);
+        }
+        $sortOption = $request->input('sort_option');
+
+        if ($sortOption == 1) {
+            $query->orderBy('fixed_price', 'asc'); // Low to High
+        } elseif ($sortOption == 2) {
+            $query->orderBy('fixed_price', 'desc'); // High to Low
+        } else {
+            $query->orderBy('items__tbl.created_at', 'asc'); // Default
+        }
+
+
+        // If no filters applied, optionally return empty or all products:
+        if (!$filtersApplied) {
+            $id = $request->item_id;
+            $subcategories = SubCategory::where('category_id', $id)
+                ->where('sys_state', '=', '0')
+                ->get();
+
+            $categories = Category::where('sys_state', '!=', '-1')
+                ->withCount(['subcategories as countsubcategory' => function ($query) {
+                    $query->where('sys_state', '=', '0');
+                }])
+                ->get();
+
+            if ($subcategories) {
+                $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
                     ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
                         $query->whereIn('subcategory_id', $subcategories->pluck('id'));
                     })
                     ->where('sys_state', '=', '0')
+                    ->orderBy('id', 'desc')
                     ->get();
+            } else {
+                $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+                    ->whereHas('categorySubcategory', function ($query) use ($id) {
+                        $query->where('subcategory_id', $id);
+                    })
+                    ->where('sys_state', '=', '0')
+                    ->orderBy('id', 'desc')
+                    ->get();
+            }
+            return response()->json($item);
         }
-        else{
-            $item = Items::with(['categorySubcategory', 'pricing','order'])
-            ->whereHas('categorySubcategory', function ($query) use ($id) {
-                $query->where('subcategory_id', $id);
-            })
+
+        $filteredProducts = $query->get();
+
+        return response()->json($filteredProducts);
+    }
+    public function show($category, $slug)
+    {
+        $subcategory = SubCategory::where('slug', $slug)->value('id');
+        $category = Category::where('id', $subcategory)->first();
+        $slugCategory = Category::where('slug', $slug)->first();
+
+        if ($slugCategory) {
+            $id = $slugCategory->id;
+        } else {
+            $id = $category->id;
+        }
+        $category_name = Category::where('id', $id)->value('name');
+
+        $allsubcategories = SubCategory::where('category_id', $id)
+            ->where('sys_state', '=', '0')
+            ->withCount(['items as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        $subcategories = SubCategory::where('category_id', $id)
             ->where('sys_state', '=', '0')
             ->get();
+
+        $categories = Category::where('sys_state', '!=', '-1')
+            ->withCount(['subcategories as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        if ($subcategories) {
+            $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+                ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                    $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+                })
+                ->where('sys_state', '=', '0')
+                ->orderBy('id', 'desc')
+                ->get();
+        } else {
+            $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+                ->whereHas('categorySubcategory', function ($query) use ($id) {
+                    $query->where('subcategory_id', $id);
+                })
+                ->where('sys_state', '=', '0')
+                ->orderBy('id', 'desc')
+                ->get();
         }
-        return view('front-end.product.product',compact('item','categories'));
+
+        // Collect all unique tag IDs from items
+        $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
+        $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
+
+        return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
     }
     public function buynow($id)
     {
@@ -177,38 +328,48 @@ class HomePageController extends Controller
         if (!$item) {
             return redirect()->back()->with('error', 'Item not found.');
         }
-        $userCommentsCount = Comments::where('user_id', Auth::id())->where('item_id', $id)
-        ->count();
+        // $userCommentsCount = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        // ->count();
 
-        $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
-        ->with('user') 
-        ->get();
-
+        // $comments = Comments::where('user_id', Auth::id())->where('item_id', $id)
+        // ->with('user') 
+        // ->get();
+        $orderitem = Order::where('product_id', $id)->where('user_id', Auth::id())->first();
+        $userCommentsCount = Comment::where('item_id', $id)->where('parent_id', null)->count(); 
+        $post = Post::first();
         $userReviewsCount = Reviews::where('user_id', Auth::id())->where('item_id', $id)
             ->count();
 
-        $reviews = Reviews::where('user_id', Auth::id())->where('item_id', $id)
+        $reviews = Reviews::where('item_id', $id)
             ->with('user') 
             ->get();
         $pricingData = ItemsPricing::where('item_id', $id)->get(); 
         $featureData = ItemsFeature::where('item_id', $id)->get();
+        $imagesData = ItemsImage::where('item_id', $id)->get();
         
-        // Initialize an array to hold the filtered feature data
         $filteredFeatures = [];
-        
-        // Loop through each pricing data to check for matching sub_id in feature data
+
         foreach ($pricingData as $pricing) {
-            // Filter feature data where sub_id matches
             $matchingFeatures = $featureData->filter(function($feature) use ($pricing) {
                 return $feature->sub_id == $pricing->sub_id;
             });
-        
-            // If matching features are found, add them to the filtered list
+
             if ($matchingFeatures->isNotEmpty()) {
                 $filteredFeatures[$pricing->sub_id] = $matchingFeatures;
             }
         }
-        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'comments', 'userReviewsCount', 'reviews', 'filteredFeatures'));
+        $images = [];
+
+        foreach ($imagesData as $image) {
+            $key = $image->sub_id ?? ''; 
+
+            if (!isset($images[$key])) {
+                $images[$key] = collect();
+            }
+
+            $images[$key]->push($image);
+        }
+        return view('front-end.product.buy_now', compact('pricingData','item', 'userCommentsCount', 'post', 'userReviewsCount', 'reviews', 'filteredFeatures', 'orderitem', 'images'));
     }
     public function commentupdate(Request $request, $id)
     {
@@ -293,7 +454,7 @@ class HomePageController extends Controller
     public function wishlistindex()
     {
         $user = auth()->user();
-        $wishlists = Wishlist::where('user_id', $user->id)->with('plan', 'pricing')->get();
+        $wishlists = Wishlist::where('user_id', $user->id)->with('plan', 'pricing')->orderBy('id', 'desc')->get();
         return view('front-end.wishlist.wishlist', compact('wishlists'));
     }
     public function addToWishlist(Request $request)

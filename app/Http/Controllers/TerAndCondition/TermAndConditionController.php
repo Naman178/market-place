@@ -22,7 +22,7 @@ class TermAndConditionController extends Controller
     }
     public function index()
     {
-        $term_condition = TermCondition::orderBy('term_and_condition.id', 'desc')
+        $term_condition = TermCondition::orderBy('term_and_condition.id', 'asc')
                             ->get();
         return view('pages.term-condition.term-condition',compact('term_condition'));
     }

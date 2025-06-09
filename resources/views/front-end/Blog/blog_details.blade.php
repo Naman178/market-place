@@ -1,4 +1,7 @@
 @extends('front-end.common.master')
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
 
@@ -12,15 +15,29 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 @endsection
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $blog->title }} @endsection
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
+<meta name="description" content="{{ strip_tags($blog->short_description ?? 'Default Description') }}">
 <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="{{ $blog->title }}">
+<meta property="og:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
+<meta property="og:type" content="article">
 <meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:type" content="website">
+<meta property="og:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">
+<meta property="og:image:type" content="image/jpeg">
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
+
+<!-- Optional: Twitter card for other platforms -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $blog->title }}">
+<meta name="twitter:description" content="{{ strip_tags($blog->short_description ?? 'Default description') }}">
+<meta name="twitter:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">  
 @endsection
 @section('content')
 <div class="blog_details" style="background-color: #b1b1b11f;">
@@ -30,17 +47,18 @@
                 <h2 class="text-capitalize">{{ $blog->title }} </h2>
                 <p>{!! $blog->short_description !!} </p>
                 <div class="row mb-4">
-                    <div class="col-md-10">
+                    <div class="col-md-6">
                         Post by: <strong>{{ $blog->uploaded_by }} </strong> |
                         {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
                     </div>
-                    <div class="col-md-2 d-flex justify-content-end align-items-center">
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
                         <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
                         </a>
                         <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
                             <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
                         </a>
+                        {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                     </div>
 
                 </div>
@@ -68,7 +86,7 @@
                                 @endphp
                                 @if ($relatedBlog)
                                     <li class="border-bottom mt-4">
-                                        <a href="{{ route('blog_details', $relatedBlog->blog_id) }}">
+                                       <a href="{{ route('blog_details', ['category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
                                             <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
                                             <span class="related_blog_title text-capitalize" style="text-align: start; font-weight: 600; font-size: 14px; color: #4d4d4d; font-family: 'Work Sans';"> {{ $relatedBlog->title }}</span>
                                         </a>
@@ -83,50 +101,22 @@
                 <h1 class="card-title" style="margin-top:15px; margin-bottom:15px; font-size:1.5rem;">Comments</h1>
             </div>
             <div class="col-md-8" style="background-color:#ffffff;">
-                <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
+                {{-- <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
                     <div class="card-body" style="padding-top:15px;">
                         <form class="comment-form" action="{{route('blog-comment-post', $blog->blog_id)}}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="comment">Comment</label>
-                                {{-- <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea> --}}
+                                <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea>
                                 <div id="quill-editor" style="height: 200px; background-color: white;"></div>
                                 <input type="hidden" name="comment" id="quill-content">
                             </div>
                             <button type="submit" class="pink-blue-grad-button d-inline-block border-0">Submit</button>
                         </form>
                     </div>
-                </div>
-                @if ($comments)
-                    <div class="card" style="border: none;">
-                        @foreach ($comments as $comment)
-                                <div class="card-body d-flex justify-content-start align-items-center">
-                                    @php
-                                        // Check if the profile picture is a valid Google URL or local file
-                                        $profilePic = filter_var($comment->user->profile_pic, FILTER_VALIDATE_URL)
-                                            ? $comment->user->profile_pic
-                                            : asset('assets/images/faces/' . $comment->user->profile_pic);
-                                    @endphp
-                                    @if ($comment->user->profile_pic)
-                                        <img src="{{ $profilePic }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
-                                    @else
-                                        <img src="{{ asset('public/assets/images/user.png') }}" alt="not found" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;">
-                                    @endif
-                                  
-                                    <div style="margin-left: 10px; width: 100%;">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p style="margin-bottom: 2px;"><strong>{{ $comment->user->name }}</strong></p>
-                                            <p style="margin-bottom: 2px;">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</p>
-                                        </div>
-                                        <div class="blogcommentdescription">{!! $comment->description !!}</div>
-                                    </div>
-                                </div>
-                            @if (!$loop->last)
-                                <hr style="border: 1px solid #007ac1; width:96%; margin:auto;">
-                            @endif
-                        @endforeach
-                    </div>
-                @endif
+                </div> --}}
+                {{-- <livewire:comments :post="$post"/> --}}
+               <livewire:comments :model="$post ?? new \App\Models\Post" />
             </div>
         </div>
     </div>
@@ -138,14 +128,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+{{-- <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6826eb4698608700128c9e98&product=inline-share-buttons" async="async"></script> --}}
+
 <script>
-     tinymce.init({
-        selector: 'textarea',
-        menubar: false,
-        plugins: 'advlist autolink lists link image charmap print preview anchor',
-        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-        height: 200
-    });
+    //  tinymce.init({
+    //     selector: 'textarea',
+    //     menubar: false,
+    //     plugins: 'advlist autolink lists link image charmap print preview anchor',
+    //     toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+    //     height: 200
+    // });
 
     var quill = new Quill('#quill-editor', {
         theme: 'snow',
@@ -207,14 +199,14 @@
                 // Open the respective social media sharing or login page
                 if (platform === 'facebook') {
                     // Direct share URL
-                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('blog_details', $blog->blog_id)) }}`;
+                    url = `https://www.facebook.com/sharer/sharer.php?u={{ urlencode (route('blog_details', [ 'category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}`;
 
                     // Open Facebook sharing or login page
                     window.open(url, '_blank').focus();
                     window.open('https://www.facebook.com/', '_blank');
                 } else if (platform === 'twitter') {
                     // Direct share URL
-                    url = `https://twitter.com/intent/tweet?url={{ urlencode(route('blog_details', $blog->blog_id)) }}&text={{ urlencode($blog->title) }}`;
+                    url = `https://twitter.com/intent/tweet?url={{ urlencode (route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)])) }}&text={{ urlencode($blog->title) }}`;
 
                     // Open Twitter sharing or login page
                     window.open(url, '_blank').focus();

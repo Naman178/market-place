@@ -34,6 +34,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\UserProfile\UserProfileController;
 use App\Http\Controllers\Stripe\StripePaymentController;
 use App\Http\Controllers\Razorpay\RazorpayPaymentController;
+use App\Http\Controllers\AdminDashboard\AdminDashboardController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +55,8 @@ Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->
 // Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
-Route::get('/product/{categoryOrSubcategory}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/items/filter', [HomePageController::class, 'filterProducts'])->name('filter_products');
+Route::get('/category/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
 Route::post('/reviews/update/{id}', [HomePageController::class, 'reviewsupdate'])->name('reviews.update');
@@ -72,7 +74,7 @@ Route::post('/checkout/process-payment', [CheckoutController::class, "processPay
 Route::get("/signup", [RegisterController::class, "index"])->name("signup");
 Route::get("/register", [RegisterController::class, "register"])->name("register");
 Route::post("/signup/store", [RegisterController::class, "register"])->name("registerUser");
-Route::get('/user-login', [LoginController::class, 'index'])->name('user-login');
+Route::get('/user-login', [LoginController::class, 'index'])->middleware('guest')->name('user-login');
 Route::post('/user-post-login', [LoginController::class, 'postLogin'])->name('user-login-post');
 Route::get('/user-login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/user-login/google/callback', [LoginController::class, 'handleGoogleCallback']);
@@ -90,9 +92,7 @@ Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentI
 Route::get('/thankyou', function () { return view('Thankyou.thankyou'); })->name('thankyou');
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.dashboardv1');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     //User Module
     Route::get('/user',[UserController::class,'index'])->name('user-index');
@@ -218,6 +218,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('stripe-after-payment', [StripePaymentController::class, 'stripeAfterPayment'])->name('stripe-payment-3d');
     Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
     Route::get('/subscription/cancel/{id}', [StripePaymentController::class, 'cancelSubscription'])->name('subscription.cancel');
+    Route::post('/subscription/reactivate/{id}', [StripePaymentController::class, 'reactivateSubscription'])->name('subscription.reactivate');
+    Route::post('/subscription/cancel-auto-pay/{id}', [StripePaymentController::class, 'cancelAutoPay'])->name('subscription.cancel-auto-pay');
+    Route::post('/deactivate-product/{id}', [StripePaymentController::class, 'deactivate'])->name('product.deactivate');
     // razorpay payment
     Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay-payment-store');
     Route::post('free-razorpay-payment', [RazorpayPaymentController::class, 'freePlanSave'])->name('razorpay-free-plan-store');
@@ -273,15 +276,19 @@ Route::get('/user-privacy-policy', [PrivacyPolicyController::class,'user_index']
 )->name('privacy-policy');
 
 // FAQ
-Route::get('/user-faq', [FAQController::class,'user_index']
+Route::get('/faq', [FAQController::class,'user_index']
 )->name('user-faq');
 
 // Price
 Route::get('/user-price', [UserController::class,'user_price']
 )->name('user-price');
 
+// categpry
+Route::get('/category/{slug}', [CategoryController::class, 'categoryDetails'])->name('category_details');
+
 // Blog Details
-Route::get('/blog-details/{blog_id}', [BlogController::class, 'blogDetails'])->name('blog_details');
+Route::get('/blogs/{category}/{slug}', [BlogController::class, 'blogDetails'])->name('blog_details');
+Route::get('/blogs', [BlogController::class, 'blogIndex'])->name('blog-index');
 Route::post('/blog-comment-post/{blog_id}', [BlogController::class, 'postComment'])->name('blog-comment-post');
 Route::post('/share', [BlogController::class, 'sharedatastore'])->name('share.store');
 Route::get('/clear-cache', function () {

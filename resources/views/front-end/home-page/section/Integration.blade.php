@@ -1,11 +1,12 @@
 <!-- Integration section start -->
 <div class="int_bg">
     <div class="container">
-        <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found">
+        <p class="plugin-label pt-4">
+            <span class="label-line"></span> Integrations
+        </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Powering Your Business with Smart<span>  Solutions</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
+                <h2>Powering Your Business with Smart <span class="underline">  Solutions</span></h2>
             </div>
             <div class="arrow-container w-70">
                 <a href="#integrationCarousel" role="button" data-slide="prev" id="left-arrow-btn"><span

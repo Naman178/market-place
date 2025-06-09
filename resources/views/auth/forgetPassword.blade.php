@@ -1,6 +1,6 @@
 @extends('front-end.common.master')
 @section('title')
-    <title>Skyfinity Quick Checkout | Login</title>
+{{ $seoData->title ?? 'Fortgot Password' }}
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
@@ -14,15 +14,18 @@
          .footer-04 .form-control {
              padding: 14px 15px !important;
          }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
 @endsection
 @section('content')
 <div class="forgot_password cust-page-padding">
     <div class="cotainer register-container pt-5 pb-5">
         <div class="title text-center">
-            <h3><span class="txt-black">Forgot</span><span class="color-blue underline-text"> Password</span></h3>
+            <h3><span class="txt-black">Forgot</span> <span class="color-blue underline"> Password</span></h3>
         </div>
-        <div class="row justify-content-center">
+        <div class=" d-flex justify-content-center">
             <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card mb-5">                    
                     {{-- <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                     --}}
@@ -64,78 +67,112 @@
 @endsection
 @section('scripts')
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const inputFields = document.querySelectorAll(".form-control");
-    // Function to handle floating label
-    function updateFloatingLabel(input) {
-        const label = input.nextElementSibling; // Get the label
-        const errorMessage = document.getElementById(input.id + "_error_message");
 
-        if (input.value.trim() !== "" || (errorMessage && errorMessage.textContent.trim() !== "")) {
-            label.style.top = input.id === "email" ? "18%" : "50%"; // Email: 18%, Others: 50%
-            label.style.fontSize = "1rem";
+    function updateFloatingLabel(input) {
+        const label = input.nextElementSibling;
+        const errorDiv = document.getElementById(input.id + "_error");
+
+        const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+        // Custom disposable email error check
+        const isDisposableEmailError =
+            input.id === "email" &&
+            document.getElementById("email_error_message") &&
+            document.getElementById("email_error_message").textContent.includes("Disposable Email");
+
+        if (isDisposableEmailError) {
+            label.style.top = "22px";
+            label.style.fontSize = "14px";
+            label.style.color = "red";
+            input.style.borderColor = "red";
+        } else if (input.value.trim() !== "") {
+            label.style.top = "-1%";
+            label.style.fontSize = "14px";
             label.style.color = "#70657b";
+            input.style.borderColor = "#ccc";
+        } else if (hasError) {
+            label.style.top = "35%";
+            label.style.fontSize = "14px";
+            label.style.color = "red";
+            input.style.borderColor = "red";
         } else {
             label.style.top = "50%";
-            label.style.fontSize = "1rem";
+            label.style.fontSize = "14px";
             label.style.color = "#70657b";
+            input.style.borderColor = "#ccc";
         }
     }
 
-    function handleBlur(input) {
-        const label = input.nextElementSibling;
-        if (input.value.trim() === "") {
-            label.style.color = "red";
-            label.style.top = input.id === "email" ? "18%" : "35%"; // Email stays 18% on error, others at 35%
-        }
-    }
-
-    // Initialize labels on page load
     inputFields.forEach(input => {
-        updateFloatingLabel(input);
-        const label = input.nextElementSibling;
+        const errorDiv = document.getElementById(input.id + "_error");
+        let hasInteracted = false;
 
-        input.addEventListener("blur", function () {
-            const errorDiv = document.getElementById(input.id + "_error");
-            const errorMessage = document.getElementById(input.id + "_error_message");
-
-            if (!input.value.trim()) {
-                if (errorDiv) {
-                    errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                    errorDiv.style.display = "block";
-                }
-                input.style.borderColor = "red";
-                label.style.top = input.id === "email" ? "18%" : "35%";
-                label.style.fontSize = "1rem";
-                label.style.color = "red";
-            } else {
-                if (errorDiv) {
-                    errorDiv.style.display = "none";
-                }
-                input.style.borderColor = "#ccc";
-                label.style.color = "#70657b";
-            }
-
-            // If Laravel error message exists, keep the label at 18%
-            if (errorMessage && errorMessage.textContent.trim() !== "") {
-                label.style.top = "18%";
-            }
-        });
+        updateFloatingLabel(input); // initial load
 
         input.addEventListener("focus", function () {
+            const label = input.nextElementSibling;
             label.style.top = "-1%";
-            label.style.fontSize = "0.8rem";
-            if (input.value.trim() !== "") {
+            label.style.fontSize = "14px";
+            input.style.borderColor = "#ccc";
+
+            if (!hasInteracted || input.value.trim() !== "") {
                 label.style.color = "#70657b";
-                input.style.borderColor = "#70657b";
-            } else {
+            } else if (errorDiv && errorDiv.textContent.trim() !== "") {
                 label.style.color = "red";
                 input.style.borderColor = "red";
             }
+
+            hasInteracted = true;
+        });
+
+        input.addEventListener("blur", function () {
+            hasInteracted = true;
+            const value = input.value.trim();
+            const labelText = input.labels?.[0]?.textContent || input.name.replace(/_/g, " ");
+
+            if (!value) {
+                errorDiv.textContent = `${labelText} is required!`;
+                errorDiv.style.display = "block";
+                input.style.borderColor = "red";
+            } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                errorDiv.textContent = "Please enter a valid email address!";
+                errorDiv.style.display = "block";
+                input.style.borderColor = "red";
+            } else {
+                errorDiv.textContent = "";
+                errorDiv.style.display = "none";
+                input.style.borderColor = "#ccc";
+            }
+
+            updateFloatingLabel(input);
+        });
+
+        input.addEventListener("input", function () {
+            const value = input.value.trim();
+            const labelText = input.labels?.[0]?.textContent || input.name.replace(/_/g, " ");
+
+            if (hasInteracted) {
+                if (!value) {
+                    errorDiv.textContent = `${labelText} is required!`;
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                    errorDiv.textContent = "Please enter a valid email address!";
+                    errorDiv.style.display = "block";
+                    input.style.borderColor = "red";
+                } else {
+                    errorDiv.textContent = "";
+                    errorDiv.style.display = "none";
+                    input.style.borderColor = "#ccc";
+                }
+            }
+
+            updateFloatingLabel(input);
         });
     });
-});
-            
+});       
   $('#country').select2();
   $('#country_code').select2();
 </script>

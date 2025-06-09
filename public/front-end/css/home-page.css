@@ -377,6 +377,10 @@
   transition: stroke-dashoffset 1s ease-in-out;
 }
 
+.coupon-btn .blue_common_btn svg { 
+  left: 0px;
+}
+
 .blue_common_btn:hover svg {
   stroke-dashoffset: -480;
 }
@@ -1406,6 +1410,7 @@ div#integrationCarousel .col-4{
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   object-fit: cover;
+  display: block;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
@@ -1610,7 +1615,7 @@ div#integrationCarousel .col-4{
 
 .faq {
   text-align: left;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 .faq-item {
@@ -1969,7 +1974,7 @@ div.testimonial-content p.integra_p.mt-65.mb-60.testimonial-text{
 /* Toggle Button Styling */
 #menu-toggle {
   position: absolute;
-  top: 20px;
+  /* top: 20px; */
   right: 20px;
   /* background: #ffff;  */
   color: #007ac1;
@@ -2147,4 +2152,52 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
 .infinity_softech .vector2_img{
   margin-top: -3px;
     margin-left: 19rem;
+}
+
+.read_more_btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.text-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  padding-bottom: 4px;
+}
+
+.text-line::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #007AC1;
+  transition: width 0.4s ease-in-out;
+}
+.read_more_btn:hover .text-line::before {
+  width: 100%;
+}
+ h2 {
+    margin-top: 0;
+    color: #4D4D4D;
+    font-weight: 700;
+}
+
+ h2 span {
+    font-weight: 700;
+    color: #007AC1;
+}
+.w-30{
+  width: 30%;
+}
+.price-slick-slider .slick-slide img {
+    display: block;
+    margin-right: 15px;
+    height: 85px;
 }

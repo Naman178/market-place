@@ -4,8 +4,8 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div class="subcategory">
-                <h1>Shop By<span> Category</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
+                <h2>Shop By<span class="underline"> Category</span></h2>
+                {{-- <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
                 {{-- <a href="javascript:void(0)" role="button" data-slide="prev" id="subcategroy-left-arrow-btn"><span
@@ -42,7 +42,7 @@
             <div class="container text-center subcategory-slider pb_30" id="subcategory-slider">
                 @foreach ($subcategory as $item)
                     <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" style="display: inline-block;">
-                        <a href="{{ route('product.list', ['categoryOrSubcategory' => $item->id]) }}">
+                        <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}">
                         <div class="wsus__categories_item_2">
                             <div class="icon">
                                 <img src="{{ asset('public/storage/sub_category_images/' . $item->image) }}" alt="Sub category" class="img-fluid w-100">

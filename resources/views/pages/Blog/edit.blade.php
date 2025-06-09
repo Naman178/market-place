@@ -24,6 +24,16 @@
         .image-input {
             display: none;
         }
+        .previewImgCls {
+            width: 200px;
+            height: 150px;
+            object-fit: contain;
+            display: none;
+        }
+
+        .previewImgCls.show {
+            display: inline-block;
+        }
     </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">
@@ -81,8 +91,8 @@
                                         alt="not found">
                                     <div class="error" style="color:red;" id="image_error"></div>
                                 </div> --}}
-                                <div class="form-group col-md-6 input-file-col">
-                                    <?php $showImagePrev = (!empty($Blog->image)) ? 'display:inline-block' : ''; ?>
+                                <div class="form-group col-md-12 input-file-col">
+                                    <?php $showImagePrev = (!empty($Blog->image)) ? 'display:inline-block; width:200px; height:150px; object-fit:contain;' : ''; ?>
                                     <label for="Blog_image_label">Upload Image</label>
                                     <label class="form-control filelabel image-input-wrapper">
                                         <input type="hidden" name="old_image" value="@if(!empty($Blog->image)){{$Blog->image}}@endif">
@@ -379,6 +389,7 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                     <div class="error" style="color:red;" id="category_error"></div>
                                 </div>
                                 {{-- <div class="form-group col-md-12">
                                     <label for="image">Upload Image</label>
@@ -395,21 +406,23 @@
                                         <input type="hidden" name="old_image" value="">
                                         <input type="file" name="blog_image" id="Blog_image"  class="image-input form-control input-error">
                                         <span class="btn btn-outline-primary"><i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File</span>
-                                        <img id="Blog_image_prev" class="previewImgCls hidepreviewimg" src="">
+                                       <img id="Blog_image_prev" class="previewImgCls hidepreviewimg" src="">
                                         <span class="title" id="Blog_image_title"></span>
                                     </label>
-                                    <div class="error" style="color:red;" id="image_error"></div>
+                                    <div class="error" style="color:red;" id="blog_image_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="shortdescription">Short Description</label>
                                     <div id="quill_editor" class="quill_editor filelabel image-input-wrapper" style="height: 200px; width:100%;"></div>
                                     <input type="hidden" name="shortdescription" id="shortdescription">
+                                    <div class="error" style="color:red;" id="shortdescription_error"></div>
                                     {{-- <textarea id="short_description" name="short_description"></textarea> --}}
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="long-description">Long Description</label>
                                     <div id="long_quill_editor" class="long_quill_editor filelabel image-input-wrapper" style="height: 200px; width:100%;"></div>
                                     <input type="hidden" name="long_description" id="long_description">
+                                    <div class="error" style="color:red;" id="long_description_error"></div>
                                     {{-- <textarea id="long-description" name="long_description"></textarea> --}}
                                 </div>
                                 <div class="form-group col-md-12">
@@ -423,6 +436,7 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <div class="error" style="color:red;" id="related_blog_error"></div>
                                 </div>
                             </div>
                             <h5>Blog Content Section</h5>

@@ -30,7 +30,7 @@ use App\Models\UserInquiry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     function __construct()
@@ -57,12 +57,22 @@ class UserController extends Controller
     public function store(Request $request){
         if($request->ajax()){
             if($request->id == "0"){
+                $existingUser = User::where('email', $request->email)->first();
+
+                $emailRules = ['email']; 
+
+                if ($existingUser && $existingUser->sys_state == -1) {
+                    $emailRules = ['email'];
+                }
+                else{
+                    $emailRules = ['email', Rule::unique('users')];
+                }
                 $validator = Validator::make($request->all(), [
                     'fname' => 'required',
                     'lname' => 'required',
-                    'email' => 'required|email|unique:users,email',
+                    'email' => $emailRules,
                     'password' => 'required|same:confirm_password|min:6',
-                    'roles' => 'required'
+                    'roles' => 'required',
                 ]);
                 if ($validator->passes()){
                     $name = $request->fname .' '.$request->lname;
@@ -113,7 +123,10 @@ class UserController extends Controller
 
                     DB::table('model_has_roles')->where('model_id',$request->id)->delete();
                     $user->assignRole($request->roles);
-
+                    session()->flash('user_status_update', [
+                        'user_id' => $user->id,
+                        'status' => $request->status,
+                    ]);
                     session()->flash('success', 'User Updated successfully!');
                     return response()->json([
                         'success' => 'User updated successfully!',
@@ -203,25 +216,25 @@ class UserController extends Controller
 
     public function contactUs(Request $request){
         if($request->ajax()){
-            $validator = Validator::make($request->all(), [
-                'full_name' => 'required',
-                'email' => 'required|email',
-                'contact_number' => 'required|numeric',
-                'website_url' => 'required|url',
-                'message' => 'required',
-            ], [
-                'full_name.required' => 'Full Name is required.',
-                'email.required' => 'Email is required.',
-                'email.email' => 'Please provide a valid email address.',
-                'contact_number.required' => 'Contact Number is required.',
-                'website_url.required' => 'Website URL is required.',
-                'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
-                'message.required' => 'Message is required.',
-            ]);
-            if ($validator->fails()){
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-            }
-            else{
+            // $validator = Validator::make($request->all(), [
+            //     'full_name' => 'required',
+            //     'email' => 'required|email',
+            //     'contact_number' => 'required|numeric',
+            //     'website_url' => 'required|url',
+            //     'message' => 'required',
+            // ], [
+            //     'full_name.required' => 'Full Name is required.',
+            //     'email.required' => 'Email is required.',
+            //     'email.email' => 'Please provide a valid email address.',
+            //     'contact_number.required' => 'Contact Number is required.',
+            //     'website_url.required' => 'Website URL is required.',
+            //     'website_url.url' => 'Please provide a valid URL in the format: https://market-place-main.infinty-stage.com.',
+            //     'message.required' => 'Message is required.',
+            // ]);
+            // if ($validator->fails()){
+            //     return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            // }
+            // else{
                 $full_name = $request->full_name;
                 $email = $request->email;
                 $contact_number = $request->contact_number;
@@ -259,7 +272,7 @@ class UserController extends Controller
                     'type' => 'Add',
                     'data' => $userinquiry
                 ]);
-            }        
+            // }        
         }
     }
     public function userDashboard(){
@@ -286,32 +299,36 @@ class UserController extends Controller
     }
 
     public function orders() {
-        $orders = Order::where('user_id', auth()->id())->get();
+        $orders = Order::with('subscription')
+                    ->where('user_id', auth()->id())
+                    ->orderBy('id', 'desc')
+                    ->get();
+        
         return view('dashboard.orders', compact('orders'));
     }
 
     public function downloads() {
-        $orders = Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.downloads', compact('orders'));
     }
 
     public function support() {
-        $wallet = Wallet::where('user_id',auth()->id())->first();
+        $wallet = Wallet::where('user_id',auth()->id())->orderBy('id', 'desc')->first();
         return view('dashboard.support',compact('wallet'));
     }
 
     public function transactions() {
-        $transactions = Transaction::where('user_id', auth()->id())->get();
+        $transactions = Transaction::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.transactions', compact('transactions'));
     }
 
     public function invoice() {
-        $invoice = InvoiceModel::where('user_id',auth()->id())->get();
+        $invoice = InvoiceModel::where('user_id',auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.invoice',compact('invoice'));
     }
 
     public function subscription() {
-        $subscription = SubscriptionRec::get();
+        $subscription = SubscriptionRec::orderBy('id', 'desc')->get();
         // $subscription = SubscriptionRec::where('user_id',auth()->id())->with('product')->get();
         return view('dashboard.subscription',compact('subscription'));
     }

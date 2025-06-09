@@ -21,7 +21,7 @@ class SEOController extends Controller
     }
     public function index()
     {
-        $SEO = SEO::orderBy('seo.id', 'desc')
+        $SEO = SEO::orderBy('seo.id', 'asc')
                             ->get();
         return view('pages.SEO.SEO',compact('SEO'));
     }
@@ -84,6 +84,8 @@ class SEOController extends Controller
         $rules = [
             'title' => 'required',
             'page' => 'required',
+            'description' => 'required',
+            'keyword'   => 'required',
         ];
         return Validator::make($request->all(), $rules);
     }
@@ -91,7 +93,7 @@ class SEOController extends Controller
 
     public function remove($id)
     {
-        DB::table("SEO")->where('id',$id)->delete();
+        DB::table("seo")->where('id',$id)->delete();
         return redirect()->back()
         ->with([
             'success' => trans('custom.SEO_delete_success'),

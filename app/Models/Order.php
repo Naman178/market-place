@@ -13,7 +13,6 @@ class Order extends Model
     protected $table = "order__rec_tbl";
 
     protected $fillable = [
-        'id',
         'product_id',
         'user_id',
         'payment_status',
@@ -24,6 +23,7 @@ class Order extends Model
         'order_count',
         'order_limit',
         'sys_state',
+        'currency',
         'created_at',
         'updated_at',
     ];
@@ -47,5 +47,12 @@ class Order extends Model
     }
     public function transaction(){
         return $this->hasOne(Transaction::class,'id','transaction_id');
+    }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
+    public function subscription(){
+        return $this->hasOne(SubscriptionRec::class,'order_id','id');
     }
 }

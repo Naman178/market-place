@@ -1,8 +1,7 @@
 <div class="features integration faq-section">
     <div class="container">
         <img class="question_img" src="{{ asset('front-end/images/question_mark.png') }}" alt="not found">
-        <h1><span>FAQ</span></h1>
-        <img class="vector2_img" src="front-end/images/Vector 9.png" alt="not found">
+        <h2><span class="underline">FAQ</span></h2>
         <div class="faq">
             @foreach ($FAQs as $key => $FAQ)
             <div class="faq-item">

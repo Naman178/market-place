@@ -58,7 +58,7 @@
                         <div class="col-md-6 form-group">
                             <label for="title_label">Title</label>
                             {!! Form::text('title', null, array('placeholder' => 'Enterterm & condition Title','class' => 'form-control input-error' , 'id' => 'privacy_policy_title')) !!}
-                            <div class="error" style="color:red;" id="name_error"></div>
+                            <div class="error" style="color:red;" id="title_error"></div>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="description">Description</label>

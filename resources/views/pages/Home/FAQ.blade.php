@@ -1,15 +1,43 @@
-@extends('front-end.common.master')@section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}
-</title>
+@extends('front-end.common.master')
+@php 
+    $site = \App\Models\Settings::where('key', 'site_setting')->first();
+    
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('meta')
+@section('title'){{ $seoData->title ?? 'FAQs' }} @endsection
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Find answers to frequently asked questions about Market Place Main. Get quick support and information to enhance your experience.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'FAQ, frequently asked questions, support, Market Place Main' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'FAQ - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Find answers to frequently asked questions about Market Place Main. Get quick support and information to enhance your experience.' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'FAQ - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Find answers to frequently asked questions about Market Place Main. Get quick support and information to enhance your experience.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/' . $site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
 <style>
@@ -120,7 +148,9 @@
     .collapsed.faq-link::after {
         transform: rotate(180deg);
     }
-
+    .underline::after{
+        bottom: -45px !important;
+    }
     @media (max-width: 991px) {
         .register-container .title h3{
             font-size: 30px;
@@ -147,11 +177,11 @@
             </div>
         </div>
     </div> --}}
-<div class="cust-page-padding">
+<div class="cust-page-padding pt-5 pb-5">
     <div class="faq">
         <div class="container  register-container">
             <div class="title">
-                <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline-text"> Questions</span></h3>
+                <h3><span class="txt-black">Frequently Asked </span><span class="color-blue underline"> Questions</span></h3>
             </div> 
             {{-- <div class="d-flex flex-wrap">
                 <div class="faq-heading-row">

@@ -47,7 +47,7 @@ class Key extends JsonResource
             $features[] = 'Shiprockt Integration';
         }
 
-        $product_name = $plan->product_name;
+        $product_name = $plan->name;
         if(count($user) == 0){
             return [];
         }

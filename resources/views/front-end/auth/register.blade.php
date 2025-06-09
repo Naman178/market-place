@@ -1,14 +1,45 @@
 @extends('front-end.common.master')
+@php 
+    $site = \App\Models\Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+
+    // Assuming $seoData is passed from controller or you fetch SEO for sign up page:
+    use App\Models\SEO;
+    $seoData = SEO::where('page', 'sign up')->first();
+@endphp
+
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $seoData->title ?? 'Sign Up' }} @endsection
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'sign up, register, create account, Market Place Main' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'Sign Up - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'Sign Up - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Create your account on Market Place Main to get started with our platform. Join now for exclusive features and benefits.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/' . $site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('styles')
    <link rel="stylesheet" href="{{ asset('front-end/css/register.css') }}">
@@ -56,19 +87,55 @@
             text-align: left !important;
             font-size: 15px;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
+        .register-container{
+            max-width: 100% !important;
+        }
+       .form-group {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 50%;
+            right: 12px; /* adjust spacing from the right edge */
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+            color: #888;
+        }
+
+        @media (max-width: 480px) {
+            .eye-icon {
+                width: 1rem; /* 16px */
+                height: 1rem;
+            }
+        }
    </style>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
 @section('content')
 <div class="container pt-5 pb-5 register-container">
     <div class="title">
-        <h3><span class="txt-black">Sign</span><span class="color-blue underline-text"> Up</span></h3>
+        <h3><span class="txt-black">Sign</span> <span class="color-blue underline"> Up</span></h3>
     </div>
     <form action="{{ route('user-register-post') }}" method="POST">
        @csrf
        <input type="hidden" name="recaptcha" id="recaptcha">
         <div class="row justify-content-center">
-            <d<div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card">
                     <div class=" mb-1">
                         <div class="text-center mt-2">
@@ -102,7 +169,7 @@
                     </div>
                     <div class=" mt-4">
                         <div class="form-group">
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="" required/>
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder=""/>
                             <label for="firstname" class="floating-label">First Name</label>
                             <div class="error" id="firstname_error"></div>
                             @error('firstname')
@@ -113,8 +180,8 @@
                     <div class="">
                         <div class="form-group">
                             {{-- <label for="last_name">Last Name</label> --}}
-                            <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="" required>
-                            <label for="firstname" class="floating-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="">
+                            <label for="last_name" class="floating-label">Last Name</label>
                             @error('last_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -123,7 +190,7 @@
                     </div>
                     <div class="">
                         <div class="form-group">
-                            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
                             <label for="email" class="floating-label">Email</label>
                             @error('email')
                                 <div class="text-danger" id="email_error_message">{{ $message }}</div>
@@ -131,10 +198,19 @@
                             <div class="error" id="email_error"></div>
                         </div>
                     </div>
-                    <div class="">
-                        <div class="form-group mb-1">
-                            <input type="password" class="form-control" id="password" name="password" required>
+                   <div class="">
+                        <div class="form-group mb-1" style="position: relative;">
+                            <input type="password" class="form-control" id="password" name="password">
                             <label for="password" class="floating-label">Password</label>
+                         <button type="button" class="toggle-button" data-toggle="password" aria-label="Toggle Password Visibility">
+                                <!-- Eye icon SVG -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -147,7 +223,7 @@
                                 <input id="promotionsSubscriber" name="promotionsSubscriber" type="checkbox" class="form-check-input" checked>
                                 <span for="promotionsSubscriber" class="text-left d-block text-white mt-3 mb-2 ml-2 cursor-pointer">Send me tips, trends, freebies, updates & offers. <br> You can unsubscribe at any time.</span> 
                             </div> 
-                            <button type="submit" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
+                            <button type="button" class="blue_common_btn btn btn-block pink-btn" id="login-btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -300,77 +376,222 @@
                 console.error("reCAPTCHA error:", error);
             });
         });
+            // document.addEventListener("DOMContentLoaded", function () {
+            //     const inputFields = document.querySelectorAll(".form-control");
+
+            //     function updateFloatingLabel(input) {
+            //         const label = input.nextElementSibling;
+            //         const errorDiv = document.getElementById(input.id + "_error");
+            //         const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+            //         // Specific check for disposable email message
+            //         const isDisposableEmailError =
+            //             input.id === "email" &&
+            //             document.getElementById("email_error_message") &&
+            //             document.getElementById("email_error_message").textContent.includes("Disposable Email");
+
+            //         if (isDisposableEmailError) {
+            //             label.style.top = "22px";
+            //             label.style.fontSize = "0.8rem";
+            //             label.style.color = "red";
+            //             input.style.borderColor = "red";
+            //         } else if (input.value.trim() !== "") {
+            //             label.style.top = "-1%";
+            //             label.style.fontSize = "0.8rem";
+            //             label.style.color = "#70657b";
+            //             input.style.borderColor = "#ccc";
+            //         } else if (hasError) {
+            //             label.style.top = "35%";
+            //             label.style.fontSize = "1rem";
+            //             label.style.color = "red";
+            //             input.style.borderColor = "red";
+            //         } else {
+            //             label.style.top = "50%";
+            //             label.style.fontSize = "1rem";
+            //             label.style.color = "#70657b";
+            //             input.style.borderColor = "#ccc";
+            //         }
+            //     }
+
+            //     inputFields.forEach(input => {
+            //         const errorDiv = document.getElementById(input.id + "_error");
+
+            //         updateFloatingLabel(input);
+
+            //         input.addEventListener("blur", function () {
+            //             const value = input.value.trim();
+            //             if (!value) {
+            //                 errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+            //                 errorDiv.style.display = "block";
+            //                 input.style.borderColor = "red";
+            //             } else {
+            //                 errorDiv.textContent = "";
+            //                 errorDiv.style.display = "none";
+            //                 input.style.borderColor = "#ccc";
+            //             }
+            //             updateFloatingLabel(input);
+            //         });
+
+            //         input.addEventListener("input", function () {
+            //             const value = input.value.trim();
+
+            //             if (input.id === "firstname" || input.id === "last_name") {
+            //                 this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+            //                 if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+            //                     errorDiv.textContent = "Only letters and spaces are allowed!";
+            //                     errorDiv.style.display = "block";
+            //                     input.style.borderColor = "red";
+            //                 } else {
+            //                     errorDiv.textContent = "";
+            //                     errorDiv.style.display = "none";
+            //                     input.style.borderColor = "#ccc";
+            //                 }
+            //             }
+            //             updateFloatingLabel(input);
+            //         });
+
+            //         input.addEventListener("focus", function () {
+            //             const label = input.nextElementSibling;
+            //             label.style.top = "-1%";
+            //             label.style.fontSize = "0.8rem";
+            //             input.style.borderColor = "#ccc";
+
+            //             if (errorDiv && errorDiv.textContent.trim() !== "") {
+            //                 label.style.color = "red";
+            //                 input.style.borderColor = "red";
+            //             }
+            //         });
+            //     });
+            // });
             document.addEventListener("DOMContentLoaded", function () {
-                const inputFields = document.querySelectorAll(".form-control");
-                // Function to handle floating label
+                const form = document.querySelector("form[action='{{ route('user-register-post') }}']");
+                const inputFields = Array.from(document.querySelectorAll(".form-control")).filter(input => input.id && input.id.trim() !== '');
+                const loginBtn = document.getElementById("login-btn");
+
+                function getLabelText(input) {
+                    const label = document.querySelector(`label[for="${input.id}"]`);
+                    return label ? label.textContent.trim() : input.name || input.id || 'This field';
+                }
+
                 function updateFloatingLabel(input) {
-                    const label = input.nextElementSibling; // Get the label
-                    const errorMessage = document.getElementById(input.id + "_error_message");
-
-                    if (input.value.trim() !== "" || (errorMessage && errorMessage.textContent.trim() !== "")) {
-                        label.style.top = input.id === "email" ? "18%" : "50%"; // Email: 18%, Others: 50%
-                        label.style.fontSize = "1rem";
-                        label.style.color = "#70657b";
-                    } else {
-                        label.style.top = "50%";
-                        label.style.fontSize = "1rem";
-                        label.style.color = "#70657b";
-                    }
-                }
-
-                function handleBlur(input) {
                     const label = input.nextElementSibling;
-                    if (input.value.trim() === "") {
-                        label.style.color = "red";
-                        label.style.top = input.id === "email" ? "18%" : "35%"; // Email stays 18% on error, others at 35%
-                    }
-                }
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    const hasError = errorDiv && errorDiv.textContent.trim() !== "";
 
-                // Initialize labels on page load
-                inputFields.forEach(input => {
-                    updateFloatingLabel(input);
-                    const label = input.nextElementSibling;
+                    if (!label) return;
 
-                    input.addEventListener("blur", function () {
-                        const errorDiv = document.getElementById(input.id + "_error");
-                        const errorMessage = document.getElementById(input.id + "_error_message");
-
-                        if (!input.value.trim()) {
-                            if (errorDiv) {
-                                errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                                errorDiv.style.display = "block";
-                            }
-                            input.style.borderColor = "red";
-                            label.style.top = input.id === "email" ? "18%" : "35%";
-                            label.style.fontSize = "1rem";
-                            label.style.color = "red";
-                        } else {
-                            if (errorDiv) {
-                                errorDiv.style.display = "none";
-                            }
-                            input.style.borderColor = "#ccc";
-                            label.style.color = "#70657b";
-                        }
-
-                        // If Laravel error message exists, keep the label at 18%
-                        if (errorMessage && errorMessage.textContent.trim() !== "") {
-                            label.style.top = "18%";
-                        }
-                    });
-
-                    input.addEventListener("focus", function () {
+                    if (input.value.trim() !== "") {
                         label.style.top = "-1%";
                         label.style.fontSize = "0.8rem";
-                        if (input.value.trim() !== "") {
-                            label.style.color = "#70657b";
-                            input.style.borderColor = "#70657b";
-                        } else {
-                            label.style.color = "red";
-                            input.style.borderColor = "red";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#ccc";
+                    } else if (hasError) {
+                        label.style.top = "35%";
+                        label.style.fontSize = "14px";
+                        label.style.color = "red";
+                        input.style.borderColor = "red";
+                    } else {
+                        label.style.top = "50%";
+                        label.style.fontSize = "14px";
+                        label.style.color = "#70657b";
+                        input.style.borderColor = "#ccc";
+                    }
+                }
+
+                function validateInput(input) {
+                    console.log("Validating input:", input.id);
+
+                    if (!input.id) {
+                        console.warn("Skipping validation: input has no id", input);
+                        return true;
+                    }
+
+                    const errorDiv = document.getElementById(input.id + "_error");
+                    if (!errorDiv) {
+                        console.warn("No error div found for input:", input.id);
+                        return false;
+                    }
+
+                    const rawValue = input.value;
+                    const value = (typeof rawValue === 'string') ? rawValue.trim() : '';
+
+                    const labelText = getLabelText(input);
+                    let valid = true;
+
+                    if (!value) {
+                        errorDiv.textContent = `${labelText} is required!`;
+                        valid = false;
+                    } else if (input.type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
+                        errorDiv.textContent = "Please enter a valid email address!";
+                        valid = false;
+                    } else {
+                        errorDiv.textContent = "";
+                    }
+
+                    errorDiv.style.display = valid ? "none" : "block";
+                    input.style.borderColor = valid ? "#ccc" : "red";
+                    updateFloatingLabel(input);
+
+                    return valid;
+                }
+
+                inputFields.forEach(input => {
+                    input.addEventListener("blur", () => validateInput(input));
+                    input.addEventListener("input", function () {
+                        const value = input.value.trim();
+                        const errorDiv = document.getElementById(input.id + "_error");
+
+                        // Validation for firstname and last_name (only letters and spaces allowed)
+                        if (input.id === "firstname" || input.id === "last_name") {
+                            this.value = this.value.replace(/[^a-zA-Z\s]/g, ""); // Remove invalid characters
+                            if (!/^[a-zA-Z\s]+$/.test(this.value)) {
+                                errorDiv.textContent = "Only letters and spaces are allowed!";
+                                errorDiv.style.display = "block";
+                                input.style.borderColor = "red";
+                            } else {
+                                errorDiv.textContent = "";
+                                errorDiv.style.display = "none";
+                                input.style.borderColor = "#ccc";
+                            }
                         }
+
+                        validateInput(input);
+                        updateFloatingLabel(input);
+                    });
+
+                    input.addEventListener("focus", () => {
+                        const label = input.nextElementSibling;
+                        if (!label) return;
+
+                        label.style.top = "-1%";
+                        label.style.fontSize = "0.8rem";
+
+                        const errorDiv = document.getElementById(input.id + "_error");
+                        const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#70657b";
                     });
                 });
+
+                loginBtn.addEventListener("click", function () {
+                    let formIsValid = true;
+                    inputFields.forEach(input => {
+                        if (!validateInput(input)) {
+                            formIsValid = false;
+                        }
+                    });
+
+                    if (formIsValid) {
+                        loginBtn.setAttribute("type", "submit"); // Change button type to submit
+                        form.submit();
+                    } else {
+                        loginBtn.setAttribute("type", "button"); // Keep button type as button
+                    }
+                });
+
+                inputFields.forEach(input => updateFloatingLabel(input));
             });
+
             $('#country').select2();
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -401,6 +622,34 @@
             $("form").submit(function () {
                 var countryData = iti.getSelectedCountryData();
                 $("#country_code").val(countryData.dialCode);
+            });
+        });
+       const eyeIcons = {
+            open: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd"/>
+                    </svg>`,
+            closed: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3.53 2.47a.75.75 0 00-1.06 1.06l18 18a.75.75 0 101.06-1.06l-18-18zM22.676 12.553a11.249 11.249 0 01-2.631 4.31l-3.099-3.099a5.25 5.25 0 00-6.71-6.71L7.759 4.577a11.217 11.217 0 014.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113z"/>
+                        <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0115.75 12zM12.53 15.713l-4.243-4.244a3.75 3.75 0 004.243 4.243z"/>
+                        <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 00-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 016.75 12z"/>
+                    </svg>`
+            };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.toggle-button').forEach(button => {
+                const inputId = button.getAttribute('data-toggle');
+                const input = document.getElementById(inputId);
+                if (!input) return;
+
+                // Set initial icon (eye open)
+                button.innerHTML = eyeIcons.open;
+
+                button.addEventListener('click', () => {
+                const isOpen = button.classList.toggle('open');
+                input.type = isOpen ? 'text' : 'password';
+                button.innerHTML = isOpen ? eyeIcons.closed : eyeIcons.open;
+                });
             });
         });
     </script>

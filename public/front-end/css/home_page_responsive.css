@@ -14,7 +14,7 @@
 @media (min-width: 1880px) {
    
     .circle_img {
-      left: 98% !important;
+      /* left: 98% !important; */
       top: 268rem;
     }
   
@@ -58,6 +58,15 @@
         top: 444rem !important;
     } */
 }
+@media(max-width: 1320px) {
+    .pattern_img, .pattern2_img, .pattern3_img,.pattern4_img{
+        display: none;
+    }
+    .api_section{
+        margin-bottom: 20px !important;
+        margin-top: 0 !important;
+    }
+}
 @media (min-width: 1300px) and (max-width: 1343px) {
     .rectangle_img {
         width: 95%; 
@@ -84,6 +93,9 @@
     }
     .faq-section h1 {
         font-size: 30px !important;
+    }
+    .cust_support_img{
+        padding-left: 7vw !important;
     }
     /* .banner {
         top: 452rem !important;
@@ -121,6 +133,10 @@
     
     .wordpress-plugin-grid{
         grid-template-columns: repeat(2, minmax(300px, 1fr)) !important;
+    }
+
+    .cust_support_img {
+        padding-left: 0 !important;
     }
 }
 
@@ -222,6 +238,9 @@
     .header-container{
         padding: 0 !important;
     }
+    .sticky-header {
+       position: relative !important;
+    }
     .wordpress_plugin h1, .wordpress_plugin h1 span {
         font-size: calc(28px + 6*((100vw - 320px) / 680)) !important;
         list-style: 25px !important;
@@ -294,6 +313,9 @@
     .padding-left{
         padding-left: 30px !important;
     }
+   .footer-04 {
+        padding-top:2em !important;
+    }
 }
 @media (max-width: 767px) {
     .wordpress-plugin-grid {
@@ -355,12 +377,7 @@
         margin-top: 30px !important;
         margin-bottom: 30px !important;
     }
-      
-    .cust_support_img {
-        max-width: 70% !important; 
-        padding-left: 5vw !important;
-        margin: 0 !important;
-    }
+
     .real_time h1 {
         margin-right: 0 !important;
     }
@@ -369,6 +386,15 @@
     }
     .header-row {
         width: 75% !important;
+    }
+    .wordpress_bg {
+        width: 100% !important;
+    }
+}
+@media (max-width: 515px) {
+     .cust_support_img {
+        max-width: 100% !important;
+        margin: 0 !important;
     }
 }
 @media (max-width: 480px) {
@@ -586,7 +612,6 @@
     }
     #menu-toggle {
         right: 5px !important;
-        top: 22px !important;
     }
     .menu-img{
         margin-top: 0 !important;
@@ -599,5 +624,8 @@
     }
     .padding-left{
         padding-left: 15px !important;
+    }
+    .footer-04 {
+        padding-top:1em !important;
     }
 }

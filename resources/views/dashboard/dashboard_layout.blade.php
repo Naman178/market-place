@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+@php
+use App\Models\Category;
+use App\Models\SubCategory;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+    $setting = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +27,7 @@
     <script src="{{ asset('front-end/js/jquery-3.3.1.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
     <meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
@@ -28,16 +36,12 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
     <title>Market Place | {{ $seoData->title ?? 'Default Title' }}</title>
-
+    @if ($setting && $setting['value']['site_favicon'])
+        <link rel="icon"  href="{{asset('storage/Logo_Settings/'.$setting['value']['site_favicon'])}}">
+    @endif
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
-    @php
-    use App\Models\Category;
-    use App\Models\SubCategory;
-      $category = Category::where('sys_state','=','0')->first();
-      $subcategory = SubCategory::where('sys_state','=','0')->first();
-      $setting = \App\Models\Settings::where('key', 'site_setting')->first();
-    @endphp
+   
     <style>
         table.dataTable {
             width: 100% !important;
@@ -691,7 +695,7 @@
         }
         .cart-item-border{
             font-size: 15px;
-            width: 160px; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
+            width: auto; border:1px solid #0274b8; border-radius: 3px; padding: 3px; background-color: white; position: absolute; z-index: 1; top: -13px; left: 15px;
         }
         .badge-success {
             color: #fff;
@@ -708,6 +712,14 @@
             white-space: nowrap;
             vertical-align: baseline;
             border-radius: .25rem;
+        }
+        .badge-info {
+            color: #fff;
+            background-color: #17a2b8;
+        }
+        .badge-primary {
+            color: #fff;
+            background-color: #007bff;
         }
         .wsus__profile_overview h2 {
             font-weight: 700;
@@ -748,9 +760,9 @@
             left: 0;
         }
 
-        .container {
+        /* .container {
             max-width: 1320px;
-        }
+        } */
 
         .text-white {
             color: #fff !important;
@@ -787,6 +799,36 @@
 
         .active .mobile_accordion-body {
             display: block;
+        }
+        .form-group {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 50%;
+            right: 12px; /* adjust spacing from the right edge */
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+            color: #888;
+        }
+
+        @media (max-width: 480px) {
+            .eye-icon {
+                width: 1rem; /* 16px */
+                height: 1rem;
+            }
         }
         
 
@@ -919,6 +961,59 @@
 </head>
 <body>
     @include('front-end.common.header')
+    {{-- <div id="trialChoiceModal" class="custom-modal" style="display:none;">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+        <h5 class="mt-2" id="modalTitle">Choose an Option</h5>
+        <span class="custom-close" id="close_modal">&times;</span>
+        </div>
+        <div class="custom-modal-body" id="modalBody">
+        Are you sure you want to perform this action?
+        </div>
+        <div class="custom-modal-footer mt-3">
+        <button id="modalCancelBtn" class="blue_common_btn">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+            </svg>
+            <span class="d-block">Cancel</span>
+        </button>
+        <button id="modalConfirmBtn" class="blue_common_btn">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+            </svg>
+            <span class="d-block">Confirm</span>
+        </button>
+        </div>
+    </div>
+    </div> --}}
+    <div id="trialChoiceModal" class="custom-modal" style="display:none;">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h5 class="mt-2" id="modalTitle">Confirmation</h5>
+                <span class="custom-close" id="close_modal" style="cursor:pointer;">&times;</span>
+            </div>
+            <div class="custom-modal-body" id="modalBody">
+                <!-- Message will be inserted here dynamically -->
+            </div>
+            <div class="custom-modal-footer mt-3" style="text-align: center;">
+                <button id="modalCancelBtn" class="btn btn-sm blue_common_btn"> 
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Cancel</span>
+                </button>
+                <button id="modalConfirmBtn" class="btn btn-sm blue_common_btn"> 
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg><span>Yes, Proceed</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Profile Header -->
     <div class="wsus__profile_header" style="background: #0274b8;">
@@ -1033,6 +1128,7 @@
     <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
     //   $(document).ready(function () {
     //         $('.data-table').DataTable({
@@ -1218,8 +1314,8 @@
                 key: "{{ env('RAZORPAY_KEY') }}",
                 amount: amount * 100,
                 currency: currency,
-                name: "Skyfinity Quick Checkout",
-                description: "Payment For The Topup of Skyfinity Quick Checkout Wallet",
+                name: "Market Place Checkout",
+                description: "Payment For The Topup of Market Place Checkout Wallet",
                 image: "@if ($setting && $setting['value']['logo_image']) {{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }} @else {{ asset('front-end/images/infiniylogo.png') }} @endif",
                 prefill: {
                     name: name,
@@ -1390,64 +1486,73 @@
                 document.getElementById('list-settings-list').click(); // Trigger the list-settings tab
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
+       document.addEventListener("DOMContentLoaded", function () {
             const inputFields = document.querySelectorAll(".form-control");
-            // Function to handle floating label
+
+            // Function to handle floating label updates
             function updateFloatingLabel(input) {
-                const label = input.nextElementSibling; // Get the corresponding label
-                if (input.value.trim() !== "") {
-                    label.style.top = "50%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "#70657b";
-                } else {
-                    label.style.top = "50%";
-                    label.style.fontSize = "1rem";
-                    label.style.color = "#70657b"; // Ensure this style on initial load if empty
-                }
-            }
-    
-            function handleBlur(input) {
                 const label = input.nextElementSibling;
-                if (input.value.trim() === "") {
-                    label.style.color = "red"; // Set red when empty on blur
-                    label.style.top = "35%"; // Set label top position when empty on blur
-                }
-            }
-    
-            // Initialize labels on page load
-            inputFields.forEach(input => {
-                updateFloatingLabel(input);
-                const label = input.nextElementSibling;
-                // Blur event: Check if empty & show error
-                input.addEventListener("blur", function () {
                 const errorDiv = document.getElementById(input.id + "_error");
-    
-                if (!input.value.trim()) {
-                    if (errorDiv) { // ✅ Check if errorDiv exists
-                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                        errorDiv.style.display = "block";
-                    }
-                    input.style.borderColor = "red";
+                const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+                if (input.value.trim() !== "") {
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
+                } else if (input === document.activeElement) {
                     label.style.top = "35%";
                     label.style.fontSize = "1rem";
                     label.style.color = "red";
+                } else if (hasError) {
+                    label.style.top = "35%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "red";
+                    input.style.borderColor = "red"; // Highlight error state
                 } else {
-                    if (errorDiv) {
-                        errorDiv.style.display = "none";
-                    }
-                    input.style.borderColor = "#ccc";
+                    label.style.top = "50%";
+                    label.style.fontSize = "14px";
                     label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
                 }
-            });
-                // Focus event: Float label
+            }
+
+            // Initialize labels and error handling on page load
+            inputFields.forEach(input => {
+                const errorDiv = document.getElementById(input.id + "_error");
+
+                updateFloatingLabel(input);
+
+                // Blur event: Validate input & show error
+                input.addEventListener("blur", function () {
+                    if (!input.value.trim()) {
+                        errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                    } else {
+                        errorDiv.textContent = "";
+                        errorDiv.style.display = "none";
+                        input.style.borderColor = "#ccc";
+                    }
+                    updateFloatingLabel(input);
+                });
+
+                // Input event: Validate dynamically
+                input.addEventListener("input", function () {
+                    const value = input.value.trim();
+
+                    updateFloatingLabel(input);
+                });
+
+                // Focus event: If error exists, keep label and border red
                 input.addEventListener("focus", function () {
                     const label = input.nextElementSibling;
+
                     label.style.top = "-1%";
                     label.style.fontSize = "0.8rem";
-                    if (input.value.trim() !== "") {
-                        label.style.color = "#70657b";
-                        input.style.borderColor = "#70657b";
-                    } else {
+                    input.style.borderColor = "#ccc";
+
+                    if (errorDiv && errorDiv.textContent.trim() !== "") {
                         label.style.color = "red";
                         input.style.borderColor = "red";
                     }
@@ -1467,6 +1572,210 @@
         } else {
             console.log('Menu toggle elements not found');
         }
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const modal = document.getElementById('trialChoiceModal');
+        //     const modalTitle = document.getElementById('modalTitle');
+        //     const modalBody = document.getElementById('modalBody');
+        //     const closeModal = document.getElementById('close_modal');
+        //     const modalCancelBtn = document.getElementById('modalCancelBtn');
+        //     const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+        //     let currentAction = null;
+        //     let currentUrl = null;
+
+        //     document.querySelectorAll('.subscription-action').forEach(button => {
+        //         button.addEventListener('click', function(event) {
+        //             event.preventDefault();
+
+        //             currentAction = this.dataset.action;
+        //             currentUrl = this.dataset.url;
+        //             const startDate = this.dataset.start || '-';
+        //             const endDate = this.dataset.end || '-';
+
+        //             if (currentAction === 'cancel') {
+        //                 modalTitle.textContent = 'Cancel Subscription';
+        //                 modalBody.innerHTML = `
+        //                     Are you sure you want to cancel this subscription?<br><br>
+        //                     <strong>Start Date:</strong> ${startDate}<br>
+        //                     <strong>End Date:</strong> ${endDate}<br><br>
+        //                     <span class="text-danger">Note:</span> Subscription will remain active until <strong>${endDate}</strong>.
+        //                 `;
+        //                 modalConfirmBtn.textContent = 'Cancel Subscription';
+        //                 modalConfirmBtn.classList.remove('btn-success');
+        //                 modalConfirmBtn.classList.add('btn-danger');
+        //             } else if (currentAction === 'reactivate') {
+        //                 modalTitle.textContent = 'Reactivate Subscription';
+        //                 modalBody.textContent = 'Are you sure you want to reactivate this subscription?';
+        //                 modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                 modalConfirmBtn.classList.remove('btn-danger');
+        //                 modalConfirmBtn.classList.add('btn-success');
+        //             }
+
+        //             modal.style.display = 'block';
+        //         });
+        //     });
+
+        //     closeModal.onclick = () => modal.style.display = 'none';
+        //     modalCancelBtn.onclick = () => modal.style.display = 'none';
+
+        //     modalConfirmBtn.onclick = async () => {
+        //         modalConfirmBtn.disabled = true;
+        //         modalConfirmBtn.textContent = 'Processing...';
+
+        //         if (!currentUrl) {
+        //             toastr.error('No URL to call');
+        //             modalConfirmBtn.disabled = false;
+        //             modalConfirmBtn.textContent = currentAction === 'cancel' ? 'Cancel Subscription' : 'Reactivate Subscription';
+        //             return;
+        //         }
+
+        //         if (currentAction === 'reactivate') {
+        //             try {
+        //                 const stripe = Stripe("{{ config('services.stripe.key') }}");
+        //                 const elements = stripe.elements();
+        //                 const card = elements.create('card');
+        //                 card.mount('#card-element');
+
+        //                 // Wait for modal confirm click
+        //                 modalConfirmBtn.onclick = async () => {
+        //                     modalConfirmBtn.disabled = true;
+        //                     modalConfirmBtn.textContent = 'Processing...';
+
+        //                     const { token, error } = await stripe.createToken(card);
+
+        //                     if (error) {
+        //                         document.getElementById('card-errors').textContent = error.message;
+        //                         modalConfirmBtn.disabled = false;
+        //                         modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                         return;
+        //                     }
+
+        //                     // Send token to Laravel via POST
+        //                     const response = await fetch(currentUrl, {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json',
+        //                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //                         },
+        //                         body: JSON.stringify({
+        //                             stripeToken: token.id
+        //                         })
+        //                     });
+
+        //                     const data = await response.json();
+
+        //                     if (data.success && data.redirect_url) {
+        //                         window.location.href = data.redirect_url;
+        //                     } else if (data.success) {
+        //                         toastr.success(data.message || 'Subscription reactivated!');
+        //                         window.location.reload();
+        //                     } else {
+        //                         toastr.error(data.message || 'Reactivation failed.');
+        //                     }
+
+        //                     modalConfirmBtn.disabled = false;
+        //                     modalConfirmBtn.textContent = 'Reactivate Subscription';
+        //                 };
+        //             } catch (err) {
+        //                 toastr.error('Error preparing Stripe card input: ' + err.message);
+        //             }
+        //         }
+        //         else if (currentAction === 'cancel') {
+        //             // For cancel, just redirect normally
+        //             window.location.href = currentUrl;
+        //         }
+        //     };
+
+        //     window.onclick = (event) => {
+        //         if (event.target === modal) {
+        //             modal.style.display = 'none';
+        //         }
+        //     };
+        // });
+
+       document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('trialChoiceModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModal = document.getElementById('close_modal');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+            let targetUrl = '';
+            let clickedButton = null; // Track clicked button
+
+            document.querySelectorAll('.confirm-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    targetUrl = this.getAttribute('data-url');
+                    clickedButton = this; // Save clicked button
+                    const message = this.getAttribute('data-message');
+
+                    modalTitle.innerText = 'Please Confirm';
+                    modalBody.innerText = message;
+                    modal.style.display = 'block';
+                });
+            });
+
+            closeModal.addEventListener('click', () => modal.style.display = 'none');
+            modalCancelBtn.addEventListener('click', () => modal.style.display = 'none');
+
+            modalConfirmBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+                if (targetUrl) {
+                    const form = document.createElement('form');
+                    const useGet = clickedButton && clickedButton.classList.contains('use-get-method');
+                    form.method = useGet ? 'GET' : 'POST';
+                    form.action = targetUrl;
+
+                    // Add CSRF token
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    document.body.appendChild(form);
+
+                    form.submit();
+                }
+            });
+
+            window.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+        const eyeIcons = {
+            open: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd"/>
+                    </svg>`,
+            closed: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3.53 2.47a.75.75 0 00-1.06 1.06l18 18a.75.75 0 101.06-1.06l-18-18zM22.676 12.553a11.249 11.249 0 01-2.631 4.31l-3.099-3.099a5.25 5.25 0 00-6.71-6.71L7.759 4.577a11.217 11.217 0 014.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113z"/>
+                        <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0115.75 12zM12.53 15.713l-4.243-4.244a3.75 3.75 0 004.243 4.243z"/>
+                        <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 00-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 016.75 12z"/>
+                    </svg>`
+            };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.toggle-button').forEach(button => {
+                const inputId = button.getAttribute('data-toggle');
+                const input = document.getElementById(inputId);
+                if (!input) return;
+
+                // Set initial icon (eye open)
+                button.innerHTML = eyeIcons.open;
+
+                button.addEventListener('click', () => {
+                const isOpen = button.classList.toggle('open');
+                input.type = isOpen ? 'text' : 'password';
+                button.innerHTML = isOpen ? eyeIcons.closed : eyeIcons.open;
+                });
+            });
+        });
     </script>
 
 </body>

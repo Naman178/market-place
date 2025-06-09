@@ -118,9 +118,9 @@
         <div class="container">
             <div class="image">
                 @if ($setting && $setting['value']['logo_image'])
-                    <img src="{{ asset('storage/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                    <img src="{{ url('https://market-place-main.infinty-stage.com/storage/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
                 @else
-                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                    <img src="{{ url('https://market-place-main.infinty-stage.com/front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
                 @endif
             </div>
             <div class="header">                                                    
@@ -152,22 +152,22 @@
                 <p class="footer-social-text" style="color:#FFF;">Stay Up To Date And Follow Us On Social Media</p>
                 <ul class="social" style="text-align: center !important;">
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/facebook.png') }}" alt="facebook"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/instagram.png') }}" alt="instagram"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/twitter.png') }}" alt="twitter"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/linkedin.png') }}" alt="linkedin"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube"></a>
+                        <a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/youtube.png') }}" alt="youtube"></a>
                     </li>
                 </ul>
             </div>
@@ -178,9 +178,9 @@
         <tr>
             <td align="center" style="padding: 20px; background-color: #ffffff;">
                 @if ($setting && $setting['value']['logo_image'])
-                    <img src="{{ asset('storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
+                    <img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/' . $setting['value']['logo_image']) }}" alt="logo" class="logo">
                 @else
-                    <img src="{{ asset('front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
+                    <img src="{{ url('https://market-place-main.infinty-stage.com/front-end/images/infiniylogo.png') }}" alt="logo" class="logo">
                 @endif
             </td>
         </tr>
@@ -194,7 +194,7 @@
         <!-- CONTENT -->
         <tr>
             <td bgcolor="#ffffff" style="padding: 20px; color: #666666; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                <p>Thank you for registering with Skyfinity Quick Checkout!</p>
+                <p>Thank you for registering with Market Place Checkout!</p>
                 <p>Please use the credentials below to log in to your account:</p>
                 <p><strong>Email:</strong> {{ $user->email }}</p>
                 <p><strong>Password:</strong> {{ $generatedPassword }}</p>
@@ -206,12 +206,12 @@
                 <p>Stay Up To Date And Follow Us On Social Media</p>
                 <table border="0" cellpadding="5" cellspacing="0">
                     <tr>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
-                        <td><a href="#"><img src="{{ asset('storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/facebook.png') }}" alt="facebook" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/whatsapp.png') }}" alt="whatsapp" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/instagram.png') }}" alt="instagram" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/twitter.png') }}" alt="twitter" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/linkedin.png') }}" alt="linkedin" width="30"></a></td>
+                        <td><a href="#"><img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/youtube.png') }}" alt="youtube" width="30"></a></td>
                     </tr>
                 </table>
             </td>

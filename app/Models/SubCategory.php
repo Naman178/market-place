@@ -16,6 +16,12 @@ class SubCategory extends Model
         'image',
         'sys_state',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'slug'
     ];
+
+     public function items()
+    {
+        return $this->hasMany(ItemsCategorySubcategory::class, 'category_id', 'id');
+    }
 }

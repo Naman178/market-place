@@ -13,7 +13,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="accordion" id="accordionRightIcon-{{ $index }}">
                                     <div class="card mt-4 shadow-sm rounded-lg dot_border">
-                                        <div class="cart-item-border text-center">{{ $order->product->product_name ?? 'Product Name' }}</div>
+                                        <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
                                         {{-- <div class="card mt-4">
                                             <div class="card-header header-elements-inline">
                                                 <h6
@@ -41,12 +41,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="d-flex mb-3">
+                                                        <div class="d-flex mb-3 align-items-center">
                                                             <div class="text-muted"><strong>Product File:</strong></div>
                                                             <div class="ml-2">
                                                                 <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
                                                                 class="btn blue_common_btn" 
-                                                                download="{{ $order->product->product_name ?? '' }}">
+                                                                download="{{ $order->product->name ?? '' }}">
                                                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -56,15 +56,35 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="d-flex mb-3 align-items-center flex-wrap">
+                                                            <div class="text-muted"><strong>Product:</strong></div>
+                                                            <div class="ml-2 d-flex  align-items-center flex-wrap">
+                                                                <img width="70px" src="{{ asset('storage/items_files/' . $order->product->thumbnail_image) }}" 
+                                                                    alt="{{ $order->product->name ?? '' }}" class="rounded">
+                                                                <span class="ml-2">{{ $order->product->name ?? '' }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                         <div class="d-flex mb-3">
-                                                            <div class="text-muted"><strong>Product:</strong></div>
+                                                            <div class="text-muted"><strong>Product Type:</strong></div>
                                                             <div class="ml-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img width="70px" src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}" 
-                                                                        alt="{{ $order->product->product_name ?? '' }}" class="rounded">
-                                                                    <span class="ml-2">{{ $order->product->product_name ?? '' }}</span>
-                                                                </div>
+                                                                <p class="mb-0 ml-2 badge badge-primary text-capitalize">
+                                                                    {{ $order->pricing->pricing_type ?? '' }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="d-flex mb-3">
+                                                            <div class="text-muted"><strong>Product Billng Cycle:</strong></div>
+                                                            <div class="ml-2">
+                                                                @if ($order->pricing->billing_cycle)
+                                                                    <p class="mb-0 ml-2 badge badge-info text-capitalize">
+                                                                        {{ $order->pricing->billing_cycle ?? '' }}
+                                                                    </p>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -72,7 +92,7 @@
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Status:</strong></div>
                                                             <div class="ml-2">
-                                                                <span class="badge badge-success"> {{ $order->payment_status ?? '' }} </span>
+                                                                <span class="badge badge-success text-capitalize"> {{ $order->payment_status ?? '' }} </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -81,7 +101,16 @@
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Amount:</strong></div>
                                                             <div class="ml-2">
-                                                                <p class="mb-0 ml-2"> {{ $order->product->currency ?? '' }} {{ $order->payment_amount ?? '' }} </p>
+                                                                <p class="mb-0 ml-2">
+                                                                    {{ $order->currency ?? 'INR' }}   
+                                                                    @if(isset($order->invoice->discount))
+                                                                        {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @elseif($order->payment_amount)
+                                                                         {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @else
+                                                                        {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
+                                                                    @endif
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -108,6 +137,124 @@
                                                                         <i class="fas fa-copy"></i>
                                                                     </button> --}}
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <div class="d-flex mb-3">
+                                                            @php
+                                                                $subscriptionId = $order->subscription->id ?? '';
+                                                            @endphp
+                                                            <div class="button-container">
+                                                                    @if ($order->pricing->pricing_type == 'recurring')
+                                                                      @if (isset($order->subscription) && $order->subscription)
+                                                                            <!-- Stop AutoPay Button -->
+                                                                            @if ($order->subscription->status == 'active' && $order->subscription->status != 'renewal_off')
+
+                                                                            <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn autopay-btn"
+                                                                                data-url="/subscription/cancel-auto-pay/{{ $subscriptionId }}"
+                                                                                data-message="Are you sure you want to stop auto-renewal?">
+                                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                </svg>
+                                                                                <span>Stop AutoPay</span>
+                                                                            </button>
+                                                                            @endif
+                                                                            @if ($order->subscription->status == 'active')
+                                                                                <!-- Cancel Subscription Immediately Button -->
+                                                                                <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn use-get-method"
+                                                                                    data-url="/subscription/cancel/{{ $subscriptionId }}"
+                                                                                    data-message="This will cancel your subscription immediately. Are you sure?">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Cancel Subscription Immediately</span>
+                                                                                </button>
+                                                                            @else   
+                                                                                <!-- Reactivate Button -->
+                                                                                <button class="blue_common_btn btn btn-sm btn-outline-success confirm-btn"
+                                                                                    data-url="/subscription/reactivate/{{ $subscriptionId }}"
+                                                                                    data-message="Do you want to reactivate your subscription?">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Reactivate</span>
+                                                                                </button>
+                                                                            @endif
+                                                                        @endif
+                                                                    @else
+                                                                        @if ($order->key->expire_at > now() && $order->key->sys_state == 0)
+                                                                            <!-- Deactivate Product Button -->
+                                                                            <button class="blue_common_btn btn btn-sm btn-outline-secondary confirm-btn"
+                                                                                data-url="/deactivate-product/{{ $order->key->id }}"
+                                                                                data-message="This will permanently disable access. No refunds will be issued. Continue?">
+                                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                </svg>
+                                                                                <span>Deactivate Product</span>
+                                                                            </button>
+                                                                        @endif
+                                                                    @endif
+                                                            </div>
+                                                            {{-- <div class="button-container">
+                                                                @if (isset($order->subscription) && $order->subscription)
+                                                                    @if ($order->pricing->pricing_type == 'recurring')
+                                                                        @if ($order->subscription->status == 'active') 
+                                                                            <!-- Stop AutoPay Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/cancel-auto-pay/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Stop AutoPay</span>
+                                                                                </button>
+                                                                            </form>
+
+                                                                            <!-- Cancel Subscription Immediately Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/reactivate/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Cancel Subscription Immediately</span>
+                                                                                </button>
+                                                                            </form>
+                                                                        @else   
+                                                                            <!-- Reactivate Button -->
+                                                                            <form method="POST" action="{{ url('/subscription/reactivate/' . $subscriptionId) }}" style="display:inline;">
+                                                                                @csrf
+                                                                                <button type="submit" class="blue_common_btn btn btn-sm btn-outline-success">
+                                                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                    </svg>
+                                                                                    <span>Reactivate</span>
+                                                                                </button>
+                                                                            </form>
+                                                                        @endif
+                                                                    @else
+                                                                        <!-- Deactivate Product Button -->
+                                                                        <form method="POST" action="{{ url('/deactivate-product/' . $order->key->id) }}" style="display:inline;">
+                                                                            @csrf
+                                                                            <button type="submit" class="blue_common_btn btn btn-sm btn-outline-secondary">
+                                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                                                </svg>
+                                                                                <span>Deactivate Product</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
+                                                                @endif
+                                                                </div> --}}
+
                                                         </div>
                                                     </div>
                                                 </div> <!-- Row End -->

@@ -61,6 +61,8 @@
                 <div class="text-center">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
             <div class="coupon-container card cart-doted-border">
+                <input type="hidden" id="sale_price" value="{{ round($selectedPricing->sale_price) }}"/>
+                <input type="hidden" id="gst_percentage" value="{{round( $selectedPricing->gst_percentage ) }}"/>
                 <div class="card-body mb-3 coupon-overflow">
                     @if ($couponCodes->count() != 0)
                         @php
@@ -73,7 +75,7 @@
                             $autoApplyCoupon = $autoApplyCoupons->sortBy('discount_value')->first();
                         @endphp
 
-                        @foreach ($couponCodes as $item)
+                        {{-- @foreach ($couponCodes as $item)
                             @php
                                 $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value.'%';
                                 $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
@@ -81,28 +83,67 @@
                             <div class="card mt-4 coupon-max-width">
                                 <div class="card-body">
                                     <h5 class="mt-0">{{$val}}</h5>
-                                    <p>Same fee {{$val}} for all products in order</p>
+                                    <p>Same fee {{$val}} for all products in the order. You will get {{$val}} off, up to {{$item->max_discount}}.</p>
                                     <input type="hidden" name="discount_coupon_type" id="discount_coupon_type" data-type="{{$item->discount_type}}" value="{{$item->discount_value}}">
                                     <div class="card">
                                         <div class="card-body p-10">
-                                            <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center justify-content-between coupon">
                                                 <div class="font_weight_600">{{$item->coupon_code}}</div>
-                                                {{-- <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
+                                                <button class="pink-blue-grad-button d-inline-block border-0 m-0 coupon-btn 
                                                     {{ $isAutoApplied ? 'remove-btn' : '' }}" 
                                                     type="button" id="topapplybtn"
                                                     data-coupon-id="{{$item->id}}"
                                                     data-coupon-code="{{$item->coupon_code}}">
                                                     {{ $isAutoApplied ? 'Remove' : 'Apply' }}
-                                                </button> --}}
-                                                <button class="blue_common_btn d-inline-block border-0 m-0 coupon-btn"  {{ $isAutoApplied ? 'remove-btn' : '' }}" 
-                                                    type="button" id="topapplybtn"
-                                                    data-coupon-id="{{$item->id}}"
-                                                    data-coupon-code="{{$item->coupon_code}}">
+                                                </button>
+                                                <button class="blue_common_btn border-0 m-0 coupon-btn {{ $isAutoApplied ? 'remove-btn' : '' }}"
+                                                        type="button"
+                                                        data-coupon-id="{{ $item->id }}"
+                                                        data-coupon-code="{{ $item->coupon_code }}">
                                                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                                     </svg>
-                                                    <span>  {{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
+                                                    <span>{{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach --}}
+                        @foreach ($couponCodes as $item)
+                            @php
+                                $val = $item->discount_type == 'flat' ? '₹' . $item->discount_value : $item->discount_value . '%';
+                                $isAutoApplied = $autoApplyCoupon && $autoApplyCoupon->id == $item->id;
+                            @endphp
+
+                            <div class="card mt-4 coupon-max-width">
+                                <div class="card-body">
+                                    <h5 class="mt-0">{{ $val }}</h5>
+                                    <p>
+                                        Same fee {{ $val }} for all products in the order.
+                                        You will get {{ $val }} off, up to {{ $item->max_discount }}.
+                                    </p>
+
+                                    <input type="hidden" name="discount_coupon_type" id="discount_coupon_type"
+                                        data-type="{{ $item->discount_type }}" value="{{ $item->discount_value }}">
+
+                                    <div class="card">
+                                        <div class="card-body p-10">
+                                            <div class="d-flex align-items-center justify-content-between coupon">
+                                                <div class="font_weight_600">{{ $item->coupon_code }}</div>
+
+                                                {{-- Always show button --}}
+                                                <button class="blue_common_btn border-0 m-0 coupon-btn {{ $isAutoApplied ? 'remove-btn' : '' }}"
+                                                        type="button"
+                                                        data-coupon-id="{{ $item->id }}"
+                                                        data-coupon-code="{{ $item->coupon_code }}">
+                                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                                    </svg>
+                                                    <span>{{ $isAutoApplied ? 'Remove' : 'Apply' }}</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -127,13 +168,13 @@
                 </h6>
                 <div id="accordion_coupon_code_form" class="accordion-body d-block" data-parent="#accordionCouponCode">
                     <div class="row mt-2">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                         <div class="form-group mb-0">
                             <input class="form-control" type="text" name="coupon_code" id="coupon_code" placeholder="Enter Coupon Code...">
                             <p class="error" id="coupon_code_error"></p>
                         </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <button type="button" class="blue_common_btn border-0 m-0"  id="coupon_code_apply_btn">
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
@@ -258,7 +299,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($totalSubtotal) }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ $totalSubtotal }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
                 </div>
             </div>
 
@@ -304,7 +345,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($selectedPricing->sale_price) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ number_format($selectedPricing->sale_price) }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($selectedPricing->sale_price) }}</h5>
                 </div>
             </div>
             
@@ -313,7 +354,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing->gst_percentage ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
                 </div>
             </div>
             
@@ -368,19 +409,19 @@
                     @endif
                     <input type="hidden" name="final_quantity" id="final_quantity" value="1">
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
-                    <input type="hidden" id="amount" name="amount" value="{{ $final_total * 100 }}">
+                    <input type="hidden" class="amount" id="amount" name="amount" value="{{ $final_total * 100 }}">
                     <input type="hidden" id="amount" name="currency" value="{{  $plan->currency ?? 'INR' }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="final_coupon_code" id="final_coupon_code" value="">
                     <input type="hidden" name="discount_value" id="discount_value" value="">
                     <input type="hidden" name="product_id" id="is_discount_applied" value="{{ $plan->id }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
-                    <input type="hidden" name="trial_period_days" id="trial_period_days" value="{{ $plan->trial_days ?? 0}}">
+                    <input type="hidden" name="trial_period_days" id="trial_period_days" value="">
                 <!-- Name on Card -->
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Name on Card</label>
-                        <input class="form-control" size="4" type="text" id="name_on_card" required="">
+                        <input class="form-control" size="4" type="text" id="name_on_card">
                         <div class="error" id="name_on_card_error"></div>
                     </div>
                 </div>
@@ -389,7 +430,8 @@
                 <div class="form-row row">
                     <div class="col-md-12 form-group">
                         <label class="control-label">Card Number</label>
-                        <input autocomplete="off" class="form-control card-number" id="card_number" name="card_number" size="20" placeholder="xxxx xxxx xxxx xxxx" type="text" required="">
+                        <input type="text" autocomplete="off" class="form-control card-number" id="card_number" 
+                            name="card_number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
                         <div class="error" id="card_number_error"></div>
                     </div>
                 </div>
@@ -397,22 +439,25 @@
                 <!-- Expiration Month -->
                 <div class="form-row row">
                     <div class="col-xs-12 col-md-4 form-group expiration">
-                        <label class="control-label">Expiration Month</label>
-                        <input class="form-control card-expiry-month" placeholder="MM" id="card_exp_month" size="2" name="card_month" type="text" required="">
+                        <label class="control-label">Exp. Month</label>
+                        <input type="text" class="form-control card-expiry-month" placeholder="MM" 
+                            id="card_exp_month" maxlength="2" name="card_month">
                         <div class="error" id="card_exp_month_error"></div>
                     </div>
 
                     <!-- Expiration Year -->
                     <div class="col-xs-12 col-md-4 form-group expiration required">
-                        <label class="control-label">Expiration Year</label>
-                        <input class="form-control card-expiry-year" placeholder="YY" id="card_exp_year" size="4" name="card_year" type="text" required="">
+                        <label class="control-label">Exp. Year</label>
+                        <input type="text" class="form-control card-expiry-year" placeholder="YY" 
+                            id="card_exp_year" maxlength="2" name="card_year">
                         <div class="error" id="card_exp_year_error"></div>
                     </div>
 
                     <!-- CVC -->
                     <div class="col-xs-12 col-md-4 form-group cvc">
                         <label class="control-label">CVC</label>
-                        <input autocomplete="off" class="form-control card-cvc" id="card_cvc" name="card_cvc" placeholder="ex. 311" size="4" type="text" required="">
+                        <input type="text" autocomplete="off" class="form-control card-cvc" 
+                            id="card_cvc" name="card_cvc" placeholder="ex. 311" maxlength="3">
                         <div class="error" id="card_cvc_error"></div>
                     </div>
                 </div>
@@ -433,7 +478,7 @@
                         }
                     @endphp
 
-                 @if(Auth::check())
+                 {{-- @if(Auth::check()) --}}
                     <!--<div class="col-md-12">-->
                     <!--     <button-->
                     <!--        class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn"-->
@@ -443,7 +488,7 @@
                     <!--        Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} -->
                     <!--    </button>-->
                     <!--</div>-->
-                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                    {{-- <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -453,10 +498,10 @@
                         @else
                             <span> Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
-                    </button>
+                    </button> --}}
                     {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay <span class="final_btn_text">{{ number_format((int) $final_total) }}</span>  {{ $plan->currency ?? 'INR' }} </button> --}}
                      {{-- <button class="pink-blue-grad-button d-inline-block border-0 proced_to_pay_btn" type="submit">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
-                @else
+                {{-- @else
                  <div class="col-md-12">
                     <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -468,10 +513,123 @@
                         @else
                             <span> Proceed To Pay {{ number_format((int) $final_total) }}</span> {{ $plan->currency ?? 'INR' }} </span>
                         @endif
-                    </button>
+                    </button> --}}
                     {{-- <button  class="pink-blue-grad-button d-inline-block border-0 proceed_to_pay_btn" id="proceed_to_pay_btn" type="button">Proceed To Pay {{ number_format((int) $final_total) }} {{ $plan->currency ?? 'INR' }} </button> --}}
-                    </div>
+                    {{-- </div>
+                    @endif --}}
+                    @if(Auth::check())
+                        @if($plan->trial_days > 0)
+                            <button type="button"
+                                    class="blue_common_btn border-0 proced_to_pay_btn"
+                                    id="trial_button">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span id="button_text">
+                                    Free Trial for {{ $plan->trial_days }} Days
+                                </span>
+                            </button>
+                
+                        @else
+                            <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                </svg>
+                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                            
+                            </button>
+                        @endif
+                    @else
+                        <div class="col-md-12">
+                            @if ($plan->trial_days > 0)
+                                <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_guest">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span id="button_text_guest">
+                                            Free Trial for {{ $plan->trial_days }}Days
+                                    </span>
+                                </button>
+                            @else
+                                <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn" id="guestProceedToPay">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg>
+                                    <span class="final_btn_text"> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span></span> {{ $plan->currency ?? 'INR' }} </span>
+                               
+                                </button>
+                                
+                            @endif
+                        </div>
                     @endif
+                    <button type="button" class=" mt-3 blue_common_btn border-0 proced_to_pay_btn ml-2" id="change_option_button" style="display: none;"> <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                    </svg>
+                    <span> Change Option </span></button>
+                     <div id="trialChoiceModal" class="custom-modal">
+                        <div class="custom-modal-content">
+                            <div class="custom-modal-header">
+                                <h5 class="mt-2">Choose an Option</h5>
+                                <span class="custom-close" id="close_modal">&times;</span>
+                            </div>
+                            <div class="custom-modal-body">
+                                <p>Would you like to start with the free trial or proceed to pay directly?</p>
+                                <div class="button-row">
+                                    {{-- <button type="button" id="choose_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg><span> Start Free Trial </span></button>
+                                    <button type="button" id="choose_without_trial" class="blue_common_btn">  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                    </svg><span> Proceed to Pay </span></button>  --}}
+                                    @if(Auth::check())
+                                    <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_modal">
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span id="button_text" class="d-block">
+                                            Free Trial for {{ $plan->trial_days }} Days
+                                        </span>
+                                    </button>
+                                    <button type="submit" class="blue_common_btn border-0 proced_to_pay_btn ml-2">
+                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                        </svg>
+                                        <span> Proceed To Pay <span class="final_btn_text d-block"> {{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }} </span></span>  </span>
+                                
+                                    </button>
+                                    @else
+                                      <button type="button" class="blue_common_btn border-0 proced_to_pay_btn" id="trial_button_modal_guest">
+                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                            </svg>
+                                            <span id="button_text" class="d-block">
+                                                Free Trial for{{ $plan->trial_days }} Days
+                                            </span>
+                                        </button>
+                                        <button type="button" class="blue_common_btn border-0 proced_to_pay_btn ml-2" id="trialguestProceedToPay">
+                                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                                            </svg>
+                                            <span> Proceed To Pay <span class="final_btn_text d-block">{{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }}</span> </span>  </span>
+                                    
+                                        </button>
+                                        
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
                 </div>
             </form>
             </div>

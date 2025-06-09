@@ -20,6 +20,7 @@ class Transaction extends Model
         'payment_method',
         'transaction_id',
         'sys_state',
+        'currency',
         'created_at',
         'updated_at',
     ];
@@ -30,5 +31,12 @@ class Transaction extends Model
 
     public function product(){
         return $this->hasOne(Items::class,'id','product_id');
+    }
+    public function pricing()
+    {
+        return $this->hasOne(ItemsPricing::class, 'item_id', 'product_id');
+    }
+    public function invoice(){
+        return $this->HasOne(InvoiceModel::class, "transaction_id" , 'id');
     }
 }

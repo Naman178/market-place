@@ -32,7 +32,7 @@
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
                         <p class="text-muted mt-2 mb-0">Total orders</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">999</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalOrders ?? '0'}}</p>
                     </div>
                     {{-- <div class="custom-content">
                         <h5>Xero Integration</h5>
@@ -47,7 +47,7 @@
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
                         <p class="text-muted mt-2 mb-0">Total customer</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">368</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalCustomers ?? '0'}}</p>
                     </div>
                 </div>
             </div>
@@ -57,8 +57,8 @@
                 <div class="card-body text-center">
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
-                        <p class="text-muted mt-2 mb-0">Total Sales</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">9985</p>
+                        <p class="text-muted mt-2 mb-0">Total Blog</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalBlog ?? '0'}}</p>
                     </div>
                 </div>
             </div>
@@ -68,14 +68,14 @@
                 <div class="card-body text-center">
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
-                        <p class="text-muted mt-2 mb-0">Total Purchase</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">500K</p>
+                        <p class="text-muted mt-2 mb-0">Total Products</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalPurchase ?? '0'}}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-8 col-md-12">
             <div class="card mb-4">
                 <div class="card-body">
@@ -92,11 +92,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-lg-6 col-md-12">
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="card card-chart-bottom o-hidden mb-4">
                         <div class="card-body">
@@ -116,7 +116,7 @@
                         <div id="echart2" style="height: 260px;"></div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-12">
@@ -129,9 +129,8 @@
                                     <i class="nav-icon i-Gear-2"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="#">Add new user</a>
-                                    <a class="dropdown-item" href="#">View All users</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="{{route('user-edit','new')}}">Add new user</a>
+                                    <a class="dropdown-item" href="{{route('user-index')}}">View All users</a>
                                 </div>
                             </div>
                         </div>
@@ -150,91 +149,68 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Smith Doe</td>
-                                            <td>
+                                        @foreach ($users as $key => $user)    
+                                            <tr>
+                                                <th scope="row">{{++$key}}</th>
+                                                <td>{{$user->name ?? ''}}</td>
+                                                <td class="d-flex align-items-center justify-content-center">
+                                                    @if (empty($user->profile_pic) || $user->profile_pic == null)
+                                                        @php
+                                                            $names = explode(' ', $user->name);
+                                                            $initials = '';
+                                                            foreach ($names as $name) {
+                                                                $initials .= strtoupper(substr($name, 0, 1));
+                                                            }
+                                                        @endphp
+                                                        <div class="rounded-circle bg-gray-200 d-flex align-items-center justify-content-center text-gray-700 avatar-sm-table" title="{{ $user->name }}" style="width: 40px; height: 40px;">
+                                                            {{ $initials }}
+                                                        </div>
+                                                    @else
+                                                        @php
+                                                            $profilePic = filter_var($user->profile_pic, FILTER_VALIDATE_URL)
+                                                                        ? $user->profile_pic
+                                                                        : asset('assets/images/faces/' . $user->profile_pic);
+                                                        @endphp
+                                                        <img class="rounded-circle m-0 avatar-sm-table" src="{{ $profilePic }}" alt="{{ $user->name }}" style="width: 40px; height: 40px;">
+                                                    @endif
+                                                </td>
 
-                                                <img class="rounded-circle m-0 avatar-sm-table "
-                                                    src="/assets/images/faces/1.jpg" alt="">
 
-                                            </td>
+                                                <td>{{$user->email ?? ''}}</td>
+                                                <td>
+                                                    @php
+                                                        switch ($user->status) {
+                                                            case '0':
+                                                                $badgeClass = 'badge-warning'; 
+                                                                $statusText = 'Inactive';
+                                                                break;
+                                                            case '1':
+                                                                $badgeClass = 'badge-success';  
+                                                                $statusText = 'Active';
+                                                                break;
+                                                            case '-1':
+                                                                $badgeClass = 'badge-danger';   
+                                                                $statusText = 'Deleted';
+                                                                break;
+                                                            default:
+                                                                $badgeClass = 'badge-secondary';
+                                                                $statusText = 'Unknown';
+                                                        }
+                                                    @endphp
 
-                                            <td>Smith@gmail.com</td>
-                                            <td><span class="badge badge-success">Active</span></td>
-                                            <td>
-                                                <a href="#" class="text-success mr-2">
-                                                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                                                </a>
-                                                <a href="#" class="text-danger mr-2">
-                                                    <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jhon Doe</td>
-                                            <td>
+                                                    <span class="badge {{ $badgeClass }}">{{ $statusText }}</span>
+                                                </td>
 
-                                                <img class="rounded-circle m-0 avatar-sm-table "
-                                                    src="/assets/images/faces/1.jpg" alt="">
-
-                                            </td>
-
-                                            <td>Jhon@gmail.com</td>
-                                            <td><span class="badge badge-info">Pending</span></td>
-                                            <td>
-                                                <a href="#" class="text-success mr-2">
-                                                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                                                </a>
-                                                <a href="#" class="text-danger mr-2">
-                                                    <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Alex</td>
-                                            <td>
-
-                                                <img class="rounded-circle m-0 avatar-sm-table "
-                                                    src="/assets/images/faces/1.jpg" alt="">
-
-                                            </td>
-
-                                            <td>Otto@gmail.com</td>
-                                            <td><span class="badge badge-warning">Not Active</span></td>
-                                            <td>
-                                                <a href="#" class="text-success mr-2">
-                                                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                                                </a>
-                                                <a href="#" class="text-danger mr-2">
-                                                    <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>Mathew Doe</td>
-                                            <td>
-
-                                                <img class="rounded-circle m-0 avatar-sm-table "
-                                                    src="/assets/images/faces/1.jpg" alt="">
-
-                                            </td>
-
-                                            <td>Mathew@gmail.com</td>
-                                            <td><span class="badge badge-success">Active</span></td>
-                                            <td>
-                                                <a href="#" class="text-success mr-2">
-                                                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                                                </a>
-                                                <a href="#" class="text-danger mr-2">
-                                                    <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                <td>
+                                                    <a href="{{route('user-edit',$user->id)}}" class="text-success mr-2">
+                                                        <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" data-url="{{ route('user-delete', $user->id) }}" class="text-danger delete-user-btn mr-2">
+                                                        <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -248,7 +224,7 @@
         </div>
 
 
-        <div class="col-lg-6 col-md-12">
+        {{-- <div class="col-lg-6 col-md-12">
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -366,7 +342,7 @@
                     <div id="echart3" style="height: 360px;"></div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 @endsection
@@ -374,4 +350,43 @@
     <script src="{{ asset('assets/js/vendor/echarts.min.js') }}"></script>
     <script src="{{ asset('assets/js/es5/echart.options.min.js') }}"></script>
     <script src="{{ asset('assets/js/es5/dashboard.v1.script.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
+
+@section('bottom-js')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.delete-user-btn').click(function(event) {
+            event.preventDefault(); // prevent default link behavior
+            var submitURL = $(this).data("url");
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this user?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#f44336',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = submitURL;
+                }
+            });
+        });
+    });
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            document.body.style.transition = 'opacity 0.5s';
+            document.body.style.opacity = 0;
+
+            setTimeout(() => {
+            window.location.reload();
+            }, 500);
+        }
+    });
+
+</script>
+@endsection
+

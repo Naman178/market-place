@@ -1,4 +1,43 @@
 @extends('dashboard.dashboard_layout')
+@php 
+    use App\Models\SEO;
+    use App\Models\Settings;
+
+    $seoData = SEO::where('page', 'user dashboard')->first();
+    $site = Settings::where('key', 'site_setting')->first();
+
+    $logoImage = $site['value']['logo_image'] ?? null;
+    $ogImage = $logoImage 
+        ? asset('storage/Logo_Settings/' . $logoImage) 
+        : asset('front-end/images/infiniylogo.png');
+@endphp
+
+@section('title'){{ $seoData->title ?? 'User Dashboard' }}@endsection
+
+@section('meta')
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{-- SEO Meta --}}
+    <meta name="description" content="{{ $seoData->description ?? 'Access your dashboard to manage orders, view account activity, and update your preferences on Market Place Main.' }}">
+    <meta name="keywords" content="{{ $seoData->keywords ?? 'user dashboard, account management, Market Place Main' }}">
+
+    {{-- Open Graph Meta --}}
+    <meta property="og:title" content="{{ $seoData->title ?? 'User Dashboard - Market Place Main' }}">
+    <meta property="og:description" content="{{ $seoData->description ?? 'Quickly access and manage your Market Place account through the dashboard.' }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $ogImage }}">
+
+    {{-- Twitter Meta --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoData->title ?? 'User Dashboard - Market Place Main' }}">
+    <meta name="twitter:description" content="{{ $seoData->description ?? 'Quickly access and manage your Market Place account through the dashboard.' }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
+    {{-- Optional Logo Meta (not standard but custom fallback) --}}
+    <meta property="og:logo" content="{{ $ogImage }}" />
+@endsection
 @section('content')
 @php
     $user = auth()->user();
@@ -75,7 +114,7 @@
                                         <div class="col-md-6 col-12 p_0">
                                             <div class="accordion" id="accordionRightIcon-{{ $index }}">
                                                 <div class="card mt-4 shadow-sm rounded-lg dot_border">
-                                                    <div class="cart-item-border text-center">{{ $order->product->product_name ?? 'Product Name' }}</div>
+                                                    <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
                                                     {{-- <div class="card mt-4">
                                                         <div class="card-header header-elements-inline">
                                                             <h6
@@ -108,7 +147,7 @@
                                                                         <div class="ml-2 mt-2">
                                                                             <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
                                                                             class="btn blue_common_btn" 
-                                                                            download="{{ $order->product->product_name ?? '' }}">
+                                                                            download="{{ $order->product->name ?? '' }}">
                                                                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -124,8 +163,8 @@
                                                                         <div class="ml-2">
                                                                             <div class="d-flex align-items-center">
                                                                                 <img width="70px" src="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->thumbnail) }}" 
-                                                                                    alt="{{ $order->product->product_name ?? '' }}" class="rounded">
-                                                                                <span class="ml-2">{{ $order->product->product_name ?? '' }}</span>
+                                                                                    alt="{{ $order->product->name ?? '' }}" class="rounded">
+                                                                                <span class="ml-2">{{ $order->product->name ?? '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -228,7 +267,7 @@
                                                 <td data-label="order id "> #{{ $order->id ?? '' }}</td>
                                                 <td data-label="product key "> {{ $order->key->key ?? '' }}</td>
                                                 <td data-label="product file "> <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
-                                                        download="{{ $order->product->product_name ?? '' }}">Download</a>
+                                                        download="{{ $order->product->name ?? '' }}">Download</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -329,7 +368,7 @@
                                                 </td>
                                                 <td data-label="Payment Amount"> {{ $tran->payment_amount ?? '' }} </td>
                                                 <td data-label="Payment Date"> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>
-                                                <td data-label="Plan">{{ $tran->product->product_name ?? '' }}</td>
+                                                <td data-label="Plan">{{ $tran->product->name ?? '' }}</td>
                                                 <td data-label="Payment Id"> {{ $tran->razorpay_payment_id ?? '' }} </td>
                                                 <td data-label="Payment Method"> {{ $tran->payment_method ?? '' }} </td>
                                             </tr>
@@ -440,15 +479,22 @@
                                                 <td data-label="Subscription start date"> {{ $sub->created_at }} </td>
                                                 <td data-label="Status">{{ $sub->status }}</td>
                                                 <td data-label="Action">
-                                                    @if ($sub->status === 'active')
+                                                  @if ($sub->status === 'active')
                                                         <a href="{{ route('subscription.cancel', ['id' => $sub->id]) }}"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to cancel this subscription?');">
-                                                            Stop
+                                                        class="btn btn-danger btn-sm subscription-action"
+                                                        data-action="cancel"
+                                                        data-url="{{ route('subscription.cancel', ['id' => $sub->id]) }}">
+                                                        Stop
                                                         </a>
                                                     @else
-                                                        <span class="text-danger">Subscription Already Canceled</span>
+                                                        <a href="{{ route('subscription.reactivate', ['id' => $sub->id]) }}"
+                                                        class="btn btn-success btn-sm subscription-action"
+                                                        data-action="reactivate"
+                                                        data-url="{{ route('subscription.reactivate', ['id' => $sub->id]) }}">
+                                                        Re-Active
+                                                        </a>
                                                     @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -504,6 +550,15 @@
                                         <input id="current-password" type="password" class="form-control"
                                             name="current-password" placeholder="" required>
                                             <label for="fname" class="floating-label">Current Password</label>
+                                        <button type="button" class="toggle-button" data-toggle="password" aria-label="Toggle Password Visibility">
+                                            <!-- Eye icon SVG -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
                                         @if ($errors->has('current-password'))
                                             <div class="error" style="color:red;">
                                                 {{ $errors->first('current-password') }}
@@ -517,6 +572,15 @@
                                         <input id="new-password" type="password" class="form-control" name="new-password"
                                             placeholder="" required>
                                             <label for="lname" class="floating-label">New Password</label>
+                                            <button type="button" class="toggle-button" data-toggle="password-new" aria-label="Toggle Password Visibility">
+                                                <!-- Eye icon SVG -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
                                         @if ($errors->has('new-password'))
                                             <div class="error" style="color:red;">
                                                 {{ $errors->first('new-password') }}
@@ -531,6 +595,15 @@
                                             name="new-password_confirmation" placeholder="" required>
                                             
                                         <label for="lname" class="floating-label">Confirm New Password</label>
+                                        <button type="button" class="toggle-button" data-toggle="password-confirm" aria-label="Toggle Password Visibility">
+                                            <!-- Eye icon SVG -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="eye-icon" viewBox="0 0 24 24">
+                                                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
                                         @if ($errors->has('new-password_confirmation'))
                                             <div class="error" style="color:red;">
                                                 {{ $errors->first('new-password_confirmation') }}

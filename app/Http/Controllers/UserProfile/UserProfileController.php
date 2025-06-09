@@ -31,41 +31,41 @@ class UserProfileController extends Controller
         // dd($request->all());
         if($request->ajax()){
             $user = User::find($request->user_id);
-            $validator = Validator::make($request->all(), [
-                'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'email' => 'required|email',
-                'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
-                'city' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'postal' => 'required|digits_between:5,6',
-                'company_name' => 'required',
-                'company_website' => 'required|url',
-            ], 
-            $message = [                
-                'firstname.required' => 'The First Name Is Required.',
-                'firstname.regex' => 'The First Name should only contain letters and spaces.',
-                'lastname.required' => 'The Last Name Is Required.',
-                'lastname.regex' => 'The Last Name should only contain letters and spaces.',
-                'email.required' => 'The Email Is Required.',
-                'email.email' => 'Please enter a valid email address.',
-                'address_line1.required' => 'Please Add Your Address.',
-                'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
-                'city.required' => 'The City Is Required.',
-                'city.regex' => 'The City name should only contain letters and spaces.',
-                'postal.required' => 'The Postal Code Is Required.',
-                'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
-                'company_name.required' => 'The Company Name is required.',
-                'company_website.required' => 'Please enter a valid URL for the company website.',
-                'company_website.url' => 'Please enter a valid company website URL.',
-            ]);
+            // $validator = Validator::make($request->all(), [
+            //     'firstname' => 'required|regex:/^[a-zA-Z\s]+$/',
+            //     'lastname' => 'required|regex:/^[a-zA-Z\s]+$/',
+            //     'email' => 'required|email',
+            //     'address_line1' => 'required|regex:/^[a-zA-Z0-9\s,.-]+$/',
+            //     'city' => 'required|regex:/^[a-zA-Z\s]+$/',
+            //     'postal' => 'required|digits_between:5,6',
+            //     'company_name' => 'required',
+            //     'company_website' => 'required|url',
+            // ], 
+            // $message = [                
+            //     'firstname.required' => 'The First Name Is Required.',
+            //     'firstname.regex' => 'The First Name should only contain letters and spaces.',
+            //     'lastname.required' => 'The Last Name Is Required.',
+            //     'lastname.regex' => 'The Last Name should only contain letters and spaces.',
+            //     'email.required' => 'The Email Is Required.',
+            //     'email.email' => 'Please enter a valid email address.',
+            //     'address_line1.required' => 'Please Add Your Address.',
+            //     'address_line1.regex' => 'The Address must contain only letters, numbers, spaces, commas, periods, or hyphens.',
+            //     'city.required' => 'The City Is Required.',
+            //     'city.regex' => 'The City name should only contain letters and spaces.',
+            //     'postal.required' => 'The Postal Code Is Required.',
+            //     'postal.digits_between' => 'The Postal Code must be 5 or 6 digits long.',
+            //     'company_name.required' => 'The Company Name is required.',
+            //     'company_website.required' => 'Please enter a valid URL for the company website.',
+            //     'company_website.url' => 'Please enter a valid company website URL.',
+            // ]);
             $imageName = $request->old_photo;
             if ($request->profile_pic) {
                 $imageName = time().'.'.$request->profile_pic->extension();  
                 $request->profile_pic->move(public_path('assets/images/faces'), $imageName);
             }
-            if ($validator->fails()){
-                return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
-            } else{
+            // if ($validator->fails()){
+            //     return response()->json(['error'=>$validator->getMessageBag()->toArray()]);
+            // } else{
                 if($user){
                     $countryname = '';
                     $countaries = ContactsCountryEnum::orderBy('id')->get();
@@ -99,7 +99,7 @@ class UserProfileController extends Controller
                     'type' => 'update',
                     'data' => $user
                 ]);
-            }
+            // }
         }
     }
 }

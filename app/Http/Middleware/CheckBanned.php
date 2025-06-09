@@ -21,7 +21,7 @@ class CheckBanned
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return redirect()->route('login')->with('error', 'Your Account is Disable, please contact Admin.');
+            return redirect()->back()->with('error', 'Your Account is Disable, please contact Admin.');
         }
         return $next($request);
     }

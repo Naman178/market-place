@@ -254,13 +254,13 @@
                                                                                                 <td
                                                                                                     style="direction:ltr;text-align:left;">
                                                                                                     @if ($setting && $setting['value']['logo_image'])
-                                                                                                        <img src="{{ asset('storage/Logo_Settings/'.$setting['value']['logo_image']) }}"  width="69"
+                                                                                                        <img src="{{ url('https://market-place-main.infinty-stage.com/storage/Logo_Settings/'.$setting['value']['logo_image']) }}"  width="69"
                                                                                                         height=""
                                                                                                         style="-ms-interpolation-mode: bicubic; clear: both; display: block; height: auto; max-width: 200px; outline: none; text-decoration: none; width: 100%;"
                                                                                                         border="0"
                                                                                                         alt="">
                                                                                                     @else
-                                                                                                            <img src="{{ asset('front-end/images/infiniylogo.png') }}"   width="69"
+                                                                                                            <img src="{{ url('https://market-place-main.infinty-stage.com/front-end/images/infiniylogo.png') }}"   width="69"
                                                                                                             height=""
                                                                                                             style="-ms-interpolation-mode: bicubic; clear: both; display: block; height: auto; max-width: 200px; outline: none; text-decoration: none; width: 100%;"
                                                                                                             border="0"

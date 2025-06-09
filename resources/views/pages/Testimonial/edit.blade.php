@@ -21,6 +21,16 @@
     .image-input {
         display: none;
     }
+     .previewImgCls {
+        width: 200px;
+        height: 150px;
+        object-fit: contain;
+        display: none;
+    }
+
+    .previewImgCls.show {
+        display: inline-block;
+    }
 </style>
 @endsection
 <div class="loadscreen" id="preloader" style="display: none; z-index:90;">

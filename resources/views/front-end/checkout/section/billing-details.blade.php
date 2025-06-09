@@ -32,7 +32,7 @@
 <div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
     <p class="mb-0 mt-3" style="position: relative;">
     <div class="mb-5 cart-item-border text-center">Product Details</div>
-    @if (!empty($mergedPricing))
+    {{-- @if (!empty($mergedPricing))
     @foreach ($mergedPricing as $key => $selectedPricing)
     <div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
         <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
@@ -69,25 +69,25 @@
                         $itemPrice = (int) $selectedPricing['sale_price'];
                         $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
                         $discount = (int) ($selectedPricing['discount'] ?? 0);
-                        $final_total = $itemPrice + $gst;
+                        $final_total = $itemPrice;
                     @endphp
-                    <p>Total: <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
+                    <p>Total: <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
               
             <!-- </div> -->
         </div>
         <div class="cart-item-options">
-            <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}">Remove</a>
+            <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}"data-category="{{ $categoryName }}" data-slug="{{ $subcategorySlug }}" >Remove</a>
             <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
             <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a>
         </div>
         <div class="border-top"></div>
         <div class="d-flex align-items-center justify-content-between">
             <h5 id="items-count">1 Items</h5>
-            <h5> <span class="ml-2"> <strong class="d-block final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
+            <h5> <span class="ml-2"> <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
         </div>
     </div>
-    @endforeach
-    @else
+    @endforeach --}}
+    {{-- @else
 
     <div class="row mb-3 pb-3 cart-item">
         <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
@@ -101,15 +101,82 @@
             <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
             @if($selectedPricing)
             <h5 class="mt-0 mb-2 cart-item-pri">
-                <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
+                <span class="ml-2"> {{  $plan->currency ?? 'INR' }} <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
             </h5>
             @endif
             <h5 class="mt-0 mb-2 cart-item-pri">
                 Quantity: 1
             </h5>
         </div>
+    </div> --}}
+    {{-- @endif --}}
+    @php
+    $selectedPricing = $cart['pricing'];
+    $plan = $cart['item'];
+
+    $itemPrice = (int) $selectedPricing['sale_price'];
+    $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
+    $discount = (int) ($selectedPricing['discount'] ?? 0);
+    $final_total = $itemPrice;
+@endphp
+
+<div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
+    <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
+        <!-- Product Image -->
+        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
+             alt="{{ $plan->name }}"
+             class="h-30 w-30">
+
+        <!-- Product Details -->
+        <div class="cart-item-details">
+            <h2 class="cart-item-title">{{ $plan->name }}</h2>
+        </div>
+
+        <!-- Price and Quantity -->
+        <p>Each
+            <span class="d-block">
+                {{ $plan->currency ?? 'INR' }}
+                <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong>
+                {{ $selectedPricing['billing_cycle'] ?? '' }}
+            </span>
+        </p>
+
+        <div>
+            <label for="quantity">Quantity:</label>
+            <select class="d-block w-50" id="quantity" onchange="dynamicCalculation()">
+                @for ($i = 1; $i <= 10; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+        </div>
+
+        <p>Total:
+            <strong class="d-block finaltotals">
+                {{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}
+            </strong>
+        </p>
     </div>
-    @endif
+
+    <!-- Remove and Wishlist -->
+    <div class="cart-item-options">
+        <a class="remove-item"
+           data-plan-id="{{ $plan->id }}"
+           data-pricing-id="{{ $selectedPricing['id'] }}"
+           data-category="{{ $categoryName }}"
+           data-slug="{{ $subcategorySlug }}">
+            Remove
+        </a>
+        <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
+    </div>
+
+    <div class="border-top"></div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h5 id="items-count">1 Item</h5>
+        <h5><strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}</strong></h5>
+    </div>
+</div>
+
     
     <!-- <div class="cart-items mt-3">
         @if (!empty($mergedPricing))
@@ -235,6 +302,7 @@
     </div>
     @endauth
     <div class="mb-5 cart-item-border text-center">Billing Details</div>
+    <form id="guest-checkout-form">
     <div class="row mt-2">
         <!-- First Name -->
         <div class="col-md-6">
@@ -257,7 +325,7 @@
         <!-- Email -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="email" id="email" class="form-control" placeholder=" " value="{{ optional($user)->email }}" />
+                <input type="email" name="email" id="email" class="form-control" placeholder=" " value="{{ optional($user)->email }}" />
                 <label for="email" class="floating-label">Email</label>
                 <div class="error" id="email_error"></div>
             </div>
@@ -279,7 +347,7 @@
         <!-- Contact Number -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="number" name="contact" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
+                <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
                 <label for="contact" class="floating-label">Contact Number</label>
                 <div class="error" id="contact_error"></div>
             </div>
@@ -306,7 +374,7 @@
         <!-- Address Line 1 -->
         <div class="col-md-12">
             <div class="form-group">
-                <input type="text" name="address_line_one" id="address_line_one" class="form-control" placeholder=" " value="{{ optional($user)->address_line1 }}" />
+                <input type="text" name="address_line1" id="address_line_one" class="form-control" placeholder=" " value="{{ optional($user)->address_line1 }}" />
                 <label for="address_line_one" class="floating-label">Address Line 1</label>
                 <div class="error" id="address_line_one_error"></div>
             </div>
@@ -315,7 +383,7 @@
         <!-- Address Line 2 -->
         <div class="col-md-12">
             <div class="form-group">
-                <input type="text" name="address_line_two" id="address_line_two" class="form-control" placeholder=" " value="{{ optional($user)->address_line2 }}" />
+                <input type="text" name="address_line2" id="address_line_two" class="form-control" placeholder=" " value="{{ optional($user)->address_line2 }}" />
                 <label for="address_line_two" class="floating-label">Address Line 2</label>
                 <div class="error" id="address_line_two_error"></div>
             </div>
@@ -327,7 +395,7 @@
                 <select name="country" id="country" class="form-control select-input">
                     <option value="0">Select Country</option>
                     @foreach($countaries as $countery)
-                    <option value="{{ $countery->id }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
+                    <option value="{{ $countery->name }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
                     @endforeach
                 </select>
                 <div class="error" id="country_error"></div>
@@ -346,10 +414,11 @@
         <!-- Postal Code -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" name="postal" id="postal" class="form-control" placeholder=" " value="{{ optional($user)->postal_code }}" />
+                <input type="text" name="postal_code" id="postal" class="form-control" placeholder=" " value="{{ optional($user)->postal_code }}" />
                 <label for="postal" class="floating-label">Zip / Postal Code</label>
                 <div class="error" id="postal_error"></div>
             </div>
         </div>
     </div>
+    </form>
 </div>

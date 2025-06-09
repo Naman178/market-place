@@ -1,12 +1,282 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
+//    document.addEventListener('DOMContentLoaded', function () {
+//         const trialBtn = document.getElementById('trial_button');
+//         const modal = document.getElementById('trialChoiceModal');
+//         const closeModal = document.getElementById('close_modal');
+//         const chooseTrial = document.getElementById('choose_trial');
+//         const choosePay = document.getElementById('choose_without_trial');
+//         const trialPeriodInput = document.getElementById('trial_period_days');
+//         const changeOptionBtn = document.getElementById('change_option_button');
+
+//         trialPeriodInput.value = "0";
+
+//         // Show modal when trial button is clicked (only if not yet submitted)
+//         if (trialBtn) {
+//             trialBtn.addEventListener('click', function (e) {
+//                 if (trialBtn.getAttribute('type') !== 'submit') {
+//                     e.preventDefault(); 
+//                     modal.style.display = 'block';
+//                 }
+//             });
+//         }
+
+//         // "Change Option" button opens modal again
+//         changeOptionBtn.addEventListener('click', function () {
+//             modal.style.display = 'block';
+//         });
+
+//         // Close modal
+//         closeModal.addEventListener('click', function () {
+//             modal.style.display = 'none';
+//         });
+
+//         // Handle "Start Free Trial"
+//         chooseTrial.addEventListener('click', function () {
+//             trialPeriodInput.value = "{{ $plan->trial_days }}"; 
+//             const trialDays = trialPeriodInput.value;
+//             changeButtonToSubmit(trialBtn, `Free Trial for <span class="final_btn_text">${trialDays}</span> Days`);
+//             modal.style.display = 'none';
+//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
+//         });
+
+//         // Handle "Proceed to Pay"
+//         choosePay.addEventListener('click', function () {
+//             trialPeriodInput.value = "0"; 
+//             const finalTotal = "{{ number_format((int) $final_total) }}";
+//             const currency = "{{ $plan->currency ?? 'INR' }}";
+//             changeButtonToSubmit(trialBtn, `Proceed To Pay <span class="final_btn_text">${finalTotal}</span> ${currency}`);
+//             modal.style.display = 'none';
+//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
+//         });
+
+//         // Utility function to change button type and label
+//         function changeButtonToSubmit(button, labelHtml) {
+//             if (!button) return;
+//             button.setAttribute('type', 'submit'); 
+//             button.innerHTML = `
+//                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+//                 </svg>
+//                 <span>${labelHtml}</span>
+//             `;
+//         }
+//     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const trialBtn = document.getElementById('trial_button'); // main button
+        const modal = document.getElementById('trialChoiceModal');
+        const closeModal = document.getElementById('close_modal');
+        const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
+        const trialPeriodInput = document.getElementById('trial_period_days');
+        const form = document.getElementById('stripe-form');
+        const form2 = document.getElementById('guest-checkout-form');
+
+        const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
+
+        trialPeriodInput.value = "0";
+
+        function validateFormRequiredFields(form) {
+            const requiredInputs = form.querySelectorAll('[required]');
+            for (let input of requiredInputs) {
+                if (!input.value || input.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        if (trialBtn) {
+            trialBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const form1Valid = form ? validateFormRequiredFields(form) : true;
+                const form2Valid = form2 ? validateFormRequiredFields(form2) : true;
+
+                if (form1Valid && form2Valid) {
+                    modal.style.display = 'block';
+                } else {
+                    toastr.error('Please fill all the form details.');
+                }
+            });
+        }
+
+        if (closeModal) {
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
+
+        if (trialBtnModal) {
+            trialBtnModal.addEventListener('click', function () {
+                trialPeriodInput.value = trialDays;
+                modal.style.display = 'none';
+
+                if (validateFormRequiredFields(form)) {
+                    form.submit();
+                } else {
+                    toastr.error('Please fill all the form details.');
+                }
+            });
+        }
+    });
+
+    function showLoader() {
+        const loader = document.getElementById('loader-overlay');
+        if (loader) loader.style.display = 'flex';
+    }
+
+    function hideLoader() {
+        const loader = document.getElementById('loader-overlay');
+        if (loader) loader.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const trialBtn = document.getElementById('trial_button_guest');
+        const modal = document.getElementById('trialChoiceModal');
+        const closeModal = document.getElementById('close_modal');
+        const trialBtnModal = document.getElementById('trial_button_modal_guest'); 
+        const payBtn = document.getElementById('trialguestProceedToPay'); 
+        const trialPeriodInput = document.getElementById('trial_period_days');
+        const stripeForm = document.getElementById('stripe-form');
+        const guestForm = document.getElementById('guest-checkout-form');
+
+        const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
+        trialPeriodInput.value = "0";
+
+        function validateFormRequiredFields() {
+            const requiredInputs = stripeForm.querySelectorAll('[required]');
+            for (let input of requiredInputs) {
+                if (!input.value || input.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");
+
+       function handleGuestStripeCheckout() {
+            showLoader();
+
+            const cardData = {
+                number: document.getElementById('card_number').value,
+                cvc: document.getElementById('card_cvc').value,
+                exp_month: document.getElementById('card_exp_month').value,
+                exp_year: document.getElementById('card_exp_year').value,
+                name: document.getElementById('name_on_card').value,
+            };
+
+            Stripe.card.createToken(cardData, function (status, response) {
+                if (response.error) {
+                    hideLoader();
+                    toastr.error(response.error.message);
+                    return;
+                }
+
+                const token = response.id;
+
+                const combinedFormData = new FormData(guestForm);
+                new FormData(stripeForm).forEach((value, key) => {
+                    combinedFormData.append(key, value);
+                });
+
+                combinedFormData.append('stripeToken', token);
+
+                const payload = {};
+                combinedFormData.forEach((value, key) => {
+                    payload[key] = value;
+                });
+
+                fetch("{{ route('user-create-checkout') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(async response => {
+                    try {
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        throw new Error("Invalid response format: Expected JSON.");
+                    }
+                })
+                .then(data => {
+                    hideLoader();
+                    if (data.success) {
+                        if (data.requires_action && data.redirect_url?.url) {
+                            window.location.replace(data.redirect_url.url);
+                        } else {
+                            window.location.href = "/user-dashboard";
+                        }
+                    } else {
+                        toastr.error(data.message || data.error || 'Something went wrong.');
+                    }
+                })
+                .catch(error => {
+                    hideLoader();
+                    console.error(error);
+                    toastr.error('Error during checkout. Check console for details.');
+                });
+            });
+        }
+
+        // 🟢 Proceed to Pay (normal payment)
+        if (payBtn) {
+            payBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!guestForm || !stripeForm) {
+                    toastr.error('Required forms not found.');
+                    return;
+                }
+                handleGuestStripeCheckout();
+            });
+        }
+
+        // 🟢 Free Trial Modal flow
+        if (trialBtn && trialBtnModal && closeModal) {
+            trialBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (validateFormRequiredFields()) {
+                    modal.style.display = 'block';
+                } else {
+                    toastr.error("Please fill in all required fields before starting the free trial.");
+                }
+            });
+
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            trialBtnModal.addEventListener('click', function () {
+                if (validateFormRequiredFields()) {
+                    trialPeriodInput.value = trialDays;
+                    modal.style.display = 'none';
+                    handleGuestStripeCheckout();
+                }
+            });
+        }
+    });
+
     $(document).ready(function() {
         var itemId = "{{ $plan->id }}";
         console.log("{{ $plan->pricing->fixed_price}}")
         var storeid = localStorage.getItem("itemId");
-        var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
-        var gst = Math.round(
-            parseFloat("{{$totalGST ?? ( $selectedPricing->gst_percentage) / 100 * ($selectedPricing['sale_price'] ?? $selectedPricing->sale_price) }}") || 0
-        );
+        // var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
+        // var gst = Math.round(
+        //     parseFloat("{{$totalGST ?? ( $selectedPricing->gst_percentage) / 100 * ($selectedPricing['sale_price'] ?? $selectedPricing->sale_price) }}") || 0
+        // );
+        let itemPrice = parseFloat($("#sale_price").val()) || 0;
+        let gst = parseFloat($("#gst_percentage").val()) || 0;
+
+        let totalGst = Math.round(itemPrice * gst / 100);
+
+        console.log(itemPrice, gst, totalGst );
+        
         if (itemId != storeid) {
             localStorage.removeItem("selectedCouponId");
             localStorage.removeItem("selectedCouponCode");
@@ -18,17 +288,19 @@
         let selectedCouponId = localStorage.getItem("selectedCouponId");
         let selectedCouponCode = localStorage.getItem("selectedCouponCode");
         // let selectedtotal = localStorage.getItem("selectedtotal");
-        let selectedtotal = (itemPrice + gst).toFixed(2);
+        let selectedtotal = (itemPrice + totalGst).toFixed(2);
         let selecteddiscount = localStorage.getItem("selecteddiscount");
         $("#discount_amount").text("INR " + selecteddiscount);
         
         if (selectedCouponId) {
             let final_total = selectedtotal - selecteddiscount;
-            console.log(itemPrice , gst , selecteddiscount, selectedtotal, final_total);
+            console.log(itemPrice , totalGst , selecteddiscount, selectedtotal, final_total);
             let formattedTotal = new Intl.NumberFormat('en-IN').format(final_total);
+            $('#amount').val(final_total * 100);
+            $('.final_btn_text').text("INR " + formattedTotal);
             $('#final_total').text("INR " + formattedTotal);
             $(".pink-blue-grad-button.d-inline-block.border-0.proced_to_pay_btn").text("Proceed To Pay " + formattedTotal + " INR");
-            $('[name="amount"]').val(selectedtotal * 100);
+            $('[name="amount"]').val(final_total * 100);
             $('[name="discount_value"]').val(selecteddiscount);
             $('[name="final_coupon_code"]').val(selectedCouponId);
             let selectedBtn = $('.coupon-btn[data-coupon-id="' + selectedCouponId + '"]');
@@ -142,16 +414,23 @@
             hideAppliedCouponSection();
 
             // Calculate the total price including GST
-            let fixedPrice = parseFloat("{{ $plan->pricing->sale_price }}");
-            let gstPercentage = parseFloat("{{ $plan->pricing->gst_percentage }}");
-            let quantity = $('#quantity').text();
-            // console.log(quantity);
+            let fixedPrice = parseFloat($("#sale_price").val()) || 0;
+            let gstPercentage = parseFloat($("#gst_percentage").val()) || 0;
+            let quantity = parseInt($('#quantity').text()) || 1; // Ensure integer
+
             fixedPrice = fixedPrice * quantity;
+
             let totalWithGst = fixedPrice + (fixedPrice * gstPercentage / 100);
+
+            console.log(totalWithGst, fixedPrice, gstPercentage, quantity);
+
             let roundedAmount = Math.round(totalWithGst);
 
-            // Format the total
+            // Format the total for Indian locale
             let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
+            console.log('formattedTotal', formattedTotal);
+
+            
 
             // Update the UI with the new final total
             $('#final_total').text("INR " + formattedTotal);
@@ -277,9 +556,11 @@
             });
         // }
         
-        $(".remove-item").on("click", function () {
+       $(document).on("click", ".remove-item", function () {
             let planId = $(this).data("plan-id");
             let pricingId = $(this).data("pricing-id");
+            let categoryName = $(this).data("category"); // Get category name
+            let subcategorySlug = $(this).data("slug"); // Get subcategory slug
 
             $.ajax({
                 url: "{{ route('cart.remove') }}",
@@ -293,11 +574,18 @@
                     if (response.success) {
                         $("#cart-container-" + planId + "-" + pricingId).fadeOut(300, function () {
                             $(this).remove();
-                            location.reload();
-                            recalculateTotals();
+
+                            // After removal, check if cart is empty
+                            if ($(".cart-item").length === 0) {
+                                // Use category and subcategory slug for correct redirect
+                                let redirectUrl = "{{ url('category') }}/" + categoryName + "/" + subcategorySlug;
+                                window.location.href = redirectUrl;
+                            } else {
+                                recalculateTotals();
+                            }
                         });
                     } else {
-                        toastr.error("Error removing item");
+                        toastr.error(response.message || "Error removing item");
                     }
                 },
                 error: function () {
@@ -331,5 +619,160 @@
 
             console.log("Updated Totals:", newSubtotal, newGST, newDiscount, finalTotal);
         }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const guestPayButton = document.getElementById('guestProceedToPay');
+
+        if (!guestPayButton) return;
+
+        Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");
+
+        guestPayButton.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const guestForm = document.getElementById('guest-checkout-form');
+            const stripeForm = document.getElementById('stripe-form');
+
+            if (!guestForm || !stripeForm) {
+                toastr.error('Required forms not found.');
+                return;
+            }
+
+            const cardData = {
+                number: document.getElementById('card_number').value,
+                cvc: document.getElementById('card_cvc').value,
+                exp_month: document.getElementById('card_exp_month').value,
+                exp_year: document.getElementById('card_exp_year').value,
+                name: document.getElementById('name_on_card').value,
+            };
+
+            showLoader();
+
+            Stripe.card.createToken(cardData, function (status, response) {
+                if (response.error) {
+                    hideLoader();
+                    toastr.error(response.error.message);
+                    return;
+                }
+
+                const token = response.id;
+
+                const combinedFormData = new FormData(guestForm);
+                new FormData(stripeForm).forEach((value, key) => {
+                    combinedFormData.append(key, value);
+                });
+
+                combinedFormData.append('stripeToken', token);
+
+                const payload = {};
+                combinedFormData.forEach((value, key) => {
+                    payload[key] = value;
+                });
+
+                fetch("{{ route('user-create-checkout') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(async response => {
+                    try {
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        throw new Error("Invalid response format: Expected JSON.");
+                    }
+                })
+                .then(data => {
+                    hideLoader();
+                    if (data.success) {
+                        if (data.requires_action && data.redirect_url?.url) {
+                            console.log("Redirect URL:", data.redirect_url.url);
+                            window.location.replace(data.redirect_url.url);
+                        } else {
+                            toastr.success('Checkout completed!');
+                            window.location.href = "/user-dashboard";
+                        }
+                    } else {
+                        toastr.error(data.message || data.error || 'Something went wrong.');
+                    }
+                })
+                .catch(error => {
+                    hideLoader(); 
+                    console.error(error);
+                    toastr.error('Error during checkout. Check console for details.');
+                });
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Helper: validate a single input
+        function validateInput(input) {
+            const errorDiv = document.getElementById(input.id + '_error');
+            const val = input.value.trim();
+            let valid = true;
+            let errorMsg = '';
+
+            if (!val) {
+                errorMsg = 'This field is required';
+                valid = false;
+            } else {
+                if (input.id === 'card_number') {
+                if (!/^\d{16}$/.test(val)) {
+                    errorMsg = 'Card number must be 16 digits';
+                    valid = false;
+                }
+                }
+                // Add other field validations as needed
+            }
+
+            if (!valid) {
+                errorDiv.textContent = errorMsg;
+                errorDiv.style.display = 'block';
+                input.style.borderColor = 'red';
+            } else {
+                errorDiv.textContent = '';
+                errorDiv.style.display = 'none';
+                input.style.borderColor = '#ccc';
+            }
+
+            return valid;
+        }
+
+        // Validate all inputs in a form
+        function validateForm(form) {
+            let valid = true;
+            const inputs = form.querySelectorAll('.form-control');
+
+            inputs.forEach(input => {
+                if (!validateInput(input)) valid = false;
+            });
+
+            return valid;
+        }
+
+        // Attach submit handler to both forms
+        ['stripe-form', 'guest-checkout-form'].forEach(formId => {
+            const form = document.getElementById(formId);
+            if (!form) return;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); 
+                if (validateForm(form)) {
+                form.submit();
+                } else {
+                const firstError = form.querySelector('.error[style*="block"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                }
+            });
+
+            form.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', () => validateInput(input));
+            });
+        });
     });
 </script>

@@ -1,3 +1,11 @@
+@php
+    use App\Models\Category;
+    use App\Models\SubCategory;
+    use App\Models\Settings;
+    $category = Category::where('sys_state','=','0')->first();
+    $subcategory = SubCategory::where('sys_state','=','0')->first();
+    $site = Settings::where('key','site_setting')->first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +22,9 @@
     <link rel="stylesheet" href="{{ asset('front-end/css/home_page_responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('front-end/css/product_responsive.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+     @if ($site && $site['value']['site_favicon'])
+        <link rel="icon"  href="{{asset('storage/Logo_Settings/'.$site['value']['site_favicon'])}}">
+    @endif
     <!-- Toastr CSS (Toast notifications) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     
@@ -24,14 +34,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 </head>
 <body>
-    @php
-        use App\Models\Category;
-        use App\Models\SubCategory;
-        use App\Models\Settings;
-        $category = Category::where('sys_state','=','0')->first();
-        $subcategory = SubCategory::where('sys_state','=','0')->first();
-        $site = Settings::where('key','site_setting')->first();
-    @endphp
+
     @include('front-end.common.header')
     <div class="main-content">
         @yield('content')

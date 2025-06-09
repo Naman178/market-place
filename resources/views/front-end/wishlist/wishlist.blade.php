@@ -1,4 +1,5 @@
 @extends('front-end.common.master')
+@section('title', 'Wishlist')
 @section('styles')
 <head>
     <meta charset="UTF-8">
@@ -6,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
             .wishlist-container {
-                max-width: 1000px;
+                max-width: 1400px;
                 margin: auto;
                 background: #fff;
                 border: 1px dotted #007bff;
@@ -131,10 +132,6 @@
                 color: white;
                 border-radius: 4px;
             }
-            .wishlist{
-                margin-top: 97px;
-                margin-bottom: 97px !important;
-            }
             @media (max-width: 991px) {
                 .wishlist-container {
                     max-width: 90%; 
@@ -149,7 +146,7 @@
 </head>
 @endsection
 @section('content')
-    <div class="wishlist">
+    <div class="wishlist pt-5 pb-5">
         <div class="wishlist-container">
             <h1 class="wishlist-title">My Wishlist</h1>
             <div class="wishlist-grid row p-2">

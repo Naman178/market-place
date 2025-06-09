@@ -1,10 +1,20 @@
 <!DOCTYPE html>
+@php
+    use App\Models\Settings;
+    $site = Settings::where('key','site_setting')->first();
+@endphp
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Invoice</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/styles/css/themes/lite-purple.min.css')}}">
+    @if ($site && $site['value']['site_favicon'])
+        <link rel="icon"  href="{{asset('storage/Logo_Settings/'.$site['value']['site_favicon'])}}">
+    @endif
     <style>
         @page {
             margin: 0px;
@@ -133,17 +143,46 @@
 
 <body>
     @php
+
         $path = is_array($setting->value) && isset($setting->value['logo_image'])
         ? public_path('storage/Logo_Settings/' . $setting->value['logo_image'])
         : public_path('front-end/images/infiniylogo.png');
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $createdAt = \Carbon\Carbon::parse($invoice->created_at);
+        $nextDueDate = '';
 
+        if ($invoice->pricing->pricing_type == 'recurring') {
+            $billingCycle = $invoice->pricing->billing_cycle;
+
+            switch ($billingCycle) {
+                case 'monthly':
+                    $nextDueDate = $createdAt->copy()->addMonth()->format('d-m-Y');
+                    break;
+                case 'yearly':
+                    $nextDueDate = $createdAt->copy()->addYear()->format('d-m-Y');
+                    break;
+                case 'weekly':
+                    $nextDueDate = $createdAt->copy()->addWeek()->format('d-m-Y');
+                    break;
+                case 'quarterly':
+                    $nextDueDate = $createdAt->copy()->addMonths(3)->format('d-m-Y');
+                    break;
+                case 'custom':
+                    $customDays = $invoice->pricing->custom_cycle_days ?? 0;
+                    $nextDueDate = $createdAt->copy()->addDays($customDays)->format('d-m-Y');
+                    break;
+                default:
+                    $nextDueDate = $createdAt->copy()->addDays(30)->format('d-m-Y');
+            }
+        } else {
+            $nextDueDate = '-';
+        }
     @endphp
     <div class="contentWrapper">
         <div class="companyLogo">
-            <img src="{{$base64}}" alt="logo" class="logo" width="150" height="50">
+            <img src="{{$base64}}" alt="logo" class="logo" width="180" height="50">
         </div>
         <div class="vnetCompanyInfo">
             <h3>{{ $setting->value['site_name'] ?? '' }}</h3>
@@ -155,6 +194,7 @@
             <h3>Invoice# <span>{{ $invoice->invoice_number ?? '' }}</span></h3>
             <p>Invoice Date: <span>{{ $invoice->created_at ? $invoice->created_at->format('d-m-Y') : '-' }}</span></p>
             <p>Paid Date: <span>{{ $invoice->created_at ? $invoice->created_at->format('d-m-Y') : '-' }}</span></p>
+            <p>Next Due Date:<span> {{ $nextDueDate }} </span></p>
         </div>
         <div class="innerDiv">
             <h3>Invoiced To</h3>
@@ -186,7 +226,8 @@
                 </tr>
                 @if ($invoice->gst_percentage > 0)
                     @php
-                        $taxAmount = ($invoice->subtotal * $invoice->gst_percentage) / 100;
+                        $taxAmount =   ($invoice->subtotal * $invoice->gst_percentage) / 100;
+                        $taxAmount = ceil($taxAmount);
                     @endphp
                     <tr>
                         <td colspan="3">GST ({{ intval($invoice->gst_percentage) }}%)(+)</td>
@@ -215,8 +256,15 @@
                     </tr>
                 @endif
                 <tr>
+                   @php
+                        $total = ceil($invoice->total); 
+                        $total = number_format($total, 2); 
+                        if($invoice->discount > 0){
+                            $total = $invoice->total;
+                        }
+                    @endphp
                     <td colspan="3">Total Amount</td>
-                    <td>  {{ $product->currency ?? 'Rs.'}} {{ round($invoice->total, 2) ?? '' }}
+                    <td>  {{ $product->currency ?? 'Rs.'}} {{ $total ?? '' }}
                     </td>
                 </tr>
             </tbody>

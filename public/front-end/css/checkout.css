@@ -195,3 +195,23 @@
 .text-center {
     text-align: center !important;
 }
+
+@media(max-width: 767px){
+  .padding {
+      padding: 0rem 0 5rem;
+  }
+
+  .register-container .title h3 {
+    font-size: 30px !important;
+}
+}
+
+.coupon .blue_common_btn svg {
+    left: 0px;
+    position: absolute;
+    width: 101%;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

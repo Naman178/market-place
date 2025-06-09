@@ -5,11 +5,13 @@
 
 <div class="int_bg blog mb-37">
     <div class="container">
-        <img class="" src="front-end/images/Group 1000002961.png" alt="not found">
+        <p class="plugin-label">
+            <span class="label-line"></span> Recent Posts
+        </p>
         <div class="d_flex">
             <div class="integration">
-                <h1>Latest From Our <span>Blog</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found">
+                <h2>Latest From Our <span class="underline">Blog</span></h2>
+                {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70">
                 <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><span class="arrow left-arrow"></span></a>
@@ -20,16 +22,22 @@
             <div class="row blog-slider">
                 @foreach ($Blogs as $blog)
                     <div class="col-4 match-height-item">
-                        <a href="{{ route('blog_details', ['blog_id' => $blog->blog_id]) }}">
+                     <a href="{{ route('blog_details', ['category' => Str::slug($blog->categoryname->name), 'slug' => Str::slug($blog->title)]) }}">
                         <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
                         <div class="item">
                            <p class="badge">{{ $blog->categoryname->name ?? ''}}</p>
                             <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
                             <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
                             <div class="d-flex">
-                                <a href="{{ route('blog_details', ['blog_id' => $blog->blog_id]) }}" class="integration_know d-flex align-items-center">
+                                {{-- <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
                                     <span>Read More</span>
                                     <img class="know_arrow d-flex align-items-center" src="front-end/images/blue_arrow.png" alt="not found" style="margin-top: 1px;">
+                                </a> --}}
+                                <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="read_more_btn">
+                                    <span class="text-line">
+                                        <span class="text">Read More</span>
+                                        <img class="know_arrow mt-0" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
+                                    </span>
                                 </a>
                             </div>
                         </div>

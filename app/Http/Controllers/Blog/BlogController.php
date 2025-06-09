@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\Comments;
 use App\Models\Share;
 use App\Models\SEO;
+use App\Models\Post;
 use Carbon\Carbon;
 use Auth;
 use DB;
+use Illuminate\Support\Str;
 
 
 class BlogController extends Controller
@@ -54,10 +56,20 @@ class BlogController extends Controller
                         $destinationPath = public_path('storage/images/');
                         $request->file('blog_image')->move($destinationPath, $blog_originalImageName);
                     }
-            
-                    // Create the blog entry
+
+                    $originalTitle = $request->title;
+                    $title = $originalTitle;
+                    $counter = 1;
+
+                    while (Blog::where('title', $title)->exists()) {
+                        $title = $originalTitle . '-' . $counter;
+                        $counter++;
+                    }
+                    $slug = Str::slug($title);
+                    // Create blog
                     $save_Blog = Blog::create([
-                        'title' => $request->title,
+                        'title' => $title, 
+                        'slug' => $slug, 
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
                         'short_description' => $request->shortdescription,
@@ -169,10 +181,11 @@ class BlogController extends Controller
                     } else {
                         $blog_originalImageName = $Blog->image; 
                     }
-            
+                    $slug = Str::slug($request->title);
                     // Update the blog entry
                     $Blog->update([
                         'title' => $request->title,
+                        'slug' => $slug, 
                         'category' => $request->category,
                         'image' => $blog_originalImageName,
                         'short_description' => $request->shortdescription,
@@ -294,11 +307,23 @@ class BlogController extends Controller
         $rules = [
             'title' => 'required|string|max:255',
             'category' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'short_description' => 'string',
-            'long_description' => 'string',
-            'related_blog' => 'array', 
-            'related_blog.*' => 'exists:blog,blog_id',
+            'blog_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shortdescription' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The short description field is required.');
+                    }
+                },
+            ],
+            'long_description' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The long description field is required.');
+                    }
+                },
+            ],
         ];
         return Validator::make($request->all(), $rules);
     }
@@ -343,19 +368,27 @@ class BlogController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Section not found'], 404);
     }
-    public function blogDetails($blog_id)
+    public function blogDetails($category, $slug)
     {
-        $blog = Blog::where('status', '1')->where('blog_id', $blog_id)->firstOrFail();
+        $blog = Blog::where('status', '1')->where('slug', $slug)->first();
+        $blog_id = $blog->blog_id;
         if (!is_null($blog->related_blogs)) {
             $blog->related_blogs = json_decode($blog->related_blogs); 
         }
-        $comments = Comments::where('blog_id', $blog_id)->with('user')->get();
+        $post = Post::with('comments.user')->find($blog_id) ?? new Post();
         $Blogcontents = BlogContent::where('blog_id', $blog_id)->get();
         $Blog_category = Blog_category::get();
         $seoData = SEO::where('page', 'home')->first();
-        return view('front-end.Blog.blog_details',compact('seoData','blog','comments','Blogcontents','Blog_category'));
+        return view('front-end.Blog.blog_details',compact('seoData','blog','post','Blogcontents','Blog_category'));
     }
 
+    public function blogIndex(Request $request)
+    {
+        $Blogs = Blog::where('status', '1')->with('categoryname')->orderBy('blog_id', 'desc')->paginate(9);
+        $Blog_category = Blog_category::get();
+        $seoData = SEO::where('page', 'home')->first();
+        return view('front-end.Blog.blog',compact('Blogs','Blog_category','seoData'));
+    }
 
     public function postComment(Request $request, $blog_id)
     {

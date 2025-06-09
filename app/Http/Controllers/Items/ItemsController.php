@@ -30,7 +30,7 @@ class ItemsController extends Controller
     }
     public function index()
     {
-        $items = Items::with(['pricing'])->where('sys_state','!=','-1')->orderBy('id','desc')->get();
+        $items = Items::with(['pricing'])->where('sys_state','!=','-1')->orderBy('id','asc')->get();
         return view('pages.items.items',compact('items'));
     }
 
@@ -99,12 +99,12 @@ class ItemsController extends Controller
                 $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
             ])->save();
             
-            if ($request->has('trial_days') && is_numeric($request->trial_days)) {
-                $trialDays = $request->trial_days;
-                $trialEndDate = Carbon::now()->addDays($trialDays)->format('Y-m-d H:i:s');
-                $item->trial_days = $request->trial_days;
+            $trialDays = is_numeric($request->trial_days) ? (int) $request->trial_days : 0;
+            if ($trialDays >= 0) {
+                $item->trial_days = $trialDays;
                 $item->save();
             }
+
             if($request->has('currency')){
                 $currency = $request->currency;
                 $item->currency = $request->currency;
@@ -373,7 +373,8 @@ class ItemsController extends Controller
             'subcategory_id' => 'required',
             'fixed_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
-            'gst_percentage' => 'required|numeric'
+            'gst_percentage' => 'required|numeric',
+            'trial_days' => 'nullable|integer|min:0'
         ];
 
         if ($request->item_id == "0" || $request->item_id_type == 'new') {
@@ -393,6 +394,7 @@ class ItemsController extends Controller
             'subcategory_id.required' => 'The subcategory field is required.',
             'item_images.*.required_without_all'=>'At least one image is required.',
             'item_images.required'=>'At least one image is required.',
+            'trial_days.min' => 'Trial days cannot be negative.',
         ];
 
         return Validator::make($request->all(), $rules, $customMessages);

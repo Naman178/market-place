@@ -16,6 +16,20 @@
             }
         });
     });
+    document.getElementById("Blog_image").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("Blog_image_prev");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove("hidepreviewimg");
+                preview.classList.add("show");
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // document.getElementById('image').addEventListener('change', function(event) {
     //     document.getElementById('image-previews').innerHTML = '';
@@ -135,6 +149,113 @@
         quillLong .on('text-change', function () {
             $('#long_description').val(quillLong.root.innerHTML);
         });
+        quillShort.on('text-change', function () {
+            $('#shortdescription').val(quillShort.root.innerHTML);
+            $('#shortdescription_error').text(''); // Clear error message
+            $('#shortdescription').removeClass('is-invalid'); // Remove invalid class
+        });
+
+        quillLong.on('text-change', function () {
+            $('#long_description').val(quillLong.root.innerHTML);
+            $('#long_description_error').text(''); // Clear error message
+            $('#long_description').removeClass('is-invalid'); // Remove invalid class
+        });
+        $(document).on("click", ".erp-Blog-form", function (e) {
+            e.preventDefault();
+            console.log("Submit button clicked");
+            
+            // Ensure Quill.js fields are updated before submission
+            $('#shortdescription').val(quillShort.root.innerHTML);
+            $('#long_description').val(quillLong.root.innerHTML);
+
+            var submitUrl = $('#Blog_form').attr("data-url");
+            var data_id = $('#Blog_form').attr("data-id");
+            var formData = new FormData($('#Blog_form')[0]);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+                console.log('No validation errors found, proceeding with AJAX request');
+
+                $("#preloader").show();
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+                        if (response.success) {
+                            $('.error').text('');
+                            var redirectUrl = "{{ route('Blog-index') }}";
+                            window.location.href = redirectUrl;
+                        } else if (response.error) {
+                            handleFormErrors(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+        });
+          function handleFormErrors(errors) {
+            $('.error').text(''); // Clear all errors first
+            $('.input-error').removeClass('is-invalid');
+            $('#designation_error').text(errors['designation'] || '');
+            $('#message_error').text(errors['message'] || '');
+            $('#keyword_error').text(errors['keyword'] || '');
+            $('#page_error').text(errors['page'] || '');
+            $('#name_error').text(errors['name'] || '');
+            $('#image_error').text(errors['image'] || '');
+            $('#link_error').text(errors['link'] || '');
+            $('#status_error').text(errors['status'] || '');
+            $('#parent_category_error').text(errors['parent_category_id'] || '');
+            $('#description_error').text(errors['description'] || '');
+
+            $('#category_name').addClass(errors['name']?'is-invalid':'');
+            $('#sub_category_name').addClass(errors['name']?'is-invalid':'');
+            $('#parent_category').addClass(errors['parent_category_id']?'is-invalid':'');
+            $('.image-input-wrapper').addClass(errors['image']?'is-invalid':'');
+            if(errors['title']) {
+                $('#title_error').text(errors['title'][0]);
+                $('#title').addClass('is-invalid');
+            }
+            if(errors['category']) {
+                $('#category_error').text(errors['category'][0]);
+                $('#category').addClass('is-invalid');
+            }
+           if(errors['blog_image']) {
+                $('#blog_image_error').text(errors['blog_image'][0]);
+                $('#Blog_image').addClass('is-invalid');
+            }
+            if(errors['shortdescription']) {
+                $('#shortdescription_error').text(errors['shortdescription'][0]);
+                $('#shortdescription').addClass('is-invalid');
+            }
+            if(errors['long_description']) {
+                $('#long_description_error').text(errors['long_description'][0]);
+                $('#long_description').addClass('is-invalid');
+            }
+            if(errors['related_blog']) {
+                $('#related_blog_error').text(errors['related_blog'][0]);
+                $('#related_blog').addClass('is-invalid');
+            }
+            if(errors['question']) {
+                $('#question_error').text(errors['question'][0]);
+                $('#question').addClass('is-invalid');
+            }
+            if(errors['answer']) {
+                $('#answer_error').text(errors['answer'][0]);
+                $('#answer').addClass('is-invalid');
+            }
+        }
     });
 
     $(document).ready(function() {

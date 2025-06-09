@@ -4,8 +4,8 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div>
-                <h1>Shop By <span>Category</span></h1>
-                <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found">
+                <h2>Shop By <span class="underline">Category</span></h2>
+                {{-- <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
                 {{-- <a href="javascript:void(0)" role="button" data-slide="prev" id="categroy-left-arrow-btn"><span
@@ -43,7 +43,7 @@
             <div class="container text-center category-slider pb_30" id="category-slider">
                 @foreach ($category as $item)
                     <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" style="display: inline-block;">
-                        <a href="{{ route('product.list', ['categoryOrSubcategory' => $item->id]) }}" tabindex="0">
+                        <a href="{{ route('category_details', ['slug' => Str::slug($item->name)]) }}" tabindex="0">
                         <div class="wsus__categories_item_2">
                             <div class="icon">
                                 <img src="{{ asset('public/storage/category_images/' . $item->image) }}" alt="category" class="img-fluid w-100">

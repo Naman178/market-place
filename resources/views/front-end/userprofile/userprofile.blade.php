@@ -1,14 +1,39 @@
 @extends('front-end.common.master')
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+ 
+$logoImage = $site['value']['logo_image'] ?? null;
+$ogImage = $logoImage 
+    ? asset('storage/Logo_Settings/' . $logoImage) 
+    : asset('front-end/images/infiniylogo.png');
+@endphp
 @section('meta')
-<title>Market Place | {{ $seoData->title ?? 'Default Title' }} - {{ $seoData->description ?? 'Default Description' }}</title>
+@section('title'){{ $seoData->title ?? 'User Profile'}} @endsection
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $seoData->description ?? 'Default description' }}">
-<meta name="keywords" content="{{ $seoData->keywords ?? 'default, keywords' }}">
-<meta property="og:title" content="{{ $seoData->title ?? 'Default Title' }}">
-<meta property="og:description" content="{{ $seoData->description ?? 'Default description' }}">
+
+{{-- SEO Meta --}}
+<meta name="description" content="{{ $seoData->description ?? 'View and update your user profile on Market Place Main. Manage your information, settings, and more in one place.' }}">
+<meta name="keywords" content="{{ $seoData->keywords ?? 'user profile, account settings, Market Place Main' }}">
+
+{{-- Open Graph Meta --}}
+<meta property="og:title" content="{{ $seoData->title ?? 'User Profile - Market Place Main' }}">
+<meta property="og:description" content="{{ $seoData->description ?? 'Access and manage your profile on Market Place Main with ease.' }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="{{ $ogImage }}">
+
+{{-- Twitter Meta --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $seoData->title ?? 'User Profile - Market Place Main' }}">
+<meta name="twitter:description" content="{{ $seoData->description ?? 'Access and manage your profile on Market Place Main with ease.' }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+@if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+    <meta property="og:logo" content="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" />
+@else
+    <meta property="og:logo" content="{{ asset('front-end/images/infiniylogo.png') }}" />
+@endif
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('front-end/css/checkout.css') }}">
@@ -53,6 +78,7 @@
         #profile_pic_title{
             font-size: 12px;
             margin-bottom: 2px;
+            overflow: auto;
         }
     </style>
     
@@ -60,6 +86,8 @@
         .filelabel {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            height: auto;
             gap: 10px;
             cursor: pointer;
         }
@@ -80,13 +108,19 @@
             background-color: #292B46;
         }
         
-        .previewImgCls {
-            width: 100px;
-            height: 40px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            object-fit: cover;
+       .image-input-wrapper {
+            padding: 10px;
+            min-height: 100px;
+            position: relative;
         }
+
+        .previewImgCls {
+            width: 120px;
+            height: 75px;
+            object-fit: contain;
+            display: none;
+        }
+
         
         .hidepreviewimg {
             display: none;
@@ -96,6 +130,9 @@
             font-size: 14px;
             color: #333;
         }
+        .underline::after{
+            bottom: -45px !important;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 @endsection
@@ -104,67 +141,160 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-                 const inputFields = document.querySelectorAll(".custom-css");
-                 
-                 // Function to handle floating label
-                 function updateFloatingLabel(input) {
-                     const label = input.nextElementSibling; // Get the corresponding label
-                     if (label) { 
-                        if (input.value && input.value.trim() !== "") {
-                            label.style.top = "-1%";
-                            label.style.fontSize = "0.8rem";
-                            label.style.color = "#70657b";
-                        } else {
-                            label.style.top = "35%";
-                            label.style.fontSize = "1rem";
-                            label.style.color = "red";
+       document.addEventListener("DOMContentLoaded", function () {
+            const inputFields = document.querySelectorAll(".custom-css");
+
+            function updateFloatingLabel(input) {
+                const label = input.nextElementSibling;
+                const errorDiv = document.getElementById(input.id + "_error");
+                const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+
+                if (!label) return;
+
+               if (input.value.trim() !== "") {
+                    label.style.top = "-1%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
+                } else if (hasError) {
+                    label.style.top = "35%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "red";
+                    input.style.borderColor = "red";
+                } else {
+                    label.style.top = "50%";
+                    label.style.fontSize = "14px";
+                    label.style.color = "#70657b";
+                    input.style.borderColor = "#ccc";
+                }
+            }
+
+            inputFields.forEach(input => {
+                const errorDiv = document.getElementById(input.id + "_error");
+
+                // Initialize floating label
+                updateFloatingLabel(input);
+
+                // Blur: validate input and show/hide error
+                input.addEventListener("blur", function () {
+                    if (!input.value.trim()) {
+                        if (errorDiv) {
+                            errorDiv.textContent = input.name.replace("_", " ") + " is required!";
+                            errorDiv.style.display = "block";
                         }
+                        input.style.borderColor = "red";
+                    } else {
+                        if (errorDiv) {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                        }
+                        input.style.borderColor = "#ccc";
                     }
-                     if (input.value.trim() !== "") {
-                         label.style.top = "-1%";
-                         label.style.fontSize = "0.8rem";
-                         label.style.color = "#70657b";
-                     } else {
-                         label.style.top = "35%";
-                         label.style.fontSize = "1rem";
-                         label.style.color = "red";
-                     }
-                 }
-     
-                 // Initialize labels on page load
-                 inputFields.forEach(input => {
-                     updateFloatingLabel(input);
-     
-                     // Blur event: Check if empty & show error
-                     input.addEventListener("blur", function () {
-                         const errorDiv = document.getElementById(input.id + "_error");
-                         if (!input.value.trim()) {
-                             errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-                             errorDiv.style.display = "block";
-                             input.style.borderColor = "red";
-                         } else {
-                             errorDiv.style.display = "none";
-                             input.style.borderColor = "#ccc";
-                         }
-                         updateFloatingLabel(input);
-                     });
-     
-                     // Focus event: Float label
-                     input.addEventListener("focus", function () {
-                         const label = input.nextElementSibling;
-                         label.style.top = "-1%";
-                         label.style.fontSize = "0.8rem";
-                         if (input.value.trim() !== "") {
-                             label.style.color = "#70657b";
-                             input.style.borderColor = "#70657b";
-                         } else{
-                             label.style.color = "red";
-                             input.style.borderColor = "red";
-                         }
-                     });
-                 });
-             });
+                    updateFloatingLabel(input);
+                });
+
+                // Focus: show floating label
+                input.addEventListener("focus", function () {
+                    const label = input.nextElementSibling;
+                    if (!label) return;
+
+                    label.style.top = "-1%";
+                    label.style.fontSize = "0.8rem";
+
+                    if (input.value.trim() !== "") {
+                        label.style.color = "#70657b";
+                        input.style.borderColor = "#70657b";
+                    } else {
+                        const hasError = errorDiv && errorDiv.textContent.trim() !== "";
+                        label.style.color = hasError ? "red" : "#70657b";
+                        input.style.borderColor = hasError ? "red" : "#ccc";
+                    }
+                });
+            });
+            function validateInput(input) {
+                const errorDiv = document.getElementById(input.id + "_error");
+                if (!input.value.trim()) {
+                    errorDiv.textContent = input.name.replace(/_/g, " ") + " is required!";
+                    input.classList.add('is-invalid');
+                    return false;
+                } else {
+                    errorDiv.textContent = "";
+                    input.classList.remove('is-invalid');
+                    return true;
+                }
+            }
+            document.querySelectorAll('.custom-css').forEach(input => {
+                input.addEventListener('blur', () => validateInput(input));
+            });
+
+            $(document).on("click", ".erp-profile-form", function(e) {
+                e.preventDefault(); // Prevent any default action or form submit
+
+                // Trigger blur on all inputs to validate all
+                $(".custom-css").each(function() {
+                    this.dispatchEvent(new Event('blur'));
+                });
+
+                // If any invalid inputs exist, stop submission
+                if ($('.custom-css.is-invalid').length > 0) {
+                    return; // Stop AJAX submit if errors exist
+                }
+
+                var submitUrl = $('#profile_form').data("url");
+                var formData = new FormData($('#profile_form')[0]);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $("#preloader").show();
+
+                $.ajax({
+                    url: submitUrl,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#preloader").hide();
+                        $('.input-error').removeClass('is-invalid');
+
+                        if (response.success) {
+                            localStorage.setItem('successMessage', response.success);
+                            window.location.href = "{{ route('profile') }}";  // Redirect only if success
+                        } else if (response.error) {
+                            // Show server-side validation errors, no redirect
+                            handleErrorMessages(response.error);
+                            $.each(response.error, function(key, value) {
+                                toastr.error(value);
+                            });
+                            // Do NOT reload or redirect here — stay on page
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Ajax request failed:', error);
+                        $("#preloader").hide();
+                    }
+                });
+            });
+
+
+            function handleErrorMessages(errors) {
+                $('#firstname_error').text(errors.firstname || '');
+                $('#lastname_error').text(errors.lastname || '');
+                $('#email_error').text(errors.email || '');
+                $('#contact_error').text(errors.contact || '');
+                $('#company_name_error').text(errors.company_name || '');
+                $('#company_website_error').text(errors.company_website || '');
+                $('#city_error').text(errors.city || '');
+                $('#postal_error').text(errors.postal || '');
+                $('#address_line_one_error').text(errors.address_line_one || '');
+                $('#profile_pic_error').text(errors.profile_pic || '');
+            }
+        });
         //  $('#country').select2();
         //  $('#country_code').select2();
     </script>
@@ -206,19 +336,23 @@
     
     <script>
         function previewImage(event) {
-            var reader = new FileReader();
-            var fileInput = event.target;
-            var fileNameSpan = document.getElementById('file_name');
-            
-            reader.onload = function() {
-                var preview = document.getElementById('preview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-            
-            fileNameSpan.textContent = fileInput.files[0].name;
+            const preview = document.getElementById('preview');
+            const fileInput = event.target;
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+
+                    // Add class to expand wrapper
+                    fileInput.closest('.image-input-wrapper').classList.add('show-preview');
+                };
+                reader.readAsDataURL(file);
+            }
         }
+
     </script>
     
     
@@ -226,10 +360,10 @@
 @endsection
 @section('content')
     <div class="container">
-        <div class="checkout padding">
+        <div class="checkout  pt-5 padding">
             <div class="container  register-container">
                 <div class="title">
-                    <h3><span class="txt-black">Profile   </span><span class="color-blue underline-text"> Details</span></h3>
+                    <h3><span class="txt-black">Profile   </span><span class="color-blue underline"> Details</span></h3>
                 </div>   
                 <div class="row justify-content-center">
                     <!-- if user is already logged in -->

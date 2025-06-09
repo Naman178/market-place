@@ -23,7 +23,7 @@ class BlogCategoryController extends Controller
     }
     public function index()
     {
-        $Blog_category = Blog_category::orderBy('blog_category.category_id', 'desc')
+        $Blog_category = Blog_category::orderBy('blog_category.category_id', 'asc')
                             ->get();
         return view('pages.BlogCategory.Blog_category',compact('Blog_category'));
     }
@@ -102,7 +102,7 @@ class BlogCategoryController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
         return Validator::make($request->all(), $rules);
     }

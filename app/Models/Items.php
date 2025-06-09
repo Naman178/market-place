@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Usamamuneerchaudhary\Commentify\Models\Comment;
 
 class Items extends Model
 {
@@ -55,5 +56,9 @@ class Items extends Model
     }
     public function order(){
         return $this->hasMany(Order::class, 'product_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id');
     }
 }
