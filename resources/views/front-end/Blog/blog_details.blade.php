@@ -116,7 +116,8 @@
                     </div>
                 </div> --}}
                 {{-- <livewire:comments :post="$post"/> --}}
-               <livewire:comments :model="$post ?? new \App\Models\Post" />
+               {{-- <livewire:comments :model="$post ?? new \App\Models\Post" /> --}}
+               <livewire:comments :model="$post" />
             </div>
         </div>
     </div>
