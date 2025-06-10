@@ -52,7 +52,7 @@ class Items extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Reviews::class, 'item_id');
+        return $this->hasMany(Reviews::class, 'item_id')->where('sys_state', '0');
     }
     public function order(){
         return $this->hasMany(Order::class, 'product_id');
