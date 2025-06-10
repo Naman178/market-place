@@ -113,8 +113,11 @@
                                     @foreach ($orders as $index => $order)
                                         <div class="col-md-6 col-12 p_0">
                                             <div class="accordion" id="accordionRightIcon-{{ $index }}">
-                                                <div class="card mt-4 shadow-sm rounded-lg dot_border">
-                                                    <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
+                                                <div class="card mt-4 shadow-sm rounded-lg dot_border ">
+                                                    <div class="order-card-wrapper position-relative mb-4">
+                                                    <div class="cart-item-border text-center"
+                                                        title="{{ $order->product->name ?? 'Product Name' }}">{{ $order->product->name ?? 'Product Name' }}</div>
+                                                    </div>
                                                     {{-- <div class="card mt-4">
                                                         <div class="card-header header-elements-inline">
                                                             <h6
@@ -136,18 +139,18 @@
                                                         <div class="card-body bg-light">
                                                             <div class="row">
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                                                                    <div class="d-flex mb-3">
+                                                                    <div class="d-flex mb-3 ">
                                                                         <div class="text-muted"><strong>Order Id:</strong></div>
                                                                         <div class="ml-2"><p>#{{ $order->id ?? '' }}</p></div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                                                                    <div class="d-flex mb-3">
+                                                                    <div class="d-flex mb-3 align-items-center">
                                                                         <div class="text-muted"><strong>Product File:</strong></div>
-                                                                        <div class="ml-2 mt-2">
-                                                                            <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
-                                                                            class="btn blue_common_btn" 
-                                                                            download="{{ $order->product->name ?? '' }}">
+                                                                        <div class="ml-2">
+                                                                            <a href="{{ url('/download/' . $order->product->main_file_zip . '?name=' . urlencode($order->product->name ?? 'download')) }}"
+                                                                            download="{{ $order->product->name ?? 'download' }}.zip"
+                                                                            class="btn blue_common_btn" >
                                                                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -266,8 +269,8 @@
                                             <tr role="row">
                                                 <td data-label="order id "> #{{ $order->id ?? '' }}</td>
                                                 <td data-label="product key "> {{ $order->key->key ?? '' }}</td>
-                                                <td data-label="product file "> <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
-                                                        download="{{ $order->product->name ?? '' }}">Download</a>
+                                                <td data-label="product file "> <a href="{{ url('/download/' . $order->product->main_file_zip . '?name=' . urlencode($order->product->name ?? 'download')) }}"
+                                                    download="{{ $order->product->name ?? 'download' }}.zip">Download</a>
                                                 </td>
                                             </tr>
                                         @endforeach

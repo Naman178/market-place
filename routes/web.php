@@ -119,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-dashboard', [UserController::class, 'userDashboard'])->name('user-dashboard');
     Route::get('/orders', [UserController::class, 'orders'])->name('orders');
     Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    Route::get('/download/{fileName}', [UserController::class, 'download']);
     Route::get('/support', [UserController::class, 'support'])->name('support');
     Route::get('/transactions', [UserController::class, 'transactions'])->name('transactions');
     Route::get('/invoice', [UserController::class, 'invoice'])->name('invoice');

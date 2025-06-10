@@ -29,6 +29,7 @@ use DB;
 use App\Models\UserInquiry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 class UserController extends Controller
@@ -281,7 +282,7 @@ class UserController extends Controller
         $wallet = Wallet::where('user_id',$user['id'])->first();
         $transactions = Transaction::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
         $orders = Order::where('user_id',$user['id'])
-            ->with(['product','key'])
+            ->with(['product','key'])->orderBy('id', 'desc')
             ->get();
         $order_history = WoocommerceOrderHistory::where('user_id',$user['id'])->orderBy('id', 'desc')->get();
         $woo_user = UserCustomer::where('register_under_user_id',$user['id'])->get();
@@ -311,7 +312,22 @@ class UserController extends Controller
         $orders = Order::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
         return view('dashboard.downloads', compact('orders'));
     }
+    public function download(Request $request, $fileName)
+    {
+        $filePath = public_path("storage/items_files/{$fileName}");
 
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        $customName = $request->query('name', $fileName);
+
+        if (!str_ends_with($customName, '.zip')) {
+            $customName .= '.zip';
+        }
+
+        return response()->download($filePath, $customName);
+    }
     public function support() {
         $wallet = Wallet::where('user_id',auth()->id())->orderBy('id', 'desc')->first();
         return view('dashboard.support',compact('wallet'));

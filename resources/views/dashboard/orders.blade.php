@@ -44,9 +44,9 @@
                                                         <div class="d-flex mb-3 align-items-center">
                                                             <div class="text-muted"><strong>Product File:</strong></div>
                                                             <div class="ml-2">
-                                                                <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}" 
-                                                                class="btn blue_common_btn" 
-                                                                download="{{ $order->product->name ?? '' }}">
+                                                                <a href="{{ url('/download/' . $order->product->main_file_zip . '?name=' . urlencode($order->product->name ?? 'download')) }}"
+                                                                download="{{ $order->product->name ?? 'download' }}.zip"
+                                                                class="btn blue_common_btn">
                                                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
