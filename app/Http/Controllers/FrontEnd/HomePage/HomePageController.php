@@ -338,7 +338,7 @@ class HomePageController extends Controller
         $userCommentsCount = Comment::where('item_id', $id)->where('parent_id', null)->count(); 
         $post = Post::first();
         $userReviewsCount = Reviews::where('user_id', Auth::id())->where('item_id', $id)
-            ->count();
+            ->where('sys_state', '!=', '-1')->count();
 
         $reviews = Reviews::where('item_id', $id)
             ->with('user')->where('sys_state', '!=', '-1')->orderBy('id', 'desc')
