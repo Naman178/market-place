@@ -193,7 +193,7 @@ class HomePageController extends Controller
 
             $query->whereHas('categorySubcategory', function ($q) use ($subcategories) {
                 $q->whereIn('subcategory_id', $subcategories);
-            });
+            })->orderBy('items__tbl.created_at', 'desc');
         }
 
         // Filter by subcategories
@@ -201,7 +201,7 @@ class HomePageController extends Controller
             $filtersApplied = true;
             $query->whereHas('categorySubcategory', function ($q) use ($request) {
                 $q->whereIn('subcategory_id', $request->subcategories);
-            });
+            })->orderBy('items__tbl.created_at', 'desc');
         }
 
         // Filter by tags
@@ -209,13 +209,13 @@ class HomePageController extends Controller
             $filtersApplied = true;
             $query->whereHas('tags', function ($q) use ($request) {
                 $q->whereIn('tag_name', $request->tags);
-            });
+            })->orderBy('items__tbl.created_at', 'desc');
         }
 
         // Filter by price
         if ($request->has('price') && (int)$request->price > 0) {
             $filtersApplied = true;
-            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price]);
+            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price])->orderBy('items__tbl.created_at', 'desc');
         }
         $sortOption = $request->input('sort_option');
 
