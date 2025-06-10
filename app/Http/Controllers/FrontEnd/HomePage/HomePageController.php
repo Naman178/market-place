@@ -341,7 +341,7 @@ class HomePageController extends Controller
             ->count();
 
         $reviews = Reviews::where('item_id', $id)
-            ->with('user') 
+            ->with('user')->where('sys_state', '!=', '-1')->orderBy('id', 'desc')
             ->get();
         $pricingData = ItemsPricing::where('item_id', $id)->get(); 
         $featureData = ItemsFeature::where('item_id', $id)->get();
