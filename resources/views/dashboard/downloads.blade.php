@@ -23,8 +23,14 @@
                                     <td>#{{ $order->id ?? '' }}</td>
                                     <td>{{ $order->key->key ?? '' }}</td>
                                     <td>{{ $order->product->name ?? '' }}</td>
-                                    <td><a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
-                                            download="{{ $order->product->name ?? '' }}">Download</a>
+                                    <td>
+                                        {{-- <a href="{{ asset('storage/plan/' . $order->product->created_by . '/' . $order->product->id . '/' . $order->product->main_file) }}"
+                                            download="{{ $order->product->name ?? '' }}">Download</a> --}}
+                                          <a href="{{ url('/download/' . $order->product->main_file_zip . '?name=' . urlencode($order->product->name ?? 'download')) }}"
+                                            download="{{ $order->product->name ?? 'download' }}.zip">
+                                            Download
+                                        </a>
+
                                     </td>
                                 </tr>
                             @endforeach

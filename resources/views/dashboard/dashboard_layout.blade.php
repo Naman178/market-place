@@ -913,11 +913,27 @@ use App\Models\SubCategory;
                display: none !important;
            }
            .wsus__profile_header_text .header_button{
-                margin-top: -28rem;
+                margin-top: 2rem;
            }
            .wsus__profile_header {
              padding: 20px 0;
            }
+            .cart-item-border {
+                position: absolute;
+                top: -12px;
+                left: 15px;
+                background: white;
+                padding: 4px 10px;
+                border: 1px dotted #007AC1;
+                border-radius: 5px;
+                font-size: 13px;
+                max-width: 90%;
+                white-space: normal;
+                word-break: break-word;
+                z-index: 1;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
         }
         @media (max-width: 546px) {
             .wsus__profile_header_text .header_button{
@@ -956,6 +972,12 @@ use App\Models\SubCategory;
            .wsus__profile_header_text .header_button li{
                 padding: 20px 20px;
            }
+        }
+        @media (max-width: 330px) {
+            .order-card-wrapper {
+                position: relative;
+                padding-top: 25px;
+            }
         }
     </style>
 </head>
@@ -1514,6 +1536,10 @@ use App\Models\SubCategory;
                     label.style.fontSize = "14px";
                     label.style.color = "#70657b";
                     input.style.borderColor = "#ccc";
+                }
+                const toggleButton = input.parentElement.querySelector('.toggle-button');
+                if (toggleButton) {
+                    toggleButton.style.top = hasError ? '37%' : '50%';
                 }
             }
 

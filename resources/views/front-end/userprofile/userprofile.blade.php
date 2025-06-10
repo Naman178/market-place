@@ -424,10 +424,15 @@ $ogImage = $logoImage
                                         <span class="btn btn-outline-primary">
                                             <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
                                         </span>
-                                        <img id="preview" class="previewImgCls hidepreviewimg" 
+                                        {{-- <img id="preview" class="previewImgCls hidepreviewimg" 
                                             src="@if(!empty($user->profile_pic)){{ asset('assets/images/faces/'.$user->profile_pic) }}@else{{ asset('assets/images/faces/default.png') }}@endif"
-                                            style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif">
-
+                                            style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif"> --}}
+                                            @php
+                                                $profilePic = filter_var($user->profile_pic, FILTER_VALIDATE_URL)
+                                                            ? $user->profile_pic
+                                                            : asset('assets/images/faces/' . $user->profile_pic);
+                                            @endphp
+                                            <img id="preview" class="previewImgCls hidepreviewimg" src="{{ $profilePic }}" alt="profile"  style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif">
                                         <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
                                         <span id="file_name" class="file-name"></span>
                                     </label>
