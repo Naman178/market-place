@@ -427,25 +427,12 @@ $ogImage = $logoImage
                                         {{-- <img id="preview" class="previewImgCls hidepreviewimg" 
                                             src="@if(!empty($user->profile_pic)){{ asset('assets/images/faces/'.$user->profile_pic) }}@else{{ asset('assets/images/faces/default.png') }}@endif"
                                             style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif"> --}}
-                                            @if (empty($user->profile_pic) || $user->profile_pic == null)
-                                                @php
-                                                    $names = explode(' ', $user->name);
-                                                    $initials = '';
-                                                    foreach ($names as $name) {
-                                                        $initials .= strtoupper(substr($name, 0, 1));
-                                                    }
-                                                @endphp
-                                                <div class="previewImgCls hidepreviewimg rounded-full bg-gray-200 d-flex items-center justify-content-center text-gray-700 w-100 h-100" title="{{ $user->name }}">
-                                                    {{ $initials }}
-                                                </div>
-                                            @else
-                                                @php
-                                                    $profilePic = filter_var($user->profile_pic, FILTER_VALIDATE_URL)
-                                                                ? $user->profile_pic
-                                                                : asset('assets/images/faces/' . $user->profile_pic);
-                                                @endphp
-                                                <img id="preview" class="previewImgCls hidepreviewimg" src="{{ $profilePic }}" alt="profile"  style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif">
-                                            @endif
+                                            @php
+                                                $profilePic = filter_var($user->profile_pic, FILTER_VALIDATE_URL)
+                                                            ? $user->profile_pic
+                                                            : asset('assets/images/faces/' . $user->profile_pic);
+                                            @endphp
+                                            <img id="preview" class="previewImgCls hidepreviewimg" src="{{ $profilePic }}" alt="profile"  style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif">
                                         <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
                                         <span id="file_name" class="file-name"></span>
                                     </label>
