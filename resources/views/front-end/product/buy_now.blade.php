@@ -467,13 +467,12 @@
                                         <div class="ms-3 mx-2">
                                             <h4 class="mb-1 text-primary">{{ $review->user->name ?? 'Anonymous' }}</h4>
                                             
-                                            <!-- Star Rating Display -->
+                                          <!-- Star Rating Display (Read-Only) -->
                                             <div class="rating">
                                                 @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="fas fa-star rating-edit-1 {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"
-                                                        data-star="{{ $i }}" onclick="updateRating(1, {{ $i }})"></i>
+                                                    <i class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
                                                 @endfor
-                                                <span class="text-muted ms-2" data-review-id="1">({{ number_format($review->rating, 1) }})</span>
+                                                <span class="text-muted ms-2">({{ number_format($review->rating, 1) }})</span>
                                             </div>
                                             
                                             <!-- Review Text -->
@@ -598,7 +597,7 @@
                                             <div class="d-flex justify-content-between align-items-center accordion-toggle" style="cursor: pointer;" data-target="#accordion-{{ $index }}">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa fa-check mr-2"></i>
-                                                    {{ $priceFeatures[0]->key_feature ?? '' }}
+                                                     {{ $priceFeatures->first()->key_feature ?? 'No features available' }}
                                                 </div>
                                                 @if ($priceFeatures->count() > 1)
                                                     <i class="fa fa-chevron-down toggle-icon"></i>
@@ -717,6 +716,8 @@
     const addToWishlistRoute = "{{ route('wishlist.add') }}";
 
     function addWishlist(itemId) {
+        console.log("Item ID:", itemId);
+        
         // Find the button and icon elements using the itemId
         let wishlistBtn = document.getElementById(`wishlistBtn-${itemId}`);
         let wishlistIcon = document.getElementById(`wishlistIcon-${itemId}`);

@@ -17,6 +17,7 @@ use App\Models\SEO;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Stripe\StripePaymentController;
 use Stripe\Charge;
+use Illuminate\Validation\Rule;
 class RegisterController extends Controller
 {
     public function index()
@@ -87,24 +88,64 @@ class RegisterController extends Controller
                 $gst = $request->gst;
                 $pass = Str::random(10);
                 $password = Hash::make($pass);
+                
+                $response = Http::get('https://disposable.debounce.io', ['email' => $email]);
+                $disposableData = $response->json();
+                if (!empty($disposableData['disposable']) && $disposableData['disposable'] === 'true') {
+                    return back()->withErrors(['email' => 'We are not accepting Disposable Email Addresses.']);
+                }
 
-                $save_user = User::create([
-                    'name'=>$name,
-                    'email'=>$email,
-                    'fname'=> $fname,
-                    'lname'=>$lname,
-                    'country_code'=>$country_code,
-                   'contact_number'=>$contact, 
-                    'password'=>$password,
-                    'company_name' => $company_name,
-                    'company_website' => $company_website,
-                    'country' => $country,
-                    'address_line1' => $address_line_one,
-                    'address_line2' => $address_line_two,
-                    'city' => $city,
-                    'postal_code' => $postal,
-                    'gstin' => $gst,
-                ]);
+                // 2. Reuse deleted user if sys_state == -1
+                $existingUser = User::where('email', $email)->first();
+                $isReactivating = false;
+
+                $pass = Str::random(10);
+                $password = Hash::make($pass);
+
+                if ($existingUser && $existingUser->sys_state == -1) {
+                    // Reactivate the user
+                    $existingUser->update([
+                        'sys_state' => "0", 
+                        'password' => $password,
+                        'name' => $request->firstname . ' ' . $request->lastname,
+                        'fname' => $request->firstname,
+                        'lname' => $request->lastname,
+                        'country_code' => $request->country_code,
+                        'contact_number' => $request->contact_number,
+                        'company_name' => $request->company_name,
+                        'company_website' => $request->company_website,
+                        'country' => $request->country,
+                        'address_line1' => $request->address_line1,
+                        'address_line2' => $request->address_line2,
+                        'city' => $request->city,
+                        'postal_code' => $request->postal_code,
+                        'status' => 1,
+                        'gstin' => $request->gst,
+                    ]);
+                    $save_user = $existingUser;
+                    $isReactivating = true;
+                } elseif (!$existingUser) {
+                        $save_user = User::create([
+                            'name'=>$name,
+                            'email'=>$email,
+                            'fname'=> $fname,
+                            'lname'=>$lname,
+                            'country_code'=>$country_code,
+                            'contact_number'=>$contact, 
+                            'password'=>$password,
+                            'company_name' => $company_name,
+                            'company_website' => $company_website,
+                            'country' => $country,
+                            'address_line1' => $address_line_one,
+                            'address_line2' => $address_line_two,
+                            'city' => $city,
+                            'postal_code' => $postal,
+                            'gstin' => $gst,
+                        ]);
+                } else {
+                    // If user exists and is not deleted, return error
+                    return response()->json(['error' => 'Email is already in use. Please login instead.']);
+                }
                 
                 $customCredentials = [
                     'email' => $email,
@@ -355,6 +396,13 @@ class RegisterController extends Controller
         if ($data['disposable'] === 'true') {
             return back()->withErrors(['email' => 'We are not accepting Disposable Email Address please use actual email address or signup with google, github, linkedIn.']);
         }
+        $existingUser = User::where('email', $request->email)->first();
+        $emailRules = ['required', 'email'];
+
+        if (!$existingUser || $existingUser->sys_state != -1) {
+            $emailRules[] = Rule::unique('users');
+        }
+        $request->validate([ 'email' => $emailRules]);
         $countryname = '';
         $countaries = ContactsCountryEnum::orderBy('id')->get();
         foreach($countaries as $country){
@@ -381,11 +429,11 @@ class RegisterController extends Controller
         
         $password = Hash::make($request['password']);
         
-        $save_user = User::create([
-            'name'=>$name , 
-            'email'=>$email , 
-            'fname'=> $fname , 
-            'lname'=>$lname , 
+        // $save_user = User::create([
+        //     'name'=>$name , 
+        //     'email'=>$email , 
+        //     'fname'=> $fname , 
+        //     'lname'=>$lname , 
         //     'country_code'=>$country_code, 
         //    'contact_number'=>$contact , 
         //     'company_name'=>$company_name, 
@@ -396,9 +444,35 @@ class RegisterController extends Controller
         //     'city'=>$city,
         //     'postal_code'=>$postal,
         //     'gstin'=>$gst,
-            'password'=>$password,
-            'subscribe_to_promotions'=>$subscribeToPromotions
-        ]);
+        //     'password'=>$password,
+        //     'subscribe_to_promotions'=>$subscribeToPromotions
+        // ]);
+        if ($existingUser && $existingUser->sys_state == -1) {
+            // Reactivate soft-deleted user
+            $existingUser->update([
+                'sys_state' =>"0",
+                'name' => $name,
+                'fname' => $fname,
+                'lname' => $lname,
+                'status' => 1,
+                'password' => $password,
+                'subscribe_to_promotions' => $subscribeToPromotions,
+            ]);
+            $save_user = $existingUser;
+        } elseif (!$existingUser) {
+            // Create new user
+            $save_user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'fname' => $fname,
+                'lname' => $lname,
+                'password' => $password,
+                'subscribe_to_promotions' => $subscribeToPromotions,
+            ]);
+        } else {
+            // Email already taken
+            return back()->withErrors(['email' => 'Email is already in use. Please login instead.']);
+        }
         
         // if($save_user){
 

@@ -496,6 +496,11 @@
                         label.style.color = "#70657b";
                         input.style.borderColor = "#ccc";
                     }
+                    const toggleButton = input.parentElement.querySelector('.toggle-button');
+                    if (toggleButton) {
+                        // If error is shown, push eye icon slightly lower
+                        toggleButton.style.top = hasError ? '37%' : '50%';
+                    }
                 }
 
                 function validateInput(input) {
@@ -535,8 +540,25 @@
                     return valid;
                 }
 
+                function validateFormAndSubmit() {
+                    let formIsValid = true;
+                    inputFields.forEach(input => {
+                        if (!validateInput(input)) {
+                            formIsValid = false;
+                        }
+                    });
+
+                    if (formIsValid) {
+                        loginBtn.setAttribute("type", "submit");
+                        form.submit();
+                    } else {
+                        loginBtn.setAttribute("type", "button");
+                    }
+                }
+
                 inputFields.forEach(input => {
                     input.addEventListener("blur", () => validateInput(input));
+
                     input.addEventListener("input", function () {
                         const value = input.value.trim();
                         const errorDiv = document.getElementById(input.id + "_error");
@@ -571,22 +593,18 @@
                         label.style.color = hasError ? "red" : "#70657b";
                         input.style.borderColor = hasError ? "red" : "#70657b";
                     });
+
+                    // ✅ Enter key handling for form submission
+                    input.addEventListener("keydown", function (event) {
+                        if (event.key === "Enter") {
+                            event.preventDefault(); 
+                            validateFormAndSubmit();
+                        }
+                    });
                 });
 
                 loginBtn.addEventListener("click", function () {
-                    let formIsValid = true;
-                    inputFields.forEach(input => {
-                        if (!validateInput(input)) {
-                            formIsValid = false;
-                        }
-                    });
-
-                    if (formIsValid) {
-                        loginBtn.setAttribute("type", "submit"); // Change button type to submit
-                        form.submit();
-                    } else {
-                        loginBtn.setAttribute("type", "button"); // Keep button type as button
-                    }
+                    validateFormAndSubmit();
                 });
 
                 inputFields.forEach(input => updateFloatingLabel(input));

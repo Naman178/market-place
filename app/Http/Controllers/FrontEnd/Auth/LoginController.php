@@ -29,25 +29,38 @@ class LoginController extends Controller
         //     'password' => 'required',
         // ]);
         $credentials = $request->only('email', 'password');
+
+        // Retrieve the user first, before authentication
+        $user = \App\Models\User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['error' => 'Your account does not exist. Please register or contact support.']);
+        }
+
+        // Check if the user is deleted (sys_state = -1) **BEFORE** attempting login
+        if ($user->sys_state == -1) {
+            return redirect()->back()->withErrors(['error' => 'Your account has been deleted and cannot be accessed.']);
+        }
+
+        // Attempt authentication only if the user is valid
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
             $intendedUrl = session()->get('url.intended');
-            if (Auth::user() && Auth::user()->name === 'Super Admin') {
+
+            if ($user->name === 'Super Admin') {
                 return redirect()->route('dashboard')->withSuccess('You have successfully logged in as Super Admin');
             }
+
             if ($intendedUrl) {
-                if($intendedUrl == "https://market-place-main.infinty-stage.com/"){
-                     return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
-                }
-                else{
-                    return redirect()->intended($intendedUrl);
-                }
-            } 
-            else {
-                return redirect()->route('user-dashboard')->withSuccess('You have Successfully loggedin');
+                return ($intendedUrl == "https://market-place-main.infinty-stage.com/")
+                    ? redirect()->route('user-dashboard')->withSuccess('You have Successfully logged in')
+                    : redirect()->intended($intendedUrl);
+            } else {
+                return redirect()->route('user-dashboard')->withSuccess('You have Successfully logged in');
             }
         }
-  
-        return redirect("user-login")->withSuccess('Oppes! You have entered invalid credentials');
+
+        return redirect("user-login")->withErrors(['error' => 'Oops! You have entered invalid credentials']);
     }
     
     public function redirectToGoogle()

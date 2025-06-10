@@ -86,7 +86,7 @@
                     {{-- <h1 class="text-center feature_heading">Privacy Policy</h1> --}}
                     @foreach ($privacy_policies as  $privacy_policy)
                         <h4>{{ $privacy_policy->title ?? '' }}</h4>        
-                        <p>{{ $privacy_policy->description ?? '' }}</p>
+                        <p>{!! $privacy_policy->description ?? '' !!}</p>
                         <hr>
                     @endforeach
                 </div>

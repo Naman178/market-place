@@ -9,6 +9,12 @@ use Usamamuneerchaudhary\Commentify\Models\Comment;
 class Post extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',     
+        'title',
+        'content',
+        'image',
+    ];
     public function comments()
     {
         return $this->hasMany(Comment::class);

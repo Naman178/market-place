@@ -3119,7 +3119,7 @@ button:focus {
 
 .product_details .nav-item {
   list-style: none;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .product_details .nav-link {
