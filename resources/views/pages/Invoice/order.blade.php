@@ -100,3 +100,9 @@
     @endcan
    
 @endsection
+@section('page-js')
+    <script src="{{ asset('assets/js/vendor/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables.script.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+@endsection
