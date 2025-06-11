@@ -178,6 +178,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/coupon-edit/{id}',[CouponController::class,'edit'])->name('coupon-edit');
     Route::get('/get-applicable-data', [CouponController::class, 'getApplicableData'])->name('get.applicable.data');
     Route::post('/coupon/store',[CouponController::class,'store'])->name('coupons.store');
+    Route::post("/coupon/status/{id}", [CouponController::class, "changeStatus"])->name("coupon-status");
     Route::get('/coupon/delete/{id}',[CouponController::class,'remove'])->name('coupon-delete');
 
     // Review module

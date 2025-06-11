@@ -110,7 +110,7 @@
                                             </div>
                                         </td>
                                         <td class="fw-medium text-end">
-                                           {{ $ord->payment_amount }}
+                                            {{ $ord->currency ?? 'INR' }} {{ number_format(ceil($ord->payment_amount / 100), 2) }}
                                         </td>
                                     </tr>
                                     <tr class="border-top border-top-dashed">
@@ -118,22 +118,51 @@
                                         <td colspan="2" class="fw-medium p-0">
                                             <table class="table table-borderless mb-0">
                                                 <tbody>
+                                                    {{-- Subtotal --}}
                                                     <tr>
                                                         <td>Sub Total :</td>
-                                                        <td class="text-end">{{ $ord->invoice->subtotal }}</td>
+                                                        <td class="text-end">
+                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->subtotal), 0) }}
+                                                        </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Discount <span class="text-muted">@if($ord->invoice->coupon)({{ $ord->invoice->coupon->coupon_code ?? '' }})@endif</span> :</td>
-                                                        <td class="text-end">-{{ $ord->invoice->discount }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>GST Tax :</td>
-                                                        <td class="text-end">{{ $ord->invoice->gst_percentage*$ord->invoice->subtotal / 100 }}</td>
-                                                    </tr>
+
+                                                    {{-- Discount --}}
+                                                    @if($ord->invoice->discount > 0)
+                                                        <tr>
+                                                            <td>
+                                                                Discount 
+                                                                @if($ord->invoice->coupon)
+                                                                    <span class="text-muted">({{ $ord->invoice->coupon->coupon_code }})</span>
+                                                                @endif
+                                                                :
+                                                            </td>
+                                                            <td class="text-end text-danger">
+                                                                -{{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->discount), 0) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+
+                                                    {{-- GST Tax --}}
+                                                    @if($ord->invoice->gst_percentage > 0)
+                                                        @php
+                                                            $gstAmount = round(($ord->invoice->gst_percentage * $ord->invoice->subtotal) / 100);
+                                                        @endphp
+                                                        <tr>
+                                                            <td>GST Tax ({{ $ord->invoice->gst_percentage }}%) :</td>
+                                                            <td class="text-end">
+                                                                {{ $ord->currency ?? 'INR' }} {{ number_format($gstAmount, 0) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+
+                                                    {{-- Total --}}
                                                     <tr class="border-top border-top-dashed">
-                                                        <th scope="row">Total (USD) :</th>
-                                                        <th class="text-end">{{ $ord->payment_amount }}</th>
+                                                        <th scope="row">Total ({{ $ord->currency ?? 'INR' }}) :</th>
+                                                        <th class="text-end">
+                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(ceil($ord->payment_amount / 100), 2) }}
+                                                        </th>
                                                     </tr>
+
                                                 </tbody>
                                             </table>
                                         </td>

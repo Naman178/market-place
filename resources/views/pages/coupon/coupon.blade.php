@@ -84,10 +84,10 @@
                                         <td>
                                             <span class="badge {{ $list->status == 'active' ? 'badge-success' : 'badge-danger' }} status-bagde mb-2">{{ $list->status == 'active' ? 'Active' : 'Inactive' }}</span>
                                             <select class="form-control items-status-dropdown"
-                                                data-url="{{ route('items-status', ['id' => $list->id]) }}">
-                                                <option value="1" {{ $list->status == 'active' ? 'selected' : null }}>
+                                                data-url="{{ route('coupon-status', ['id' => $list->id]) }}">
+                                                <option value="active" {{ $list->status == 'active' ? 'selected' : null }}>
                                                     Active</option>
-                                                <option value="0" {{ $list->status == 'inactive' ? 'selected' : null }}>
+                                                <option value="inactive" {{ $list->status == 'inactive' ? 'selected' : null }}>
                                                     Inactive</option>
                                             </select>
                                         </td>
