@@ -21,12 +21,42 @@
         margin-right: 0.5rem;
         color: #28a745;
     }
+    .iti {
+        width: 100% !important;
+    }
+
+    /* Proper spacing for country dropdown */
+    .iti--separate-dial-code .iti__selected-flag {
+        background-color: #ffffff !important; /* Light gray background */
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
+        /* border: 1px solid #ced4da; */
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .iti--separate-dial-code .iti__selected-flag:hover{
+        background-color: rgba(0, 0, 0, 0.05) !important; 
+    }
+
+    /* Prevent overlapping input */
+    .iti--allow-dropdown input {
+        padding-left: 100px !important;
+    }
+
+    /* Align phone number input field */
+    .iti input {
+        height: 45px !important;
+        border-radius: 5px !important;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
 </head>
 
 <div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
@@ -332,7 +362,7 @@
         </div>
 
         <!-- Country Code -->
-        <div class="col-md-6">
+        {{-- <div class="col-md-6">
             <div class="form-group">
                 <select name="country_code" id="country_code" class="form-control select-input" required="required">
                     <option value="">Select country code</option>
@@ -342,14 +372,22 @@
                 </select>
                 <div class="error" id="country_code_error"></div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Contact Number -->
         <div class="col-md-6">
             <div class="form-group">
-                <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
+                {{-- <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
                 <label for="contact" class="floating-label">Contact Number</label>
-                <div class="error" id="contact_error"></div>
+                <div class="error" id="contact_error"></div> --}}
+                <input type="tel" id="contact_number" name="contact_number" class="form-control" value="{{ optional($user)->contact_number }}">
+                <input type="hidden" name="country_code" id="country_code" value="{{  $user->country_code }}">
+                {{-- <input type="hidden" name="country_code_name" id="country_code_name" value="{{ $dialCode }}"> --}}
+                <input type="hidden" name="country" id="country" value="{{$isoName}}">
+                @error('country_code')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+                <div class="error" id="country_code_error"></div>
             </div>
         </div>
 
@@ -390,7 +428,7 @@
         </div>
 
         <!-- Country -->
-        <div class="col-md-6">
+        {{-- <div class="col-md-6">
             <div class="form-group">
                 <select name="country" id="country" class="form-control select-input">
                     <option value="0">Select Country</option>
@@ -400,7 +438,7 @@
                 </select>
                 <div class="error" id="country_error"></div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- City -->
         <div class="col-md-6">

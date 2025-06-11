@@ -4,13 +4,17 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- Toastr JS (Toast notifications) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 <script>
-        $('#country').select2();
-        $('#country_code').select2();
+        // $('#country').select2();
+        // $('#country_code').select2();
        $(function() {  
            /* Stripe Payment Code */    
            var $form = $(".require-validation");     
            $('form.require-validation').bind('submit', function(e) {
+            console.log('form submitted');
+            
                var $form = $(".require-validation"),
                inputSelector = ['input[type=email]', 'input[type=password]', 'input[type=text]', 'input[type=file]', 'textarea'].join(', '),
                $inputs = $form.find('.required').find(inputSelector),
@@ -35,12 +39,12 @@
                if (!$form.data('cc-on-file')) {
                    e.preventDefault();
                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                   document.getElementById('country').addEventListener('change', function() {
-                       let selectedOption = this.options[this.selectedIndex];
-                       let countryCode = selectedOption.getAttribute('data-country-code');
-                       // You can store the countryCode in a hidden input or use it directly in the Stripe API call
-                       console.log('Selected country code:', countryCode);
-                   });
+                //    document.getElementById('country').addEventListener('change', function() {
+                //        let selectedOption = this.options[this.selectedIndex];
+                //        let countryCode = selectedOption.getAttribute('data-country-code');
+                //        // You can store the countryCode in a hidden input or use it directly in the Stripe API call
+                //        console.log('Selected country code:', countryCode);
+                //    });
            
                    // Create Stripe Token with address details
                    Stripe.card.createToken({
@@ -49,12 +53,12 @@
                        exp_month: card_exp_month,
                        exp_year: card_exp_year,
                        name: name_on_card, // Include the name on the card
-                       address_line1: $('#address_line_1').val(), // Add address line 1
-                       address_line2: $('#address_line_2').val(), // Add address line 2
-                       address_city: $('#city').val(), // Add city
-                       address_state: $('#state').val(), // Add state if you have it
-                       address_zip: $('#postal_code').val(), // Add postal code
-                       address_country: $('#country').find(':selected').data('country-code')
+                    //    address_line1: $('#address_line_1').val(), // Add address line 1
+                    //    address_line2: $('#address_line_2').val(), // Add address line 2
+                    //    address_city: $('#city').val(), // Add city
+                    //    address_state: $('#state').val(), // Add state if you have it
+                    //    address_zip: $('#postal_code').val(), // Add postal code
+                    //    address_country: $('#country').find(':selected').data('country-code')
                    }, stripeResponseHandler);
                }
            });      
@@ -750,4 +754,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+  $(document).ready(function () {
+        var phoneInput = document.querySelector("#contact_number");
+
+        // Initialize intl-tel-input
+        var iti = window.intlTelInput(phoneInput, {
+            separateDialCode: true,
+            preferredCountries: ["us", "gb", "in"], // Set preferred countries
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+        });
+
+        // Retrieve stored country ISO code
+        var userISOCode = $("#country").val(); // e.g., "US"
+
+        // Set the pre-selected country based on ISO code
+        if (userISOCode) {
+            iti.setCountry(userISOCode.toLowerCase()); // Convert to lowercase for intlTelInput
+        }
+
+        // Listen for country changes and store both ISO code and dial code
+        phoneInput.addEventListener("countrychange", function () {
+            var countryData = iti.getSelectedCountryData();
+            $("#country_code").val(countryData.dialCode);  // ✅ Save dial code (e.g., "1")
+            $("#country").val(countryData.iso2.toUpperCase());  // ✅ Save ISO code (e.g., "US")
+        });
+
+        // Ensure both country_code & country are stored before form submission
+        $("form").submit(function () {
+            var countryData = iti.getSelectedCountryData();
+            $("#country_code").val(countryData.dialCode);
+            $("#country").val(countryData.iso2.toUpperCase());
+        });
+    });
 </script>
