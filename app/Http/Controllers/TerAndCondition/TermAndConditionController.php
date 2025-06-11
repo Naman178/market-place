@@ -80,7 +80,16 @@ class TermAndConditionController extends Controller
     {
         $rules = [
             'title' => 'required',
-            'description' => 'required',
+            'description'  => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    // Strip HTML tags and check if empty or only whitespace
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The description is required.');
+                    }
+                }
+            ],
         ];
         return Validator::make($request->all(), $rules);
     }

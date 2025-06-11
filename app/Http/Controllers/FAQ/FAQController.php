@@ -23,7 +23,7 @@ class FAQController extends Controller
     }
     public function index()
     {
-        $FAQ = FAQ::orderBy('faq.id', 'desc')
+        $FAQ = FAQ::orderBy('faq.id', 'asc')
                             ->get();
         return view('pages.FAQ.FAQ',compact('FAQ'));
     }
@@ -81,7 +81,12 @@ class FAQController extends Controller
     {
         $rules = [
             'question' => 'required',
-            'answer' => 'required',
+            'answer' => ['required', function ($attribute, $value, $fail) {
+                // Strip HTML tags and check if anything remains
+                if (trim(strip_tags($value)) === '') {
+                    $fail('The answer field must not be empty.');
+                }
+            }],
         ];
         return Validator::make($request->all(), $rules);
     }

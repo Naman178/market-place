@@ -107,11 +107,13 @@
                                     <label for="shortdescription">Short Description</label>
                                     <div id="quill_editor" class="quill_editor" style="height: 200px; width:100%;">{!!$Blog->short_description!!}</div>
                                     <input type="hidden" name="shortdescription" id="shortdescription" value="{{$Blog->short_description}}">
+                                    <div class="error" style="color:red;" id="shortdescription_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="long-description">Long Description</label>
                                     <div id="long_quill_editor" class="long_quill_editor" style="height: 200px; width:100%;">{!!$Blog->long_description!!}</div>
                                     <input type="hidden" name="long_description" id="long_description" value="{{$Blog->long_description}}">
+                                    <div class="error" style="color:red;" id="long_description_error"></div>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="related_blog">Related Blogs</label>
@@ -127,7 +129,8 @@
                                                 {{ $list->title }}
                                             </option>
                                         @endforeach
-                                    </select>                                    
+                                    </select>    
+                                    <div class="error" style="color:red;" id="related_blog_error"></div>                                
                                 </div>
 
                             </div>
