@@ -102,7 +102,7 @@ class BlogCategoryController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
              'description' => [
                 'required',
                 function ($attribute, $value, $fail) {
@@ -112,6 +112,9 @@ class BlogCategoryController extends Controller
                 },
             ],
         ];
+        if ($request->scid == "0") {
+            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+        }
         return Validator::make($request->all(), $rules);
     }
  
