@@ -122,7 +122,7 @@
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->subtotal), 0) }}
+                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->subtotal), 2) }}
                                                         </td>
                                                     </tr>
 
@@ -137,7 +137,7 @@
                                                                 :
                                                             </td>
                                                             <td class="text-end text-danger">
-                                                                -{{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->discount), 0) }}
+                                                                -{{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->discount), 2) }}
                                                             </td>
                                                         </tr>
                                                     @endif
@@ -150,7 +150,7 @@
                                                         <tr>
                                                             <td>GST Tax ({{ $ord->invoice->gst_percentage }}%) :</td>
                                                             <td class="text-end">
-                                                                {{ $ord->currency ?? 'INR' }} {{ number_format($gstAmount, 0) }}
+                                                                {{ $ord->currency ?? 'INR' }} {{ number_format($gstAmount, 2) }}
                                                             </td>
                                                         </tr>
                                                     @endif
