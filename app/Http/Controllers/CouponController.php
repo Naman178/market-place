@@ -105,6 +105,19 @@ class CouponController extends Controller
             'success' => true,
         ]);
     }
+    
+    public function changeStatus(Request $request, $id){
+        $item = Coupon::find($id);
+        $item->update([
+            "status" => $request->status,
+            "sys_state" => $request->status=='1'?'0':'1'
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "data" => $item
+        ]);
+    }
 
     public function remove($id)
     {
