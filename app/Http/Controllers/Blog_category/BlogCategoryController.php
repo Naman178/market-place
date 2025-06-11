@@ -103,6 +103,14 @@ class BlogCategoryController extends Controller
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+             'description' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The description field is required.');
+                    }
+                },
+            ],
         ];
         return Validator::make($request->all(), $rules);
     }

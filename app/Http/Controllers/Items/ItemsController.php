@@ -364,7 +364,14 @@ class ItemsController extends Controller
         $rules = [
             'name' => 'required',
             'preview_url' => 'required',
-            'html_description' => 'required',
+            'html_description' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The html description field is required.');
+                    }
+                },
+            ],
             'key_feature' => 'required|array',
             'key_feature.*' => 'required_without_all: key_feature',
             // 'item_images'=>'required|array',

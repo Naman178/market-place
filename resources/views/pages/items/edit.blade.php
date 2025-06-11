@@ -995,6 +995,8 @@
 
         quill.on('text-change', function () {
             $('#html_description').val(quill.root.innerHTML);
+            $('#description_error').text(''); // Clear error message
+            $('#html_description').removeClass('is-invalid'); // Remove invalid class
         });
     });
 

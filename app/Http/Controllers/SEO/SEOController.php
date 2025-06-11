@@ -84,7 +84,16 @@ class SEOController extends Controller
         $rules = [
             'title' => 'required',
             'page' => 'required',
-            'description' => 'required',
+            'description' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    // Strip HTML tags and check if empty or only whitespace
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The description is required.');
+                    }
+                }
+            ],
             'keyword'   => 'required',
         ];
         return Validator::make($request->all(), $rules);
