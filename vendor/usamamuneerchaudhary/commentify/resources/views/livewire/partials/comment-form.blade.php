@@ -8,11 +8,9 @@
         </div>
     @endif
     @csrf
-    <div
-        class="py-2 px-2 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700
-             ">
+    <div>
         <label for="{{$inputId}}" class="sr-only">{{$inputLabel}}</label>
-        <textarea id="{{$inputId}}" rows="6" style="width: 100%; padding: 10px !important; outline: none;"
+        <textarea  class="py-2 px-2 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700" id="{{$inputId}}" rows="6" style="width: 100%; padding: 10px !important; outline: none;"
                   class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none
                               dark:text-white dark:placeholder-gray-400 dark:bg-gray-800 @error($state.'.body')
                               border-red-500 @enderror"
