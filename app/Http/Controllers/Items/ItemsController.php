@@ -152,17 +152,11 @@ class ItemsController extends Controller
             }
 
             if (isset($request->category_id) && isset($request->subcategory_id)) {
-                ItemsCategorySubcategory::updateOrCreate(
-        [
-                        'item_id' => $request->item_id,
-                        'subcategory_id' => $request->sub_id,
-                    ],
-                    [
-                        'category_id' => $request->category_id,
-                        'subcategory_id' => $request->subcategory_id,
-                        'updated_at' => Carbon::now(),
-                    ]
-                );
+                ItemsCategorySubcategory::where('item_id', $request->item_id)->update([
+                    'category_id' => $request->category_id,
+                    'subcategory_id' => $request->subcategory_id,
+                    'updated_at' => Carbon::now(),
+                ]);
             }
 
             $validity = '';
