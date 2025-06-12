@@ -380,10 +380,10 @@
                 {{-- <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
                 <label for="contact" class="floating-label">Contact Number</label>
                 <div class="error" id="contact_error"></div> --}}
-                <input type="tel" id="contact_number" name="contact_number" class="form-control" value="{{ optional($user)->contact_number }}">
-                <input type="hidden" name="country_code" id="country_code" value="{{  $user->country_code }}">
+                <input type="tel" id="contact_number" name="contact_number" class="form-control" value="{{ optional($user)->contact_number ?? '' }}">
+                <input type="hidden" name="country_code" id="country_code" value="{{  $user->country_code ?? '' }}">
                 {{-- <input type="hidden" name="country_code_name" id="country_code_name" value="{{ $dialCode }}"> --}}
-                <input type="hidden" name="country" id="country" value="{{$isoName}}">
+                <input type="hidden" name="country" id="country" value="{{$isoName ?? ''}}">
                 @error('country_code')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
