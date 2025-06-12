@@ -20,7 +20,7 @@
                $inputs = $form.find('.required').find(inputSelector),
                $errorMessage = $form.find('div.error'),
                valid = true;
-               $errorMessage.addClass('hide');
+            //    $errorMessage.addClass('hide');
                let name_on_card = $('#name_on_card').val();
                let card_number = $('#card_number').val();
                let card_cvc = $('#card_cvc').val();
@@ -36,9 +36,12 @@
                    e.preventDefault();
                }
                });
-                if (!validateExpiration(card_exp_month, card_exp_year)) {
-                    valid = false;
-                }
+                // if (!validateExpiration(card_exp_month, card_exp_year)) {
+                //     valid = false;
+                // }
+                  if (!validateCardNumber()) valid = false;
+                if (!validateExpiration()) valid = false;
+                if (!validateCVC()) valid = false;
                 if (!valid) {
                     e.preventDefault();
                     return;
@@ -626,57 +629,83 @@
     // });
     function isCardExpired(month, year) {
         const expMonth = parseInt(month, 10);
-        const expYear = parseInt('20' + year, 10); // Convert "25" -> 2025
+        const expYear = parseInt('20' + year, 10);
 
         const today = new Date();
-        const currentMonth = today.getMonth() + 1; // Jan = 0
+        const currentMonth = today.getMonth() + 1;
         const currentYear = today.getFullYear();
 
-        // Expired if year < current year, or year === current and month < current
-        return (expYear < currentYear) || (expYear === currentYear && expMonth < currentMonth);
+        return expYear < currentYear || (expYear === currentYear && expMonth < currentMonth);
     }
+   function validateExpiration() {
+        const monthVal = $('#card_exp_month').val().trim();
+        const yearVal = $('#card_exp_year').val().trim();
+        const monthError = $('#card_exp_month_error');
+        const yearError = $('#card_exp_year_error');
 
-    function validateExpiration() {
-        const monthInput = document.getElementById('card_exp_month');
-        const yearInput = document.getElementById('card_exp_year');
-        const monthError = document.getElementById('card_exp_month_error');
-        const yearError = document.getElementById('card_exp_year_error');
+        monthError.hide();
+        yearError.hide();
 
-        const monthVal = monthInput.value.trim();
-        const yearVal = yearInput.value.trim();
+        let valid = true;
 
-        monthError.style.display = 'none';
-        yearError.style.display = 'none';
+        let parsedMonth = parseInt(monthVal, 10);
+        let parsedYear = parseInt(yearVal, 10);
 
-        let isValid = true;
-
-        const parsedMonth = parseInt(monthVal, 10);
-        const parsedYear = parseInt(yearVal, 10);
-
-        // Month check
-        if (monthVal.length !== 2 || isNaN(parsedMonth) || parsedMonth < 1 || parsedMonth > 12) {
-            monthError.textContent = 'Invalid month (01-12)';
-            monthError.style.display = 'block';
-            isValid = false;
+        // Month Validation
+        if (!monthVal || isNaN(parsedMonth) || parsedMonth < 1 || parsedMonth > 12) {
+            monthError.text('Invalid month (01-12)').show();
+            valid = false;
         }
 
-        // Year check
-        if (yearVal.length !== 2 || isNaN(parsedYear)) {
-            yearError.textContent = 'Year must be 2 digits';
-            yearError.style.display = 'block';
-            isValid = false;
+        // Year Format Validation
+        if (!yearVal || isNaN(parsedYear) || yearVal.length !== 2) {
+            yearError.text('Year must be 2 digits').show();
+            valid = false;
+            return valid; // ⛔ stop here — don't check expiry
         }
 
-        // Expiry check only if month/year format is valid
-        if (!isNaN(parsedMonth) && !isNaN(parsedYear) && parsedMonth >= 1 && parsedMonth <= 12 && yearVal.length === 2) {
-            if (isCardExpired(monthVal, yearVal)) {
-                yearError.textContent = 'Card has expired';
-                yearError.style.display = 'block';
-                isValid = false;
+        // If both inputs valid → check expiry
+        if (!isNaN(parsedMonth) && !isNaN(parsedYear)) {
+            if (isCardExpired(parsedMonth, parsedYear)) {
+                yearError.text('Card has expired').show();
+                valid = false;
             }
         }
 
-        return isValid;
+        return valid;
+    }
+
+
+    function validateCVC() {
+        const cvcInput = document.getElementById('card_cvc');
+        const cvcError = document.getElementById('card_cvc_error');
+
+        const cvcVal = cvcInput.value.trim();
+        cvcError.style.display = 'none';
+
+        if (cvcVal.length !== 3 || isNaN(cvcVal)) {
+            cvcError.textContent = 'CVC must be 3 digits';
+            cvcError.style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateCardNumber() {
+        const cardInput = document.getElementById('card_number');
+        const cardError = document.getElementById('card_number_error');
+
+        const cardVal = cardInput.value.replace(/\D/g, '');
+        cardError.style.display = 'none';
+
+        if (cardVal.length !== 16) {
+            cardError.textContent = 'Card number must be 16 digits';
+            cardError.style.display = 'block';
+            return false;
+        }
+
+        return true;
     }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -722,16 +751,6 @@ document.addEventListener('DOMContentLoaded', function () {
     monthInput.addEventListener('blur', validateExpiration);
     yearInput.addEventListener('blur', validateExpiration);
 
-    document.addEventListener('click', () => {
-        const monthInput = document.getElementById('card_exp_month');
-        const yearInput = document.getElementById('card_exp_year');
-        const yearError = document.getElementById('card_exp_year_error');
-
-        if (isCardExpired(monthInput.value.trim(), yearInput.value.trim())) {
-            yearError.textContent = 'Card has expired';
-            yearError.style.display = 'block';
-        }
-    });
 
     // CVC input: allow only 3 digits
     cvcInput.addEventListener('input', function (e) {
@@ -761,6 +780,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!validateExpiration()) {
             isValid = false;
         }
+        if (!validateCardNumber()) valid = false;
+        if (!validateCVC()) valid = false;
 
         if (cvcVal.length !== 3) {
             cvcError.textContent = 'CVC must be 3 digits';
