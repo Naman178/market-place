@@ -151,12 +151,19 @@ class ItemsController extends Controller
                 }
             }
 
-            if (isset($request->category_id) && isset($request->subcategory_id)) {
-                ItemsCategorySubcategory::where('item_id', $request->item_id)->update([
+           if (isset($request->category_id) && isset($request->subcategory_id)) {
+                $updated = ItemsCategorySubcategory::where('item_id', $request->item_id)->update([
                     'category_id' => $request->category_id,
                     'subcategory_id' => $request->subcategory_id,
                     'updated_at' => Carbon::now(),
                 ]);
+                if ($updated === 0) {
+                    ItemsCategorySubcategory::create([
+                        'item_id' => $request->item_id,
+                        'category_id' => $request->category_id,
+                        'subcategory_id' => $request->subcategory_id,
+                    ]);
+                }
             }
 
             $validity = '';
