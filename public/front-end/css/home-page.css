@@ -2201,3 +2201,12 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
     margin-right: 15px;
     height: 85px;
 }
+
+.item-header__details-section {
+    margin: -8px 0 14px;
+}
+.item-header__details-section>* {
+    display: inline-block;
+    margin-right: 18px;
+    margin-left: 0 !important;
+}
