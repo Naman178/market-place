@@ -2210,3 +2210,14 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
     margin-right: 18px;
     margin-left: 0 !important;
 }
+.item-header__envato-highlighted {
+    font-size: 16px;
+    color: #82b440;
+}
+.item-header__sales-count {
+    font-size: 16px;
+    color: #686868;
+}
+.cursor-auto{
+  cursor: auto !important;
+}
