@@ -53,8 +53,10 @@
     use App\Models\Category;
     use App\Models\SubCategory;
     use App\Models\User;
-    $category = Category::where('sys_state','=','0')->first();
-    $subcategory = SubCategory::where('sys_state','=','0')->first();
+    // $category = Category::where('sys_state','=','0')->first();
+    // $subcategory = SubCategory::where('sys_state','=','0')->first();
+    $category = Category::where('id', $item->categorySubcategory->category_id)->first();
+    $subcategory = SubCategory::where('id', $item->categorySubcategory->subcategory_id)->first();
     $user = User::where('email', 'superadmin@gmail.com')->first();
 @endphp
 <div class="container items-container product_details">
