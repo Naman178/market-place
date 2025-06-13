@@ -52,8 +52,10 @@
 @php
     use App\Models\Category;
     use App\Models\SubCategory;
+    use App\Models\User;
     $category = Category::where('sys_state','=','0')->first();
     $subcategory = SubCategory::where('sys_state','=','0')->first();
+    $user = User::where('email', 'superadmin@gmail.com')->first();
 @endphp
 <div class="container items-container product_details">
     <nav class="breadcrumbs h-text-truncate d-flex align-items-center">
@@ -80,7 +82,7 @@
     <h1 class="mt-3 mb-3">{{ $item->name }}</h1>
     <div class="item-header__details-section d-flex">
         <div class="item-header__author-details">
-            By <a rel="author" class="js-by-author" href="/user/halothemes">halothemes</a>
+            By <a rel="author" class="cursor-auto">{{ $user->name }}</a>
         </div>
         <div class="item-header__sales-count">
             <svg width="16px" height="16px" viewBox="0 0 16 16" class="item-header__sales-count-icon"
@@ -92,11 +94,11 @@
 
             </svg>
 
-            <strong>306</strong> sales
+            <strong> {{ $item->order->count() ?? 0 }}</strong> sales
         </div>
-        <div class="item-header__envato-highlighted">
+        <div class="item-header__envato-highlighted d-flex align-items-center">
             <strong>Well Documented</strong>
-            <svg width="16px" height="16px" viewBox="0 0 14 14" class="item-header__envato-checkmark-icon"
+            <svg width="16px" height="16px" viewBox="0 0 14 14" class="item-header__envato-checkmark-icon ml-2"
                 xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" role="img">
                 <title></title>
                 <path fill-rule="evenodd" clip-rule="evenodd"
