@@ -823,6 +823,11 @@
                 if (!validateInput(input)) valid = false;
             });
 
+            if (!validateExpiration()) valid = false;
+            
+            if (!validateCVC()) valid = false;
+            
+            if (!validateCardNumber()) valid = false;
             return valid;
         }
 
@@ -834,6 +839,7 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault(); 
                 if (validateForm(form)) {
+                console.log('Form submitted 3');
                 form.submit();
                 } else {
                 const firstError = form.querySelector('.error[style*="block"]');
