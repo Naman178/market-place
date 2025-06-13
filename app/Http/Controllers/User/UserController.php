@@ -119,8 +119,9 @@ class UserController extends Controller
                     $fname = $request->fname;
                     $lname = $request->lname;
                     $status = $request->status;
+                    $fullname = $fname.' '.$lname;
 
-                    $user->update(['fname'=> $fname , 'lname'=>$lname , 'status' => $status]);
+                    $user->update(['fname'=> $fname , 'lname'=>$lname , 'status' => $status,'name'=>$fullname]);
 
                     DB::table('model_has_roles')->where('model_id',$request->id)->delete();
                     $user->assignRole($request->roles);
