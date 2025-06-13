@@ -93,7 +93,7 @@ Route::get('/thankyou', function () { return view('Thankyou.thankyou'); })->name
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
+    Route::post('/dashboard', [AdminDashboardController::class, 'filter'])->name('filter');
     //User Module
     Route::get('/user',[UserController::class,'index'])->name('user-index');
     Route::post('/user/store',[UserController::class,'store'])->name('user-store');

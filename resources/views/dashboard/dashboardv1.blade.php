@@ -24,6 +24,17 @@
         </ul>
     </div>
     <div class="separator-breadcrumb border-top"></div>
+    <div class="row align-items-center justify-content-end">
+        <div class="col-md-3 form-group">
+            <select class="form-control" id="filter">
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="this_month">This Month</option>
+                <option value="this_year">This Year</option>
+                <option value="lifetime" selected>Lifetime</option>
+            </select>
+        </div>
+    </div>
     <div class="row">
         <!-- ICON BG -->
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -32,7 +43,7 @@
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
                         <p class="text-muted mt-2 mb-0">Total orders</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalOrders ?? '0'}}</p>
+                        <p class="text-primary text-24 line-height-1 mb-2"  id="totalOrders">{{$totalOrders ?? '0'}}</p>
                     </div>
                     {{-- <div class="custom-content">
                         <h5>Xero Integration</h5>
@@ -47,18 +58,7 @@
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
                         <p class="text-muted mt-2 mb-0">Total customer</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalCustomers ?? '0'}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                <div class="card-body text-center">
-                    <i class="i-Add-User"></i>
-                    <div class="custom-content">
-                        <p class="text-muted mt-2 mb-0">Total Blog</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalBlog ?? '0'}}</p>
+                        <p class="text-primary text-24 line-height-1 mb-2" id="totalCustomers">{{$totalCustomers ?? '0'}}</p>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,18 @@
                     <i class="i-Add-User"></i>
                     <div class="custom-content">
                         <p class="text-muted mt-2 mb-0">Total Products</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">{{$totalPurchase ?? '0'}}</p>
+                        <p class="text-primary text-24 line-height-1 mb-2" id="totalPurchase">{{$totalPurchase ?? '0'}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Add-User"></i>
+                    <div class="custom-content">
+                        <p class="text-muted mt-2 mb-0">Total Sales</p>
+                        <p class="text-primary text-24 line-height-1 mb-2" id="totalSales">{{$totalSales ?? '0'}}</p>
                     </div>
                 </div>
             </div>
@@ -386,6 +397,88 @@
             }, 500);
         }
     });
+    document.getElementById('filter').addEventListener('change', function () {
+        const selectedFilter = this.value;
+
+        fetch("{{ route('dashboard') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ filter: selectedFilter })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update dashboard metrics
+            document.getElementById('totalOrders').textContent = data.totalOrders;
+            document.getElementById('totalSales').textContent = data.totalSales;
+            document.getElementById('totalCustomers').textContent = data.totalCustomers;
+            document.getElementById('totalPurchase').textContent = data.totalPurchase;
+
+            // Rebuild user table
+            const tbody = document.querySelector('#user_table tbody');
+            tbody.innerHTML = ''; // Clear old content
+
+            data.users.forEach((user, index) => {
+                const initials = user.name
+                    ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
+                    : 'U';
+
+                const profilePic = user.profile_pic
+                    ? (user.profile_pic.startsWith('http')
+                        ? user.profile_pic
+                        : `/assets/images/faces/${user.profile_pic}`)
+                    : null;
+
+                let badgeClass = 'badge-secondary';
+                let statusText = 'Unknown';
+
+                switch (user.status) {
+                    case 0:
+                        badgeClass = 'badge-warning';
+                        statusText = 'Inactive';
+                        break;
+                    case 1:
+                        badgeClass = 'badge-success';
+                        statusText = 'Active';
+                        break;
+                    case -1:
+                        badgeClass = 'badge-danger';
+                        statusText = 'Deleted';
+                        break;
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>${user.name ?? ''}</td>
+                    <td class="d-flex align-items-center justify-content-center">
+                        ${profilePic ? `
+                            <img class="rounded-circle m-0 avatar-sm-table" src="${profilePic}" alt="${user.name}" style="width: 40px; height: 40px;">
+                        ` : `
+                            <div class="rounded-circle bg-gray-200 d-flex align-items-center justify-content-center text-gray-700 avatar-sm-table" title="${user.name}" style="width: 40px; height: 40px;">
+                                ${initials}
+                            </div>
+                        `}
+                    </td>
+                    <td>${user.email ?? ''}</td>
+                    <td><span class="badge ${badgeClass}">${statusText}</span></td>
+                    <td>
+                        <a href="/user-edit/${user.id}" class="text-success mr-2">
+                            <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                        </a>
+                        <a href="javascript:void(0);" data-url="/user-delete/${user.id}" class="text-danger delete-user-btn mr-2">
+                            <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error:", error));
+    });
+
 
 </script>
 @endsection
