@@ -64,6 +64,7 @@
                                     <th>Item Type</th>
                                     <th>Thumbnail</th>
                                     <th>Date Created</th>
+                                    <th>Sales</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -82,6 +83,7 @@
                                             </div>
                                         </td>
                                         <td>{{ Helper::dateFormatForView($list->created_at) }}</td>
+                                        <td>{{ $list->order->count() ?? 0 }}</td>
                                         <td>
                                             <span class="badge {{ $list->status == 1 ? 'badge-success' : 'badge-danger' }} status-bagde mb-2">{{ $list->status == 1 ? 'Active' : 'Inactive' }}</span>
                                             <select class="form-control items-status-dropdown"
@@ -125,6 +127,7 @@
                                     <th>Item Type</th>
                                     <th>Thumbnail</th>
                                     <th>Date Created</th>
+                                    <th>Sales</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
