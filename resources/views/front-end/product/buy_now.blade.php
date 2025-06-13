@@ -56,6 +56,57 @@
     $subcategory = SubCategory::where('sys_state','=','0')->first();
 @endphp
 <div class="container items-container product_details">
+    <nav class="breadcrumbs h-text-truncate d-flex align-items-center">
+        <a class="js-breadcrumb-category" href="/">Home</a>
+        <svg class="mx-1" xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+            <path d="M1 9L5 5L1 1" stroke="#bababa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <a class="js-breadcrumb-category" href="/">Category</a>
+        <svg class="mx-1" xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+            <path d="M1 9L5 5L1 1" stroke="#bababa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <a class="js-breadcrumb-category" href="{{ route('category_details', $category->slug) }}">{{ $category->name }}</a>
+        <svg class="mx-1" xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+            <path d="M1 9L5 5L1 1" stroke="#bababa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <a class="js-breadcrumb-category" href="{{ route('product.list', ['category' => $category->slug, 'slug' => $subcategory->slug]) }}">
+            {{ $subcategory->name }}
+        </a>
+    </nav>
+
+    <h1 class="mt-3 mb-3">{{ $item->name }}</h1>
+    <div class="item-header__details-section d-flex">
+        <div class="item-header__author-details">
+            By <a rel="author" class="js-by-author" href="/user/halothemes">halothemes</a>
+        </div>
+        <div class="item-header__sales-count">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" class="item-header__sales-count-icon"
+                xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" role="img">
+                <title>Cart</title>
+                <path
+                    d="M 0.009 1.349 C 0.009 1.753 0.347 2.086 0.765 2.086 C 0.765 2.086 0.766 2.086 0.767 2.086 L 0.767 2.09 L 2.289 2.09 L 5.029 7.698 L 4.001 9.507 C 3.88 9.714 3.812 9.958 3.812 10.217 C 3.812 11.028 4.496 11.694 5.335 11.694 L 14.469 11.694 L 14.469 11.694 C 14.886 11.693 15.227 11.36 15.227 10.957 C 15.227 10.552 14.886 10.221 14.469 10.219 L 14.469 10.217 L 5.653 10.217 C 5.547 10.217 5.463 10.135 5.463 10.031 L 5.487 9.943 L 6.171 8.738 L 11.842 8.738 C 12.415 8.738 12.917 8.436 13.175 7.978 L 15.901 3.183 C 15.96 3.08 15.991 2.954 15.991 2.828 C 15.991 2.422 15.65 2.09 15.23 2.09 L 3.972 2.09 L 3.481 1.077 L 3.466 1.043 C 3.343 0.79 3.084 0.612 2.778 0.612 C 2.777 0.612 0.765 0.612 0.765 0.612 C 0.347 0.612 0.009 0.943 0.009 1.349 Z M 3.819 13.911 C 3.819 14.724 4.496 15.389 5.335 15.389 C 6.171 15.389 6.857 14.724 6.857 13.911 C 6.857 13.097 6.171 12.434 5.335 12.434 C 4.496 12.434 3.819 13.097 3.819 13.911 Z M 11.431 13.911 C 11.431 14.724 12.11 15.389 12.946 15.389 C 13.784 15.389 14.469 14.724 14.469 13.911 C 14.469 13.097 13.784 12.434 12.946 12.434 C 12.11 12.434 11.431 13.097 11.431 13.911 Z">
+                </path>
+
+            </svg>
+
+            <strong>306</strong> sales
+        </div>
+        <div class="item-header__envato-highlighted">
+            <strong>Well Documented</strong>
+            <svg width="16px" height="16px" viewBox="0 0 14 14" class="item-header__envato-checkmark-icon"
+                xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" role="img">
+                <title></title>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M0.333252 7.00004C0.333252 3.31814 3.31802 0.333374 6.99992 0.333374C8.76803 0.333374 10.4637 1.03575 11.714 2.286C12.9642 3.53624 13.6666 5.23193 13.6666 7.00004C13.6666 10.6819 10.6818 13.6667 6.99992 13.6667C3.31802 13.6667 0.333252 10.6819 0.333252 7.00004ZM6.15326 9.23337L9.89993 5.48671C10.0227 5.35794 10.0227 5.15547 9.89993 5.02671L9.54659 4.67337C9.41698 4.54633 9.20954 4.54633 9.07993 4.67337L5.91993 7.83337L4.91993 6.84004C4.85944 6.77559 4.77498 6.73903 4.68659 6.73903C4.5982 6.73903 4.51375 6.77559 4.45326 6.84004L4.09993 7.19337C4.03682 7.25596 4.00133 7.34116 4.00133 7.43004C4.00133 7.51892 4.03682 7.60412 4.09993 7.66671L5.68659 9.23337C5.74708 9.29782 5.83154 9.33439 5.91993 9.33439C6.00832 9.33439 6.09277 9.29782 6.15326 9.23337Z"
+                    fill="#79B530"></path>
+
+            </svg>
+
+        </div>
+    </div>
     <div class="row cust-page-padding">
         <div class="col-xl-8 col-lg-12 col-md-12">
             <div class="wsus__product_details_img">
