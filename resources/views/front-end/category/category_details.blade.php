@@ -84,7 +84,7 @@
                     </div>
                 </div>
             @else
-                <p>No Subcategory Found</p>
+                <p class="py-4">No Subcategory Found</p>
             @endif
         </div>
     </div>

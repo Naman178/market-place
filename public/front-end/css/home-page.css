@@ -2221,3 +2221,20 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
 .cursor-auto{
   cursor: auto !important;
 }
+.wsus__product_details_img {
+    position: relative;
+    overflow: hidden;
+}
+
+.wishlist-btn {
+    position: absolute;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8); 
+    border: none;
+    padding: 8px;
+}
+
+.wishlist-btn i {
+    color: #007AC1; 
+    font-size: 18px;
+}

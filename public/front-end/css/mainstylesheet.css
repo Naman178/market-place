@@ -3114,6 +3114,7 @@ button:focus {
   display: flex;
   border: 1px dotted #0274b8;
   padding-bottom: 5px;
+  justify-content: space-around;
   /* margin-bottom: 15px; */
 }
 
