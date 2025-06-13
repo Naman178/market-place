@@ -39,7 +39,7 @@
                 // if (!validateExpiration(card_exp_month, card_exp_year)) {
                 //     valid = false;
                 // }
-                  if (!validateCardNumber()) valid = false;
+                if (!validateCardNumber()) valid = false;
                 if (!validateExpiration()) valid = false;
                 if (!validateCVC()) valid = false;
                 if (!valid) {
