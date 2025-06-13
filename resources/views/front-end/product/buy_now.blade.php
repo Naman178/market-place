@@ -113,9 +113,13 @@
     </div>
     <div class="row cust-page-padding">
         <div class="col-xl-8 col-lg-12 col-md-12">
-            <div class="wsus__product_details_img">
-                <img  src="{{ asset('public/storage/items_files/' . $item->thumbnail_image) }}"
-                    alt="product" class="img-fluod w-100 h-100">
+          <div class="wsus__product_details_img position-relative">
+                <img src="{{ asset('public/storage/items_files/' . $item->thumbnail_image) }}"
+                    alt="product" class="img-fluid w-100 h-100">
+                
+                <button class="wishlist-btn" id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})">
+                    <i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
+                </button>
             </div>
             @if ($item->pricing['pricing_type'] === 'one-time')
             <div class="wsus__product_details_text">
@@ -136,10 +140,10 @@
                         </button>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
                             Wishlist</button>
-                    </li>
+                    </li> --}}
 
                 </ul>
                 {{-- <div class="tab-content" id="pills-tabContent"> --}}
@@ -363,10 +367,10 @@
                         </button>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link" id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
                             Wishlist</button>
-                    </li>
+                    </li> --}}
 
                 </ul>
                 {{-- <div class="tab-content" id="pills-tabContent"> --}}
@@ -802,7 +806,7 @@
                 wishlistIcon.classList.toggle("fas");
                 wishlistIcon.classList.toggle("far");
 
-                wishlistBtn.innerHTML = `<i id="wishlistIcon-${itemId}" class="${wishlistIcon.classList.contains("fas") ? "fas" : "far"} fa-heart"></i> ${data.message}`;
+                wishlistBtn.innerHTML = `<i id="wishlistIcon-${itemId}" class="${wishlistIcon.classList.contains("fas") ? "fas" : "far"} fa-heart"></i>`;
                 toastr.success(data.message);
             } else {
                 toastr.error(data.message);
