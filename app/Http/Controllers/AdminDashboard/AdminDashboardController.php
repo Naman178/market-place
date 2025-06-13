@@ -12,13 +12,13 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        $totalOrders = Order::count();
+        $totalOrders = Order::where('sys_state', '!=', '-1')->count();
 
-        $totalCustomers = User::count();
+        $totalCustomers = User::where('sys_state', '!=', '-1')->count();
 
         $totalBlog = Blog::count();
 
-        $totalPurchase = Items::count();
+        $totalPurchase = Items::where('sys_state', '!=', '-1')->count();
 
         $users = User::where('sys_state', '!=', '-1')->latest()->take(5)->get();
 
