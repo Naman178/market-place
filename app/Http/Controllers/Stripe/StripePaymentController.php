@@ -21,323 +21,653 @@ use App\Mail\SendThankyou;
 use Illuminate\Support\Facades\Mail;
 use App\Models\ContactsCountryEnum;
 use App\Models\CouponUsages;
+use Stripe\Exception\CardException;
+use Stripe\Exception\InvalidRequestException;
 
 class StripePaymentController extends Controller
 {
+    // public function stripePost(Request $request)
+    // {
+    //     try {
+    //     // dd($request->all());
+    //     $input = $request->all();
+    //     $product_id = $input['product_id'];
+    //     $amount = $input['amount'];
+    //     $plan_name = $input['plan_name'];
+    //     $discount = $input['is_discount_applied'];
+    //     $subtotal = $input['subtotal'];
+    //     $gst = $input['gst'];
+    //     $discountvalue = $input['discount_value'] ?? '';
+    //     $coupon_code = $input['final_coupon_code'] ?? '';
+    //     $plan_type = $input['plan_type'] ?? 'one_time';
+    //     $currency = $input['currency'];
+    //     $quantity = $input['final_quantity'];
+    //     $trial_period_days = $input['trial_period_days'] ?? 0;
+    //     $input_interval = strtolower($input['billing_cycle'] ?? 'month');
+
+    //     switch ($input_interval) {
+    //         case 'monthly':
+    //             $plan_interval = 'month';
+    //             break;
+    //         case 'yearly':
+    //             $plan_interval = 'year';
+    //             break;
+    //         case 'weekly':
+    //             $plan_interval = 'week';
+    //             break;
+    //         case 'quarterly':
+    //             $plan_interval = 'month';
+    //             break;
+    //         default:
+    //             $plan_interval = 'month';
+    //     }
+
+    //     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    //     if (auth()->check()) {
+    //         $user = auth()->user();
+    //     } else {
+    //         $user = User::latest()->first();
+    //     }
+
+    //     $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
+
+    //     $existingCustomer = \Stripe\Customer::all([
+    //         'email' => $user['email'],
+    //         'limit' => 1,
+    //     ]);
+
+    //     // if ($existingCustomer->count() > 0) {
+    //     //     $customer_id = $existingCustomer->data[0]->id;
+    //     //     $existingSubscriptions = \Stripe\Subscription::all([
+    //     //         'customer' => $customer_id,
+    //     //         'limit' => 1,
+    //     //         'status' => 'active',
+    //     //     ]);
+    //     // //     if($trial_period_days <= 0){
+    //     // //     // If an active subscription exists, delete it
+    //     // //     if (!empty($existingSubscriptions->data)) {
+    //     // //         $subscription_id = $existingSubscriptions->data[0]->id;
+    //     // //         \Stripe\Subscription::retrieve($subscription_id)->cancel(); 
+    //     // //     }
+    //     // //     \Stripe\Customer::retrieve($customer_id)->delete();
+    //     // // }
+    //     // } 
+    //     //     sleep(2);
+
+    //     //     // Create a new customer
+    //     //     $newCustomer = \Stripe\Customer::create([
+    //     //         'name' => $user['name'],
+    //     //         'email' => $user['email'],
+    //     //         'address' => [
+    //     //             'line1' => $user['address_line_1'] ?? $user['address_line1'],
+    //     //             'line2' => $user['address_line_2'] ?? $user['address_line2'],
+    //     //             'city' => $user['city'],
+    //     //             'postal_code' => $user['zip'],
+    //     //             'country' => $isocode,
+    //     //         ],
+    //     //     ]);
+    //     //     $customer_id = $newCustomer->id;
+    //     if ($existingCustomer->count() > 0) {
+    //         // Use the existing Stripe customer
+    //         $customer_id = $existingCustomer->data[0]->id;
+
+    //         // Optional: check and cancel existing subscriptions
+    //         $existingSubscriptions = \Stripe\Subscription::all([
+    //             'customer' => $customer_id,
+    //             'limit' => 1,
+    //             'status' => 'active',
+    //         ]);
+
+    //         // You can delete subscription/customer if needed here based on trial logic
+    //     } else {
+    //         // Create a new customer only if one doesn't exist
+    //         $newCustomer = \Stripe\Customer::create([
+    //             'name' => $user['name'],
+    //             'email' => $user['email'],
+    //             'address' => [
+    //                 'line1' => $user['address_line_1'] ?? $user['address_line1'] ?? '',
+    //                 'line2' => $user['address_line_2'] ?? $user['address_line2'] ?? '',
+    //                 'city' => $user['city'] ?? '',
+    //                 'postal_code' => $user['zip'] ?? '',
+    //                 'country' => $isocode ?? 'US',
+    //             ],
+    //         ]);
+    //         $customer_id = $newCustomer->id;
+    //     }
+
+    //     // if ($plan_type === 'recurring') {
+    //     //     // **Step 1: Create a Product (if not exists)**
+    //     //     $product = \Stripe\Product::create([
+    //     //         'name' => $plan_name,
+    //     //         'type' => 'service',
+    //     //     ]);
+
+    //     //     // **Step 2: Create a Price for the Subscription**
+    //     //     $price = \Stripe\Price::create([
+    //     //         'unit_amount' => $amount,
+    //     //         'currency' => $currency,
+    //     //         'recurring' => ['interval' => $plan_interval],
+    //     //         'product' => $product->id,
+    //     //     ]);
+
+    //     //     // **Step 3: Create Subscription**
+    //     //     $subscription = \Stripe\Subscription::create([
+    //     //         'customer' => $customer_id,
+    //     //         'items' => [['price' => $price->id]],
+    //     //         'payment_behavior' => 'default_incomplete',
+    //     //         'metadata' => [
+    //     //             'product_id' => $product_id,
+    //     //             'user_id' => $user['id'],
+    //     //             'plan_name' => $plan_name,
+    //     //             'quantity' => $quantity,
+    //     //             'order_id' => $product_id,
+    //     //             'currency' => $currency,
+    //     //         ],
+    //     //         'trial_period_days' => $trial_period_days,
+    //     //         'expand' => ['latest_invoice.payment_intent'],
+    //     //     ]);
+
+    //     //     $paymentIntent = $subscription->latest_invoice->payment_intent;
+
+    //     // } 
+    //     if ($plan_type === 'recurring') {
+    //         for ($i = 0; $i < $quantity; $i++) {
+    //             // Step 1: Create a Product (if not exists)
+    //             $product = \Stripe\Product::create([
+    //                 'name' => $plan_name,
+    //                 'type' => 'service',
+    //             ]);
+
+    //             // Step 2: Create a Price for the Subscription
+    //             $price = \Stripe\Price::create([
+    //                 'unit_amount' => $amount,
+    //                 'currency' => $currency,
+    //                 'recurring' => ['interval' => $plan_interval],
+    //                 'product' => $product->id,
+    //             ]);
+
+    //             // Step 3: Create Subscription
+    //             $subscription = \Stripe\Subscription::create([
+    //                 'customer' => $customer_id,
+    //                 'items' => [['price' => $price->id]],
+    //                 'payment_behavior' => $trial_period_days > 0 ? 'allow_incomplete' : 'default_incomplete',
+    //                 'metadata' => [
+    //                     'product_id' => $product_id,
+    //                     'user_id' => $user['id'],
+    //                     'plan_name' => $plan_name,
+    //                     'quantity' => $quantity,
+    //                     'order_id' => $product_id,
+    //                     'currency' => $currency,
+    //                 ],
+    //                 'trial_period_days' => $trial_period_days,
+    //                 'expand' => ['latest_invoice.payment_intent'],
+    //             ]);
+
+    //             $paymentIntent = $subscription->latest_invoice->payment_intent;
+    //         }
+    //     }
+    //     else {
+    //         // **One-time payment**
+    //         $paymentIntent = \Stripe\PaymentIntent::create([
+    //             'amount' => $amount,
+    //             'currency' => $currency,
+    //             'customer' => $customer_id,
+    //             'payment_method_types' => ['card'],
+    //             'description' => 'Payment For the Market Place Checkout Wallet',
+    //         ]);
+    //     }
+    //     if($request->stripeToken == null){
+    //         return redirect()->back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
+    //     }
+    //     else{
+    //         $paymentMethod = \Stripe\PaymentMethod::create([
+    //             'type' => 'card',
+    //             'card' => [
+    //                 'token' => $request->stripeToken,
+    //             ],
+    //         ]);
+    //     }
+    //     $return_url_params = [
+    //         'product_id' => $product_id,
+    //         'subtotal' => $subtotal,
+    //         'gst' => $gst,
+    //         'amount' => $amount,
+    //         'discount' => $discount,
+    //         'coupon_code' => $coupon_code,
+    //         'discountvalue' => $discountvalue,
+    //         'plan_type' => $plan_type,
+    //         'quantity' => $quantity,
+    //         'currency' => $currency,
+    //     ];
+    //     if ($plan_type === 'recurring') {
+    //         $return_url_params['subscription_id'] = $subscription->id;
+    //     }
+        
+    //     if (auth()->check()) {
+    //     if (!$trial_period_days > 0 && $paymentIntent) {
+    //             // Confirm payment if no trial period
+    //             $stripe_payment = $paymentIntent->confirm([
+    //                 'payment_method' => $paymentMethod->id ?? null,
+    //                 'return_url' => route('stripe-payment-3d', $return_url_params),
+    //             ]);
+    //         if ($stripe_payment->status === 'requires_action') {
+    //             $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
+
+    //             echo "<script>window.location.href = '$authenticationUrl';</script>";
+    //             exit;
+    //         }
+    //       }
+    //       }
+    //     else{
+    //         if (!$trial_period_days > 0 && $paymentIntent) {
+    //             $stripePayment = $paymentIntent->confirm([
+    //                 'payment_method' => $paymentMethod,
+    //                 'return_url' => route('stripe-payment-3d', ['user_id' => $user->id] + $return_url_params),
+    //             ]);
+
+    //             if ($stripePayment->status === 'requires_action') {
+    //                 return response()->json([
+    //                     'success' => true,
+    //                     'requires_action' => true,
+    //                     'redirect_url' => [
+    //                         'url' => $paymentIntent->next_action->redirect_to_url->url
+    //                     ]
+    //                 ]);
+    //             }
+    //         }
+    //     }
+    //     if (!auth()->check() && $user->id) {
+    //         auth()->loginUsingId($user->id);
+    //     }
+    //     if ($trial_period_days > 0) {
+    //         // Create transaction with trial status
+    //         $stripe_payment_id = 'trial_' . uniqid();
+    //         $stripe_payment_method = 'trial';
+    //         $stripe_payment_status = 'trialing';
+    //         $amount_paid = 0;
+
+    //         $tran = Transaction::create([
+    //             'user_id' => $user->id,
+    //             'product_id' => $product_id,
+    //             'payment_status' => $stripe_payment_status,
+    //             'payment_amount' => $amount_paid,
+    //             'razorpay_payment_id' => $stripe_payment_id,
+    //             'payment_method' => $stripe_payment_method,
+    //             'transaction_id' => $stripe_payment_id,
+    //             'currency' => $currency
+    //         ]);
+
+    //         // For each quantity, create a trial order + key
+    //         for ($i = 0; $i < $quantity; $i++) {
+    //             $order = Order::create([
+    //                 'product_id' => $product_id,
+    //                 'user_id' => $user->id,
+    //                 'payment_status' => $stripe_payment_status,
+    //                 'payment_amount' => $amount_paid,
+    //                 'razorpay_payment_id' => $stripe_payment_id,
+    //                 'payment_method' => $stripe_payment_method,
+    //                 'transaction_id' => $tran->id,
+    //                 'currency' => $currency
+    //             ]);
+
+    //             // Generate a license/key for each order
+    //             $key = Str::random(50);
+    //             $expireDate = now()->addDays($trial_period_days);
+
+    //             Key::create([
+    //                 'key' => $key,
+    //                 'user_id' => $user->id,
+    //                 'order_id' => $order->id,
+    //                 'product_id' => $product_id,
+    //                 'created_at' => now(),
+    //                 'expire_at' => $expireDate
+    //             ]);
+    //         }
+
+    //         // Optionally, create CouponUsages if coupon applied during trial
+    //         if ($coupon_code != '' && $discountvalue != '') {
+    //             CouponUsages::create([
+    //                 'coupon_id' => $coupon_code,
+    //                 'user_id' => $user->id,
+    //                 'order_id' => $order->id,
+    //                 'discount_value' => $discountvalue,
+    //             ]);
+    //         }
+
+    //         // You can also generate invoice or other post-order logic here
+    //         $this->generateInvoice(
+    //             $user,
+    //             $stripe_payment_id,
+    //             $order->id,
+    //             0,  
+    //             0,  
+    //             0,  
+    //             '', 
+    //             0,  
+    //             $stripe_payment_status,
+    //             $product_id,
+    //             $quantity,
+    //         );
+    //         if (auth()->check()) {
+    //             return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
+    //         }
+    //         else{
+    //             return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+    //         }
+    //     }
+    //    }   catch (CardException $e) {
+    //         // Stripe-specific card error
+    //         $message = $e->getError()->message;
+
+    //         // Check for the specific test card error
+    //         if (str_contains(strtolower($message), 'test')) {
+    //             return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
+    //         }
+
+    //         return back()->with('error', $message);
+
+    //     } catch (InvalidRequestException $e) {
+    //         // Example: test key used in live mode, or test card in live mode
+    //         if (str_contains(strtolower($e->getMessage()), 'test')) {
+    //             return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
+    //         }
+
+    //         return back()->with('error', $e->getMessage());
+
+    //     } catch (\Exception $e) {
+    //         // General error fallback
+    //         return back()->with('error', 'An unexpected error occurred. Please try again.');
+    //     }
+    //     // If trial period is set, redirect to the success page without confirming the payment
+    //     // return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');        
+
+    //     // $stripe_payment = $paymentIntent->confirm([
+    //     //     'payment_method' => $paymentMethod->id,
+    //     //     'return_url' => route('stripe-payment-3d', $return_url_params),
+    //     // ]);
+
+    //     // if ($paymentIntent->status === 'requires_action') {
+    //     //     $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
+
+    //     //     echo "<script>window.location.href = '$authenticationUrl';</script>";
+    //     //     exit;
+    //     // }
+    // }
+
     public function stripePost(Request $request)
     {
-        // dd($request->all());
-        $input = $request->all();
-        $product_id = $input['product_id'];
-        $amount = $input['amount'];
-        $plan_name = $input['plan_name'];
-        $discount = $input['is_discount_applied'];
-        $subtotal = $input['subtotal'];
-        $gst = $input['gst'];
-        $discountvalue = $input['discount_value'] ?? '';
-        $coupon_code = $input['final_coupon_code'] ?? '';
-        $plan_type = $input['plan_type'] ?? 'one_time';
-        $currency = $input['currency'];
-        $quantity = $input['final_quantity'];
-        $trial_period_days = $input['trial_period_days'] ?? 0;
-        $input_interval = strtolower($input['billing_cycle'] ?? 'month');
+        try {
+            $input = $request->all();
+            $product_id = $input['product_id'];
+            $amount = $input['amount'];
+            $plan_name = $input['plan_name'];
+            $discount = $input['is_discount_applied'];
+            $subtotal = $input['subtotal'];
+            $gst = $input['gst'];
+            $discountvalue = $input['discount_value'] ?? '';
+            $coupon_code = $input['final_coupon_code'] ?? '';
+            $plan_type = $input['plan_type'] ?? 'one_time';
+            $currency = $input['currency'];
+            $quantity = $input['final_quantity'];
+            $trial_period_days = $input['trial_period_days'] ?? 0;
+            $input_interval = strtolower($input['billing_cycle'] ?? 'month');
 
-        switch ($input_interval) {
-            case 'monthly':
-                $plan_interval = 'month';
-                break;
-            case 'yearly':
-                $plan_interval = 'year';
-                break;
-            case 'weekly':
-                $plan_interval = 'week';
-                break;
-            case 'quarterly':
-                $plan_interval = 'month';
-                break;
-            default:
-                $plan_interval = 'month';
-        }
+            $plan_interval = match ($input_interval) {
+                'monthly' => 'month',
+                'yearly' => 'year',
+                'weekly' => 'week',
+                'quarterly' => 'month',
+                default => 'month',
+            };
 
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        if (auth()->check()) {
-            $user = auth()->user();
-        } else {
-            $user = User::latest()->first();
-        }
+            $user = auth()->check() ? auth()->user() : User::latest()->first();
+            $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
 
-        $isocode = ContactsCountryEnum::where('name', $user['country'])->pluck('ISOname')->first();
-
-        $existingCustomer = \Stripe\Customer::all([
-            'email' => $user['email'],
-            'limit' => 1,
-        ]);
-
-        if ($existingCustomer->count() > 0) {
-            $customer_id = $existingCustomer->data[0]->id;
-            $existingSubscriptions = \Stripe\Subscription::all([
-                'customer' => $customer_id,
-                'limit' => 1,
-                'status' => 'active',
-            ]);
-        //     if($trial_period_days <= 0){
-        //     // If an active subscription exists, delete it
-        //     if (!empty($existingSubscriptions->data)) {
-        //         $subscription_id = $existingSubscriptions->data[0]->id;
-        //         \Stripe\Subscription::retrieve($subscription_id)->cancel(); 
-        //     }
-        //     \Stripe\Customer::retrieve($customer_id)->delete();
-        // }
-        } 
-            sleep(2);
-
-            // Create a new customer
-            $newCustomer = \Stripe\Customer::create([
-                'name' => $user['name'],
+            // Get or create Stripe customer
+            $existingCustomer = \Stripe\Customer::all([
                 'email' => $user['email'],
-                'address' => [
-                    'line1' => $user['address_line_1'] ?? $user['address_line1'],
-                    'line2' => $user['address_line_2'] ?? $user['address_line2'],
-                    'city' => $user['city'],
-                    'postal_code' => $user['zip'],
-                    'country' => $isocode,
-                ],
+                'limit' => 1,
             ]);
-            $customer_id = $newCustomer->id;
 
-        // if ($plan_type === 'recurring') {
-        //     // **Step 1: Create a Product (if not exists)**
-        //     $product = \Stripe\Product::create([
-        //         'name' => $plan_name,
-        //         'type' => 'service',
-        //     ]);
-
-        //     // **Step 2: Create a Price for the Subscription**
-        //     $price = \Stripe\Price::create([
-        //         'unit_amount' => $amount,
-        //         'currency' => $currency,
-        //         'recurring' => ['interval' => $plan_interval],
-        //         'product' => $product->id,
-        //     ]);
-
-        //     // **Step 3: Create Subscription**
-        //     $subscription = \Stripe\Subscription::create([
-        //         'customer' => $customer_id,
-        //         'items' => [['price' => $price->id]],
-        //         'payment_behavior' => 'default_incomplete',
-        //         'metadata' => [
-        //             'product_id' => $product_id,
-        //             'user_id' => $user['id'],
-        //             'plan_name' => $plan_name,
-        //             'quantity' => $quantity,
-        //             'order_id' => $product_id,
-        //             'currency' => $currency,
-        //         ],
-        //         'trial_period_days' => $trial_period_days,
-        //         'expand' => ['latest_invoice.payment_intent'],
-        //     ]);
-
-        //     $paymentIntent = $subscription->latest_invoice->payment_intent;
-
-        // } 
-        if ($plan_type === 'recurring') {
-            for ($i = 0; $i < $quantity; $i++) {
-                // Step 1: Create a Product (if not exists)
-                $product = \Stripe\Product::create([
-                    'name' => $plan_name,
-                    'type' => 'service',
-                ]);
-
-                // Step 2: Create a Price for the Subscription
-                $price = \Stripe\Price::create([
-                    'unit_amount' => $amount,
-                    'currency' => $currency,
-                    'recurring' => ['interval' => $plan_interval],
-                    'product' => $product->id,
-                ]);
-
-                // Step 3: Create Subscription
-                $subscription = \Stripe\Subscription::create([
-                    'customer' => $customer_id,
-                    'items' => [['price' => $price->id]],
-                    'payment_behavior' => $trial_period_days > 0 ? 'allow_incomplete' : 'default_incomplete',
-                    'metadata' => [
-                        'product_id' => $product_id,
-                        'user_id' => $user['id'],
-                        'plan_name' => $plan_name,
-                        'quantity' => $quantity,
-                        'order_id' => $product_id,
-                        'currency' => $currency,
+            if ($existingCustomer->count() > 0) {
+                $customer_id = $existingCustomer->data[0]->id;
+            } else {
+                $newCustomer = \Stripe\Customer::create([
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'address' => [
+                        'line1' => $user['address_line_1'] ?? $user['address_line1'] ?? '',
+                        'line2' => $user['address_line_2'] ?? $user['address_line2'] ?? '',
+                        'city' => $user['city'] ?? '',
+                        'postal_code' => $user['zip'] ?? '',
+                        'country' => $isocode ?? 'US',
                     ],
-                    'trial_period_days' => $trial_period_days,
-                    'expand' => ['latest_invoice.payment_intent'],
                 ]);
-
-                $paymentIntent = $subscription->latest_invoice->payment_intent;
+                $customer_id = $newCustomer->id;
             }
-        }
-        else {
-            // **One-time payment**
-            $paymentIntent = \Stripe\PaymentIntent::create([
+          
+
+            // Initialize return URL params
+            $return_url_params = [
+                'product_id' => $product_id,
+                'subtotal' => $subtotal,
+                'gst' => $gst,
                 'amount' => $amount,
+                'discount' => $discount,
+                'coupon_code' => $coupon_code,
+                'discountvalue' => $discountvalue,
+                'plan_type' => $plan_type,
+                'quantity' => $quantity,
                 'currency' => $currency,
-                'customer' => $customer_id,
-                'payment_method_types' => ['card'],
-                'description' => 'Payment For the Market Place Checkout Wallet',
-            ]);
-        }
+            ];
 
-        $paymentMethod = \Stripe\PaymentMethod::create([
-            'type' => 'card',
-            'card' => [
-                'token' => $request->stripeToken,
-            ],
-        ]);
-        $return_url_params = [
-            'product_id' => $product_id,
-            'subtotal' => $subtotal,
-            'gst' => $gst,
-            'amount' => $amount,
-            'discount' => $discount,
-            'coupon_code' => $coupon_code,
-            'discountvalue' => $discountvalue,
-            'plan_type' => $plan_type,
-            'quantity' => $quantity,
-            'currency' => $currency,
-        ];
-        if ($plan_type === 'recurring') {
-            $return_url_params['subscription_id'] = $subscription->id;
-        }
-        
-        if (auth()->check()) {
-        if (!$trial_period_days > 0 && $paymentIntent) {
-            // Confirm payment if no trial period
-            $stripe_payment = $paymentIntent->confirm([
-                'payment_method' => $paymentMethod->id ?? null,
-                'return_url' => route('stripe-payment-3d', $return_url_params),
-            ]);
-            
-            if ($stripe_payment->status === 'requires_action') {
-                $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
-
-                echo "<script>window.location.href = '$authenticationUrl';</script>";
-                exit;
-            }
-          }
-          }
-        else{
-            if (!$trial_period_days > 0 && $paymentIntent) {
-                $stripePayment = $paymentIntent->confirm([
-                    'payment_method' => $paymentMethod,
-                    'return_url' => route('stripe-payment-3d', ['user_id' => $user->id] + $return_url_params),
-                ]);
-
-                if ($stripePayment->status === 'requires_action') {
-                    return response()->json([
-                        'success' => true,
-                        'requires_action' => true,
-                        'redirect_url' => [
-                            'url' => $paymentIntent->next_action->redirect_to_url->url
-                        ]
+            // Handle recurring subscription
+            if ($plan_type === 'recurring') {
+                for ($i = 0; $i < $quantity; $i++) {
+                    // Step 1: Create a Product (if not exists)
+                    $product = \Stripe\Product::create([
+                        'name' => $plan_name,
+                        'type' => 'service',
                     ]);
+
+                    // Step 2: Create a Price for the Subscription
+                    $price = \Stripe\Price::create([
+                        'unit_amount' => $amount,
+                        'currency' => $currency,
+                        'recurring' => ['interval' => $plan_interval],
+                        'product' => $product->id,
+                    ]);
+
+                    // Step 3: Create Subscription
+                    $subscription = \Stripe\Subscription::create([
+                        'customer' => $customer_id,
+                        'items' => [['price' => $price->id]],
+                        'payment_behavior' => $trial_period_days > 0 ? 'allow_incomplete' : 'default_incomplete',
+                        'metadata' => [
+                            'product_id' => $product_id,
+                            'user_id' => $user['id'],
+                            'plan_name' => $plan_name,
+                            'quantity' => $quantity,
+                            'order_id' => $product_id,
+                            'currency' => $currency,
+                        ],
+                        'trial_period_days' => $trial_period_days,
+                        'expand' => ['latest_invoice.payment_intent'],
+                    ]);
+
+                    $paymentIntent = $subscription->latest_invoice->payment_intent;
                 }
             }
-        }
-        if (!auth()->check() && $user->id) {
-            auth()->loginUsingId($user->id);
-        }
-        if ($trial_period_days > 0) {
-            // Create transaction with trial status
-            $stripe_payment_id = 'trial_' . uniqid();
-            $stripe_payment_method = 'trial';
-            $stripe_payment_status = 'trialing';
-            $amount_paid = 0;
-
-            $tran = Transaction::create([
-                'user_id' => $user->id,
+            else {
+                // **One-time payment**
+                $paymentIntent = \Stripe\PaymentIntent::create([
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'customer' => $customer_id,
+                    'payment_method_types' => ['card'],
+                    'description' => 'Payment For the Market Place Checkout Wallet',
+                ]);
+            }
+            if($request->stripeToken == null){
+                return redirect()->back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
+            }
+            else{
+                $paymentMethod = \Stripe\PaymentMethod::create([
+                    'type' => 'card',
+                    'card' => [
+                        'token' => $request->stripeToken,
+                    ],
+                ]);
+            }
+            $return_url_params = [
                 'product_id' => $product_id,
-                'payment_status' => $stripe_payment_status,
-                'payment_amount' => $amount_paid,
-                'razorpay_payment_id' => $stripe_payment_id,
-                'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id,
-                'currency' => $currency
-            ]);
+                'subtotal' => $subtotal,
+                'gst' => $gst,
+                'amount' => $amount,
+                'discount' => $discount,
+                'coupon_code' => $coupon_code,
+                'discountvalue' => $discountvalue,
+                'plan_type' => $plan_type,
+                'quantity' => $quantity,
+                'currency' => $currency,
+            ];
+            if ($plan_type === 'recurring') {
+                $return_url_params['subscription_id'] = $subscription->id;
+            }
+            
+            if (auth()->check()) {
+                if (!$trial_period_days > 0 && $paymentIntent) {
+                        // Confirm payment if no trial period
+                        $stripe_payment = $paymentIntent->confirm([
+                            'payment_method' => $paymentMethod->id ?? null,
+                            'return_url' => route('stripe-payment-3d', $return_url_params),
+                        ]);
+                    if ($stripe_payment->status === 'requires_action') {
+                        $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
 
-            // For each quantity, create a trial order + key
-            for ($i = 0; $i < $quantity; $i++) {
-                $order = Order::create([
-                    'product_id' => $product_id,
+                        echo "<script>window.location.href = '$authenticationUrl';</script>";
+                        exit;
+                    }
+                }
+            }
+            else{
+                if (!$trial_period_days > 0 && $paymentIntent) {
+                    $stripePayment = $paymentIntent->confirm([
+                        'payment_method' => $paymentMethod,
+                        'return_url' => route('stripe-payment-3d', ['user_id' => $user->id] + $return_url_params),
+                    ]);
+
+                    if ($stripePayment->status === 'requires_action') {
+                        return response()->json([
+                            'success' => true,
+                            'requires_action' => true,
+                            'redirect_url' => [
+                                'url' => $paymentIntent->next_action->redirect_to_url->url
+                            ]
+                        ]);
+                    }
+                }
+            }
+         
+            if (!auth()->check() && $user->id) {
+                auth()->loginUsingId($user->id);
+            }
+
+            // Handle trial-based logic
+            if ($trial_period_days > 0) {
+                $stripe_payment_id = 'trial_' . uniqid();
+                $stripe_payment_method = 'trial';
+                $stripe_payment_status = 'trialing';
+                $amount_paid = 0;
+
+                $tran = Transaction::create([
                     'user_id' => $user->id,
+                    'product_id' => $product_id,
                     'payment_status' => $stripe_payment_status,
                     'payment_amount' => $amount_paid,
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
-                    'transaction_id' => $tran->id,
+                    'transaction_id' => $stripe_payment_id,
                     'currency' => $currency
                 ]);
 
-                // Generate a license/key for each order
-                $key = Str::random(50);
-                $expireDate = now()->addDays($trial_period_days);
+                for ($i = 0; $i < $quantity; $i++) {
+                    $order = Order::create([
+                        'product_id' => $product_id,
+                        'user_id' => $user->id,
+                        'payment_status' => $stripe_payment_status,
+                        'payment_amount' => $amount_paid,
+                        'razorpay_payment_id' => $stripe_payment_id,
+                        'payment_method' => $stripe_payment_method,
+                        'transaction_id' => $tran->id,
+                        'currency' => $currency
+                    ]);
 
-                Key::create([
-                    'key' => $key,
-                    'user_id' => $user->id,
-                    'order_id' => $order->id,
-                    'product_id' => $product_id,
-                    'created_at' => now(),
-                    'expire_at' => $expireDate
-                ]);
+                    $key = Str::random(50);
+                    $expireDate = now()->addDays($trial_period_days);
+
+                    Key::create([
+                        'key' => $key,
+                        'user_id' => $user->id,
+                        'order_id' => $order->id,
+                        'product_id' => $product_id,
+                        'created_at' => now(),
+                        'expire_at' => $expireDate
+                    ]);
+                }
+
+                if ($coupon_code && $discountvalue) {
+                    CouponUsages::create([
+                        'coupon_id' => $coupon_code,
+                        'user_id' => $user->id,
+                        'order_id' => $order->id ?? null,
+                        'discount_value' => $discountvalue,
+                    ]);
+                }
+
+                $this->generateInvoice(
+                    $user,
+                    $stripe_payment_id,
+                    $order->id,
+                    0,
+                    0,
+                    0,
+                    '',
+                    0,
+                    $stripe_payment_status,
+                    $product_id,
+                    $quantity
+                );
+
+                return auth()->check()
+                    ? redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!')
+                    : redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
             }
 
-            // Optionally, create CouponUsages if coupon applied during trial
-            if ($coupon_code != '' && $discountvalue != '') {
-                CouponUsages::create([
-                    'coupon_id' => $coupon_code,
-                    'user_id' => $user->id,
-                    'order_id' => $order->id,
-                    'discount_value' => $discountvalue,
-                ]);
+            // Ensure the user is logged in
+            if (!auth()->check() && $user->id) {
+                auth()->loginUsingId($user->id);
             }
 
-            // You can also generate invoice or other post-order logic here
-            $this->generateInvoice(
-                $user,
-                $stripe_payment_id,
-                $order->id,
-                0,  
-                0,  
-                0,  
-                '', 
-                0,  
-                $stripe_payment_status,
-                $product_id,
-                $quantity,
-            );
-            if (auth()->check()) {
-                return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');
+            return redirect()->route('user-dashboard')->with('success', 'Payment successful!');
+       
+        } catch (\Stripe\Exception\CardException $e) {
+            $message = $e->getError()->message;
+            if (str_contains(strtolower($message), 'test')) {
+                return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
             }
-            else{
-                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+            return back()->with('error', $message);
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            if (str_contains(strtolower($e->getMessage()), 'test')) {
+                return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
             }
+            return back()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->with('error', 'An unexpected error occurred. Please try again. ' . $e->getMessage());
         }
-
-        // If trial period is set, redirect to the success page without confirming the payment
-        // return redirect()->route('user-dashboard')->with('success', 'Subscription created with trial period!');        
-
-        // $stripe_payment = $paymentIntent->confirm([
-        //     'payment_method' => $paymentMethod->id,
-        //     'return_url' => route('stripe-payment-3d', $return_url_params),
-        // ]);
-
-        // if ($paymentIntent->status === 'requires_action') {
-        //     $authenticationUrl = $paymentIntent->next_action->redirect_to_url->url;
-
-        //     echo "<script>window.location.href = '$authenticationUrl';</script>";
-        //     exit;
-        // }
     }
 
     public function stripeAfterPayment(Request $request){
@@ -361,19 +691,31 @@ class StripePaymentController extends Controller
         $gst_percentage = $_GET['gst'];
         $quantity = $_GET['quantity'] ?? 1;
         $plan_type = $_GET['plan_type'] ?? 'one_time';
+        $subscription_id = $_GET['subscription_id'] ?? null;
 
-        // $discount = $_GET['discount'];
-        // if($discount == 'yes'){
-        //     $plan = Plan::where('id',$product_id)->first();
-        //     $amount = $plan->yearly_price;
-        // }
+        if ($subscription_id) {
+            try {
+                $subscription = \Stripe\Subscription::retrieve($subscription_id);
+                $invoice = \Stripe\Invoice::retrieve($subscription->latest_invoice);
+                $stripe_payment = \Stripe\PaymentIntent::retrieve($invoice->payment_intent);
+            } catch (\Exception $e) {
+                return redirect()->route('user-dashboard')->with('error', 'Unable to retrieve subscription payment status. ' . $e->getMessage());
+            }
+        } else {
+            $paymentIntentId = $_GET['payment_intent'] ?? null;
+            if (!$paymentIntentId) {
+                return redirect()->route('user-dashboard')->with('error', 'Missing payment intent ID.');
+            }
 
-        $paymentIntentId = $_GET['payment_intent'];
-
-        $stripe_payment = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+            try {
+                $stripe_payment = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+            } catch (\Exception $e) {
+                return redirect()->route('user-dashboard')->with('error', 'Unable to retrieve payment status. ' . $e->getMessage());
+            }
+        }
 
         $stripe_payment_id = $stripe_payment->id;
-        $stripe_payment_method = $stripe_payment['payment_method'];
+        $stripe_payment_method = $stripe_payment['payment_method'] ?? null;
         $stripe_payment_status = $stripe_payment->status;
         if ($stripe_payment_status === 'succeeded') {
 
@@ -653,10 +995,16 @@ class StripePaymentController extends Controller
 
             return redirect()->route('user-dashboard');
         }
-        elseif($stripe_payment_status === 'requires_payment_method'){
-
-            $tran = Transaction::create([
-                'user_id' => $user['id'],
+        elseif (in_array($stripe_payment_status, [
+            'requires_payment_method',
+            'requires_confirmation',
+            'requires_action',
+            'canceled',
+            'processing',
+            'failed',
+        ])) {
+            Transaction::create([
+                'user_id' => $user->id,
                 'product_id' => $product_id,
                 'payment_status' => $stripe_payment_status,
                 'payment_amount' => $old_amount,
@@ -666,57 +1014,77 @@ class StripePaymentController extends Controller
                 'currency' => $currency
             ]);
 
-            session()->flash('success', 'Payment Failed');
-            if (auth()->check()) {
-            return redirect()->route('user-dashboard');
-             }
-            else{
-                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
-            }
-
+            return redirect()->route('user-dashboard')
+            ->with('error', 'Payment failed or incomplete. Stripe returned status: ' . $stripe_payment_status);
         }
-        elseif($stripe_payment_status === 'failed'){
-
-            $tran = Transaction::create([
-                'user_id' => $user['id'],
-                'product_id' => $product_id,
-                'payment_status' => $stripe_payment_status,
-                'payment_amount' => $old_amount,
-                'razorpay_payment_id' => $stripe_payment_id,
-                'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id,
-                'currency' => $currency
-            ]);
-
-            session()->flash('success', 'Payment Failed');
-            if (auth()->check()) {
-            return redirect()->route('user-dashboard');
-             }
-            else{
-                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
-            }
+        else {
+            return redirect()->route('user-dashboard')
+                ->with('error', 'Unknown Stripe payment status: ' . $stripe_payment_status);
         }
-        else{
+        // elseif($stripe_payment_status === 'requires_payment_method'){
 
-            $tran = Transaction::create([
-                'user_id' => $user['id'],
-                'product_id' => $product_id,
-                'payment_status' => $stripe_payment_status,
-                'payment_amount' => $old_amount,
-                'razorpay_payment_id' => $stripe_payment_id,
-                'payment_method' => $stripe_payment_method,
-                'transaction_id' => $stripe_payment_id,
-                'currency' => $currency
-            ]);
+        //     $tran = Transaction::create([
+        //         'user_id' => $user['id'],
+        //         'product_id' => $product_id,
+        //         'payment_status' => $stripe_payment_status,
+        //         'payment_amount' => $old_amount,
+        //         'razorpay_payment_id' => $stripe_payment_id,
+        //         'payment_method' => $stripe_payment_method,
+        //         'transaction_id' => $stripe_payment_id,
+        //         'currency' => $currency
+        //     ]);
 
-            session()->flash('success', 'Payment Failed');
-            if (auth()->check()) {
-            return redirect()->route('user-dashboard');
-            }
-            else{
-                return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
-            }
-        }
+        //     session()->flash('success', 'Payment Failed');
+        //     if (auth()->check()) {
+        //     return redirect()->route('user-dashboard');
+        //      }
+        //     else{
+        //         return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+        //     }
+
+        // }
+        // elseif($stripe_payment_status === 'failed'){
+
+        //     $tran = Transaction::create([
+        //         'user_id' => $user['id'],
+        //         'product_id' => $product_id,
+        //         'payment_status' => $stripe_payment_status,
+        //         'payment_amount' => $old_amount,
+        //         'razorpay_payment_id' => $stripe_payment_id,
+        //         'payment_method' => $stripe_payment_method,
+        //         'transaction_id' => $stripe_payment_id,
+        //         'currency' => $currency
+        //     ]);
+
+        //     session()->flash('success', 'Payment Failed');
+        //     if (auth()->check()) {
+        //     return redirect()->route('user-dashboard');
+        //      }
+        //     else{
+        //         return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+        //     }
+        // }
+        // else{
+
+        //     $tran = Transaction::create([
+        //         'user_id' => $user['id'],
+        //         'product_id' => $product_id,
+        //         'payment_status' => $stripe_payment_status,
+        //         'payment_amount' => $old_amount,
+        //         'razorpay_payment_id' => $stripe_payment_id,
+        //         'payment_method' => $stripe_payment_method,
+        //         'transaction_id' => $stripe_payment_id,
+        //         'currency' => $currency
+        //     ]);
+
+        //     session()->flash('success', 'Payment Failed');
+        //     if (auth()->check()) {
+        //     return redirect()->route('user-dashboard');
+        //     }
+        //     else{
+        //         return redirect()->route('user-login')->with('success', 'Subscription confirmed and active!');
+        //     }
+        // }
     }
     // public function handleWebhook(Request $request)
     // {
