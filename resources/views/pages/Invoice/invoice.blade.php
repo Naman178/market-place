@@ -60,7 +60,7 @@
                                             </td>                                            
                                             <td>{{ $invoice->order && $invoice->order->product ? $invoice->order->product->name : 'N/A' }}</td>
                                             <td>{{ $invoice->user ? $invoice->user->name : 'N/A' }}</td>
-                                            <td>{{ ceil($invoice->total) ?? $invoice->total }}</td>
+                                            <td>{{ $invoice->total }}</td>
                                             <td>{{ $invoice->created_at }}</td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-primary" data-toggle="dropdown"

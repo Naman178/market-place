@@ -409,6 +409,8 @@ class StripePaymentController extends Controller
             $coupon_code = $input['final_coupon_code'] ?? '';
             $plan_type = $input['plan_type'] ?? 'one_time';
             $currency = $input['currency'];
+            $billing_cycle = $input['billing_cycle'];
+            $product_type = $input['product_type'];
             $quantity = $input['final_quantity'];
             $trial_period_days = $input['trial_period_days'] ?? 0;
             $input_interval = strtolower($input['billing_cycle'] ?? 'month');
@@ -462,6 +464,8 @@ class StripePaymentController extends Controller
                 'plan_type' => $plan_type,
                 'quantity' => $quantity,
                 'currency' => $currency,
+                'billing_cycle' => $billing_cycle,
+                'product_type' => $product_type,
             ];
 
             // Handle recurring subscription
@@ -533,6 +537,8 @@ class StripePaymentController extends Controller
                 'plan_type' => $plan_type,
                 'quantity' => $quantity,
                 'currency' => $currency,
+                'billing_cycle' => $billing_cycle,
+                'product_type' => $product_type,
             ];
             if ($plan_type === 'recurring') {
                 $return_url_params['subscription_id'] = $subscription->id;
@@ -591,7 +597,9 @@ class StripePaymentController extends Controller
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $stripe_payment_id,
-                    'currency' => $currency
+                    'currency' => $currency,
+                    'billing_cycle' => $billing_cycle,
+                    'product_type' => $product_type,
                 ]);
 
                 for ($i = 0; $i < $quantity; $i++) {
@@ -603,7 +611,9 @@ class StripePaymentController extends Controller
                         'razorpay_payment_id' => $stripe_payment_id,
                         'payment_method' => $stripe_payment_method,
                         'transaction_id' => $tran->id,
-                        'currency' => $currency
+                        'currency' => $currency,
+                        'billing_cycle' => $billing_cycle,
+                        'product_type' => $product_type,
                     ]);
 
                     $key = Str::random(50);
@@ -692,6 +702,8 @@ class StripePaymentController extends Controller
         $quantity = $_GET['quantity'] ?? 1;
         $plan_type = $_GET['plan_type'] ?? 'one_time';
         $subscription_id = $_GET['subscription_id'] ?? null;
+        $billing_cycle = $_GET['billing_cycle'] ?? null;
+        $product_type = $_GET['product_type'] ?? null;
 
         if ($subscription_id) {
             try {
@@ -730,7 +742,9 @@ class StripePaymentController extends Controller
                 'razorpay_payment_id' => $stripe_payment_id,
                 'payment_method' => $stripe_payment_method,
                 'transaction_id' => $stripe_payment_id,
-                'currency' => $currency
+                'currency' => $currency,
+                'billing_cycle' => $billing_cycle,
+                'product_type' => $product_type,
             ]);
 
             $transaction_id = $tran->id;
@@ -901,7 +915,9 @@ class StripePaymentController extends Controller
                     'razorpay_payment_id' => $stripe_payment_id,
                     'payment_method' => $stripe_payment_method,
                     'transaction_id' => $transaction_id,
-                    'currency' => $currency
+                    'currency' => $currency,
+                    'billing_cycle' => $billing_cycle,
+                    'product_type' => $product_type,
                 ]);
                 $order_ids[] = $order->id;
 

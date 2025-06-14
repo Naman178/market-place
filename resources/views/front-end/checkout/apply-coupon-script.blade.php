@@ -345,7 +345,7 @@
         let itemPrice = parseFloat($("#sale_price").val()) || 0;
         let gst = parseFloat($("#gst_percentage").val()) || 0;
 
-        let totalGst = Math.round(itemPrice * gst / 100);
+        let totalGst = itemPrice * gst / 100;
 
         console.log(itemPrice, gst, totalGst );
         
@@ -496,7 +496,7 @@
 
             console.log(totalWithGst, fixedPrice, gstPercentage, quantity);
 
-            let roundedAmount = Math.round(totalWithGst);
+            let roundedAmount = totalWithGst;
 
             // Format the total for Indian locale
             let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
@@ -675,7 +675,7 @@
                 let price = parseFloat($(this).find(".new-price").text().replace("₹", "").trim()) || 0;
                 let gstPercent = parseFloat($(this).data("gst-percentage")) || 0;
                 
-                let gstAmount = Math.round((gstPercent / 100) * price);
+                let gstAmount = (gstPercent / 100) * price; 
 
                 newSubtotal += price;
                 newGST += gstAmount;

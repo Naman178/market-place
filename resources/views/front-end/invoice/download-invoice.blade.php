@@ -227,7 +227,6 @@
                 @if ($invoice->gst_percentage > 0)
                     @php
                         $taxAmount =   ($invoice->subtotal * $invoice->gst_percentage) / 100;
-                        $taxAmount = ceil($taxAmount);
                     @endphp
                     <tr>
                         <td colspan="3">GST ({{ intval($invoice->gst_percentage) }}%)(+)</td>
@@ -252,12 +251,12 @@
                     </tr>
                     <tr>
                         <td colspan="3">Discount ({{ $amount }})({{$text}})(-): </td>
-                        <td>{{ $product->currency ?? 'Rs'}}  {{ round($invoice->discount, 2) ?? '' }} </td>
+                        <td>{{ $product->currency ?? 'Rs'}}  {{ number_format($invoice->discount, 2) ?? '' }} </td>
                     </tr>
                 @endif
                 <tr>
                    @php
-                        $total = ceil($invoice->total); 
+                        $total = $invoice->total; 
                         $total = number_format($total, 2); 
                         if($invoice->discount > 0){
                             $total = $invoice->total;

@@ -61,8 +61,8 @@
                 <div class="text-center">Coupon Codes({{$couponCodes->count()}})</div>
             </div>
             <div class="coupon-container card cart-doted-border">
-                <input type="hidden" id="sale_price" value="{{ round($selectedPricing->sale_price) }}"/>
-                <input type="hidden" id="gst_percentage" value="{{round( $selectedPricing->gst_percentage ) }}"/>
+                <input type="hidden" id="sale_price" value="{{$selectedPricing->sale_price }}"/>
+                <input type="hidden" id="gst_percentage" value="{{ $selectedPricing->gst_percentage  }}"/>
                 <div class="card-body mb-3 coupon-overflow">
                     @if ($couponCodes->count() != 0)
                         @php
@@ -354,7 +354,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing->gst_percentage ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing->gst_percentage ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($gst, 2) }}</h5>
                 </div>
             </div>
             
@@ -411,6 +411,8 @@
                     <input type="hidden" id="plan_name" name="plan_name" value="{{$plan->name}}">
                     <input type="hidden" class="amount" id="amount" name="amount" value="{{ $final_total * 100 }}">
                     <input type="hidden" id="amount" name="currency" value="{{  $plan->currency ?? 'INR' }}">
+                    <input type="hidden" id="billing_cycle" name="billing_cycle" value="{{  $plan->pricing->billing_cycle ?? 'monthly' }}">
+                    <input type="hidden" id="product_type" name="product_type" value="{{  $plan->pricing->pricing_type ?? 'recurring' }}">
                     <input type="hidden" name="is_discount_applied" id="is_discount_applied" value="no">
                     <input type="hidden" name="final_coupon_code" id="final_coupon_code" value="">
                     <input type="hidden" name="discount_value" id="discount_value" value="">
@@ -537,7 +539,7 @@
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                 </svg>
-                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span> {{ $plan->currency ?? 'INR' }} </span>
+                                <span> Proceed To Pay <span class="final_btn_text">{{ number_format($final_total) }} </span> {{ $plan->currency ?? 'INR' }} </span>
                             
                             </button>
                         @endif
@@ -559,7 +561,7 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                     </svg>
-                                    <span class="final_btn_text"> Proceed To Pay <span class="final_btn_text">{{ number_format(round($final_total)) }} </span></span> {{ $plan->currency ?? 'INR' }} </span>
+                                    <span class="final_btn_text"> Proceed To Pay <span class="final_btn_text">{{ number_format($final_total) }} </span></span> {{ $plan->currency ?? 'INR' }} </span>
                                
                                 </button>
                                 
@@ -603,7 +605,7 @@
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                             <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                         </svg>
-                                        <span> Proceed To Pay <span class="final_btn_text d-block"> {{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }} </span></span>  </span>
+                                        <span> Proceed To Pay <span class="final_btn_text d-block"> {{ number_format($final_total) }} {{ $plan->currency ?? 'INR' }} </span></span>  </span>
                                 
                                     </button>
                                     @else
@@ -621,7 +623,7 @@
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                             </svg>
-                                            <span> Proceed To Pay <span class="final_btn_text d-block">{{ number_format(round($final_total)) }} {{ $plan->currency ?? 'INR' }}</span> </span>  </span>
+                                            <span> Proceed To Pay <span class="final_btn_text d-block">{{ number_format($final_total) }} {{ $plan->currency ?? 'INR' }}</span> </span>  </span>
                                     
                                         </button>
                                         

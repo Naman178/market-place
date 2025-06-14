@@ -51,7 +51,7 @@
                                             <td>{{ $ord->id }}</td>                                            
                                             <td>{{ $ord->product->name ?? 'N/A' }}</td>
                                             <td>{{ $ord->payment_status }}</td>
-                                            <td>{{ ceil($ord->payment_amount/100) ?? $ord->payment_amount }}</td>
+                                            <td>{{ number_format($ord->payment_amount/100, 2) ?? $ord->payment_amount }}</td>
                                             <td>{{ $ord->user->name }}</td>
                                             <td>{{ $ord->created_at }}</td>
                                             <td>
