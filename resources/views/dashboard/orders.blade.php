@@ -71,7 +71,7 @@
                                                             <div class="text-muted"><strong>Product Type:</strong></div>
                                                             <div class="ml-2">
                                                                 <p class="mb-0 ml-2 badge badge-primary text-capitalize">
-                                                                    {{ $order->pricing->pricing_type ?? '' }}
+                                                                    {{ $order->product_type ?? '' }}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -82,7 +82,7 @@
                                                             <div class="ml-2">
                                                                 @if ($order->pricing->billing_cycle)
                                                                     <p class="mb-0 ml-2 badge badge-info text-capitalize">
-                                                                        {{ $order->pricing->billing_cycle ?? '' }}
+                                                                        {{ $order->billing_cycle ?? '' }}
                                                                     </p>
                                                                 @endif
                                                             </div>
@@ -103,13 +103,13 @@
                                                             <div class="ml-2">
                                                                 <p class="mb-0 ml-2">
                                                                     {{ $order->currency ?? 'INR' }}   
-                                                                    @if(isset($order->invoice->discount))
+                                                                    {{-- @if(isset($order->invoice->discount))
                                                                         {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
                                                                     @elseif($order->payment_amount)
                                                                          {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
-                                                                    @else
+                                                                    @else --}}
                                                                         {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </p>
                                                             </div>
                                                         </div>

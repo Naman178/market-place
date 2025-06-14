@@ -167,7 +167,7 @@
                                             $subtot = $invoice->subtotal * $quantity;
                                             $taxAmount = 0;
                                             $discount = 0;
-                                            $total = round($invoice->total);
+                                            $total =$invoice->total;
                                             // dd($subtot);
                                         @endphp
                                         <p class="fw-semibold mb-2 pt-3 text-start"> {{ $invoice->quantity }}</p>
@@ -175,8 +175,7 @@
                                         @if ($invoice->gst_percentage > 0)
                                             @php
                                                 $taxAmount = ($subtot * $invoice->gst_percentage) / 100;
-                                                $taxAmount = round($taxAmount);
-                                                $total = round($invoice->total);
+                                                $total =$invoice->total;
                                                 if($invoice->discount > 0){
                                                     $total = $invoice->total;
                                                 }
@@ -185,7 +184,7 @@
                                         @endif
                                         @if ($invoice->discount > 0)
                                             @php
-                                                $discount =  round($invoice->discount, 2);
+                                                $discount = number_format($invoice->discount, 2);
                                             @endphp
                                             <p class="fw-semibold mb-2 text-start">{{ $invoice->coupon->coupon_code }}</p>
                                             <p class="fw-semibold mb-2 text-start">{{ $product->currency ?? '₹' }} {{ number_format($discount, 2) ?? '' }}</p>

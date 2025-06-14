@@ -110,7 +110,7 @@
                                             </div>
                                         </td>
                                         <td class="fw-medium text-end">
-                                            {{ $ord->currency ?? 'INR' }} {{ number_format(ceil($ord->payment_amount / 100), 2) }}
+                                            {{ $ord->currency ?? 'INR' }} {{ number_format($ord->payment_amount / 100, 2) }}
                                         </td>
                                     </tr>
                                     <tr class="border-top border-top-dashed">
@@ -122,7 +122,7 @@
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->subtotal), 2) }}
+                                                            {{ $ord->currency ?? 'INR' }} {{ number_format($ord->invoice->subtotal, 2 )}}
                                                         </td>
                                                     </tr>
 
@@ -137,7 +137,7 @@
                                                                 :
                                                             </td>
                                                             <td class="text-end text-danger">
-                                                                -{{ $ord->currency ?? 'INR' }} {{ number_format(round($ord->invoice->discount), 2) }}
+                                                                -{{ $ord->currency ?? 'INR' }} {{ number_format($ord->invoice->discount), 2 }}
                                                             </td>
                                                         </tr>
                                                     @endif
@@ -145,7 +145,7 @@
                                                     {{-- GST Tax --}}
                                                     @if($ord->invoice->gst_percentage > 0)
                                                         @php
-                                                            $gstAmount = round(($ord->invoice->gst_percentage * $ord->invoice->subtotal) / 100);
+                                                            $gstAmount = ($ord->invoice->gst_percentage * $ord->invoice->subtotal) / 100;
                                                         @endphp
                                                         <tr>
                                                             <td>GST Tax ({{ $ord->invoice->gst_percentage }}%) :</td>
@@ -159,7 +159,7 @@
                                                     <tr class="border-top border-top-dashed">
                                                         <th scope="row">Total ({{ $ord->currency ?? 'INR' }}) :</th>
                                                         <th class="text-end">
-                                                            {{ $ord->currency ?? 'INR' }} {{ number_format(ceil($ord->payment_amount / 100), 2) }}
+                                                            {{ $ord->currency ?? 'INR' }} {{ number_format($ord->payment_amount / 100, 2) }}
                                                         </th>
                                                     </tr>
 
