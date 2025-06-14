@@ -29,7 +29,7 @@ class LoginController extends Controller
    protected function redirectTo()
     {
         $user = auth()->user();
-        if ($user && strcasecmp(trim($user->name), 'Super Admin') === 0) {
+        if ($user && $user->hasRole('Super Admin')) {
             return '/dashboard';
         }
         return RouteServiceProvider::HOME;
