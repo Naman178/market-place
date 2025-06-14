@@ -47,18 +47,22 @@ class LoginController extends Controller
             $user = Auth::user();
             $intendedUrl = session()->get('url.intended');
 
-            if ($user->name === 'Super Admin') {
-                return redirect()->route('dashboard')->withSuccess('You have successfully logged in as Super Admin');
+            // Check if user has 'Super Admin' role
+            if ($user->hasRole('Super Admin')) {
+                return redirect()->route('dashboard')
+                    ->withSuccess('You have successfully logged in as Super Admin');
             }
 
+            // Redirect to intended URL if available
             if ($intendedUrl) {
-                return ($intendedUrl == "https://market-place-main.infinty-stage.com/")
-                    ? redirect()->route('user-dashboard')->withSuccess('You have Successfully logged in')
+                return ($intendedUrl == url('/'))
+                    ? redirect()->route('user-dashboard')->withSuccess('You have successfully logged in')
                     : redirect()->intended($intendedUrl);
             } else {
-                return redirect()->route('user-dashboard')->withSuccess('You have Successfully logged in');
+                return redirect()->route('user-dashboard')->withSuccess('You have successfully logged in');
             }
         }
+
 
         return redirect("user-login")->withErrors(['error' => 'Oops! You have entered invalid credentials']);
     }
