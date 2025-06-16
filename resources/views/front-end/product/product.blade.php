@@ -168,7 +168,6 @@
                             <option value="1">Low to Highest Price</option>
                             <option value="2">Highest to Low Price</option>
                         </select>
-
                         @break
                     @endforeach  
                     </div>
@@ -674,7 +673,7 @@
                 if (response.length > 0) {
                     // (Your code to render filtered items)
                     response.forEach(function (item) {
-                        console.log(item.fixed_price);
+                        console.log(item);
                         
                         let price = item.fixed_price ?? item.pricing ? item.pricing.fixed_price : 0;
                         let itemKeyword = item.search_keyword ?? '';
@@ -692,10 +691,9 @@
                                     <div class="wsus__gallery_item_text">
                                         <p class="price">${price}</p>
                                         <a class="title" href="/product-details/${item.id}">${item.name}</a>
-                                        <p class="search-keyword"><strong>Keyword:</strong> ${itemKeyword}</p>
                                         <ul class="d-flex flex-wrap justify-content-between">
                                             <li><p>${getStarRating(item.reviews ?? [])} <span>(${item.reviews ? item.reviews.length : 0})</span></p></li>
-                                            <li><span class="download"><i class="fa fa-download"></i> 0 Sale</span></li>
+                                          <li><span class="download"><i class="fa fa-download"></i> ${item.order_count ?? 0} Sale</span></li>
                                         </ul>
                                     </div>
                                 </div>

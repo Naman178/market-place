@@ -148,8 +148,127 @@ class HomePageController extends Controller
         $items = $query->get();
         return response()->json($items);
     }
+    // public function filterProducts(Request $request)
+    // {
+    //     $query = Items::with(['categorySubcategory', 'pricing', 'reviews', 'tags'])
+    //         ->where('sys_state', '=', '0')
+    //         ->leftJoin('items_pricing__tbl', function ($join) {
+    //             $join->on('items__tbl.id', '=', 'items_pricing__tbl.item_id')
+    //                 ->whereIn('items_pricing__tbl.pricing_type', ['one-time', 'recurring']);
+    //         })
+    //         ->select('items__tbl.*')
+    //         ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price')
+    //         ->groupBy('items__tbl.id');
+
+    //     // Detect if any filter is applied
+    //     $filtersApplied = false;
+
+    //     // Keyword Search
+    //     if (!empty($request->keyword)) {
+    //         $filtersApplied = true;
+    //         $keyword = $request->keyword;
+
+    //         $query->where(function ($q) use ($keyword) {
+    //             $q->where('items__tbl.name', 'LIKE', "%$keyword%")
+    //             ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%")
+    //             ->orWhereHas('tags', function ($query) use ($keyword) {
+    //                 $query->where('tag_name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) {
+    //                 $query->where('name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) {
+    //                 $query->where('name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]);
+    //         });
+    //     }
+
+    //     // Filter by categories
+    //     if (!empty($request->categories)) {
+    //         $filtersApplied = true;
+    //         $subcategories = SubCategory::whereIn('category_id', $request->categories)
+    //             ->where('sys_state', '=', '0')
+    //             ->pluck('id');
+
+    //         $query->whereHas('categorySubcategory', function ($q) use ($subcategories) {
+    //             $q->whereIn('subcategory_id', $subcategories);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by subcategories
+    //     if (!empty($request->subcategories)) {
+    //         $filtersApplied = true;
+    //         $query->whereHas('categorySubcategory', function ($q) use ($request) {
+    //             $q->whereIn('subcategory_id', $request->subcategories);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by tags
+    //     if (!empty($request->tags) && is_array($request->tags) && count(array_filter($request->tags)) > 0) {
+    //         $filtersApplied = true;
+    //         $query->whereHas('tags', function ($q) use ($request) {
+    //             $q->whereIn('tag_name', $request->tags);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by price
+    //     if ($request->has('price') && (int)$request->price > 0) {
+    //         $filtersApplied = true;
+    //         $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price])->orderBy('items__tbl.created_at', 'desc');
+    //     }
+    //     $sortOption = $request->input('sort_option');
+
+    //     if ($sortOption == 1) {
+    //         $query->orderBy('fixed_price', 'asc'); // Low to High
+    //     } elseif ($sortOption == 2) {
+    //         $query->orderBy('fixed_price', 'desc'); // High to Low
+    //     } else {
+    //         $query->orderBy('items__tbl.created_at', 'asc'); // Default
+    //     }
+
+
+    //     // If no filters applied, optionally return empty or all products:
+    //     if (!$filtersApplied) {
+    //         $id = $request->item_id;
+    //         $subcategories = SubCategory::where('category_id', $id)
+    //             ->where('sys_state', '=', '0')
+    //             ->get();
+
+    //         $categories = Category::where('sys_state', '!=', '-1')
+    //             ->withCount(['subcategories as countsubcategory' => function ($query) {
+    //                 $query->where('sys_state', '=', '0');
+    //             }])
+    //             ->get();
+
+    //         if ($subcategories) {
+    //             $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //                 ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+    //                     $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+    //                 })
+    //                 ->where('sys_state', '=', '0')
+    //                 ->orderBy('id', 'desc')
+    //                 ->get();
+    //         } else {
+    //             $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //                 ->whereHas('categorySubcategory', function ($query) use ($id) {
+    //                     $query->where('subcategory_id', $id);
+    //                 })
+    //                 ->where('sys_state', '=', '0')
+    //                 ->orderBy('id', 'desc')
+    //                 ->get();
+    //         }
+    //         return response()->json($item);
+    //     }
+
+    //     $filteredProducts = $query->get();
+
+    //     return response()->json($filteredProducts);
+    // }
     public function filterProducts(Request $request)
     {
+        $orderCountSubquery = Order::select(DB::raw('COUNT(*) as order_count'))->whereColumn('product_id', 'items__tbl.id');
+
         $query = Items::with(['categorySubcategory', 'pricing', 'reviews', 'tags'])
             ->where('sys_state', '=', '0')
             ->leftJoin('items_pricing__tbl', function ($join) {
@@ -158,10 +277,23 @@ class HomePageController extends Controller
             })
             ->select('items__tbl.*')
             ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price')
+            ->selectSub($orderCountSubquery, 'order_count') // ✅ get order count manually
+            ->where('items__tbl.sys_state', '=', '0')
             ->groupBy('items__tbl.id');
 
         // Detect if any filter is applied
         $filtersApplied = false;
+        $sortOption = $request->input('sort_option');
+        if ($sortOption == 1) {
+            $filtersApplied = true;
+            $query->orderBy('fixed_price', 'asc'); // Low to High
+        } elseif ($sortOption == 2) {
+            $filtersApplied = true;
+            $query->orderBy('fixed_price', 'desc'); // High to Low
+        } else {
+            $filtersApplied = true;
+            $query->orderBy('items__tbl.created_at', 'asc'); // Default
+        }
 
         // Keyword Search
         if (!empty($request->keyword)) {
@@ -217,7 +349,6 @@ class HomePageController extends Controller
             $filtersApplied = true;
             $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price])->orderBy('items__tbl.created_at', 'desc');
         }
-        $sortOption = $request->input('sort_option');
 
         if ($sortOption == 1) {
             $query->orderBy('fixed_price', 'asc'); // Low to High
