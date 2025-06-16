@@ -288,6 +288,21 @@
     .wordpress_bg{
         width: 337px !important;
     }
+    .plugins::before,
+    .plugins::after {
+        display: none !important;
+    }
+    .support::after {
+        display: none !important;
+    }
+    .features.integration.faq-section::before,
+    .features.integration.faq-section::after {
+        display: none !important;
+    }
+    .highlighted-section::before,
+    .highlighted-section::after {
+        display: none;
+    }
     .int_p{
         line-height: 25px !important;
     }
@@ -296,10 +311,10 @@
         line-height: 25px !important;
     }
     .wordpress_white_logo{
-        top: 35px !important;
+        /* top: 35px !important; */
     }
     .international .wordpress_white_logo, .encrypted .wordpress_white_logo{
-        top: 30px !important;
+        /* top: 30px !important; */
     }
     .integration h1 span, .tech h1 span{
         line-height: 30px !important;
@@ -578,7 +593,7 @@
         margin-left: 18px !important;
     }
     .wordpress_white_logo {
-        left: 100px !important;
+        /* left: 100px !important; */
     }
    .secure .d_flex{
         flex-wrap: wrap !important;

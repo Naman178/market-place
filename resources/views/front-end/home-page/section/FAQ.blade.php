@@ -1,6 +1,6 @@
 <div class="features integration faq-section">
     <div class="container">
-        <img class="question_img" src="{{ asset('front-end/images/question_mark.png') }}" alt="not found">
+        {{-- <img class="question_img" src="{{ asset('front-end/images/question_mark.png') }}" alt="not found"> --}}
         <h2><span class="underline">FAQ</span></h2>
         <div class="faq">
             @foreach ($FAQs as $key => $FAQ)
@@ -16,7 +16,7 @@
             <hr>
             @endforeach
         </div>
-        <img class="second_question_img" src="{{ asset('front-end/images/second_question_mark.png') }}" alt="not found">
+        {{-- <img class="second_question_img" src="{{ asset('front-end/images/second_question_mark.png') }}" alt="not found"> --}}
     </div>
 </div>
 
@@ -44,6 +44,20 @@
         </div>
     </div>
 </div>
+{{-- <div class="highlighted-section">
+    <div class="banner">
+        <h1>It takes less than a minute to get started</h1>
+        <li class="white_signup-wrapper mt-1">
+            <a class="white_signup_btn" href="{{route('user-login')}}">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                    <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                </svg>
+                <span>Get Your FREE API Key</span>
+            </a>
+        </li>
+    </div>
+</div> --}}
 
 
 {{-- <div class="tech">
