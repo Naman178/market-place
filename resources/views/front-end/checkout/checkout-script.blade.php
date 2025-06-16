@@ -366,27 +366,28 @@
     });
 
     function dynamicCalculation() {
-        let subTotalRaw = $("#subtotal_amount").data('amount');
-        console.log("Raw subtotal:", subTotalRaw);
-
+        let subTotalRaw = $("#subtotal_amount").data('amount');  // e.g., "1.888"
         let subTotalClean = subTotalRaw.toString().replace(/,/g, '');
-        let subTotal = parseInt(subTotalClean);
-
-        console.log("Parsed subtotal:", subTotal); 
+        let subTotal = parseFloat(subTotalClean);  // Use float to keep decimals
 
         let quantity = parseInt($("#quantity").val()) || 1;
 
-        console.log(quantity, subTotal);
-
         if (!isNaN(quantity)) {
-            setTimeout(function() {
+            setTimeout(function () {
                 continueCalculation(quantity, subTotal);
             }, 1000);
+
+            // Format subtotal to INR with 2 decimals
+            let formattedAmount = "INR " + subTotal.toFixed(2); // e.g., "INR 1.89"
+
+            // Update the UI
             $("#items-count").text(quantity + " Items");
+            $("#formatted-subtotal").text(formattedAmount);
         } else {
             console.error("Quantity is undefined or invalid.");
         }
     }
+
     // function addQuantityOption() {
     //     const quantitySelect = document.getElementById("quantity");
     //     const currentOptions = quantitySelect.options.length; // Get the current number of options
@@ -467,35 +468,54 @@
     function continueCalculation(quantity, subTotal) {
         let currency = $("#currency_code").val();
 
+        // Calculate subtotal and format it
         let finalTotal = quantity * subTotal;
-        $("#subtotal_amount").text(currency + ' ' + finalTotal);
-        $('.finaltotals').text(currency + ' ' + finalTotal);
+        let formattedSubtotal = finalTotal.toFixed(2);
+        $("#subtotal_amount").text(currency + ' ' + formattedSubtotal);
+        $('.finaltotals').text(currency + ' ' + formattedSubtotal);
 
-        let gstPr = $('#gst_amount').data('pr');
+        // GST calculation
+        let gstPr = parseFloat($('#gst_amount').data('pr')) || 0;
         let gstAmount = (gstPr / 100) * finalTotal;
+        let formattedGst = gstAmount.toFixed(2);
         finalTotal += gstAmount;
+        console.log(finalTotal, 'finalTotal');
+        
 
-        let discount = $('#discount_coupon_type').val();
+        // Discount logic
+        let discountInput = $('#discount_coupon_type').val();
+        let discount = parseFloat(discountInput);
         let discountType = $('#discount_coupon_type').data('type');
         let discountAmount = 0;
+        console.log(discount, 'discount');
+        
 
-        if (discountType === 'flat') {
-            discountAmount = discount;
-            finalTotal -= discount; 
-        } else if (discountType === 'percentage') {
-            discountAmount = (discount / 100) * finalTotal;
-            finalTotal -= (discount / 100) * finalTotal;
+        // Apply discount only if valid
+        if (!isNaN(discount) && discount > 0 && (discountType === 'flat' || discountType === 'percentage')) {
+            if (discountType === 'flat') {
+                discountAmount = discount;
+            } else if (discountType === 'percentage') {
+                discountAmount = (discount / 100) * finalTotal;
+            }
+            finalTotal -= discountAmount;
         }
+        console.log(finalTotal,'finalTotal1');
+        
+        // Format amounts
+        let formattedDiscount = discountAmount.toFixed(2);
+        let formattedFinal = finalTotal.toFixed(2);
 
-        $("#gst_amount").text(currency + ' ' + gstAmount);
-        $("#final_total").text(currency + ' ' + finalTotal);
-        $(".final_total").text(currency + ' ' + finalTotal);
-        $("#discount_amount").text(currency + ' ' + discountAmount);
-        $("#discount_value").val(discountAmount);
-        $(".final_btn_text").text(finalTotal);
+        // Display updated values
+        $("#gst_amount").text(currency + ' ' + formattedGst);
+        $("#final_total").text(currency + ' ' + formattedFinal);
+        $(".final_total").text(currency + ' ' + formattedFinal);
+        $("#discount_amount").text(currency + ' ' + formattedDiscount);
+        $("#discount_value").val(formattedDiscount);
+        $(".final_btn_text").text(formattedFinal);
         $("#final_quantity").val(quantity);
-        $("#amount").val(finalTotal * 100);
+        $("#amount").val((finalTotal * 100).toFixed(0)); // Stripe needs amount in smallest currency unit
     }
+
     // document.addEventListener('DOMContentLoaded', function() {
     //     // Helper function to check if card is expired
     //     function isCardExpired(month, year) {
