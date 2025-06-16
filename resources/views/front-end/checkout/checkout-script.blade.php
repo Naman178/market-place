@@ -483,7 +483,7 @@
         
 
         // Discount logic
-        let discountInput = $('#discount_coupon_type').val();
+        let discountInput = $('#server_discount').val();
         let discount = parseFloat(discountInput);
         let discountType = $('#discount_coupon_type').data('type');
         let discountAmount = 0;
