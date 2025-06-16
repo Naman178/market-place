@@ -190,7 +190,7 @@
                     <div class="wsus__product_sidebar categories">
                         <h3>Filter By Categories</h3>
                         <div class="category-dropdown mt-4">
-                            @foreach ($categories as $category)
+                            {{-- @foreach ($categories as $category)
                             <div class="category-item">
                                 <div class="border-bottom d-flex align-items-center">
                                     <button class="category-toggle">
@@ -213,6 +213,42 @@
                                     @endforeach
                                 </div>
                             </div>
+                            @endforeach --}}
+                            @foreach ($categories as $category)
+                                <div class="category-item">
+                                    <div class="border-bottom d-flex align-items-center">
+                                    <button class="category-toggle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                                stroke-width="2" stroke="currentColor" 
+                                                class="dropdown-icon h-4 w-4 mr-2 transition-transform {{ (isset($selectedCategoryId) && $selectedCategoryId == $category->id) ? 'rotated' : '' }}">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                                            </svg>
+                                        </button>
+
+                                        <label class="ms-2">
+                                            <input 
+                                                type="checkbox" 
+                                                class="category-checkbox"
+                                                data-category-id="{{ $category->id }}"
+                                                {{ (isset($selectedCategoryId) && $selectedCategoryId == $category->id) ? 'checked' : '' }}>
+                                            {{ $category->name }}
+                                        </label>
+                                    </div>
+
+                                    {{-- Expand if the selected subcategory belongs here --}}
+                                    <div class="subcategory-list mt-2 {{ $selectedCategoryId == $category->id ? 'active' : '' }}" style="margin-left: 38px; display: {{ $selectedCategoryId == $category->id ? 'block' : 'none' }};">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <label>
+                                                <input 
+                                                    type="checkbox" 
+                                                    class="subcategory-checkbox"
+                                                    data-subcategory-id="{{ $subcategory->id }}"
+                                                    {{ (isset($selectedSubcategoryId) && $selectedSubcategoryId == $subcategory->id) ? 'checked' : '' }}>
+                                                {{ $subcategory->name }}
+                                            </label><br>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>

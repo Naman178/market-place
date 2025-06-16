@@ -66,7 +66,7 @@
                 <div class="col-xl-12 col-md-12">
                     <div id="items-container" class="row">
                         @foreach ($item as $items)
-                            <a href="{{ route('product.list', ['category' => Str::slug($category->name), 'slug' => Str::slug($items->name) ]) }}">
+                            <a href="{{ route('product.list.show', ['subcategory' => Str::slug($items->name)]) }}">
                                 <div class="col-xl-4 col-md-6">
                                     <div class="wsus__gallery_item">
                                         <div class="wsus__gallery_item_img">
