@@ -207,8 +207,8 @@
   width: 100%;
 }
 
-.plugins , .int_bg ,.category, .wishlist, .features, .social_media, .testimonial-section, .support, .hero_banner{
-  margin-bottom: 30px;
+.plugins , .int_bg ,.category, .wishlist, .features, .social_media, .testimonial-section, .support{
+  margin: 40px 0 40px 0;
 }
 
 .real_time h1 {
@@ -757,7 +757,7 @@
 .wordpress_plugin_bg {
     background-color: #007AC1;
     padding-bottom: 40px !important;
-    padding:10px;
+    padding:40px;
 }
 
 .round_img {
@@ -767,16 +767,60 @@
 .mb-37{
   margin-bottom: -37px !important;
 }
-.wordpress_logo {
-    /* margin-top: 15px;
-    margin-left: 15px; */
+/* .wordpress_logo {
+    margin-top: 15px;
+    margin-left: 15px;
     margin-top: 55px;
     margin-left: -70px;
     margin-bottom: 15px;
-    width: 49.99877166748047px;
+    width: 50px;
     height: 50px;
+    background: #ffffff;
+    border-radius: 30px;
     top: 1255px;
     left: 315px;
+} */
+
+.wordpress_logo {
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wordpress_logo img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+.icon-circle {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+/* Yellow background */
+.yellow-bg {
+    background-color: #ffc107; /* or use your desired yellow */
+}
+
+/* Blue background */
+.blue-bg {
+    background-color: #007ac1; /* or your custom blue */
+}
+
+/* Icon image inside circle */
+.icon-circle img {
+    width: 50px;
+    height: 40px;
+    object-fit: contain;
 }
 
 .ml-40 {
@@ -869,12 +913,16 @@
 .wordpress_bg {
     background-color: #FFFFFF;
     width: 447px;
-    height: 338px;
+    /* height: 338px; */
     border: 0.4000000059604645px;
     margin-right: 25px;
     margin-bottom: 65px;
     border: 3px solid #fff;
 }
+.wordpress_bg {
+    min-height: 270px; 
+}
+
 
 .wordpress_bg:hover {
   transition: 0.5s;
@@ -889,11 +937,11 @@
 .wordpress_white_logo {
     /* margin-top: 66px; */
     margin-left: 0px;
-    left: 110px;
+    left: 103px;
     /* margin-bottom: 15px; */
     position: absolute;
     margin-left: -52px;
-    top: 30px;
+     top: 40px;
 }
 
 .mt-69 {
@@ -981,7 +1029,7 @@
 .intig_p {
     color: #4D4D4D;
     font-family: Work Sans;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 450;
     line-height: 36px;
     letter-spacing: 0em;
@@ -1596,7 +1644,7 @@ div#integrationCarousel .col-4{
 
 
 .faq-section {
-  /* margin: 50px auto; */
+  margin: 40px 0 40px 0;
   text-align: center;
 }
 
@@ -2238,3 +2286,86 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
     color: #007AC1; 
     font-size: 18px;
 }
+.gray_bg {
+    background-color: #EDF2F4;
+}
+.plugins::before,
+.plugins::after {
+    content: "";
+    display: block;
+    width: 100px; 
+    height: 132px;
+    background-image: url('/front-end/images/Frame.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: -1;
+}
+
+/* Example position: one above, one below */
+.plugins::before {
+    top: 120rem;
+    left: 0;
+}
+
+.plugins::after {
+    bottom: -20px;
+    right: 0;
+}
+
+.support {
+    position: relative; /* Required for pseudo-elements to position absolutely */
+    z-index: 1;
+}
+
+.support::after {
+    content: "";
+    display: block;
+    width: 100px; 
+    height: 130px; 
+    background-image: url('/front-end/images/Group 1000002962.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: -1;
+}
+
+/* Position the after element (bottom-right) */
+.support::after {
+    bottom: 14rem;
+    right: -20px;
+}
+.features.integration.faq-section {
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* LEFT image - question_img */
+.features.integration.faq-section::before {
+    content: "";
+    position: absolute;
+    top: 8rem;
+    left: 0;
+    background-image: url('/front-end/images/question_mark.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100px;  
+    height: 100px; 
+    z-index: -1;
+}
+
+/* RIGHT image - second_question_img */
+.features.integration.faq-section::after {
+    content: "";
+    position: absolute;
+    bottom: 12rem;
+    right: 0;
+    background-image: url('/front-end/images/second_question_mark.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100px;  
+    height: 100px; 
+    z-index: -1;
+}
+

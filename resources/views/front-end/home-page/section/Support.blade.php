@@ -63,5 +63,5 @@
             
         </div>
     </div>
-    <img class="circle_img text-right" src="{{ asset('front-end/images/Group 1000002962.png') }}" alt="not found">
+    {{-- <img class="circle_img text-right" src="{{ asset('front-end/images/Group 1000002962.png') }}" alt="not found"> --}}
 </div>

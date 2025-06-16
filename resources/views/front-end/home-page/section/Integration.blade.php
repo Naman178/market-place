@@ -1,5 +1,5 @@
 <!-- Integration section start -->
-<div class="int_bg">
+<div class="int_bg blog">
     <div class="container">
         <p class="plugin-label pt-4">
             <span class="label-line"></span> Integrations
@@ -23,8 +23,9 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div class="thunder">
-                            <img class="round_blue_img" height="70" width="70" src="front-end/images/Ellipse 450.png" alt="not found">
+                            <div class="icon-circle blue-bg">
                             <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/thunder.png" alt="not found">
+                            </div>
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Lightning-Fast Performance</p>
@@ -45,8 +46,9 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <img class="round_blue_img" src="front-end/images/Ellipse 446.png" height="70" width="70" alt="not found">
+                            <div class="icon-circle yellow-bg">
                             <img class="wordpress_white_logo" src="front-end/images/wrench.png" height="50" width="50" alt="not found">
+                            </div>
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Easy Setup & Integration</p>
@@ -64,8 +66,9 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <img class="round_blue_img"  height="70" width="70" src="front-end/images/Ellipse 450.png" alt="not found">
+                          <div class="icon-circle blue-bg">
                             <img class="wordpress_white_logo" height="50" width="50" src="front-end/images/tools.png" alt="not found">
+                          </div>
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Regular Updates & Support</p>
@@ -83,8 +86,9 @@
                 <div class="item wordpress_bg secure">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div class="encrypted">
-                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png" height="70" width="70"  alt="not found">
+                           <div class="icon-circle blue-bg">
                             <img class="wordpress_white_logo" src="front-end/images/encrypted.png" height="50" width="50" alt="not found" >
+                           </div>
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Secure & Reliable</p>
@@ -105,8 +109,9 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div class="international">
-                            <img class="round_blue_img" src="front-end/images/Ellipse 450.png"height="70" width="70" alt="not found">
+                        <div class="icon-circle blue-bg">
                             <img class="wordpress_white_logo" src="front-end/images/international.png" height="50" width="50" alt="not found">
+                        </div>
                         </div>
                         <div>
                             <p class="integration_p mt-69 ml-20">Global Compatibility</p>
