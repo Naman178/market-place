@@ -15,10 +15,18 @@
         </div>
         <div class="col p-0 m-0 menu-container menu-1">
                 <ul>
-                    @if (!empty($category))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                    @elseif (!empty($subcategory))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                   @if (!empty($subcategory))
+                        <li class="d-flex align-items-center justify-content-center">
+                            <a href="{{ route('product.list.show') }}">
+                                Products
+                            </a>
+                        </li>
+                    @elseif (!empty($category))
+                        <li class="d-flex align-items-center justify-content-center">
+                            <a href="{{ route('product.list.show') }}">
+                                Products
+                            </a>
+                        </li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blogs</a></li>

@@ -421,6 +421,62 @@ class HomePageController extends Controller
 
         return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
     }
+    public function itemsShow(Request $request)
+    {
+        $subcategoryslug = SubCategory::first();
+        $slug = $subcategoryslug->slug; 
+        $subcategory = SubCategory::where('slug', $slug)->value('id');
+        $category = Category::where('id', $subcategory)->first();
+        $slugCategory = Category::where('slug', $slug)->first();
+
+        if ($slugCategory) {
+            $id = $slugCategory->id;
+        } else {
+            $id = $category->id;
+        }
+        $category_name = Category::where('id', $id)->value('name');
+
+        $allsubcategories = SubCategory::where('category_id', $id)
+            ->where('sys_state', '=', '0')
+            ->withCount(['items as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        $subcategories = SubCategory::where('category_id', $id)
+            ->where('sys_state', '=', '0')
+            ->get();
+
+        $categories = Category::where('sys_state', '!=', '-1')
+            ->withCount(['subcategories as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        if ($subcategories) {
+            $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+                ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                    $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+                })
+                ->where('sys_state', '=', '0')
+                ->orderBy('id', 'desc')
+                ->get();
+        } else {
+            $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+                ->whereHas('categorySubcategory', function ($query) use ($id) {
+                    $query->where('subcategory_id', $id);
+                })
+                ->where('sys_state', '=', '0')
+                ->orderBy('id', 'desc')
+                ->get();
+        }
+
+        // Collect all unique tag IDs from items
+        $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
+        $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
+
+        return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
+    }
     public function buynow($id)
     {
         $item = Items::with(['categorySubcategory', 'pricing'])

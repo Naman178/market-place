@@ -57,6 +57,7 @@ Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
 Route::get('/items/filter', [HomePageController::class, 'filterProducts'])->name('filter_products');
 Route::get('/category/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/shop', [HomePageController::class, 'itemsShow'])->name('product.list.show');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
 Route::post('/reviews/update/{id}', [HomePageController::class, 'reviewsupdate'])->name('reviews.update');
