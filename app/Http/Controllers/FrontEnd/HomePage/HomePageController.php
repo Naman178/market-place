@@ -424,10 +424,29 @@ class HomePageController extends Controller
     public function itemsShow(Request $request)
     {
         $subcategoryslug = SubCategory::first();
-        $slug = $subcategoryslug->slug; 
-        $subcategory = SubCategory::where('slug', $slug)->value('id');
+       $subcategorySlug = $request->query('subcategory') ?? $subcategoryslug->slug;
+        $selectedSubcategoryId = null;
+        $subcategory = SubCategory::where('slug', $subcategorySlug)->value('id');
         $category = Category::where('id', $subcategory)->first();
-        $slugCategory = Category::where('slug', $slug)->first();
+        $slugCategory = Category::where('slug', $category->slug)->first();
+        if ($subcategorySlug) {
+            $selectedSubcategory = SubCategory::where('slug', $subcategorySlug)->first();
+            if ($selectedSubcategory) {
+                $selectedSubcategoryId = $selectedSubcategory->id;
+                $selectedCategoryId = $selectedSubcategory->category_id;
+            }
+        }
+
+        $categories = Category::where('sys_state', '!=', '-1')
+            ->with(['subcategories' => function ($q) {
+                $q->where('sys_state', '=', '0');
+            }])
+            ->withCount(['subcategories as countsubcategory' => function ($q) {
+                $q->where('sys_state', '=', '0');
+            }])
+            ->get();
+        $subcategory = SubCategory::where('slug', $request->query('subcategory'))->value('id');
+        $category = Category::where('id', $subcategory)->first();
 
         if ($slugCategory) {
             $id = $slugCategory->id;
@@ -447,9 +466,16 @@ class HomePageController extends Controller
             ->where('sys_state', '=', '0')
             ->get();
 
+        $subcategories = SubCategory::where('category_id', $id)
+            ->where('sys_state', '=', '0')
+            ->get();
+
         $categories = Category::where('sys_state', '!=', '-1')
-            ->withCount(['subcategories as countsubcategory' => function ($query) {
-                $query->where('sys_state', '=', '0');
+            ->with(['subcategories' => function ($q) {
+                $q->where('sys_state', '=', '0');
+            }])
+            ->withCount(['subcategories as countsubcategory' => function ($q) {
+                $q->where('sys_state', '=', '0');
             }])
             ->get();
 
@@ -475,7 +501,7 @@ class HomePageController extends Controller
         $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
         $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
 
-        return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
+        return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags','selectedCategoryId','selectedSubcategoryId'));
     }
     public function buynow($id)
     {
