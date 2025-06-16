@@ -299,7 +299,7 @@
                     <h5 class="mt-0 mb-2">Subtotal</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-amount="{{ $totalSubtotal }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal) }}</h5>
+                    <h5 class="mt-0 mb-2" data-amount="{{ $totalSubtotal }}" id="subtotal_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalSubtotal, 2) }}</h5>
                 </div>
             </div>
 
@@ -308,7 +308,7 @@
                     <h5 class="mt-0 mb-2">GST (+)</h5>
                 </div>
                 <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing['gst_percentage'] ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalGST) }}</h5>
+                    <h5 class="mt-0 mb-2" data-pr="{{ $selectedPricing['gst_percentage'] ?? 0 }}" id="gst_amount">{{ $plan->currency ?? 'INR' }}  {{ number_format($totalGST , 2) }}</h5>
                 </div>
             </div>
             <div class="row mb-1 discount_row d-none">
@@ -330,7 +330,7 @@
                     @php
                       $final_total = $totalSubtotal + $totalGST;
                     @endphp
-                    <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
+                    <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total, 2 ) }}</h5>
                 </div>
             </div>
 
@@ -377,7 +377,7 @@
                     @php
                         $final_total = $itemPrice + $gst;
                     @endphp
-                      <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
+                      <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total, 2) }}</h5>
                 </div>
             </div>
         @endif
