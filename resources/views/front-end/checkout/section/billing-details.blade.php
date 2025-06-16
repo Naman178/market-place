@@ -149,7 +149,7 @@
     $discount = (int) ($selectedPricing['discount'] ?? 0);
     $final_total = $itemPrice;
 @endphp
-
+<input type="hidden" id="server_discount" value="{{ $discount ?? 0 }}">
 <div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
     <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
         <!-- Product Image -->
