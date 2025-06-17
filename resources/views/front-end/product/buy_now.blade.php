@@ -706,16 +706,8 @@
                         <li><span>Tags</span>
                             <p>
                                 @foreach ($item->tags as $tag)
-                                    @if ($category)
-                                        <a href="{{ route('product.list', [
-                                            'category' => $category->name ?? null,
-                                            'slug' => Str::slug($subcategory['name'] ?? ''),
-                                            'tag' => $tag['tag_name'] ?? ''
-                                        ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
-                                    @elseif ($subcategory)
-                                        <a href="{{ route('product.list', [
-                                            'category' => $category->name ?? null,
-                                            'slug' => Str::slug($subcategory['name'] ?? ''),
+                                    @if ($subcategory)
+                                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory['name'] ?? ''),
                                             'tag' => $tag['tag_name'] ?? ''
                                         ]) }}">{{ $tag['tag_name'] ?? '' }}</a>
                                     @endif
