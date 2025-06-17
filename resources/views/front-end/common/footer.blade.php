@@ -1,3 +1,6 @@
+@php 
+ $site = \App\Models\Settings::where('key', 'site_setting')->first();
+@endphp
 {{-- <div class=" footer-container">
     <div class="container">
         <div class="horizontal-menu-row">
@@ -101,23 +104,13 @@
     </div>
 </div> --}}
 
-
+{{-- 
 <footer class="footer-04">
     <div class="container">
         <div class="row">
-            {{-- <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
-                <h2 class="footer-heading"><a href="#" class="logo">Colorlib</a></h2>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                <a href="#">read more <span class="ion-ios-arrow-round-forward"></span></a>
-            </div> --}}
             <div class="col-md-5 col-lg-3 mb-md-0 mb-4 padding-left">
                 <h2 class="footer-heading">Quick Links</h2>
                 <ul class="list-unstyled">
-                    {{-- @if (!empty($category))
-                        <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                    @elseif (!empty($subcategory))
-                        <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                    @endif --}}
                      @if (!empty($subcategory))
                         <li>
                             <a href="{{ route('product.list.show') }}">
@@ -142,20 +135,6 @@
                     <li>  <p> B-Shop No. 4,</p><p>Shiv Shakti Luxuria,</p><p>Near Ocean Park 1,</p> <p> Bhagwati Circle,</p> <p> Kaliyabid, </p> <p>Bhavnagar - 364002,</p><p>Gujarat India</p></li>
                 </ul>
             </div>
-
-            {{-- <div class="col-md-6 col-lg-3 mb-md-0 mb-4">
-                <h2 class="footer-heading">Tag cloud</h2>
-                <div class="tagcloud">
-                    <a href="#" class="tag-cloud-link">dish</a>
-                    <a href="#" class="tag-cloud-link">menu</a>
-                    <a href="#" class="tag-cloud-link">food</a>
-                    <a href="#" class="tag-cloud-link">sweet</a>
-                    <a href="#" class="tag-cloud-link">tasty</a>
-                    <a href="#" class="tag-cloud-link">delicious</a>
-                    <a href="#" class="tag-cloud-link">desserts</a>
-                    <a href="#" class="tag-cloud-link">drinks</a>
-                </div>
-            </div> --}}
             <div class="col-md-6 col-lg-4 mb-md-0 mb-4 padding-left">
                 <h2 class="footer-heading">Subcribe</h2>
                 <div class="subscribe-form">
@@ -200,5 +179,205 @@
                 </div>
             </div>
         </div>
+    </div>
+</footer> --}}
+<footer class="global-footer">
+    <div class="container">
+        <div class="global-footer__container">
+            <nav class="global-footer-info-links">
+                <hr class="global-footer__separator is-hidden-desktop h-mb4">
+
+                <ul class="global-footer-info-links__list">
+                    <li class="global-footer-info-links__list-item">
+                        <ul class="global-footer-sublist">
+                            <li class="global-footer-sublist__item-title">
+                                Envato Market
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Terms</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Licenses</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Market API</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Become an affiliate</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Cookies</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <button type="button" class="global-footer__text-link"
+                                    data-view="cookieSettings">Cookie Settings</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="global-footer-info-links__list-item">
+                        <ul class="global-footer-sublist">
+                            <li class="global-footer-sublist__item-title">
+                                Help
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Help Center</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Authors</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="global-footer-info-links__list-item">
+                        <ul class="global-footer-sublist">
+                            <li class="global-footer-sublist__item-title">
+                                Our Community
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Community</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Blog</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Forums</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Meetups</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="global-footer-info-links__list-item">
+                        <ul class="global-footer-sublist">
+                            <li class="global-footer-sublist__item-title">
+                                Meet Envato
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">About Envato</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Careers</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Privacy Policy</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Do not sell or share my personal
+                                    information</a>
+                            </li>
+                            <li class="global-footer-sublist__item h-p0">
+                                <a class="global-footer__text-link" href="#">Sitemap</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="global-footer-stats">
+                <div class="global-footer-stats__content">
+                    <img class="global-footer-stats__logo" alt="Envato Market"
+                        src="https://public-assets.envato-static.com/assets/logos/envato_market-dd390ae860330996644c1c109912d2bf63885fc075b87215ace9b5b4bdc71cc8.svg">
+                        {{-- @if ($site && $site['value']['logo_image'] && $site['value']['logo_image'] != null)
+                            <img class="global-footer-stats__logo" src="{{ asset('storage/Logo_Settings/'.$site['value']['logo_image']) }}" alt="Logo">
+                        @else
+                            <img class="global-footer-stats__logo" src="{{ asset('front-end/images/infiniylogo.png') }}" alt="Logo">
+                        @endif --}}
+                    <ul class="global-footer-stats__list">
+                        <li class="global-footer-stats__list-item h-p0">
+                            <span class="global-footer-stats__number">77,430,912</span> items sold
+
+                        </li>
+                        <li class="global-footer-stats__list-item h-p0">
+                            <span class="global-footer-stats__number">$1,216,496,956</span> community earnings
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="global-footer-stats__bcorp">
+                    <a target="_blank" rel="noopener noreferrer" class="global-footer-bcorp-link" href="#">
+                        <img class="global-footer-bcorp-logo" width="50" alt="B Corp Logo" loading="lazy"
+                            src="https://public-assets.envato-static.com/assets/header-footer/logo-bcorp-e83f7da84188b8edac311fbf08eaa86634e9db7c67130cdc17837c1172c5f678.svg">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="global-footer__separator">
+        <div class="global-footer__container">
+            <div class="global-footer-company-links">
+                <ul class="global-footer-company-links__list">
+                    <li class="global-footer-company-links__list-item">
+                        <a class="global-footer__text-link -opacity-full"
+                            data-analytics-view-payload="{&quot;eventName&quot;:&quot;view_promotion&quot;,&quot;contextDetail&quot;:&quot;footer nav&quot;,&quot;ecommerce&quot;:{&quot;promotionId&quot;:&quot;elements_mkt-footernav&quot;,&quot;promotionName&quot;:&quot;elements_mkt-footernav&quot;,&quot;promotionType&quot;:&quot;elements referral&quot;}}"
+                            data-analytics-click-payload="{&quot;eventName&quot;:&quot;select_promotion&quot;,&quot;contextDetail&quot;:&quot;footer nav&quot;,&quot;ecommerce&quot;:{&quot;promotionId&quot;:&quot;elements_mkt-footernav&quot;,&quot;promotionName&quot;:&quot;elements_mkt-footernav&quot;,&quot;promotionType&quot;:&quot;elements referral&quot;}}"
+                            href="https://elements.envato.com?utm_campaign=elements_mkt-footernav"
+                            data-analytics-viewed="true">Envato Elements</a>
+                    </li>
+                    <li class="global-footer-company-links__list-item">
+                        <a class="global-footer__text-link -opacity-full" href="#">Placeit by Envato</a>
+                    </li>
+                    <li class="global-footer-company-links__list-item">
+                        <a class="global-footer__text-link -opacity-full" href="#">Envato Tuts+</a>
+                    </li>
+                    <li class="global-footer-company-links__list-item">
+                        <a class="global-footer__text-link -opacity-full" href="#">All Products</a>
+                    </li>
+                    <li class="global-footer-company-links__list-item">
+                        <a class="global-footer__text-link -opacity-full" href="#">Sitemap</a>
+                    </li>
+                </ul>
+
+                <hr class="global-footer__separator is-hidden-tablet-and-above h-mt3">
+
+
+                <small class="global-footer-company-links__price-disclaimer">
+                    Price is in US dollars and excludes tax and handling fees
+                </small>
+
+                <small class="global-footer-company-links__copyright">
+                    © 2025 Envato Pty Ltd. Trademarks and brands are the property of their respective owners.
+                </small>
+            </div>
+
+            <div class="global-footer-social">
+                <ul>
+                    <li class="global-footer-social__list-item">
+                        <a class="global-footer__icon-link" rel="nofollow" href="#">
+                            <img src="https://public-assets.envato-static.com/assets/header-footer/social/twitter-fed054cb31fc18407431a26876142c31a26c6bd59026c684d9625e4d7e58002a.svg"
+                                class="global-footer-social__icon" alt="Twitter" title="Twitter" width="22"
+                                height="22">
+                        </a>
+                    </li>
+                    <li class="global-footer-social__list-item">
+                        <a class="global-footer__icon-link" rel="nofollow" href="#">
+                            <img src="https://public-assets.envato-static.com/assets/header-footer/social/facebook-20d27cecd9ae46e6f7bad373316a0dc544669d42dbe0f66b3672720fbe5592fc.svg"
+                                class="global-footer-social__icon" alt="Facebook" title="Facebook" width="22"
+                                height="22">
+                        </a>
+                    </li>
+                    <li class="global-footer-social__list-item">
+                        <a class="global-footer__icon-link" rel="nofollow" href="#">
+                            <img src="https://public-assets.envato-static.com/assets/header-footer/social/youtube-2d6a8f758426e727939834a47fe9e16ed6b651afed9ca4327a986f76f496594a.svg"
+                                class="global-footer-social__icon" alt="YouTube" title="YouTube" width="22"
+                                height="22">
+                        </a>
+                    </li>
+                    <li class="global-footer-social__list-item">
+                        <a class="global-footer__icon-link" rel="nofollow" href="#">
+                            <img src="https://public-assets.envato-static.com/assets/header-footer/social/instagram-dce9fbf4d8428e6f75492fdc4e32ef7543ce3ba6347a5b055e7ac68c45416dc2.svg"
+                                class="global-footer-social__icon" alt="Instagram" title="Instagram" width="22"
+                                height="22">
+                        </a>
+                    </li>
+                    <li class="global-footer-social__list-item">
+                        <a class="global-footer__icon-link" rel="nofollow" href="#">
+                            <img src="https://public-assets.envato-static.com/assets/header-footer/social/pinterest-2e00aae335d66e4e28273bbfe4e9428ca8d8d91cbd9122d81312218ea34747df.svg"
+                                class="global-footer-social__icon" alt="Pinterest" title="Pinterest" width="22"
+                                height="22">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 </footer>
