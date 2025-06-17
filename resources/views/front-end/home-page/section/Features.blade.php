@@ -38,18 +38,8 @@
                         <span class="ml-2 integra_p"><b>Secure & Trustworthy</b> - Industry-standard security to protect your business.</span>
                     </div>
                     <div class="signup-wrapper">
-                        @if (!empty($category))
-                          <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
-                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                            </svg><span>Explore Our Products </span>
-                            {{-- <span class="ml-1 mr-3">
-                                        <i class="fa-solid fa-greater-than"></i>
-                                    </span> --}}
-                            </a>
-                        @elseif (!empty($subcategory))
-                           <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
+                        @if (!empty($subcategory))
+                           <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}" class="blue_common_btn"> 
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
