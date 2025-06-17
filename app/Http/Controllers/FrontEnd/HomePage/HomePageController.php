@@ -367,16 +367,16 @@ class HomePageController extends Controller
         return response()->json($items);
     }
 
-    public function show($category, $slug)
+    public function show($category = null, $slug = null)
     {
         $subcategory = SubCategory::where('slug', $slug)->value('id');
         $category = Category::where('id', $subcategory)->first();
         $slugCategory = Category::where('slug', $slug)->first();
 
         if ($slugCategory) {
-            $id = $slugCategory->id;
+            $id = $slugCategory->id ?? null;
         } else {
-            $id = $category->id;
+            $id = $category->id ?? null;
         }
         $category_name = Category::where('id', $id)->value('name');
 
@@ -523,7 +523,7 @@ class HomePageController extends Controller
 
         $selectedSubcategoryId = $selectedSubcategory->id;
         $selectedCategoryId = $selectedSubcategory->category_id;
-        $id = $selectedCategoryId;
+        $id = $selectedCategoryId ?? null;
         // Get category info
         $category = Category::where('id', $selectedCategoryId)->first();
         $category_name = $category->name;
