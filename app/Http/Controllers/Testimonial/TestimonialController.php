@@ -118,7 +118,7 @@ class TestimonialController extends Controller
             ],
         ];
         if ($request->scid == "0") {
-            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048';
         }
         return Validator::make($request->all(), $rules);
     }
