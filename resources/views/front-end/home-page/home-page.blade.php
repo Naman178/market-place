@@ -559,39 +559,44 @@
             const firstAnswer = firstFaq.querySelector('.faq-answer');
             const firstIcon = firstFaq.querySelector('.faq-icon');
 
-            // Set the first FAQ as open
-            firstAnswer.classList.add('open');
-            firstIcon.classList.add('rotate');
-            firstQuestion.classList.add('active');
+            openFaq(firstQuestion, firstAnswer, firstIcon);
         }
     };
 
-    // Event listener for FAQ questions
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
-            // Close all other FAQs
-            document.querySelectorAll('.faq-item').forEach(item => {
-                const answer = item.querySelector('.faq-answer');
-                const icon = item.querySelector('.faq-icon');
-                const itemQuestion = item.querySelector('.faq-question');
-
-                if (itemQuestion !== question) {
-                    answer.classList.remove('open');
-                    icon.classList.remove('rotate');
-                    itemQuestion.classList.remove('active');
-                }
-            });
-
-            // Toggle open/close for the current FAQ
-            const parent = question.parentElement;
+            const parent = question.closest('.faq-item');
             const answer = parent.querySelector('.faq-answer');
             const icon = question.querySelector('.faq-icon');
 
-            answer.classList.toggle('open');
-            icon.classList.toggle('rotate');
-            question.classList.toggle('active');
+            // Check if already open
+            const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const a = item.querySelector('.faq-answer');
+                const i = item.querySelector('.faq-icon');
+                const q = item.querySelector('.faq-question');
+
+                a.style.maxHeight = null;
+                a.classList.remove('open');
+                i.classList.remove('rotate');
+                q.classList.remove('active');
+            });
+
+            if (!isOpen) {
+                openFaq(question, answer, icon);
+            }
         });
     });
+
+    function openFaq(question, answer, icon) {
+        answer.style.maxHeight = answer.scrollHeight + 'px'; // ✅ This is correct
+        answer.classList.add('open');
+        icon.classList.add('rotate');
+        question.classList.add('active');
+    }
+
 
     //newsletter
     $(document).ready(function(){

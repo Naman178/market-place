@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="api_section">
+{{-- <div class="api_section">
     <div class="container">
         <div class="highlighted-section">
             <img class="pattern_img" src="{{ asset('front-end/images/design.png') }}" alt="not found">
@@ -37,18 +37,27 @@
                         <span>Get Your FREE API Key</span>
                     </a>
                   </li>                  
-                {{-- <a href="#" class="button mt-2">Get Your FREE API Key</a> --}}
+                <a href="#" class="button mt-2">Get Your FREE API Key</a>
              </div>
              <img class="pattern3_img" src="{{ asset('front-end/images/design2.png') }}" alt="not found">
              <img class="pattern4_img" src="{{ asset('front-end/images/design2.png') }}" alt="not found">
         </div>
     </div>
-</div>
-{{-- <div class="highlighted-section">
+</div> --}}
+<div class="highlighted-section">
+    <!-- Left patterns -->
+    <img class="pattern pattern-left pattern-top" src="{{ asset('front-end/images/design.png') }}" alt="Pattern Left Top">
+    <img class="pattern pattern-left pattern-bottom" src="{{ asset('front-end/images/design.png') }}" alt="Pattern Left Bottom">
+
+    <!-- Right patterns -->
+    <img class="pattern pattern-right pattern-top" src="{{ asset('front-end/images/design.png') }}" alt="Pattern Right Top">
+    <img class="pattern pattern-right pattern-bottom" src="{{ asset('front-end/images/design.png') }}" alt="Pattern Right Bottom">
+
+    <!-- Banner Content -->
     <div class="banner">
         <h1>It takes less than a minute to get started</h1>
         <li class="white_signup-wrapper mt-1">
-            <a class="white_signup_btn" href="{{route('user-login')}}">
+            <a class="white_signup_btn" href="{{ route('user-login') }}">
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
@@ -57,7 +66,7 @@
             </a>
         </li>
     </div>
-</div> --}}
+</div>
 
 
 {{-- <div class="tech">
