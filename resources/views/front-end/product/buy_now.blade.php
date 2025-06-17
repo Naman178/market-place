@@ -76,7 +76,7 @@
             <path d="M1 9L5 5L1 1" stroke="#bababa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
-        <a class="js-breadcrumb-category" href="{{ route('product.list', ['category' => $category->slug, 'slug' => $subcategory->slug]) }}">
+        <a class="js-breadcrumb-category" href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}">
             {{ $subcategory->name }}
         </a>
     </nav>
