@@ -45,11 +45,11 @@
         transition: transform .2s;
         position: relative;
     }
-    .previewImgCls:hover{
+    /* .previewImgCls:hover{
         transform: scale(5.0);
         border-radius: 2px;
         z-index: 1;
-    }
+    } */
     .previewImgCls{
         display: none;
     }

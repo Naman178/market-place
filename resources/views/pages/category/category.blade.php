@@ -23,12 +23,12 @@
             position: relative;
         }
 
-        .image-prev img {
+        /* .image-prev img {
             position: absolute;
             height: 100%;
             width: 100%;
             object-fit: cover;
-        }
+        } */
 
         .dropdown-item {
             cursor: pointer;

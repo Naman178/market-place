@@ -97,9 +97,7 @@
         <!-- Navigation Menu -->
         <div class="menu-container menu-1 d-none d-lg-block">
             <ul>
-                @if (!empty($category))
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                @elseif (!empty($subcategory))
+                @if (!empty($subcategory))
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
                 @endif
                 {{-- <li><a href="#">Documentation</a></li> --}}
@@ -153,9 +151,7 @@
     <!-- Mobile Navigation -->
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
-            @if (!empty($category))
-                <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-            @elseif (!empty($subcategory))
+            @if (!empty($subcategory))
                 <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
             @endif
             <li><a href="{{ route('user-faq') }}">FAQs</a></li>
