@@ -1688,12 +1688,7 @@ div#integrationCarousel .col-4{
   max-height: 0;
   overflow: hidden;
   padding: 0 15px;
-  transition: 0.5s;
-}
-
-.faq-answer.open {
-  padding: 15px;
-  max-height: 300px; /* Set max height for animation */
+  transition: max-height 0.5s ease, padding 0.5s ease;
 }
 
 .faq-icon {
@@ -1701,11 +1696,11 @@ div#integrationCarousel .col-4{
   transition: transform 0.3s ease;
 }
 
-.faq-icon.rotate:before {
+.faq-icon.rotate::before {
   content: '-';
 }
 
-.faq-icon:before {
+.faq-icon::before {
   content: '+';
 }
 
@@ -1748,16 +1743,6 @@ div#integrationCarousel .col-4{
   color: #fff;
   width: 100%;
 } */
-.banner {
-  position: absolute;
-  margin-top: -185px;
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Ensure it remains centered */
-  color: #fff;
-  width: 90%; /* Adjust width to be responsive */
-  max-width: 1200px; /* Prevent overly wide banners */
-  text-align: center; /* Ensure text is centered */
-}
 
 .rectangle_img{
   width: 100%;
@@ -1789,7 +1774,7 @@ div#integrationCarousel .col-4{
   transition: 0.5s;
 }
 
-.pattern_img {
+/* .pattern_img {
   position: relative;
   left: -21rem;
   top: 15rem;
@@ -1815,12 +1800,114 @@ div#integrationCarousel .col-4{
     left: 22rem;
     top: -14rem;
     height: 12rem;
-}
+} */
 
 .api_section{
-  margin-top: -12rem;
-  margin-bottom: -11rem;
+  /* margin-top: -12rem;
+  margin-bottom: -11rem; */
   text-align: center;
+}
+.highlighted-section {
+    position: relative;
+    background-color: #007AC1;
+    border-radius: 50px;
+    padding: 20px 20px;
+    text-align: center;
+    margin: 40px auto;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+}
+
+.highlighted-section h1 {
+    color: #fff;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.banner {
+    position: relative;
+    z-index: 2;
+}
+
+.pattern {
+    position: absolute;
+    z-index: 1;
+}
+
+/* LEFT */
+.pattern-left.pattern-top {
+    top: 2px;
+    left: 39px;
+    z-index: 4;
+    transform: rotate(0deg);
+}
+
+.pattern-left.pattern-bottom {
+    bottom: -9px;
+    left: 16px;
+    z-index: 4;
+}
+
+
+/* RIGHT */
+.pattern-right.pattern-top {
+    top: 12px;
+    right: 15px;
+    z-index: 4;
+    transform: scaleX(-1);
+}
+
+.pattern-right.pattern-bottom {
+    bottom: 1px;
+    right: 36px;
+    z-index: 4;
+    transform: scaleX(-1);
+}
+
+.pattern img {
+    height: 100%;
+    width: auto;
+    max-width: 200px;
+    opacity: 1;
+}
+
+/* Banner Styling */
+.banner {
+    text-align: center;
+    background-color: #007AC1;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Button Border Animation */
+svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    fill: none;
+}
+
+.bg-line {
+    stroke: white;
+    stroke-width: 2;
+}
+
+.hl-line {
+    stroke: #007AC1;
+    stroke-width: 2;
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.white_signup_btn:hover .hl-line {
+    stroke-dashoffset: 0;
 }
 
 .tech h1 span {
@@ -2289,8 +2376,7 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
 .gray_bg {
     background-color: #EDF2F4;
 }
-.plugins::before,
-.plugins::after {
+.plugins::before{
     content: "";
     display: block;
     width: 100px; 
@@ -2306,11 +2392,6 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
 .plugins::before {
     top: 120rem;
     left: 0;
-}
-
-.plugins::after {
-    bottom: -20px;
-    right: 0;
 }
 
 .support {
@@ -2333,7 +2414,7 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
 /* Position the after element (bottom-right) */
 .support::after {
     bottom: 14rem;
-    right: -20px;
+    right: 0;
 }
 .features.integration.faq-section {
     position: relative;
@@ -2364,7 +2445,7 @@ body.menu-open .vbp-header-menu-button__svg .bottom {
     background-image: url('/front-end/images/second_question_mark.png');
     background-repeat: no-repeat;
     background-size: contain;
-    width: 100px;  
+    width: 54px;  
     height: 100px; 
     z-index: -1;
 }
