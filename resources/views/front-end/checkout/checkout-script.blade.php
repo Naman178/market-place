@@ -76,7 +76,7 @@
            function stripeResponseHandler(status, response) {
                $("#preloader").show();
                if (response.error) {
-                   $('#stripe_payment_error').text(response.error.message $form || 'Stripe token generation failed. Please check your card details.');
+                   $('#stripe_payment_error').text(response.error.message || 'Stripe token generation failed. Please check your card details.');
                    $("#preloader").hide();
                } else {       
                    $("#preloader").show();    
