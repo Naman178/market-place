@@ -594,7 +594,9 @@
                                             <i class="fa fa-check mr-2"></i>
                                             {{ $item->features[0]->key_feature ?? '' }}
                                         </div>
+                                        @if ($item->features->count() > 1)
                                         <i class="fa fa-chevron-down toggle-icon"></i>
+                                        @endif
                                     </div>
                                 </li>
                             </ul>
