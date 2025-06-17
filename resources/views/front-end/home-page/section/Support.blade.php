@@ -38,17 +38,8 @@
                     
                 </div>
                 <div class="signup-wrapper">
-                    @if (!empty($category))
-                    <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}" class="blue_common_btn"> 
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                        <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                    </svg><span>Get Lifetime Support </span>
-                    {{-- <span class="ml-1 mr-3">
-                                <i class="fa-solid fa-greater-than"></i>
-                            </span> --}}
-                    </a>
-                @elseif (!empty($subcategory))
+                   
+                @if (!empty($subcategory))
                      <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}" class="blue_common_btn"> 
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
