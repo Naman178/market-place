@@ -10,12 +10,12 @@ $subcategory = SubCategory::where('sys_state','=','0')->first();
         <div class="real_time_section">
             <div class="d-flex">
                 <div class="real_time">
-                    <h1>Revolutionize Your Pricing with <span class="white-underline"> Automation! </span></h1>
+                    <h1>Premium Plugins, Themes, and  <span class="white-underline"> Scripts </span></h1>
                     {{-- <img class="vector5_img" src="{{ asset('front-end/images/Vector 5.png') }}" alt="not found"> --}}
-                    <p>Say goodbye to manual price updates! Our  <b>Gold Price Plugin for WordPress</b> automatically calculates real-time gold, silver, and platinum prices for WooCommerce products. Boost efficiency, reduce errors, and ensure accurate pricing—effortlessly.
+                    <p>Browse our exclusive collection of developer-ready WordPress     plugins, themes, Laravel scripts, React templates, and more — built for performance, security, and scalability.
                     </p>
                     @if (!empty($subcategory))
-                    <a  class="white_btn mr-20" href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}"><i class="fa fa-eye"></i> <span>Explore Products</span></a>
+                    <a  class="white_btn mr-20" href="{{ route('product.list.show') }}"><i class="fa fa-eye"></i> <span>Explore Products</span></a>
                     @endif
                     {{-- <a href="" class="white_btn mr-20"><i class="fa fa-eye"></i>
                         <span>Explore Buttons</span></a> --}}

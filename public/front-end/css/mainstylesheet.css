@@ -1264,6 +1264,240 @@ input {
   border: none;
   border-radius: 0;
 }
+/* global footer */
+.global-footer {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+    background-color: #1a1a1a;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    padding-bottom: 32px;
+    padding-top: 32px;
+}
+.global-footer ul{
+  padding: 0 !important;
+}
+.global-footer__container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-bottom: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 32px;
+}
+
+.global-footer-info-links {
+    width: 100%;
+}
+.global-footer__separator {
+    background-color: #262626;
+    border: none;
+    display: block;
+    height: 2px;
+    margin: 0 auto;
+    padding: 0;
+}
+.global-footer-info-links__list {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    list-style: none;
+    max-width: 880px;
+    width: 100%;
+}
+.global-footer-info-links__list-item:not(:last-child) {
+    margin-right: 16px;
+}
+.global-footer-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.global-footer-sublist__item-title {
+    font-weight: bold;
+    height: 24px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+    text-transform: uppercase;
+}
+.global-footer-sublist__item {
+    display: block;
+    list-style: none;
+    margin-bottom: 16px;
+    white-space: nowrap;
+}
+.h-p0 {
+    padding: 0px !important;
+}
+.global-footer__text-link:link, .global-footer__text-link:visited {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.global-footer__text-link {
+    display: inline-block;
+    position: relative;
+    -webkit-transition: opacity 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+    transition: opacity 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+.is-hidden-desktop {
+    display: none !important;
+}
+.is-hidden-tablet-and-above {
+    display: none !important;
+}
+.global-footer__text-link:after {
+    background-color: white;
+    content: '';
+    height: 1px;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    -webkit-transform: translateY(1px);
+    transform: translateY(1px);
+    -webkit-transition: 0.15s all cubic-bezier(0.39, 0.575, 0.565, 1);
+    transition: 0.15s all cubic-bezier(0.39, 0.575, 0.565, 1);
+    -webkit-transition-property: opacity, -webkit-transform;
+    transition-property: opacity, -webkit-transform;
+    transition-property: opacity, transform;
+    transition-property: opacity, transform, -webkit-transform;
+    width: 100%;
+}
+.global-footer-stats {
+    color: gray;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-left: auto;
+    padding-left: 32px;
+    white-space: nowrap;
+}
+.global-footer-stats__content {
+    margin-right: 48px;
+}
+.global-footer-stats__logo {
+    display: block;
+    height: 20px;
+    margin-bottom: 16px;
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+    width: auto;
+}
+.global-footer-stats__list {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+.global-footer-stats__list-item {
+    list-style: none;
+}
+.global-footer-stats__number {
+    color: white;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+.global-footer-bcorp-logo {
+    width: 50px;
+}
+.global-footer__separator {
+    background-color: #262626;
+    border: none;
+    display: block;
+    height: 2px;
+    margin: 0 auto;
+    padding: 0;
+}
+.grid-container:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.global-footer-company-links {
+    margin-right: 32px;
+}
+.global-footer-company-links__list-item:not(:last-child) {
+    margin-right: 24px;
+}
+.global-footer-company-links__list-item {
+    display: inline-block;
+}
+.global-footer-company-links__copyright, .global-footer-company-links__price-disclaimer {
+    display: block;
+    color: #999999;
+    font-size: inherit;
+    margin-top: 12px;
+}
+.global-footer-company-links__copyright, .global-footer-company-links__price-disclaimer {
+    display: block;
+    color: #999999;
+    font-size: inherit;
+    margin-top: 12px;
+}
+.global-footer-social {
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-top: 8px;
+}
+.global-footer__icon-link {
+    display: inline-block;
+    -webkit-transition: 0.1s cubic-bezier(0.39, 0.575, 0.565, 1);
+    transition: 0.1s cubic-bezier(0.39, 0.575, 0.565, 1);
+    -webkit-transition-property: opacity, -webkit-transform;
+    transition-property: opacity, -webkit-transform;
+    transition-property: opacity, transform;
+    transition-property: opacity, transform, -webkit-transform;
+}
+.global-footer-social__icon {
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+}
+.global-footer__text-link:hover:after {
+    opacity: 1;
+    -webkit-transform: translateY(-3px) translateZ(0);
+    transform: translateY(-3px) translateZ(0);
+}
+button.global-footer__text-link {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+.global-footer-stats__list-item:not(:first-child) {
+    margin-left: 16px;
+}
+.global-footer__icon-link:hover, .global-footer__icon-link:active {
+    opacity: 0.8;
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+}
+.global-footer-social__list-item {
+    display: inline-block;
+}
+.global-footer-social__list-item:not(:first-child) {
+    margin-left: 10px;
+}
 .sr-only {
   position: absolute;
   width: 1px;
