@@ -18,7 +18,7 @@
         }
 
         .image-prev {
-            height: 100px;
+            height: auto;
             width: 100px;
             position: relative;
         }
