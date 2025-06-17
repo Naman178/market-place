@@ -18,17 +18,17 @@
         }
 
         .image-prev {
-            height: 100px;
+            height: auto;
             width: 100px;
             position: relative;
         }
 
-        .image-prev img {
+        /* .image-prev img {
             position: absolute;
             height: 100%;
             width: 100%;
             object-fit: cover;
-        }
+        } */
 
         .dropdown-item {
             cursor: pointer;

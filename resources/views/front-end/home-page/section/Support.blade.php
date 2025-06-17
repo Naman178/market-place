@@ -40,7 +40,7 @@
                 <div class="signup-wrapper">
                    
                 @if (!empty($subcategory))
-                     <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name)]) }}" class="blue_common_btn"> 
+                     <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
                         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
