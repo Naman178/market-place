@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\ContactsCountryEnum;
 use App\Models\CouponUsages;
 use Stripe\Exception\CardException;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 
 class StripePaymentController extends Controller
@@ -515,17 +516,12 @@ class StripePaymentController extends Controller
                     'description' => 'Payment For the Market Place Checkout Wallet',
                 ]);
             }
-            if($request->stripeToken == null){
-                return redirect()->back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
-            }
-            else{
-                $paymentMethod = \Stripe\PaymentMethod::create([
-                    'type' => 'card',
-                    'card' => [
-                        'token' => $request->stripeToken,
-                    ],
-                ]);
-            }
+            $paymentMethod = \Stripe\PaymentMethod::create([
+                'type' => 'card',
+                'card' => [
+                    'token' => $request->stripeToken,
+                ],
+            ]);
             $return_url_params = [
                 'product_id' => $product_id,
                 'subtotal' => $subtotal,
@@ -664,19 +660,20 @@ class StripePaymentController extends Controller
 
             return redirect()->route('user-dashboard')->with('success', 'Payment successful!');
        
-        } catch (\Stripe\Exception\CardException $e) {
-            $message = $e->getError()->message;
-            if (str_contains(strtolower($message), 'test')) {
-                return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
-            }
-            return back()->with('error', $message);
+          } catch (\Stripe\Exception\CardException $e) {
+            return redirect()->back()->with('error', $e->getError()->message);
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            return redirect()->back()->with('error', 'Too many requests to the Stripe API.');
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            if (str_contains(strtolower($e->getMessage()), 'test')) {
-                return back()->with('error', 'You have used a Stripe test card. Please use a valid card to proceed.');
-            }
-            return back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', 'Invalid payment request. Please try again.');
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            return redirect()->back()->with('error', 'Authentication with Stripe failed.');
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            return redirect()->back()->with('error', 'Network error. Please try again.');
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'An unexpected error occurred. Please try again. ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
