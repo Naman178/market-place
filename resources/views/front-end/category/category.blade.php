@@ -105,7 +105,7 @@
                         <h3>Categories</h3>
                         @foreach ($categories as $category)
                         <ul class="p-0">
-                            <li> <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug( '{{ $subcategory['name'] }}')]) }}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
+                            <li> <a href="{{ route('product.list.show')}}">{{ $category->name}} <span>({{ $category->products_count }})</span> </a></li>
                         </ul>
                         @endforeach
                     </div>
