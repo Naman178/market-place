@@ -399,9 +399,6 @@ class StripePaymentController extends Controller
     public function stripePost(Request $request)
     {
         try {
-            if (!$request->stripeToken) {
-                return redirect()->back()->with('error', 'Stripe token is missing. Please try again.');
-            }
             $input = $request->all();
             $product_id = $input['product_id'];
             $amount = $input['amount'];

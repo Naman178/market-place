@@ -741,6 +741,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const cvcInput = document.getElementById('card_cvc');
     const cvcError = document.getElementById('card_cvc_error');
 
+    const stripeToken = document.getElementById('stripeToken');
+
     // Card Number Formatting and Validation
     cardNumberInput.addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
@@ -802,6 +804,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (!validateCardNumber()) valid = false;
         if (!validateCVC()) valid = false;
+        if (!stripeToken.value) {
+            isValid = false;
+        }
 
         if (cvcVal.length !== 3) {
             cvcError.textContent = 'CVC must be 3 digits';
