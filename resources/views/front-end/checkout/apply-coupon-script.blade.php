@@ -177,7 +177,7 @@
 
                 Stripe.card.createToken(cardData, function (status, response) {
                     if (response.error) {
-                        toastr.error(response.error.message);
+                        toastr.error(response.error.message || "Stripe token generation failed. Please check your card details.");
                         return;
                     }
 
@@ -243,7 +243,7 @@
             Stripe.card.createToken(cardData, function (status, response) {
                 if (response.error) {
                     hideLoader();
-                    toastr.error(response.error.message);
+                    toastr.error(response.error.message || 'Stripe token generation failed. Please check your card details.');
                     return;
                 }
 
@@ -723,7 +723,7 @@
             Stripe.card.createToken(cardData, function (status, response) {
                 if (response.error) {
                     hideLoader();
-                    toastr.error(response.error.message);
+                    toastr.error(response.error.message || 'Stripe token generation failed. Please check your card details.');
                     return;
                 }
 
