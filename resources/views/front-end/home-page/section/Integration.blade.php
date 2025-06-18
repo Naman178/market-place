@@ -1,7 +1,7 @@
 <!-- Integration section start -->
 <div class="int_bg blog">
     <div class="container">
-        <p class="plugin-label pt-4">
+        <p class="plugin-label">
             <span class="label-line"></span> Integrations
         </p>
         <div class="d_flex">
