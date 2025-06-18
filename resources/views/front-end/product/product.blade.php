@@ -107,7 +107,7 @@
 @section('content')
     <div class="container items-container">
         <div class="title">
-            <h3><span class="color-blue underline">Products</span></h3>
+            <h3 class="txt-black">Explore Our <span class="color-blue underline">Products</span></h3>
         </div>
         {{-- <div class="container" style="padding-left: 330px; padding-right:330px;">
             <div class="row" style="display: flex; justify-content:space-between; align-items:center;">

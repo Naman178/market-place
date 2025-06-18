@@ -57,15 +57,15 @@ button:focus {
 }
 
 .txt-white {
-  color: #fff;
+  color: #fff !important;
 }
 
 .txt-blue {
-  color: #007ac1;
+  color: #007ac1 !important;
 }
 
 .txt-black {
-  color: #000;
+  color: #000 !important;
 }
 
 .alert {

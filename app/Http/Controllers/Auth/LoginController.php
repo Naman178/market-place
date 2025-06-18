@@ -28,7 +28,7 @@ class LoginController extends Controller
      */
    protected function redirectTo()
     {
-        if (auth()->user()->email == 'superadmin@gmail.com') {
+        if (auth()->user()->email === 'superadmin@gmail.com'){
             return '/dashboard';
         }
         return RouteServiceProvider::HOME;

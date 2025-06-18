@@ -52,6 +52,13 @@
                             @endif 
                          <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
                         </a>
+                        @if (auth()->user()->email === "superadmin@gmail.com")
+                            <div class="dropdown-menu mt-6" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                    <span class="dropdown_label">  Dashboard </span>
+                                </a>
+                            </div>
+                        @else
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                                 <span class="dropdown_label">  Dashboard </span>
@@ -70,6 +77,7 @@
                                 @csrf
                             </form>
                         </div>
+                        @endif
                     </li>
                 @else
                     <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
@@ -119,6 +127,13 @@
                         @endif 
                      <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
                     </a>
+                    @if (auth()->user()->email === "superadmin@gmail.com")
+                        <div class="dropdown-menu mt-6" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                <span class="dropdown_label">  Dashboard </span>
+                            </a>
+                        </div>
+                    @else
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                             <span class="dropdown_label">  Dashboard </span>
@@ -134,6 +149,7 @@
                             @csrf
                         </form>
                     </div>
+                    @endif
                 </li>
             @else
                 <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
