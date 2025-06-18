@@ -42,7 +42,7 @@
             <div class="container text-center pb_30">
                 <div class="row justify-content-center">
                     @foreach ($subcategory as $item)
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
                             <a href="{{ route('product.list.show', ['subcategory' => Str::slug($item->name ?? '')]) }}">
                                 <div class="wsus__categories_item_2">
                                     <div class="icon">
