@@ -37,11 +37,11 @@
 @endsection
 @section('content')
 @include('front-end.home-page.section.hero_banner')
-@if ($category->count()<=1)
+{{-- @if ($category->count()<=1) --}}
     @include('front-end.home-page.section.Subcategory')
-@else
+{{-- @else
     @include('front-end.home-page.section.Category')
-@endif
+@endif --}}
 @php
     use App\Models\Category;
     use App\Models\SubCategory;

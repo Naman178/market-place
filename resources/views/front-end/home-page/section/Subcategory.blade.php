@@ -38,20 +38,31 @@
             </a>
             @endforeach
         </div> --}}
-        <div class="social_media pb_10">
-            <div class="container text-center subcategory-slider pb_30" id="subcategory-slider">
-                @foreach ($subcategory as $item)
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" style="display: inline-block;">
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($item->name ?? '' )]) }}">
-                        <div class="wsus__categories_item_2">
-                            <div class="icon">
-                                <img src="{{ asset('public/storage/sub_category_images/' . $item->image) }}" alt="Sub category" class="img-fluid w-100">
-                            </div>
-                            <h3>{{$item->name}}</h3>
+       <div class="social_media pb_10">
+            <div class="container text-center pb_30">
+                <div class="row justify-content-center">
+                    @foreach ($subcategory as $item)
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                            <a href="{{ route('product.list.show', ['subcategory' => Str::slug($item->name ?? '')]) }}">
+                                <div class="wsus__categories_item_2">
+                                    <div class="icon">
+                                        <img src="{{ asset('storage/sub_category_images/' . $item->image) }}" alt="Sub category" class="img-fluid w-100">
+                                    </div>
+                                    <h3>{{ $item->name }}</h3>
+                                </div>
+                            </a>
                         </div>
-                        </a>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-end">
+                    @if (!empty($subcategory))
+                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($item->name ?? '')]) }}" class="blue_common_btn"> 
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
+                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
+                            </svg><span>View All </span></a>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
