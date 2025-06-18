@@ -23,7 +23,7 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <p class="integration_p mt-69 ml-20">Lightning-Fast Performance</p>
+                            <p class="integration_p ">Lightning-Fast Performance</p>
                         </div>
                         <div>
                             {{-- <img class="click_img" src="front-end/images/click 1.png" alt="not found"> --}}
@@ -41,7 +41,7 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <p class="integration_p mt-69 ml-20">Easy Setup & Integration</p>
+                            <p class="integration_p ">Easy Setup & Integration</p>
                         </div>
                     </div>
                     <p class="intig_p">Hassle-free installation and seamless compatibility with WordPress.</p>
@@ -56,7 +56,7 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <p class="integration_p mt-69 ml-20">Regular Updates & Support</p>
+                            <p class="integration_p ">Regular Updates & Support</p>
                         </div>
                     </div>
                     <p class="int_p">Continuous improvements and dedicated support to keep you ahead.</p>
@@ -71,7 +71,7 @@
                 <div class="item wordpress_bg secure">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <p class="integration_p mt-69 ml-20">Secure & Reliable</p>
+                            <p class="integration_p ">Secure & Reliable</p>
                         </div>
                         <div>
                             {{-- <img class="click_img" src="front-end/images/click 1.png" alt="not found"> --}}
@@ -89,7 +89,7 @@
                 <div class="item wordpress_bg">
                     <div class="d_flex justify-content-start  align-items-center">
                         <div>
-                            <p class="integration_p mt-69 ml-20">Global Compatibility</p>
+                            <p class="integration_p ">Global Compatibility</p>
                         </div>
                         <div>
                             {{-- <img class="click_img" src="front-end/images/click 1.png" alt="not found"> --}}

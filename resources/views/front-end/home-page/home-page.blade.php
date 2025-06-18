@@ -86,7 +86,6 @@
         slidesToScroll: 1,
         infinite: true,
         arrows: true,
-        autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
             {
@@ -111,7 +110,6 @@
             slidesToShow: 3,
             slidesToScroll: 1,
             arrows: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -223,7 +221,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -283,7 +280,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -310,7 +306,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
