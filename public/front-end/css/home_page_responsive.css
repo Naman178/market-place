@@ -612,6 +612,12 @@
     .btn-outline-primary{
         padding: 0 8px !important;
     }
+    .feature_wrapper::after{
+        left: 15% !important;
+    }
+    .feature_wrapper::before{
+        left: 58% !important;
+    }
 }
 
 /* ✅ Final adjustments for 320px and below */
@@ -794,5 +800,11 @@
     }
     .footer-04 {
         padding-top:1em !important;
+    }
+    .banner_wrapper::after{
+        left: 17% !important;
+    }
+    .feature_wrapper::before{
+        left: 55% !important;
     }
 }

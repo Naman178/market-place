@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
-                <img class="support_img" src="{{ asset('front-end/images/Group 5.png') }}" alt="not found">
-                <img class="rates_img" src="{{ asset('front-end/images/Group 6.png') }}" alt="not found">
-                <img class="feature_img" src="{{ asset('front-end/images/Metalprice-Some-feature-PSD-File 2.png') }}" alt="not found">
+               <div class="feature_wrapper">
+                    <img class="feature_img" src="{{ asset('front-end/images/Metalprice-Some-feature-PSD-File 2.png') }}" alt="not found">
+                </div>
             </div>
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 {{-- <img class="mt-65" src="{{ asset('front-end/images/Group 1000002956.png') }}" alt="not found"> --}}

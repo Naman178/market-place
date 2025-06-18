@@ -46,7 +46,10 @@ class HomePageController extends Controller
         }
         $seoData = SEO::where('page', 'home')->first();
         $category = Category::where('sys_state','=','0')->orderBy('id','desc')->get();
-        $subcategory = SubCategory::where('sys_state','=','0')->orderBy('id','desc')->get();
+     $subcategory = SubCategory::where('sys_state', '0')
+    ->orderBy('id', 'desc')
+    ->take(6)
+    ->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
         $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
