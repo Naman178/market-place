@@ -24,7 +24,7 @@
                     <p class="plugin_p ">Automatically fetch real-time gold, silver, and platinum prices to ensure accurate and <br> up-to-date pricing for your WooCommerce store</p>
                 
                     @if (!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more >Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
+                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more" >Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                     @endif
                     {{-- <a href="#" class="know_more ml-40">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a> --}}
                 </div>
@@ -38,7 +38,7 @@
                     <p class="plugin_p ">Fully compatible with WooCommerce, supporting both simple and variable products for effortless price automation.</p>
                    
                     @if (!empty($subcategory))
-                    <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more ml-40">Explore Prodspan><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
+                    <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
                     @endif
                 </div>
            
