@@ -7,9 +7,6 @@
         : asset('front-end/images/infiniylogo.png');
 @endphp
 @section('styles')
-<link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
-<!-- Scoped Bootstrap CSS -->
-<link rel="stylesheet" href="{{ asset('front-end/css/scoped-bootstrap.css') }}">
 <!-- Slick CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -487,7 +484,9 @@
         let latestselectedTestimonial = latestTestimonials[0];
 
         // Initialize with the latest testimonial
-        $(".patients .testimonial-text").html(latestselectedTestimonial.message);
+        if(latestselectedTestimonial){
+            $(".patients .testimonial-text").html(latestselectedTestimonial.message || "");
+        }
 
         function updateVisibleThumbnails() {
             $(".thumbnail").each(function (index) {

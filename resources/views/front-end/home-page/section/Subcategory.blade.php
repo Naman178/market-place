@@ -4,7 +4,6 @@
         {{-- <img class="mt-65" src="front-end/images/Group 1000002949.png" alt="not found"> --}}
         <div class="d-flex" style="align-items: center;">
             <div class="subcategory">
-                <h2>Shop By <span class="underline"> Category</span></h2>
                 {{-- <img class="vector2_img" src="front-end/images/Vector 2.png" alt="not found"> --}}
             </div>
             <div class="arrow-container w-70" style="margin-top: 0px;">
@@ -54,7 +53,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-center">
                     @if (!empty($subcategory))
                         <a href="{{ route('product.list.show') }}" class="blue_common_btn"> 
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none">
