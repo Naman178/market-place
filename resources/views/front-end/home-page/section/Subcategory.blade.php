@@ -39,7 +39,7 @@
             @endforeach
         </div> --}}
        <div class="social_media pb_10">
-            <div class="container text-center pb_30">
+            <div class="container text-center pb_30 pr-0 pl-0">
                 <div class="row justify-content-center">
                     @foreach ($subcategory as $item)
                         <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
