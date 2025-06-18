@@ -201,7 +201,7 @@
   display: flex;
 }
 
-.hero_banner{
+.h-800{
   height: 800px;
 }
 
@@ -664,7 +664,6 @@
     height: 628px;
     top: 161px;
     left: 1032px;
-    margin-top: 61px;
 }
 .banner_wrapper {
     position: relative;
