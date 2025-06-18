@@ -201,40 +201,42 @@
   display: flex;
 }
 
-.h-800{
-  height: 800px;
+.h-800 {
+    height: 600px;
 }
-
 .hero_banner .container ,.plugins .container,.category .container, .int_bg .container,.features .container, .support .container, .plans .container, .social_media .container, .api_section .container, .tech .container, .blog .container, .blog_details .container {
   max-width: 1400px;
   width: 100%;
 }
 
-.plugins , .int_bg ,.category, .wishlist, .features, .social_media, .testimonial-section, .support{
+/* .plugins , .int_bg ,.category, .wishlist, .features, .social_media, .testimonial-section, .support{
   margin: 40px 0 40px 0;
+} */
+.category {
+    padding: 80px 0;
+    background-color: #ebedf4;
 }
-
+.plugins{
+    padding: 80px 0;
+}
 .real_time h1 {
     font-family: Work Sans;
-    /* font-size: 60px; */
-    font-size: calc(46px + 6 * ((100vw - 320px) / 680));
-    font-weight: 700;
-    line-height: 72px;
-    letter-spacing: -0.02em;
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.04em;
     text-align: left;
-    color: #FFFFFF;
+    color: #333;
 }
-
 .real_time p {
     font-family: Work Sans;
     font-size: 18px;
     font-weight: 500;
-    line-height: 26px;
-    letter-spacing: 0em;
+    line-height: 28px;
     text-align: left;
-    margin-top: 40px;
-    color: #FFFFFF;
-    margin-bottom: 60px;
+    margin-top: 30px;
+    color: #545454;
+    margin-bottom: 25px;
 }
 
 .btn_text {
@@ -246,11 +248,6 @@
   border: 1px solid #fff;
   color: #007AC1;
   padding: 15px;
-  /* height: 51px; */
-  /* width: 150px; */
-  position: relative;
-  top: 14px;
-  left: -1px;
 }
 
 .white_btn .fa{
@@ -652,30 +649,15 @@
 }
 
 .bg {
-  background-color: #007AC1;
+  background-color: #ebedf4;
 }
 
 .mb-131 {
     margin-bottom: 131px;
 }
 
-.MetalPrice_img {
-    width: 628px;
-    height: 628px;
-    top: 161px;
-    left: 1032px;
-}
 .banner_wrapper {
     position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 600px; 
-}
-
-.banner_wrapper img {
-    width: 100%;
-    height: auto;
-    display: block;
 }
 
 .banner_wrapper::after {
@@ -749,10 +731,13 @@
 
 /* Plugin */
 .wordpress_plugin {
-    margin-top: 9px;
+    margin-top: 10px;
     margin-bottom: 30px;
+    text-align: center;
 }
-
+.plugins .plugin-label{
+  justify-content: center;
+}
 .wordpress_plugin h1 {
     font-family: Work Sans;
     /* font-size: 48px; */
@@ -983,13 +968,12 @@
     /* height: 338px; */
     border: 0.4000000059604645px;
     margin-right: 25px;
-    margin-bottom: 65px;
     border: 3px solid transparent;
     border-radius: 0 !important;
 }
-.wordpress_bg {
+/* .wordpress_bg {
     min-height: 270px; 
-}
+} */
 
 
 .wordpress_bg:hover {
@@ -1032,16 +1016,15 @@
 
 .int_p {
     color: #4D4D4D;
-    margin-left: 40px;
-    margin-top: 40px;
+    margin-left: 0;
+    margin-top: 0;
     font-family: Work Sans;
     font-size: 18px;
     font-weight: 450;
     line-height: 36px;
     letter-spacing: 0em;
     text-align: left;
-    margin-bottom: 70px;
-
+    margin-bottom: 0;
 }
 
 .int_p span {
@@ -1093,7 +1076,6 @@
     cursor: pointer;
     transition: 0.5s;
 }
-
 .intig_p {
     color: #4D4D4D;
     font-family: Work Sans;
@@ -1102,9 +1084,9 @@
     line-height: 36px;
     letter-spacing: 0em;
     text-align: left;
-    margin-left: 40px;
-    margin-top: 22px;
-    margin-bottom: 91px;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .intig_p span {
@@ -1563,9 +1545,6 @@ div#integrationCarousel .col-4{
 .blog .integration_know{
   margin-bottom: 10px !important;
 }
-.category .social_media{
-  margin-top: 30px;
-}
 
 .social_media .mr-7{
   margin-right: 5rem;
@@ -1581,13 +1560,13 @@ div#integrationCarousel .col-4{
   text-align: center;
 }
 
-.social_media .pb_30{
+/* .social_media .pb_30{
   padding-bottom: 30px;
-}
+} */
 
-.pb_10{
+/* .pb_10{
   padding-bottom: 10px;
-}
+} */
 
 /* home page subcategories */
 
@@ -1619,15 +1598,10 @@ div#integrationCarousel .col-4{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
+    width: 250px;
     height: 100px;
-    margin: 0 auto 10px auto;
+    margin: 0 auto;
 }
-.wsus__categories_item_2 .icon img {
-    max-width: 100px;
-    max-height: 100px;
-}
-
 .wsus__categories_item_2 h3{
   color: #007AC1;
   font-size: 16px;

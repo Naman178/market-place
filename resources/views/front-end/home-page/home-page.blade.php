@@ -7,9 +7,6 @@
         : asset('front-end/images/infiniylogo.png');
 @endphp
 @section('styles')
-<link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
-<!-- Scoped Bootstrap CSS -->
-<link rel="stylesheet" href="{{ asset('front-end/css/scoped-bootstrap.css') }}">
 <!-- Slick CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -89,7 +86,6 @@
         slidesToScroll: 1,
         infinite: true,
         arrows: true,
-        autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
             {
@@ -114,7 +110,6 @@
             slidesToShow: 3,
             slidesToScroll: 1,
             arrows: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -226,7 +221,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -286,7 +280,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -313,7 +306,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -487,7 +479,9 @@
         let latestselectedTestimonial = latestTestimonials[0];
 
         // Initialize with the latest testimonial
-        $(".patients .testimonial-text").html(latestselectedTestimonial.message);
+        if(latestselectedTestimonial){
+            $(".patients .testimonial-text").html(latestselectedTestimonial.message || "");
+        }
 
         function updateVisibleThumbnails() {
             $(".thumbnail").each(function (index) {

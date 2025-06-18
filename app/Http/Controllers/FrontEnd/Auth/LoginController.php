@@ -96,14 +96,24 @@ class LoginController extends Controller
                 }
                 Auth::login($user);
             } else {
+                $fullName = $googleUser->name;
+                $nameParts = explode(' ', $fullName, 2);
+
+                $fname = $nameParts[0]; // First name
+                $lname = isset($nameParts[1]) ? $nameParts[1] : ''; 
+
                 // Create a new user and store Google profile picture
                 $newUser = User::create([
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
+                    'fname' => $fname,
+                    'lname' => $lname,
                     'google_id' => $googleUser->id,
                     'profile_pic' => $googleUser->avatar . '?sz=200', // Store high-resolution image
                     'password' => bcrypt('123456dummy'), // Dummy password
                 ]);
+
+                $newUser->assignRole('User');
         
                 Auth::login($newUser);
             }
@@ -129,12 +139,17 @@ class LoginController extends Controller
     {
         try {
             $githubUser = Socialite::driver('github')->user();
-    
+            $fullName = $githubUser->name ?? $githubUser->nickname;
+            $nameParts = explode(' ', $fullName, 2);
+            $fname = $nameParts[0];
+            $lname = isset($nameParts[1]) ? $nameParts[1] : '';
             // Find or create user
             $user = User::updateOrCreate(
                 ['email' => $githubUser->email],
                 [
                     'name' => $githubUser->name ?? $githubUser->nickname,
+                    'fname' => $fname,
+                    'lname' => $lname,
                     'email' => $githubUser->email,
                     'password' => bcrypt('admin@123'), // Dummy password
                 ]
@@ -142,6 +157,7 @@ class LoginController extends Controller
             if (empty($user->profile_pic)) {
                 $user->update(['profile_pic' => $githubUser->avatar]);
             }
+            $user->assignRole('User');
             // Log in the user
             Auth::login($user);
     
@@ -160,16 +176,23 @@ class LoginController extends Controller
         // dd(request()->all());
         try {
             $linkedinUser = Socialite::driver('linkedin-openid')->user();
+            $fullName = $linkedinUser->name ?? $linkedinUser->nickname;
+            $nameParts = explode(' ', $fullName, 2);
+            $fname = $nameParts[0];
+            $lname = isset($nameParts[1]) ? $nameParts[1] : '';
             $user = User::updateOrCreate(
                 ['email' => $linkedinUser->email],
                 [
                     'name' => $linkedinUser->name ?? $linkedinUser->nickname,
+                    'fname' => $fname,
+                    'lname' => $lname,
                     'email' => $linkedinUser->email,
                 ]
             );
             if (empty($user->profile_pic)) {
                 $user->update(['profile_pic' => $linkedinUser->avatar ?? null]);
             }
+            $user->assignRole('User');
             // dd($linkedinUser);
             Auth::login($user);
             return redirect('/');
