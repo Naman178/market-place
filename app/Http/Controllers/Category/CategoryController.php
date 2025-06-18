@@ -92,7 +92,7 @@ class CategoryController extends Controller
         ];
 
         if ($request->cid == "0") {
-            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048';
         }
 
         return Validator::make($request->all(), $rules);

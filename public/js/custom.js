@@ -12,7 +12,7 @@ $(document).ready(function () {
         fileName = e.target.value.split( '\\' ).pop();
         if (oldfileName == fileName) {return false;}
         var extension = fileName.split('.').pop();
-        if ($.inArray(extension,['jpg','jpeg','png']) >= 0) {
+        if ($.inArray(extension,['jpg','jpeg','png','gif', 'webp']) >= 0) {
             $('#'+imgprevid).show();
             readURL(this,imgprevid);
         }
