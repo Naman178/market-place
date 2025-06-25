@@ -44,11 +44,11 @@
         transition: transform .2s;
         position: relative;
     }
-    .previewImgCls:hover{
+    /* .previewImgCls:hover{
         transform: scale(5.0);
         border-radius: 2px;
         z-index: 1;
-    }
+    } */
     .previewImgCls{
         display: none;
     }
@@ -995,6 +995,8 @@
 
         quill.on('text-change', function () {
             $('#html_description').val(quill.root.innerHTML);
+            $('#description_error').text(''); // Clear error message
+            $('#html_description').removeClass('is-invalid'); // Remove invalid class
         });
     });
 

@@ -151,15 +151,19 @@ class ItemsController extends Controller
                 }
             }
 
-            if (isset($request->category_id) && isset($request->subcategory_id)) {
-                ItemsCategorySubcategory::updateOrCreate(
-                    ['item_id' => $item->id],
-                    [
+           if (isset($request->category_id) && isset($request->subcategory_id)) {
+                $updated = ItemsCategorySubcategory::where('item_id', $request->item_id)->update([
+                    'category_id' => $request->category_id,
+                    'subcategory_id' => $request->subcategory_id,
+                    'updated_at' => Carbon::now(),
+                ]);
+                if ($updated === 0) {
+                    ItemsCategorySubcategory::create([
+                        'item_id' => $request->item_id,
                         'category_id' => $request->category_id,
                         'subcategory_id' => $request->subcategory_id,
-                        'updated_at' => Carbon::now(),
-                    ]
-                );
+                    ]);
+                }
             }
 
             $validity = '';
@@ -364,7 +368,14 @@ class ItemsController extends Controller
         $rules = [
             'name' => 'required',
             'preview_url' => 'required',
-            'html_description' => 'required',
+            'html_description' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The html description field is required.');
+                    }
+                },
+            ],
             'key_feature' => 'required|array',
             'key_feature.*' => 'required_without_all: key_feature',
             // 'item_images'=>'required|array',

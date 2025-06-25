@@ -107,7 +107,7 @@
 @section('content')
     <div class="container items-container">
         <div class="title">
-            <h3><span class="color-blue underline">Products</span></h3>
+            <h3 class="txt-black">Explore Our <span class="color-blue underline">Products</span></h3>
         </div>
         {{-- <div class="container" style="padding-left: 330px; padding-right:330px;">
             <div class="row" style="display: flex; justify-content:space-between; align-items:center;">
@@ -168,7 +168,6 @@
                             <option value="1">Low to Highest Price</option>
                             <option value="2">Highest to Low Price</option>
                         </select>
-
                         @break
                     @endforeach  
                     </div>
@@ -191,7 +190,7 @@
                     <div class="wsus__product_sidebar categories">
                         <h3>Filter By Categories</h3>
                         <div class="category-dropdown mt-4">
-                            @foreach ($categories as $category)
+                            {{-- @foreach ($categories as $category)
                             <div class="category-item">
                                 <div class="border-bottom d-flex align-items-center">
                                     <button class="category-toggle">
@@ -214,6 +213,42 @@
                                     @endforeach
                                 </div>
                             </div>
+                            @endforeach --}}
+                            @foreach ($categories as $category)
+                                <div class="category-item">
+                                    <div class="border-bottom d-flex align-items-center">
+                                    <button class="category-toggle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                                stroke-width="2" stroke="currentColor" 
+                                                class="dropdown-icon h-4 w-4 mr-2 transition-transform {{ (isset($selectedCategoryId) && $selectedCategoryId == $category->id) ? 'rotated' : '' }}">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                                            </svg>
+                                        </button>
+
+                                        <label class="ms-2">
+                                            <input 
+                                                type="checkbox" 
+                                                class="category-checkbox"
+                                                data-category-id="{{ $category->id }}"
+                                                {{ (isset($selectedCategoryId) && $selectedCategoryId == $category->id) ? 'checked' : '' }}>
+                                            {{ $category->name }}
+                                        </label>
+                                    </div>
+
+                                    {{-- Expand if the selected subcategory belongs here --}}
+                                    <div class="subcategory-list mt-2 {{ $selectedCategoryId == $category->id ? 'active' : '' }}" style="margin-left: 38px; display: {{ $selectedCategoryId == $category->id ? 'block' : 'none' }};">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <label>
+                                                <input 
+                                                    type="checkbox" 
+                                                    class="subcategory-checkbox"
+                                                    data-subcategory-id="{{ $subcategory->id }}"
+                                                    {{ (isset($selectedSubcategoryId) && $selectedSubcategoryId == $subcategory->id) ? 'checked' : '' }}>
+                                                {{ $subcategory->name }}
+                                            </label><br>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -674,7 +709,7 @@
                 if (response.length > 0) {
                     // (Your code to render filtered items)
                     response.forEach(function (item) {
-                        console.log(item.fixed_price);
+                        console.log(item);
                         
                         let price = item.fixed_price ?? item.pricing ? item.pricing.fixed_price : 0;
                         let itemKeyword = item.search_keyword ?? '';
@@ -692,10 +727,9 @@
                                     <div class="wsus__gallery_item_text">
                                         <p class="price">${price}</p>
                                         <a class="title" href="/product-details/${item.id}">${item.name}</a>
-                                        <p class="search-keyword"><strong>Keyword:</strong> ${itemKeyword}</p>
                                         <ul class="d-flex flex-wrap justify-content-between">
                                             <li><p>${getStarRating(item.reviews ?? [])} <span>(${item.reviews ? item.reviews.length : 0})</span></p></li>
-                                            <li><span class="download"><i class="fa fa-download"></i> 0 Sale</span></li>
+                                          <li><span class="download"><i class="fa fa-download"></i> ${item.order_count ?? 0} Sale</span></li>
                                         </ul>
                                     </div>
                                 </div>

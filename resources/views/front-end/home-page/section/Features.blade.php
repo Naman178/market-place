@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
-                <img class="support_img" src="{{ asset('front-end/images/Group 5.png') }}" alt="not found">
-                <img class="rates_img" src="{{ asset('front-end/images/Group 6.png') }}" alt="not found">
-                <img class="feature_img" src="{{ asset('front-end/images/Metalprice-Some-feature-PSD-File 2.png') }}" alt="not found">
+               <div class="feature_wrapper">
+                    <img class="feature_img" src="{{ asset('front-end/images/Metalprice-Some-feature-PSD-File 2.png') }}" alt="not found">
+                </div>
             </div>
             <div class="col-xl-6 col-lg-12 col-sm-12 col-12">
                 {{-- <img class="mt-65" src="{{ asset('front-end/images/Group 1000002956.png') }}" alt="not found"> --}}
@@ -38,18 +38,8 @@
                         <span class="ml-2 integra_p"><b>Secure & Trustworthy</b> - Industry-standard security to protect your business.</span>
                     </div>
                     <div class="signup-wrapper">
-                        @if (!empty($category))
-                          <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
-                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                            </svg><span>Explore Our Products </span>
-                            {{-- <span class="ml-1 mr-3">
-                                        <i class="fa-solid fa-greater-than"></i>
-                                    </span> --}}
-                            </a>
-                        @elseif (!empty($subcategory))
-                           <a href="{{ route('product.list', ['category' => $category->name ?? null, 'slug' =>  Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
+                        @if (!empty($subcategory))
+                           <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="blue_common_btn"> 
                                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
                                 <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>

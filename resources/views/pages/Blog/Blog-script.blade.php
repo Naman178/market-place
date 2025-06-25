@@ -144,18 +144,11 @@
 
         quillShort.on('text-change', function () {
             $('#shortdescription').val(quillShort.root.innerHTML);
-        });
-        
-        quillLong .on('text-change', function () {
-            $('#long_description').val(quillLong.root.innerHTML);
-        });
-        quillShort.on('text-change', function () {
-            $('#shortdescription').val(quillShort.root.innerHTML);
             $('#shortdescription_error').text(''); // Clear error message
             $('#shortdescription').removeClass('is-invalid'); // Remove invalid class
         });
-
-        quillLong.on('text-change', function () {
+        
+        quillLong .on('text-change', function () {
             $('#long_description').val(quillLong.root.innerHTML);
             $('#long_description_error').text(''); // Clear error message
             $('#long_description').removeClass('is-invalid'); // Remove invalid class
@@ -189,6 +182,8 @@
                     processData: false,
                     dataType: 'json',
                     success: function (response) {
+                        console.log(response);
+                        
                         $("#preloader").hide();
                         $('.input-error').removeClass('is-invalid');
                         if (response.success) {

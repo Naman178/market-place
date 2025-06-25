@@ -72,7 +72,8 @@
     <div class="contact-us pt-5 pb-5 cust-page-padding">
         <div class="container  register-container">
             <div class="title">
-                <h3><span class="txt-black">Contact  </span><span class="color-blue underline"> Us</span></h3>
+                <h3><span class="txt-black">Get In  </span><span class="color-blue underline"> Touch</span></h3>
+                <p class="mt-4 mb-0"> Need help? Have a question about a product? Reach out — we're here to help.</p>
             </div>            
             <div class="row justify-content-center">
                 <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">

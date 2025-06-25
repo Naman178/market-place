@@ -29,18 +29,18 @@
                                     </td>
                                     <td> 
                                         {{ $tran->currency ?? 'INR' }} 
-                                        @if(isset($tran->invoice->discount))
+                                        {{-- @if(isset($tran->invoice->discount))
                                             {{ number_format(ceil((float) $tran->payment_amount / 100), 2, '.', '') }}
-                                        @else
+                                        @else --}}
                                             {{ number_format(((float) $tran->payment_amount / 100), 2, '.', '') }}
-                                        @endif  
+                                        {{-- @endif   --}}
                                         
                                     </td>
                                     <td>
-                                        @if ($tran->pricing->pricing_type == 'recurring')
-                                            {{ $tran->pricing->billing_cycle ?? '' }}
+                                        @if ($tran->product_type == 'recurring')
+                                            {{ $tran->billing_cycle ?? '' }}
                                         @else
-                                            {{ $tran->pricing->pricing_type ?? '' }}
+                                            {{ $tran->product_type ?? '' }}
                                         @endif
                                     </td>
                                     <td> {{ Helper::dateFormatForView($tran->created_at) ?? '' }} </td>

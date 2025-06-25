@@ -7,9 +7,6 @@
         : asset('front-end/images/infiniylogo.png');
 @endphp
 @section('styles')
-<link rel="stylesheet" href="{{ asset('front-end/css/home-page.css') }}">
-<!-- Scoped Bootstrap CSS -->
-<link rel="stylesheet" href="{{ asset('front-end/css/scoped-bootstrap.css') }}">
 <!-- Slick CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -37,11 +34,11 @@
 @endsection
 @section('content')
 @include('front-end.home-page.section.hero_banner')
-@if ($category->count()<=1)
+{{-- @if ($category->count()<=1) --}}
     @include('front-end.home-page.section.Subcategory')
-@else
+{{-- @else
     @include('front-end.home-page.section.Category')
-@endif
+@endif --}}
 @php
     use App\Models\Category;
     use App\Models\SubCategory;
@@ -89,7 +86,6 @@
         slidesToScroll: 1,
         infinite: true,
         arrows: true,
-        autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
             {
@@ -114,7 +110,6 @@
             slidesToShow: 3,
             slidesToScroll: 1,
             arrows: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -226,7 +221,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: false,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -286,7 +280,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -313,7 +306,6 @@
             slidesToScroll: 1,
             arrows: false,
             dots: true,
-            autoplay: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
@@ -487,7 +479,9 @@
         let latestselectedTestimonial = latestTestimonials[0];
 
         // Initialize with the latest testimonial
-        $(".patients .testimonial-text").html(latestselectedTestimonial.message);
+        if(latestselectedTestimonial){
+            $(".patients .testimonial-text").html(latestselectedTestimonial.message || "");
+        }
 
         function updateVisibleThumbnails() {
             $(".thumbnail").each(function (index) {
@@ -559,39 +553,44 @@
             const firstAnswer = firstFaq.querySelector('.faq-answer');
             const firstIcon = firstFaq.querySelector('.faq-icon');
 
-            // Set the first FAQ as open
-            firstAnswer.classList.add('open');
-            firstIcon.classList.add('rotate');
-            firstQuestion.classList.add('active');
+            openFaq(firstQuestion, firstAnswer, firstIcon);
         }
     };
 
-    // Event listener for FAQ questions
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
-            // Close all other FAQs
-            document.querySelectorAll('.faq-item').forEach(item => {
-                const answer = item.querySelector('.faq-answer');
-                const icon = item.querySelector('.faq-icon');
-                const itemQuestion = item.querySelector('.faq-question');
-
-                if (itemQuestion !== question) {
-                    answer.classList.remove('open');
-                    icon.classList.remove('rotate');
-                    itemQuestion.classList.remove('active');
-                }
-            });
-
-            // Toggle open/close for the current FAQ
-            const parent = question.parentElement;
+            const parent = question.closest('.faq-item');
             const answer = parent.querySelector('.faq-answer');
             const icon = question.querySelector('.faq-icon');
 
-            answer.classList.toggle('open');
-            icon.classList.toggle('rotate');
-            question.classList.toggle('active');
+            // Check if already open
+            const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const a = item.querySelector('.faq-answer');
+                const i = item.querySelector('.faq-icon');
+                const q = item.querySelector('.faq-question');
+
+                a.style.maxHeight = null;
+                a.classList.remove('open');
+                i.classList.remove('rotate');
+                q.classList.remove('active');
+            });
+
+            if (!isOpen) {
+                openFaq(question, answer, icon);
+            }
         });
     });
+
+    function openFaq(question, answer, icon) {
+        answer.style.maxHeight = answer.scrollHeight + 'px'; // ✅ This is correct
+        answer.classList.add('open');
+        icon.classList.add('rotate');
+        question.classList.add('active');
+    }
+
 
     //newsletter
     $(document).ready(function(){

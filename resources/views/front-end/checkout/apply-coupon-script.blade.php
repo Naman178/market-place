@@ -63,61 +63,133 @@
 //             `;
 //         }
 //     });
-    document.addEventListener('DOMContentLoaded', function () {
-        const trialBtn = document.getElementById('trial_button'); // main button
-        const modal = document.getElementById('trialChoiceModal');
-        const closeModal = document.getElementById('close_modal');
-        const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
-        const trialPeriodInput = document.getElementById('trial_period_days');
-        const form = document.getElementById('stripe-form');
-        const form2 = document.getElementById('guest-checkout-form');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const trialBtn = document.getElementById('trial_button'); // main button
+    //     const modal = document.getElementById('trialChoiceModal');
+    //     const closeModal = document.getElementById('close_modal');
+    //     const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
+    //     const trialPeriodInput = document.getElementById('trial_period_days');
+    //     const form = document.getElementById('stripe-form');
+    //     const form2 = document.getElementById('guest-checkout-form');
 
+    //     const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
+
+    //     trialPeriodInput.value = "0";
+
+    //     function validateFormRequiredFields(form) {
+    //         const requiredInputs = form.querySelectorAll('[required]');
+    //         for (let input of requiredInputs) {
+    //             if (!input.value || input.value.trim() === '') {
+    //                 return false;
+    //             }
+    //         }
+    //         return true;
+    //     }
+
+
+    //     if (trialBtn) {
+    //         trialBtn.addEventListener('click', function (e) {
+    //             e.preventDefault();
+
+    //             const form1Valid = form ? validateFormRequiredFields(form) : true;
+    //             const form2Valid = form2 ? validateFormRequiredFields(form2) : true;
+
+    //             if (form1Valid && form2Valid) {
+    //                 modal.style.display = 'block';
+    //             } else {
+    //                 toastr.error('Please fill all the form details.');
+    //             }
+    //         });
+    //     }
+
+    //     if (closeModal) {
+    //         closeModal.addEventListener('click', function () {
+    //             modal.style.display = 'none';
+    //         });
+    //     }
+
+    //     if (trialBtnModal) {
+    //         trialBtnModal.addEventListener('click', function () {
+    //             trialPeriodInput.value = trialDays;
+    //             modal.style.display = 'none';
+
+    //             if (validateFormRequiredFields(form)) {
+    //                 form.submit();
+    //             } else {
+    //                 toastr.error('Please fill all the form details.');
+    //             }
+    //         });
+    //     }
+    // });
+    document.addEventListener("DOMContentLoaded", function () {
+        const trialBtn = document.getElementById("trial_button");
+        const trialBtnModal = document.getElementById("trial_button_modal");
+        const trialPeriodInput = document.getElementById("trial_period_days");
+        const modal = document.getElementById("trialChoiceModal");
+        const form = document.getElementById("stripe-form");
+        const guestForm = document.getElementById("guest-checkout-form");
+        const closeModal = document.getElementById('close_modal');
         const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
 
         trialPeriodInput.value = "0";
-
+        closeModal.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
         function validateFormRequiredFields(form) {
-            const requiredInputs = form.querySelectorAll('[required]');
+            const requiredInputs = form.querySelectorAll("[required]");
             for (let input of requiredInputs) {
-                if (!input.value || input.value.trim() === '') {
+                if (!input.value || input.value.trim() === "") {
                     return false;
                 }
             }
             return true;
         }
 
-
+        // Attach event listeners
         if (trialBtn) {
-            trialBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const form1Valid = form ? validateFormRequiredFields(form) : true;
-                const form2Valid = form2 ? validateFormRequiredFields(form2) : true;
-
-                if (form1Valid && form2Valid) {
-                    modal.style.display = 'block';
-                } else {
-                    toastr.error('Please fill all the form details.');
-                }
+            trialBtn.addEventListener("click", function (e) {
+                modal.style.display = "block";
             });
         }
 
-        if (closeModal) {
-            closeModal.addEventListener('click', function () {
-                modal.style.display = 'none';
-            });
-        }
-
-        if (trialBtnModal) {
-            trialBtnModal.addEventListener('click', function () {
+      if (trialBtnModal) {
+            trialBtnModal.addEventListener("click", function (e) {
+                e.preventDefault(); // Prevent default behavior
+                
                 trialPeriodInput.value = trialDays;
-                modal.style.display = 'none';
+                modal.style.display = "none";
 
-                if (validateFormRequiredFields(form)) {
-                    form.submit();
-                } else {
-                    toastr.error('Please fill all the form details.');
+                if (!validateFormRequiredFields(form)) {
+                    toastr.error("Please fill all the form details.");
+                    return;
                 }
+
+                // Ensure Stripe Publishable Key is set
+                Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");
+
+                const cardData = {
+                    number: document.getElementById("card_number").value,
+                    cvc: document.getElementById("card_cvc").value,
+                    exp_month: document.getElementById("card_exp_month").value,
+                    exp_year: document.getElementById("card_exp_year").value,
+                    name: document.getElementById("name_on_card").value,
+                };
+
+                Stripe.card.createToken(cardData, function (status, response) {
+                    if (response.error) {
+                        toastr.error(response.error.message || "Stripe token generation failed. Please check your card details.");
+                        return;
+                    }
+
+                    // Attach token to form before submission
+                    const stripeTokenInput = document.getElementById("stripeToken");
+                    if (stripeTokenInput) {
+                        stripeTokenInput.value = response.id; // Add Stripe token
+                        form.submit(); // Submit form
+                    } else {
+                        console.error("Stripe token input field not found!");
+                    }
+                });
             });
         }
     });
@@ -171,7 +243,7 @@
             Stripe.card.createToken(cardData, function (status, response) {
                 if (response.error) {
                     hideLoader();
-                    toastr.error(response.error.message);
+                    toastr.error(response.error.message || 'Stripe token generation failed. Please check your card details.');
                     return;
                 }
 
@@ -273,7 +345,7 @@
         let itemPrice = parseFloat($("#sale_price").val()) || 0;
         let gst = parseFloat($("#gst_percentage").val()) || 0;
 
-        let totalGst = Math.round(itemPrice * gst / 100);
+        let totalGst = itemPrice * gst / 100;
 
         console.log(itemPrice, gst, totalGst );
         
@@ -424,7 +496,7 @@
 
             console.log(totalWithGst, fixedPrice, gstPercentage, quantity);
 
-            let roundedAmount = Math.round(totalWithGst);
+            let roundedAmount = totalWithGst;
 
             // Format the total for Indian locale
             let formattedTotal = new Intl.NumberFormat('en-IN').format(roundedAmount);
@@ -603,7 +675,7 @@
                 let price = parseFloat($(this).find(".new-price").text().replace("₹", "").trim()) || 0;
                 let gstPercent = parseFloat($(this).data("gst-percentage")) || 0;
                 
-                let gstAmount = Math.round((gstPercent / 100) * price);
+                let gstAmount = (gstPercent / 100) * price; 
 
                 newSubtotal += price;
                 newGST += gstAmount;
@@ -651,7 +723,7 @@
             Stripe.card.createToken(cardData, function (status, response) {
                 if (response.error) {
                     hideLoader();
-                    toastr.error(response.error.message);
+                    toastr.error(response.error.message || 'Stripe token generation failed. Please check your card details.');
                     return;
                 }
 
@@ -719,11 +791,12 @@
                 errorMsg = 'This field is required';
                 valid = false;
             } else {
-                if (input.id === 'card_number') {
-                if (!/^\d{16}$/.test(val)) {
-                    errorMsg = 'Card number must be 16 digits';
-                    valid = false;
-                }
+               if (input.id === 'card_number') {
+                    const sanitizedVal = val.replace(/\s+/g, '');
+                    if (!/^\d{16}$/.test(sanitizedVal)) {
+                        errorMsg = 'Card number must be 16 digits';
+                        valid = false;
+                    }
                 }
                 // Add other field validations as needed
             }
@@ -750,6 +823,11 @@
                 if (!validateInput(input)) valid = false;
             });
 
+            if (!validateExpiration()) valid = false;
+            
+            if (!validateCVC()) valid = false;
+            
+            if (!validateCardNumber()) valid = false;
             return valid;
         }
 
@@ -761,6 +839,7 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault(); 
                 if (validateForm(form)) {
+                console.log('Form submitted 3');
                 form.submit();
                 } else {
                 const firstError = form.querySelector('.error[style*="block"]');

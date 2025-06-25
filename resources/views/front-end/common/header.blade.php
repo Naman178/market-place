@@ -15,10 +15,12 @@
         </div>
         <div class="col p-0 m-0 menu-container menu-1">
                 <ul>
-                    @if (!empty($category))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                    @elseif (!empty($subcategory))
-                        <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                   @if (!empty($subcategory))
+                        <li class="d-flex align-items-center justify-content-center">
+                            <a href="{{ route('product.list.show') }}">
+                                Products
+                            </a>
+                        </li>
                     @endif
                     {{-- <li><a href="#">Documentation</a></li> --}}
                     <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blogs</a></li>
@@ -50,6 +52,13 @@
                             @endif 
                          <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
                         </a>
+                        @if (auth()->user()->email === "superadmin@gmail.com")
+                            <div class="dropdown-menu mt-6" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                    <span class="dropdown_label">  Dashboard </span>
+                                </a>
+                            </div>
+                        @else
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                                 <span class="dropdown_label">  Dashboard </span>
@@ -68,6 +77,7 @@
                                 @csrf
                             </form>
                         </div>
+                        @endif
                     </li>
                 @else
                     <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
@@ -89,10 +99,8 @@
         <!-- Navigation Menu -->
         <div class="menu-container menu-1 d-none d-lg-block">
             <ul>
-                @if (!empty($category))
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-                @elseif (!empty($subcategory))
-                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+                @if (!empty($subcategory))
+                    <li class="d-flex align-items-center justify-content-center"><a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}">Products</a></li>
                 @endif
                 {{-- <li><a href="#">Documentation</a></li> --}}
                 <li class="d-flex align-items-center justify-content-center"><a href="{{ route('blog-index') }}">Blog</a></li>
@@ -119,6 +127,13 @@
                         @endif 
                      <span class="dropdown_label" data-fullname="{{ Auth::user()->name }}"> {{ Auth::user()->name }}  </span></span>
                     </a>
+                    @if (auth()->user()->email === "superadmin@gmail.com")
+                        <div class="dropdown-menu mt-6" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                <span class="dropdown_label">  Dashboard </span>
+                            </a>
+                        </div>
+                    @else
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('user-dashboard') }}">
                             <span class="dropdown_label">  Dashboard </span>
@@ -134,6 +149,7 @@
                             @csrf
                         </form>
                     </div>
+                    @endif
                 </li>
             @else
                 <li class="dropdown d_flex align-items-center justify-content-center"><a class="welcome" href="{{ url('/user-login') }}">Login</a></li>
@@ -145,10 +161,8 @@
     <!-- Mobile Navigation -->
     <div class="mobile-menu d-none" id="mobile-menu">
         <ul>
-            @if (!empty($category))
-                <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
-            @elseif (!empty($subcategory))
-                <li><a href="{{ route('product.list', ['category' => $category->name, 'slug' => Str::slug( $subcategory['name']) ?? null]) }}">Products</a></li>
+            @if (!empty($subcategory))
+                <li><a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}">Products</a></li>
             @endif
             <li><a href="{{ route('user-faq') }}">FAQs</a></li>
             <li><a href="{{ route('contact-us') }}">Contact Us</a></li>

@@ -118,7 +118,7 @@
 <div class="blog pt-5 pb-5 ">
     <div class="container  register-container">
         <div class="title">
-            <h3><span class="txt-black">Blogs </span></h3>
+            <h3><span class="txt-black">Insights, Tutorials & Product Guides</span></h3>
         </div>  
         <div id="blogCarousel">
             <div class="row">

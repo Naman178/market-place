@@ -56,7 +56,8 @@ Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->
 Route::get('/subcategory/{subcategory}', [SubCategoryController::class, 'show'])->name('subcategory.list');
 Route::get('/items/sort', [HomePageController::class, 'sortItems'])->name('items.sort');
 Route::get('/items/filter', [HomePageController::class, 'filterProducts'])->name('filter_products');
-Route::get('/category/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
+// Route::get('/product/{category}/{slug}', [HomePageController::class, 'show'])->name('product.list');
+Route::get('/shop', [HomePageController::class, 'itemsShow'])->name('product.list.show');
 Route::get('/product-details/{id}', [HomePageController::class, 'buynow'])->name('buynow.list');
 Route::post('/comments/update/{id}', [HomePageController::class, 'commentupdate'])->name('comments.update');
 Route::post('/reviews/update/{id}', [HomePageController::class, 'reviewsupdate'])->name('reviews.update');
@@ -93,7 +94,7 @@ Route::get('/thankyou', function () { return view('Thankyou.thankyou'); })->name
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
+    Route::post('/dashboard', [AdminDashboardController::class, 'filter'])->name('filter');
     //User Module
     Route::get('/user',[UserController::class,'index'])->name('user-index');
     Route::post('/user/store',[UserController::class,'store'])->name('user-store');
@@ -178,6 +179,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/coupon-edit/{id}',[CouponController::class,'edit'])->name('coupon-edit');
     Route::get('/get-applicable-data', [CouponController::class, 'getApplicableData'])->name('get.applicable.data');
     Route::post('/coupon/store',[CouponController::class,'store'])->name('coupons.store');
+    Route::post("/coupon/status/{id}", [CouponController::class, "changeStatus"])->name("coupon-status");
     Route::get('/coupon/delete/{id}',[CouponController::class,'remove'])->name('coupon-delete');
 
     // Review module

@@ -860,45 +860,45 @@
 
 
         // For Blog Category
-        $(document).on("click", ".erp-Blog_category-form", function (e) {
-            e.preventDefault();
-            var submitUrl = $('#Blog_category_form').attr("data-url");
-            var data_id = $('#Blog_category_form').attr("data-id");
-            var formData = new FormData($('#Blog_category_form')[0]);
+        // $(document).on("click", ".erp-Blog_category-form", function (e) {
+        //     e.preventDefault();
+        //     var submitUrl = $('#Blog_category_form').attr("data-url");
+        //     var data_id = $('#Blog_category_form').attr("data-id");
+        //     var formData = new FormData($('#Blog_category_form')[0]);
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            if (!$('.form-control').hasClass('is-invalid')) {
-                $("#preloader").show();
-                $.ajax({
-                    url: submitUrl,
-                    type: "POST",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    success: function (response) {
-                        $("#preloader").hide();
-                        $('.input-error').removeClass('is-invalid');
-                        if (response.success) {
-                            $('.error').text('');
-                            var redirectUrl = "{{ route('Blog_category-index') }}";
-                            window.location.href = redirectUrl;
-                        } else if (response.error) {
-                            handleFormErrors(response.error);
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Ajax request failed:', error);
-                        $("#preloader").hide();
-                    }
-                });
-            }
+        //     $.ajaxSetup({
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });
+        //     if (!$('.form-control').hasClass('is-invalid')) {
+        //         $("#preloader").show();
+        //         $.ajax({
+        //             url: submitUrl,
+        //             type: "POST",
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             dataType: 'json',
+        //             success: function (response) {
+        //                 $("#preloader").hide();
+        //                 $('.input-error').removeClass('is-invalid');
+        //                 if (response.success) {
+        //                     $('.error').text('');
+        //                     var redirectUrl = "{{ route('Blog_category-index') }}";
+        //                     window.location.href = redirectUrl;
+        //                 } else if (response.error) {
+        //                     handleFormErrors(response.error);
+        //                 }
+        //             },
+        //             error: function (error) {
+        //                 console.error('Ajax request failed:', error);
+        //                 $("#preloader").hide();
+        //             }
+        //         });
+        //     }
 
-        });
+        // });
         // For Blog
         // $(document).on("click", ".erp-Blog-form", function (e) {
         //     e.preventDefault();

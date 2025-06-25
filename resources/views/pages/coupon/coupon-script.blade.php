@@ -90,7 +90,7 @@
         e.preventDefault();
         var submitURL = $(this).attr("data-url");
         Swal.fire({
-            title: 'Are you sure you want to delete this item?',
+            title: 'Are you sure you want to delete this Coupon?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#4caf50',
@@ -102,4 +102,42 @@
             }
         });
     });
+    $(document).find(".items-status-dropdown").on("change", function() {
+            let itemId = $(this).data("id");
+            let status = $(this).val();
+            let dropdown = $(this);
+
+            Swal.fire({
+                title: `Are You Want To ${status == 1 ? "Activate" : "Inactivate"} This Coupon?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#f44336',
+                confirmButtonText: 'Yes'
+            }).then(({
+                isConfirmed
+            }) => {
+                if (isConfirmed) {
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+                    $.ajax({
+                        method: "POST",
+                        url: $(this).data("url"),
+                        data: {
+                            id: itemId,
+                            status: status
+                        },
+                        success: ({
+                            data
+                        }) => {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        })
 </script>

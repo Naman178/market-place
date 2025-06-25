@@ -24,6 +24,8 @@ class Order extends Model
         'order_limit',
         'sys_state',
         'currency',
+        'billing_cycle',
+        'product_type',
         'created_at',
         'updated_at',
     ];

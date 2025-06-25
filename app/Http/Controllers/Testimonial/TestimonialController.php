@@ -104,10 +104,22 @@ class TestimonialController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             // 'description' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'designation' => 'required|string|max:255',
-            'message' => 'required|string',
+            'message' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    // Strip HTML tags and check if empty or only whitespace
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The Message is required.');
+                    }
+                }
+            ],
         ];
+        if ($request->scid == "0") {
+            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048';
+        }
         return Validator::make($request->all(), $rules);
     }
  

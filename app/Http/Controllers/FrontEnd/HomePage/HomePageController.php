@@ -46,7 +46,10 @@ class HomePageController extends Controller
         }
         $seoData = SEO::where('page', 'home')->first();
         $category = Category::where('sys_state','=','0')->orderBy('id','desc')->get();
-        $subcategory = SubCategory::where('sys_state','=','0')->orderBy('id','desc')->get();
+     $subcategory = SubCategory::where('sys_state', '0')
+    ->orderBy('id', 'desc')
+    ->take(6)
+    ->get();
         $testimonials = Testimonials::orderBy('testimonials.id', 'desc')
                             ->get();
         $latestTestimonials = Testimonials::orderBy('testimonials.id', 'desc')
@@ -148,43 +151,165 @@ class HomePageController extends Controller
         $items = $query->get();
         return response()->json($items);
     }
+    // public function filterProducts(Request $request)
+    // {
+    //     $query = Items::with(['categorySubcategory', 'pricing', 'reviews', 'tags'])
+    //         ->where('sys_state', '=', '0')
+    //         ->leftJoin('items_pricing__tbl', function ($join) {
+    //             $join->on('items__tbl.id', '=', 'items_pricing__tbl.item_id')
+    //                 ->whereIn('items_pricing__tbl.pricing_type', ['one-time', 'recurring']);
+    //         })
+    //         ->select('items__tbl.*')
+    //         ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price')
+    //         ->groupBy('items__tbl.id');
+
+    //     // Detect if any filter is applied
+    //     $filtersApplied = false;
+
+    //     // Keyword Search
+    //     if (!empty($request->keyword)) {
+    //         $filtersApplied = true;
+    //         $keyword = $request->keyword;
+
+    //         $query->where(function ($q) use ($keyword) {
+    //             $q->where('items__tbl.name', 'LIKE', "%$keyword%")
+    //             ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%")
+    //             ->orWhereHas('tags', function ($query) use ($keyword) {
+    //                 $query->where('tag_name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) {
+    //                 $query->where('name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) {
+    //                 $query->where('name', 'LIKE', "%$keyword%");
+    //             })
+    //             ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]);
+    //         });
+    //     }
+
+    //     // Filter by categories
+    //     if (!empty($request->categories)) {
+    //         $filtersApplied = true;
+    //         $subcategories = SubCategory::whereIn('category_id', $request->categories)
+    //             ->where('sys_state', '=', '0')
+    //             ->pluck('id');
+
+    //         $query->whereHas('categorySubcategory', function ($q) use ($subcategories) {
+    //             $q->whereIn('subcategory_id', $subcategories);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by subcategories
+    //     if (!empty($request->subcategories)) {
+    //         $filtersApplied = true;
+    //         $query->whereHas('categorySubcategory', function ($q) use ($request) {
+    //             $q->whereIn('subcategory_id', $request->subcategories);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by tags
+    //     if (!empty($request->tags) && is_array($request->tags) && count(array_filter($request->tags)) > 0) {
+    //         $filtersApplied = true;
+    //         $query->whereHas('tags', function ($q) use ($request) {
+    //             $q->whereIn('tag_name', $request->tags);
+    //         })->orderBy('items__tbl.created_at', 'desc');
+    //     }
+
+    //     // Filter by price
+    //     if ($request->has('price') && (int)$request->price > 0) {
+    //         $filtersApplied = true;
+    //         $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price])->orderBy('items__tbl.created_at', 'desc');
+    //     }
+    //     $sortOption = $request->input('sort_option');
+
+    //     if ($sortOption == 1) {
+    //         $query->orderBy('fixed_price', 'asc'); // Low to High
+    //     } elseif ($sortOption == 2) {
+    //         $query->orderBy('fixed_price', 'desc'); // High to Low
+    //     } else {
+    //         $query->orderBy('items__tbl.created_at', 'asc'); // Default
+    //     }
+
+
+    //     // If no filters applied, optionally return empty or all products:
+    //     if (!$filtersApplied) {
+    //         $id = $request->item_id;
+    //         $subcategories = SubCategory::where('category_id', $id)
+    //             ->where('sys_state', '=', '0')
+    //             ->get();
+
+    //         $categories = Category::where('sys_state', '!=', '-1')
+    //             ->withCount(['subcategories as countsubcategory' => function ($query) {
+    //                 $query->where('sys_state', '=', '0');
+    //             }])
+    //             ->get();
+
+    //         if ($subcategories) {
+    //             $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //                 ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+    //                     $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+    //                 })
+    //                 ->where('sys_state', '=', '0')
+    //                 ->orderBy('id', 'desc')
+    //                 ->get();
+    //         } else {
+    //             $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //                 ->whereHas('categorySubcategory', function ($query) use ($id) {
+    //                     $query->where('subcategory_id', $id);
+    //                 })
+    //                 ->where('sys_state', '=', '0')
+    //                 ->orderBy('id', 'desc')
+    //                 ->get();
+    //         }
+    //         return response()->json($item);
+    //     }
+
+    //     $filteredProducts = $query->get();
+
+    //     return response()->json($filteredProducts);
+    // }
     public function filterProducts(Request $request)
     {
+        // Subquery for order count
+        $orderCountSubquery = Order::select(DB::raw('COUNT(*)'))
+            ->whereColumn('product_id', 'items__tbl.id');
+
+        // Base query
         $query = Items::with(['categorySubcategory', 'pricing', 'reviews', 'tags'])
-            ->where('sys_state', '=', '0')
+            ->where('items__tbl.sys_state', '=', '0')
             ->leftJoin('items_pricing__tbl', function ($join) {
                 $join->on('items__tbl.id', '=', 'items_pricing__tbl.item_id')
                     ->whereIn('items_pricing__tbl.pricing_type', ['one-time', 'recurring']);
             })
             ->select('items__tbl.*')
             ->selectRaw('MIN(items_pricing__tbl.fixed_price) as fixed_price')
+            ->selectSub($orderCountSubquery, 'order_count')
             ->groupBy('items__tbl.id');
 
-        // Detect if any filter is applied
         $filtersApplied = false;
 
-        // Keyword Search
+        // === Keyword filter ===
         if (!empty($request->keyword)) {
             $filtersApplied = true;
             $keyword = $request->keyword;
 
             $query->where(function ($q) use ($keyword) {
                 $q->where('items__tbl.name', 'LIKE', "%$keyword%")
-                ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%")
-                ->orWhereHas('tags', function ($query) use ($keyword) {
-                    $query->where('tag_name', 'LIKE', "%$keyword%");
-                })
-                ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', "%$keyword%");
-                })
-                ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', "%$keyword%");
-                })
-                ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]);
+                    ->orWhere('items__tbl.html_description', 'LIKE', "%$keyword%")
+                    ->orWhereHas('tags', function ($query) use ($keyword) {
+                        $query->where('tag_name', 'LIKE', "%$keyword%");
+                    })
+                    ->orWhereHas('categorySubcategory.category', function ($query) use ($keyword) {
+                        $query->where('name', 'LIKE', "%$keyword%");
+                    })
+                    ->orWhereHas('categorySubcategory.subcategory', function ($query) use ($keyword) {
+                        $query->where('name', 'LIKE', "%$keyword%");
+                    })
+                    ->orWhereRaw('CAST(items_pricing__tbl.fixed_price AS CHAR) LIKE ?', ["%$keyword%"]);
             });
         }
 
-        // Filter by categories
+        // === Filter by categories ===
         if (!empty($request->categories)) {
             $filtersApplied = true;
             $subcategories = SubCategory::whereIn('category_id', $request->categories)
@@ -193,88 +318,68 @@ class HomePageController extends Controller
 
             $query->whereHas('categorySubcategory', function ($q) use ($subcategories) {
                 $q->whereIn('subcategory_id', $subcategories);
-            })->orderBy('items__tbl.created_at', 'desc');
+            });
         }
 
-        // Filter by subcategories
+        // === Filter by subcategories ===
         if (!empty($request->subcategories)) {
             $filtersApplied = true;
             $query->whereHas('categorySubcategory', function ($q) use ($request) {
                 $q->whereIn('subcategory_id', $request->subcategories);
-            })->orderBy('items__tbl.created_at', 'desc');
+            });
         }
 
-        // Filter by tags
+        // === Filter by tags ===
         if (!empty($request->tags) && is_array($request->tags) && count(array_filter($request->tags)) > 0) {
             $filtersApplied = true;
             $query->whereHas('tags', function ($q) use ($request) {
                 $q->whereIn('tag_name', $request->tags);
-            })->orderBy('items__tbl.created_at', 'desc');
+            });
         }
 
-        // Filter by price
+        // === Filter by price ===
         if ($request->has('price') && (int)$request->price > 0) {
             $filtersApplied = true;
-            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int) $request->price])->orderBy('items__tbl.created_at', 'desc');
+            $query->havingRaw('CAST(fixed_price AS UNSIGNED) <= ?', [(int)$request->price]);
         }
-        $sortOption = $request->input('sort_option');
 
+        // === Sorting (only once, at the end) ===
+        $sortOption = $request->input('sort_option');
         if ($sortOption == 1) {
             $query->orderBy('fixed_price', 'asc'); // Low to High
         } elseif ($sortOption == 2) {
             $query->orderBy('fixed_price', 'desc'); // High to Low
         } else {
-            $query->orderBy('items__tbl.created_at', 'asc'); // Default
+            $query->orderBy('items__tbl.created_at', 'desc'); // Default newest first
         }
 
-
-        // If no filters applied, optionally return empty or all products:
-        if (!$filtersApplied) {
+        // === If no filters applied (show all items but still respect sorting) ===
+        if (!$filtersApplied && !$request->has('sort_option')) {
             $id = $request->item_id;
             $subcategories = SubCategory::where('category_id', $id)
                 ->where('sys_state', '=', '0')
-                ->get();
+                ->pluck('id');
 
-            $categories = Category::where('sys_state', '!=', '-1')
-                ->withCount(['subcategories as countsubcategory' => function ($query) {
-                    $query->where('sys_state', '=', '0');
-                }])
-                ->get();
-
-            if ($subcategories) {
-                $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
-                    ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
-                        $query->whereIn('subcategory_id', $subcategories->pluck('id'));
-                    })
-                    ->where('sys_state', '=', '0')
-                    ->orderBy('id', 'desc')
-                    ->get();
-            } else {
-                $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
-                    ->whereHas('categorySubcategory', function ($query) use ($id) {
-                        $query->where('subcategory_id', $id);
-                    })
-                    ->where('sys_state', '=', '0')
-                    ->orderBy('id', 'desc')
-                    ->get();
-            }
-            return response()->json($item);
+            $query->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+                $query->whereIn('subcategory_id', $subcategories);
+            });
         }
 
-        $filteredProducts = $query->get();
+        $items = $query->get();
 
-        return response()->json($filteredProducts);
+        return response()->json($items);
     }
-    public function show($category, $slug)
+
+    public function show($category = null, $slug = null)
     {
         $subcategory = SubCategory::where('slug', $slug)->value('id');
         $category = Category::where('id', $subcategory)->first();
         $slugCategory = Category::where('slug', $slug)->first();
 
         if ($slugCategory) {
-            $id = $slugCategory->id;
+            $id = $slugCategory->id ?? null;
         } else {
-            $id = $category->id;
+            $id = $category->id ?? null;
         }
         $category_name = Category::where('id', $id)->value('name');
 
@@ -319,6 +424,156 @@ class HomePageController extends Controller
 
         return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags'));
     }
+    // public function itemsShow(Request $request)
+    // {
+    //     $subcategory_slug = SubCategory::first();
+    //     $subcategorySlug = $request->query('subcategory') ?? $subcategory_slug->slug;
+    //     $selectedSubcategoryId = null;
+    //     $subcategory = SubCategory::where('slug', $subcategorySlug)->value('id');
+    //     $category = Category::where('id', $subcategory)->first();
+    //     $slugCategory = Category::where('slug', $category->slug)->first();
+    //     if ($subcategorySlug) {
+    //         $selectedSubcategory = SubCategory::where('slug', $subcategorySlug)->first();
+    //         if ($selectedSubcategory) {
+    //             $selectedSubcategoryId = $selectedSubcategory->id;
+    //             $selectedCategoryId = $selectedSubcategory->category_id;
+    //         }
+    //     }
+
+    //     $categories = Category::where('sys_state', '!=', '-1')
+    //         ->with(['subcategories' => function ($q) {
+    //             $q->where('sys_state', '=', '0');
+    //         }])
+    //         ->withCount(['subcategories as countsubcategory' => function ($q) {
+    //             $q->where('sys_state', '=', '0');
+    //         }])
+    //         ->get();
+    //     $subcategory = SubCategory::where('slug', $request->query('subcategory'))->value('id');
+    //     $category = Category::where('id', $subcategory)->first();
+
+    //     if ($slugCategory) {
+    //         $id = $slugCategory->id;
+    //     } else {
+    //         $id = $category->id;
+    //     }
+    //     $category_name = Category::where('id', $id)->value('name');
+
+    //     $allsubcategories = SubCategory::where('category_id', $id)
+    //         ->where('sys_state', '=', '0')
+    //         ->withCount(['items as countsubcategory' => function ($query) {
+    //             $query->where('sys_state', '=', '0');
+    //         }])
+    //         ->get();
+
+    //     $subcategories = SubCategory::where('category_id', $id)
+    //         ->where('sys_state', '=', '0')
+    //         ->get();
+
+    //     $subcategories = SubCategory::where('category_id', $id)
+    //         ->where('sys_state', '=', '0')
+    //         ->get();
+
+    //     $categories = Category::where('sys_state', '!=', '-1')
+    //         ->with(['subcategories' => function ($q) {
+    //             $q->where('sys_state', '=', '0');
+    //         }])
+    //         ->withCount(['subcategories as countsubcategory' => function ($q) {
+    //             $q->where('sys_state', '=', '0');
+    //         }])
+    //         ->get();
+
+    //     if ($subcategories) {
+    //         $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //             ->whereHas('categorySubcategory', function ($query) use ($subcategories) {
+    //                 $query->whereIn('subcategory_id', $subcategories->pluck('id'));
+    //             })
+    //             ->where('sys_state', '=', '0')
+    //             ->orderBy('id', 'desc')
+    //             ->get();
+    //     } else {
+    //         $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+    //             ->whereHas('categorySubcategory', function ($query) use ($id) {
+    //                 $query->where('subcategory_id', $id);
+    //             })
+    //             ->where('sys_state', '=', '0')
+    //             ->orderBy('id', 'desc')
+    //             ->get();
+    //     }
+
+    //     // Collect all unique tag IDs from items
+    //     $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
+    //     $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
+
+    //     return view('front-end.product.product', compact('id', 'item', 'categories', 'allsubcategories', 'category_name', 'tags','selectedCategoryId','selectedSubcategoryId'));
+    // }
+    public function itemsShow(Request $request)
+    {
+        $subcategorySlug = $request->query('subcategory');
+
+        // Default fallback: get the first active subcategory
+        if (!$subcategorySlug) {
+            $subcategorySlug = SubCategory::where('sys_state', '=', '0')->value('slug');
+        }
+
+        // Get selected subcategory and its category
+        $selectedSubcategory = SubCategory::where('slug', $subcategorySlug)
+            ->where('sys_state', '=', '0')
+            ->first();
+
+        if (!$selectedSubcategory) {
+            abort(404, 'Subcategory not found');
+        }
+
+        $selectedSubcategoryId = $selectedSubcategory->id;
+        $selectedCategoryId = $selectedSubcategory->category_id;
+        $id = $selectedCategoryId ?? null;
+        // Get category info
+        $category = Category::where('id', $selectedCategoryId)->first();
+        $category_name = $category->name;
+
+        // All subcategories of this category
+        $allsubcategories = SubCategory::where('category_id', $selectedCategoryId)
+            ->where('sys_state', '=', '0')
+            ->withCount(['items as countsubcategory' => function ($query) {
+                $query->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        // All categories for sidebar
+        $categories = Category::where('sys_state', '!=', '-1')
+            ->with(['subcategories' => function ($q) {
+                $q->where('sys_state', '=', '0');
+            }])
+            ->withCount(['subcategories as countsubcategory' => function ($q) {
+                $q->where('sys_state', '=', '0');
+            }])
+            ->get();
+
+        // Get items for selected subcategory only
+        $item = Items::with(['categorySubcategory', 'pricing', 'order', 'tags'])
+            ->whereHas('categorySubcategory', function ($query) use ($selectedSubcategoryId) {
+                $query->where('subcategory_id', $selectedSubcategoryId);
+            })
+            ->where('sys_state', '=', '0')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Get unique tags from items
+        $tagIds = $item->pluck('tags')->flatten()->pluck('id')->unique();
+        $tags = ItemsTag::whereIn('id', $tagIds)->get()->unique('tag_name');
+
+        return view('front-end.product.product', compact(
+            'item',
+            'categories',
+            'allsubcategories',
+            'category_name',
+            'tags',
+            'selectedCategoryId',
+            'selectedSubcategoryId',
+            'id',
+        ));
+    }
+
     public function buynow($id)
     {
         $item = Items::with(['categorySubcategory', 'pricing'])

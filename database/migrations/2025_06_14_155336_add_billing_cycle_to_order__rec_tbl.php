@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            //
+        Schema::table('order__rec_tbl', function (Blueprint $table) {
+            $table->string('billing_cycle')->nullable();
+            $table->string('product_type')->nullable();
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
+        Schema::table('order__rec_tbl', function (Blueprint $table) {
             //
         });
     }

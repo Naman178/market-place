@@ -21,6 +21,8 @@ class Transaction extends Model
         'transaction_id',
         'sys_state',
         'currency',
+        'billing_cycle',
+        'product_type',
         'created_at',
         'updated_at',
     ];
