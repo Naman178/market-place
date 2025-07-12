@@ -280,6 +280,13 @@
     }
 }
 @media (max-width: 991px) {
+    .real_time .badge {
+        display: inline-block;
+        margin-top: 40px;
+    }
+   .MetalPrice_img{
+	max-width: 490px;
+   }
     .api_section{
         display: none !important;
     }
@@ -319,7 +326,7 @@
     }
     .real_time h1{
         font-size: calc(40px + 6*((100vw - 320px) / 680)) !important;
-        margin-top: 50px !important;
+        /* margin-top: 50px !important; */
         line-height: 44px !important;
     }
     .header-container{
@@ -405,6 +412,9 @@
     }
 }
 @media (max-width: 767px) {
+    .real_time .badge {
+        display: none !important;
+    }
     .wordpress-plugin-grid {
         grid-template-columns: repeat(1, minmax(300px, 1fr)) !important;
     }
@@ -420,7 +430,7 @@
     }
     
     .MetalPrice_img {
-        width: 100% !important; 
+        width: 80% !important; 
         height: auto !important; 
         left: 50% !important; 
         top: 120px !important; 
@@ -560,6 +570,9 @@
     .MetalPrice_img {
         width: 95% !important;
         top: 80px !important;
+    }
+    .plugin-label{
+	margin-top: 30px !important;
     }
 
     .gold_price_img {

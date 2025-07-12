@@ -49,26 +49,13 @@
                if (!$form.data('cc-on-file')) {
                    e.preventDefault();
                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                //    document.getElementById('country').addEventListener('change', function() {
-                //        let selectedOption = this.options[this.selectedIndex];
-                //        let countryCode = selectedOption.getAttribute('data-country-code');
-                //        // You can store the countryCode in a hidden input or use it directly in the Stripe API call
-                //        console.log('Selected country code:', countryCode);
-                //    });
-           
                    // Create Stripe Token with address details
                    Stripe.card.createToken({
                        number: card_number,
                        cvc: card_cvc,
                        exp_month: card_exp_month,
                        exp_year: card_exp_year,
-                       name: name_on_card, // Include the name on the card
-                    //    address_line1: $('#address_line_1').val(), // Add address line 1
-                    //    address_line2: $('#address_line_2').val(), // Add address line 2
-                    //    address_city: $('#city').val(), // Add city
-                    //    address_state: $('#state').val(), // Add state if you have it
-                    //    address_zip: $('#postal_code').val(), // Add postal code
-                    //    address_country: $('#country').find(':selected').data('country-code')
+                       name: name_on_card,
                    }, stripeResponseHandler);
                }
            });      
@@ -366,9 +353,10 @@
     });
 
     function dynamicCalculation() {
-        let subTotalRaw = $("#subtotal_amount").data('amount');  // e.g., "1.888"
+        let subTotalRaw = $("#subtotal_amount").data('amount');
         let subTotalClean = subTotalRaw.toString().replace(/,/g, '');
-        let subTotal = parseFloat(subTotalClean);  // Use float to keep decimals
+        let subTotal = parseFloat(subTotalClean);
+        console.log(subTotal, 'subTotal');
 
         let quantity = parseInt($("#quantity").val()) || 1;
 
@@ -378,7 +366,7 @@
             }, 1000);
 
             // Format subtotal to INR with 2 decimals
-            let formattedAmount = "INR " + subTotal.toFixed(2); // e.g., "INR 1.89"
+            let formattedAmount = "INR " + subTotal.toFixed(2);
 
             // Update the UI
             $("#items-count").text(quantity + " Items");
@@ -387,21 +375,6 @@
             console.error("Quantity is undefined or invalid.");
         }
     }
-
-    // function addQuantityOption() {
-    //     const quantitySelect = document.getElementById("quantity");
-    //     const currentOptions = quantitySelect.options.length; // Get the current number of options
-    //     const newOptionValue = currentOptions + 1; // Calculate the new value for the next option
-
-    //     // Create a new <option> element
-    //     const newOption = document.createElement("option");
-    //     newOption.value = newOptionValue;
-    //     newOption.textContent = newOptionValue;
-
-    //     // Add the new option to the <select> element
-    //     quantitySelect.appendChild(newOption);
-    // }
-   
 
     const addToWishlistRoute = "{{ route('wishlist.add') }}";
     function saveForLater(planId) {
@@ -437,34 +410,7 @@
             toastr.error(data.message);
         });
     }
-    // function continueCalculation(quantity, subTotal) {
-    //     let finalTotal = quantity * subTotal;
-    //     let subTotalText = $("#subtotal_amount").text('INR ' + finalTotal);
 
-    //     let gstPr = $('#gst_amount').data('pr');
-    //     let gstAmount = (gstPr / 100) * finalTotal;
-    //     finalTotal += gstAmount;
-
-    //     let discount = $('#discount_coupon_type').val();
-    //     let discountType = $('#discount_coupon_type').data('type');
-    //     let discountAmount = 0;
-    //     if (discountType === 'flat') {
-    //         discountAmount = discount;
-    //         finalTotal -= discount; 
-    //     } else if (discountType === 'percentage') {
-    //         discountAmount = (discount / 100) * finalTotal;
-    //         finalTotal -= (discount / 100) * finalTotal;
-    //     }
-
-    //     let gst_text = $("#gst_amount").text('INR ' + gstAmount);
-    //     let final_text = $("#final_total").text('INR ' + finalTotal);
-    //     let finaltext = $(".final_total").text('INR ' + finalTotal);
-    //     let discount_amount = $("#discount_amount").text('INR ' + discountAmount);
-    //     let discount_value = $("#discount_value").val(discountAmount);
-    //     let final_text_btn = $(".final_btn_text").text(finalTotal);
-    //     let final_quantity = $("#final_quantity").val(quantity);
-    //     let amount = $("#amount").val(finalTotal * 100 );
-    // }
     function continueCalculation(quantity, subTotal) {
         let currency = $("#currency_code").val();
 
@@ -479,7 +425,6 @@
         let gstAmount = (gstPr / 100) * finalTotal;
         let formattedGst = gstAmount.toFixed(2);
         finalTotal += gstAmount;
-        console.log(finalTotal, 'finalTotal');
         
 
         // Discount logic
@@ -487,7 +432,6 @@
         let discount = parseFloat(discountInput);
         let discountType = $('#discount_coupon_type').data('type');
         let discountAmount = 0;
-        console.log(discount, 'discount');
         
 
         // Apply discount only if valid
@@ -513,140 +457,9 @@
         $("#discount_value").val(formattedDiscount);
         $(".final_btn_text").text(formattedFinal);
         $("#final_quantity").val(quantity);
-        $("#amount").val((finalTotal * 100).toFixed(0)); // Stripe needs amount in smallest currency unit
+        $("#amount").val((finalTotal * 100).toFixed(0));
     }
 
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     // Helper function to check if card is expired
-    //     function isCardExpired(month, year) {
-    //         const currentDate = new Date();
-    //         const currentYear = currentDate.getFullYear() % 100;
-    //         const currentMonth = currentDate.getMonth() + 1;
-            
-    //         const inputMonth = parseInt(month, 10);
-    //         const inputYear = parseInt(year, 10);
-            
-    //         if (inputYear < currentYear) return true;
-    //         if (inputYear === currentYear && inputMonth < currentMonth) return true;
-    //         return false;
-    //     }
-
-    //     // Enhanced expiration date validation
-    //     function validateExpiration() {
-    //         const monthInput = document.getElementById('card_exp_month');
-    //         const yearInput = document.getElementById('card_exp_year');
-    //         const monthError = document.getElementById('card_exp_month_error');
-    //         const yearError = document.getElementById('card_exp_year_error');
-            
-    //         // Reset errors
-    //         monthError.style.display = 'none';
-    //         yearError.style.display = 'none';
-            
-    //         let isValid = true;
-            
-    //         // Validate month format and range
-    //         if (monthInput.value) {
-    //             if (monthInput.value.length !== 2) {
-    //                 monthError.textContent = 'Month must be 2 digits';
-    //                 monthError.style.display = 'block';
-    //                 isValid = false;
-    //             } else if (parseInt(monthInput.value) < 1 || parseInt(monthInput.value) > 12) {
-    //                 monthError.textContent = 'Invalid month (01-12)';
-    //                 monthError.style.display = 'block';
-    //                 isValid = false;
-    //             }
-    //         }
-            
-    //         // Validate year format
-    //         if (yearInput.value && yearInput.value.length !== 2) {
-    //             yearError.textContent = 'Year must be 2 digits';
-    //             yearError.style.display = 'block';
-    //             isValid = false;
-    //         }
-            
-    //         // Only check expiration if both fields are complete
-    //         if (monthInput.value.length === 2 && yearInput.value.length === 2) {
-    //             if (isCardExpired(monthInput.value, yearInput.value)) {
-    //                 yearError.textContent = 'Card has expired';
-    //                 yearError.style.display = 'block';
-    //                 isValid = false;
-    //             }
-    //         }
-            
-    //         return isValid;
-    //     }
-
-    //     // Month validation with immediate feedback
-    //     const monthInput = document.getElementById('card_exp_month');
-    //     monthInput.addEventListener('input', function(e) {
-    //         let value = e.target.value.replace(/\D/g, '');
-    //         if (value.length > 2) value = value.substring(0, 2);
-    //         e.target.value = value;
-            
-    //         // Validate after each input
-    //         validateExpiration();
-    //     });
-
-    //     // Year validation with immediate feedback
-    //     const yearInput = document.getElementById('card_exp_year');
-    //     yearInput.addEventListener('input', function(e) {
-    //         let value = e.target.value.replace(/\D/g, '');
-    //         if (value.length > 2) value = value.substring(0, 2);
-    //         e.target.value = value;
-            
-    //         // Validate after each input
-    //         validateExpiration();
-    //     });
-
-    //     // Card number formatting (keep existing implementation)
-    //     const cardNumberInput = document.getElementById('card_number');
-    //     cardNumberInput.addEventListener('input', function(e) {
-    //         let value = e.target.value.replace(/\D/g, '');
-    //         value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-    //         if (value.length > 19) value = value.substring(0, 19);
-    //         e.target.value = value;
-    //     });
-
-    //     // CVC validation (keep existing implementation)
-    //     const cvcInput = document.getElementById('card_cvc');
-    //     cvcInput.addEventListener('input', function(e) {
-    //         let value = e.target.value.replace(/\D/g, '');
-    //         if (value.length > 3) value = value.substring(0, 3);
-    //         e.target.value = value;
-    //     });
-
-    //     // Enhanced form submission
-    //     document.querySelector('form').addEventListener('submit', function(e) {
-    //         let isValid = true;
-            
-    //         // Card number validation
-    //         const cardNumber = cardNumberInput.value.replace(/\D/g, '');
-    //         if (cardNumber.length !== 16) {
-    //             document.getElementById('card_number_error').textContent = 'Card number must be 16 digits';
-    //             document.getElementById('card_number_error').style.display = 'block';
-    //             isValid = false;
-    //         }
-            
-    //         // Expiration date validation
-    //         if (!validateExpiration()) {
-    //             isValid = false;
-    //         }
-            
-    //         // CVC validation
-    //         if (!cvcInput.value || cvcInput.value.length !== 3) {
-    //             document.getElementById('card_cvc_error').textContent = 'CVC must be 3 digits';
-    //             document.getElementById('card_cvc_error').style.display = 'block';
-    //             isValid = false;
-    //         }
-            
-    //         if (!isValid) {
-    //             e.preventDefault();
-    //         }
-    //     });
-
-    //     // Validate immediately when page loads if fields have values
-    //     validateExpiration();
-    // });
     function isCardExpired(month, year) {
         const expMonth = parseInt(month, 10);
         const expYear = parseInt('20' + year, 10);

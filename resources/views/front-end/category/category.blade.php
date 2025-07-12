@@ -66,29 +66,6 @@
         <div class="title">
             <h3><span class="color-blue underline">Products</span></h3>
         </div>
-        {{-- <div class="container" style="padding-left: 330px; padding-right:330px;">
-            <div class="row" style="display: flex; justify-content:space-between; align-items:center;">
-                @if ($subcategory->count() != 0)
-                    @foreach ($subcategory as $item)
-                        <div class="col-lg-4 col-12 mt-2 mb-2" style="cursor: pointer;">
-                            <a href="{{ route('product.list', ['subcategory' => $item->id]) }}">
-                                <div style="position: absolute; z-index:1; left:35px; color:white;">
-                                    <h1>{{ $item->name }}</h1>
-                                </div>
-                                <div class="card" style="width:410px; height:400px;">
-                                    <div class="card-body" style="padding: 0px;">
-                                        <img src="{{ asset('public/storage/sub_category_images/' . $item->image) }}"
-                                            alt="Sub-Category Image" style="width: 100%; padding:7px; height:399px;">
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
-                @else
-                    <p>No Subcategory Found</p>
-                @endif
-            </div>
-        </div> --}}
         <div class="row">
             <div class="col-xl-3 col-md-6">
                 @foreach ($categories as $category)

@@ -1,100 +1,104 @@
 <div class="plugins">
-    {{-- <img class="frame_img" src="{{ asset('front-end/images/Frame.png') }}" alt="not found"> --}}
     <div class="container">
         <p class="plugin-label">
-            <span class="label-line"></span> Plugins
+            <span class="label-line"></span> Top-Rated by Developers
         </p>
 
         <div class="wordpress_plugin">
             <h2>
-                Powerful <span>Features</span> <br>
-                to Elevate Your <span class="underline">Store</span>
+                Featured Collection: Trending Now
             </h2>
         </div>
 
         <!-- Ensure all cards are inside a single row -->
-        {{-- <div class="row row_gap"> --}}
         <div class="wordpress-plugin-grid">
-           
+            @foreach($items as $item)
                 <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/store.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Live Gold Price Updates</h4>
-                    <p class="plugin_p ">Automatically fetch real-time gold, silver, and platinum prices to ensure accurate and <br> up-to-date pricing for your WooCommerce store</p>
-                
-                    @if (!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more" >Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
-                    {{-- <a href="#" class="know_more ml-40">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a> --}}
-                </div>
-           
-           
-                <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/cart.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Seamless WooCommerce Integration</h4>
-                    <p class="plugin_p ">Fully compatible with WooCommerce, supporting both simple and variable products for effortless price automation.</p>
-                   
-                    @if (!empty($subcategory))
-                    <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
-                </div>
-           
+                    <div class="wordpress_logo">
+                        <a  href="{{ route('buynow.list', $item->id) }}">
+                            <img src="{{ asset('public/storage/items_files/' . $item->thumbnail_image) }}" alt="not found">
+                        </a>
+                    </div>
+                    <div class="product-box">
+                        <a  href="{{ route('buynow.list', $item->id) }}">
+                            <h4 class="plugin_h4">{{ $item->name }}</h4>
+                        </a>
 
-           
-                <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/plug.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Seamless Integration</h4>
-                    <p class="plugin_p ">Easily integrate our plugin into your WordPress website with a hassle-free setup process and user-friendly controls.</p>
-                    @if (!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
-                </div>
-           
+                        {{-- Render HTML description --}}
+                        <div class="plugin_p">{!! $item->html_description !!}</div>
 
-           
-                <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/dependable.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Smart Pricing Automation</h4>
-                    <p class="plugin_p ">No more manual updates! Our plugin calculates prices dynamically based on global rates and product weight.</p>
-                   
-                    @if (!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
-                </div>
-           
+                        {{-- Show price --}}
+                        <p class="product_price"
+                            data-sale="{{ $item->pricing->sale_price ?? '' }}"
+                            data-fixed="{{ $item->pricing->fixed_price ?? '' }}"
+                            data-sale-inr="{{ $item->pricing->sales_inr_price ?? '' }}"
+                            data-fixed-inr="{{ $item->pricing->fixed_inr_price ?? '' }}">
+                            ${{ $item->pricing->sale_price ?? $item->pricing->fixed_price ?? 'N/A' }}
+                        </p>
 
-           
-                <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/money-management.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Quick & Hassle-Free Setup</h4>
-                    <p class="plugin_p ">Install, configure, and start selling in minutes with a user-friendly interface and easy customization options.</p>
-                    @if(!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
+                        <div class="product_summery">
+                            <div class="product_rating">
+                                <div class="wsus__pro_det_review d-flex align-items-center">
+                                    <p class="mb-0 d-flex align-items-center">
+                                        <!-- Star Rating Display -->
+                                        @php $rating = $item->average_rating; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if($rating >= $i)
+                                                <i class="fas fa-star" style="color: #f9ae0e; font-size: 14px;"></i>
+                                            @elseif($rating >= $i - 0.5)
+                                                <i class="fas fa-star-half-alt" style="color: #f9ae0e; font-size: 14px;"></i>
+                                            @else
+                                                <i class="far fa-star" style="color: #ccc; font-size: 14px;"></i>
+                                            @endif
+                                        @endfor
+                                        <span class="ml-1" style="font-size: 14px;">({{ $item->reviews_count }})</span>
+                                    </p>
+                                </div>
+                                <label>{{ $item->order_count }} Sales</label>
+                            </div>
+                            <div class="product_btn">
+                                <a  href="{{ route('buynow.list', $item->id) }}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-           
-
-           
-                <div class="wordpress_plugin_bg h-100">
-                     <div class="wordpress_logo">
-                    <img  src="{{ asset('front-end/images/customer-support.png') }}" alt="not found">
-                     </div>
-                    <h4 class="plugin_h4 mt-20">Secure & Optimized Performance</h4>
-                    <p class="plugin_p ">Built for speed, security, and reliability—ensuring smooth transactions and a seamless user experience.</p>
-                    @if (!empty($subcategory))
-                        <a href="{{ route('product.list.show', ['subcategory' => Str::slug($subcategory->name ?? '')]) }}" class="know_more">Explore Products <span><img src="{{ asset('front-end/images/arrow.png') }}" alt="not found"></span></a>
-                    @endif
-                </div>
-           
+            @endforeach
         </div>
+
+        <div class="d-flex justify-content-center">
+            <a  class="white_btn d-inline-block" href="https://market-place-main.infinty-stage.com/shop"><span>All Products</span> <img class="know_arrow" src="https://market-place-main.infinty-stage.com/front-end/images/up-right-arrow-light.png" alt="Button Arrow"></a>
+        </div>
+        
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const preferredCurrency = localStorage.getItem('preferred_currency') || 'usd';
+
+    document.querySelectorAll('.product_price').forEach(function (priceElement) {
+        const sale = priceElement.dataset.sale;
+        const fixed = priceElement.dataset.fixed;
+        const saleInr = priceElement.dataset.saleInr;
+        const fixedInr = priceElement.dataset.fixedInr;
+
+        let displayPrice = 'N/A';
+
+        if (preferredCurrency === 'inr') {
+            if (saleInr) {
+                displayPrice = `₹${saleInr}`;
+            } else if (fixedInr) {
+                displayPrice = `₹${fixedInr}`;
+            }
+        } else {
+            if (sale) {
+                displayPrice = `$${sale}`;
+            } else if (fixed) {
+                displayPrice = `$${fixed}`;
+            }
+        }
+
+        priceElement.textContent = displayPrice;
+    });
+});
+</script>
+

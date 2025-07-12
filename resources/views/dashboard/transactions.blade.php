@@ -28,12 +28,15 @@
                                     <td> {{ $tran->payment_status ? ($tran->payment_status == 'captured' ? 'Success' : $tran->payment_status) : '' }}
                                     </td>
                                     <td> 
-                                        {{ $tran->currency ?? 'INR' }} 
-                                        {{-- @if(isset($tran->invoice->discount))
-                                            {{ number_format(ceil((float) $tran->payment_amount / 100), 2, '.', '') }}
-                                        @else --}}
+                                        @php
+                                             if($tran->currency == 'INR'){
+                                                $symbole ="₹";
+                                            }else{
+                                                $symbole = "$";
+                                            }
+                                        @endphp
+                                        {{ $symbole }} 
                                             {{ number_format(((float) $tran->payment_amount / 100), 2, '.', '') }}
-                                        {{-- @endif   --}}
                                         
                                     </td>
                                     <td>

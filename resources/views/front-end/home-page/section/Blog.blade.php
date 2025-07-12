@@ -6,44 +6,45 @@
 <div class="int_bg blog mb-37">
     <div class="container">
         <p class="plugin-label">
-            <span class="label-line"></span> Recent Posts
+            <span class="label-line"></span> Discover & Learn
         </p>
-        <div class="d_flex">
+        <div class="d_flex blog_head">
             <div class="integration">
-                <h2>Latest From Our <span class="underline">Blog</span></h2>
-                {{-- <img class="vector2_img" src="front-end/images/Vector 10.png" alt="not found"> --}}
+                <h2>Trends & Insights for Developers</h2>
             </div>
-            <div class="arrow-container w-70">
-                <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><span class="arrow left-arrow"></span></a>
-                <a href="javascript:void(0)" role="button" data-slide="next" id="blog-right-arrow-btn"><span class="arrow right-arrow"></span></a>
+            <div class="arrow-container">
+                <a href="javascript:void(0)" role="button" data-slide="prev" id="blog-left-arrow-btn"><img class="know_arrow" src="{{ asset('front-end/images/up-right-arrow-dark.png') }}" alt="Left Arrow"></a>
+                <a href="javascript:void(0)" role="button" data-slide="next" id="blog-right-arrow-btn"><img class="know_arrow" src="{{ asset('front-end/images/up-right-arrow-dark.png') }}" alt="Right Arrow"></a>
             </div>
         </div>
         <div id="blogCarousel" >
             <div class="row blog-slider">
                 @foreach ($Blogs as $blog)
-                    <div class="col-4 match-height-item">
-                     <a href="{{ route('blog_details', ['category' => Str::slug($blog->categoryname->name), 'slug' => Str::slug($blog->title)]) }}">
-                        <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
-                        <div class="item">
-                           <p class="badge">{{ $blog->categoryname->name ?? ''}}</p>
-                            <h3 class="mb-4 mt-1">{{ $blog->title }}</h3>
-                            <div class="blog_p">{!! $blog->short_description ?? '' !!}</div>
-                            <div class="d-flex">
-                                {{-- <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="integration_know d-flex align-items-center">
-                                    <span>Read More</span>
-                                    <img class="know_arrow d-flex align-items-center" src="front-end/images/blue_arrow.png" alt="not found" style="margin-top: 1px;">
-                                </a> --}}
-                                <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="read_more_btn">
-                                    <span class="text-line">
-                                        <span class="text">Read More</span>
-                                        <img class="know_arrow mt-0" src="{{ asset('front-end/images/blue_arrow.png') }}" alt="not found">
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="match-height-item">
+                        <a href="{{ route('blog_details', ['category' => Str::slug($blog->categoryname->name), 'slug' => Str::slug($blog->title)]) }}">
+                            <img class="blog_img" src="{{ asset('storage/images/' . $blog->image) }}" alt="Blog Image">
                         </a>
+                        <div class="item">
+                            <div class="blog_badge">
+                                <label class="blog_date"><i class="fa fa-calendar" aria-hidden="true"></i> 23 June 2025</label>
+                                <p class="badge">{{ $blog->categoryname->name ?? ''}}</p>
+                            </div>
+                            <a class="blog_title" href="{{ route('blog_details', ['category' => Str::slug($blog->categoryname->name), 'slug' => Str::slug($blog->title)]) }}">
+                                <h3 class="">{{ $blog->title }}</h3>
+                            </a>
+                            <div class="blog_p">{!! Str::words($blog->short_description ?? '', 18, '...') !!}</div>
+                            <a href="{{ route('blog_details', ['category' => $blog->categoryname->name, 'slug' => Str::slug($blog->title)]) }}" class="read_more_btn">
+                                <span class="text-line">
+                                    <span class="text">Read More</span>
+                                    <img class="know_arrow" src="{{ asset('front-end/images/up-right-arrow-dark.png') }}" alt="Arrow">
+                                </span>
+                            </a>
+                        </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="more_blogs">
+                <a  class="white_btn d-inline-block" href="https://market-place-main.infinty-stage.com/shop"><span>More Blogs</span> <img class="know_arrow" src="https://market-place-main.infinty-stage.com/front-end/images/up-right-arrow-light.png" alt="Button Arrow"></a>
             </div>
         </div>
     </div>
@@ -71,13 +72,5 @@
     });
 }
 
-// Call the function on page load and resize
-document.addEventListener('DOMContentLoaded', () => {
-    setEqualHeights('.blog-slider .item');
-});
-
-window.addEventListener('resize', () => {
-    setEqualHeights('.blog-slider .item');
-});
 </script>
 <!-- Integration section end -->

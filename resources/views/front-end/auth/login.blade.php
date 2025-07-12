@@ -95,15 +95,6 @@
         <div class="title">
             <h3><span class="txt-black">Login</h3>
         </div>
-        {{-- <form action="#" method="POST">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="row  border p-3 pt-4 pb-4 border-radius-1">
-                    <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
-                </div>
-            </div>
-        </div>
-    </form> --}}
         <form method="POST" action="{{ route('user-login-post') }}">
             <input type="hidden" name="recaptcha" id="recaptcha">
             @csrf
@@ -133,14 +124,6 @@
                                         <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
                                   </svg><span class="ml-4"> Sign in with LinkedIn</span></a>
                                 </div>
-                                {{-- <a href="{{ url('/user-login/google') }}" class="btn btn-google">Continue with Google</a>
-
-                                <a href="{{ route('github.login') }}" class="btn btn-github mt-3">
-                                    Sign in with GitHub
-                                </a>
-                                <a href="{{ route('linkedin.login') }}" class="btn btn-linkedin mt-3">
-                                    Sign in with LinkedIn
-                                </a> --}}
                                 
                             </div>
                         </div>
@@ -196,7 +179,6 @@
                                 </svg>
                                 <span class="ml-3">Sign In</span>
                             </button>
-                            {{-- <button type="submit" class="btn btn-block pink-btn mb-3 mt-1" id="login-btn" style="cursor: pointer;">Sign In</button> --}}
                             <p class="text-center d-block text-white">Don't Have an Account ..? <a
                                  class="a_color"   href="{{ route('signup') }}"> Register </a> </p>
                             <p class="text-center d-block text-white mb-1">Forgot Your Password..?<a class="a_color" href="{{ route('forget-password-get') }}"> Reset Password </a></p>

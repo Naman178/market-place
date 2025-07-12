@@ -14,23 +14,6 @@
                                 <div class="accordion" id="accordionRightIcon-{{ $index }}">
                                     <div class="card mt-4 shadow-sm rounded-lg dot_border">
                                         <div class="cart-item-border text-center">{{ $order->product->name ?? 'Product Name' }}</div>
-                                        {{-- <div class="card mt-4">
-                                            <div class="card-header header-elements-inline">
-                                                <h6
-                                                    class="card-title ul-collapse__icon--size ul-collapse__right-icon mb-0 w-100">
-                                                    <a data-toggle="collapse" class="text-default"
-                                                        href="#accordion-item-icon-right-{{ $order->id ?? '' }}"
-                                                        aria-expanded="false">
-                                                        <div class="d-flex">
-                                                            <div class="w-50 text-left text-white">
-                                                                {{ $order->product->product_name ?? '' }}</div>
-                                                            <div class="w-50 text-right mr-5 text-white">OrderId:
-                                                                #{{ $order->id ?? '' }}</div>
-                                                        </div>
-                                                    </a>
-                                                </h6>
-                                            </div>
-                                        </div> --}}
                                         <div id="accordion-item-icon-right-{{ $order->id ?? '' }}" class="collapse mt-2" data-parent="#accordionRightIcon-{{ $index }}">
                                             <div class="card-body bg-light">
                                                 <div class="row">
@@ -101,15 +84,16 @@
                                                         <div class="d-flex mb-3">
                                                             <div class="text-muted"><strong>Payment Amount:</strong></div>
                                                             <div class="ml-2">
+                                                                @php
+                                                                    if($order->currency == 'INR'){
+                                                                        $symbole ="₹";
+                                                                    }else{
+                                                                        $symbole = "$";
+                                                                    }
+                                                                @endphp
                                                                 <p class="mb-0 ml-2">
-                                                                    {{ $order->currency ?? 'INR' }}   
-                                                                    {{-- @if(isset($order->invoice->discount))
-                                                                        {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
-                                                                    @elseif($order->payment_amount)
-                                                                         {{ number_format(ceil((float) $order->payment_amount / 100), 2, '.', '') }}
-                                                                    @else --}}
+                                                                    {{ $symbole }}   
                                                                         {{ number_format(((float) $order->payment_amount / 100), 2, '.', '') }}
-                                                                    {{-- @endif --}}
                                                                 </p>
                                                             </div>
                                                         </div>

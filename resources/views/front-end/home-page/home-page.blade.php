@@ -34,32 +34,25 @@
 @endsection
 @section('content')
 @include('front-end.home-page.section.hero_banner')
-{{-- @if ($category->count()<=1) --}}
-    @include('front-end.home-page.section.Subcategory')
-{{-- @else
-    @include('front-end.home-page.section.Category')
-@endif --}}
+@include('front-end.home-page.section.plugins')
+@include('front-end.home-page.section.Subcategory')
 @php
     use App\Models\Category;
     use App\Models\SubCategory;
     $category = Category::where('sys_state','=','0')->first();
     $subcategory = SubCategory::where('sys_state','=','0')->first();
 @endphp
-@include('front-end.home-page.section.plugins')
-<div class="carousel-container">
-    @include('front-end.home-page.section.Integration')
-</div>
 @include('front-end.home-page.section.Features')
-@include('front-end.home-page.section.Support')
-{{-- @include('front-end.home-page.section.items-grid') --}}
+<div class="carousel-container">
+@include('front-end.home-page.section.Our_Patients')
+</div>
+
 <div class="carousel-container">
     @include('front-end.home-page.section.Blog')
 </div>
-<div class="carousel-container">
-@include('front-end.home-page.section.Our_Patients')
-@include('front-end.home-page.section.social_media')
+@include('front-end.home-page.section.lead')
 @include('front-end.home-page.section.FAQ')
-</div>
+
 
 
 @endsection
@@ -248,32 +241,6 @@
             ]
         });
 
-        // $('.category-slider').slick({
-        //     slidesToShow: 3,
-        //     slidesToScroll: 1,
-        //     infinite: true,
-        //     autoplay: false,
-        //     autoplaySpeed: 3000,
-        //     dots: false,
-        //     arrows: false,
-        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
-        //     responsive: [
-        //         {
-        //             breakpoint: 1024,
-        //             settings: {
-        //                 slidesToShow: 2
-        //             }
-        //         },
-        //         {
-        //             breakpoint: 768,
-        //             settings: {
-        //                 slidesToShow: 1
-        //             }
-        //         }
-        //     ]
-        // });
-        
         $('#category-slider').slick({
             infinite: true,
             slidesToShow: 4,
@@ -333,143 +300,7 @@
             ]
         });
 
-        // $('.subcategory-slider').slick({
-        //     slidesToShow: 3,
-        //     slidesToScroll: 1,
-        //     infinite: true,
-        //     autoplay: false,
-        //     autoplaySpeed: 3000,
-        //     dots: false,
-        //     arrows: false,
-        //     prevArrow: '<button type="button" class="slick-prev" style="margin-left:-11px;">&#10094;</button>',
-        //     nextArrow: '<button type="button" class="slick-next">&#10095;</button>',
-        //     responsive: [
-        //         {
-        //             breakpoint: 1024,
-        //             settings: {
-        //                 slidesToShow: 2
-        //             }
-        //         },
-        //         {
-        //             breakpoint: 768,
-        //             settings: {
-        //                 slidesToShow: 1
-        //             }
-        //         }
-        //     ]
-        // });
     });
-
-    // let currentIndex = 0;
-
-    // const testimonials = [
-    //     {
-    //         text: 'Facilisis pretium viverra varius tempus ligula natoque fermentum dictumst scelerisque vehicula euismod sed nam sapien rhoncus tristique eros erat nullam class venenatis hendrerit montes ut vestibulum integer orci luctus primis fringilla sem bibendum donec fames congue suscipit sociis turpis.',
-    //         name: 'Joe Root',
-    //         role: 'Happy Client',
-    //         image: '{{ asset("front-end/images/Group 5747.png") }}', // Add image for large display
-    //     },
-    //     {
-    //         text: 'Congue parturient interdum penatibus sem lacus ultricies mi varius nisi dictum fusce volutpat sociosqu vehicula ac nullam curae malesuada gravida id natoque tristique convallis porta scelerisque quam class senectus nisl auctor fermentum montes hendrerit tempor orci.',
-    //         name: 'Jane Doe',
-    //         role: 'Satisfied Client',
-    //         image: '{{ asset("front-end/images/Group 5748.png") }}',
-    //     },
-    //     {
-    //         text: 'Laoreet per malesuada montes lorem tincidunt id natoque parturient suspendisse senectus a scelerisque sem quis a parturient et nam leo diam in amet elit et phasellus a vulputate. Pharetra neque euismod pharetra fringilla augue curae urna nisi purus parturient iaculis conubia a fringilla odio vestibulum dictum. Convallis ridiculus dictumst a nam urna.',
-    //         name: 'John Smith',
-    //         role: 'Grateful Client',
-    //         image: '{{ asset("front-end/images/Group 5749.png") }}',
-    //     },
-    // ];
-    // $(document).ready(function () {
-    //     let testimonials = @json($testimonials); // Get testimonials from Laravel
-    //     let latestTestimonials = @json($latestTestimonials);
-    //     let currentIndex = 0;
-    //     const imagesToShow = 3; 
-    //     let latestselectedTestimonial = latestTestimonials[0];
-    //     $(".patients .testimonial-text").fadeOut(200, function () {
-    //             $(this).html(latestselectedTestimonial.message).fadeIn(200);
-    //         });
-    //     function updateVisibleThumbnails() {
-    //         $(".thumbnail").each(function (index) {
-    //             if ((index >= currentIndex && index < currentIndex + imagesToShow) || 
-    //                 (currentIndex + imagesToShow > testimonials.length && index < (currentIndex + imagesToShow) % testimonials.length)) {
-    //                 $(this).removeClass("hidden").addClass("visible");
-    //             } else {
-    //                 $(this).removeClass("visible").addClass("hidden");
-    //             }
-    //         });
-    //     }
-
-    //     function updateTestimonial(index) {
-    //         let selectedTestimonial = testimonials[index];
-
-    //         // Animate content change
-    //         $(".patientsSlider").css({
-    //             "position": "relative",
-    //             "right": "-100%",
-    //             "opacity": "0"
-    //         }).animate({
-    //             "right": "0",
-    //             "opacity": "1"
-    //         }, 500);
-
-    //         // Change the large image
-    //         $("#large-image").fadeOut(200, function () {
-    //             $(this).attr("src", "storage/images/" + selectedTestimonial.image).fadeIn(200);
-    //         });
-
-    //         // Update testimonial text
-    //         $(".patients .testimonial-text").fadeOut(200, function () {
-    //             $(this).html(selectedTestimonial.message).fadeIn(200);
-    //         });
-
-    //         // Update name
-    //         $(".patient-name").fadeOut(200, function () {
-    //             $(this).text(selectedTestimonial.name).fadeIn(200);
-    //         });
-
-    //         // Update role/designation
-    //         $(".patient-role").fadeOut(200, function () {
-    //             $(this).text(selectedTestimonial.designation ?? "Happy Client").fadeIn(200);
-    //         });
-
-    //         // Highlight active thumbnail
-    //         $(".thumbnail").removeClass("active");
-    //         $(".thumbnail").eq(index).addClass("active");
-    //     }
-
-    //     // Thumbnail click event
-    //     $(".thumbnail").click(function () {
-    //         const clickedIndex = $(this).index();
-    //         // Adjust the currentIndex so the clicked image is centered
-    //         if (clickedIndex + 1 > currentIndex + imagesToShow) {
-    //             currentIndex = clickedIndex - (imagesToShow - 1);
-    //         } else {
-    //             currentIndex = Math.max(0, clickedIndex);
-    //         }
-    //         updateVisibleThumbnails();
-    //         updateTestimonial(clickedIndex);
-    //     });
-        
-    //     // Next button functionality
-    //     $(".next-btn").click(function () {
-    //         currentIndex = (currentIndex + 1) % testimonials.length;
-    //         updateVisibleThumbnails();
-    //         updateTestimonial(currentIndex);
-    //     });
-
-    //     // Previous button functionality
-    //     $(".prev-btn").click(function () {
-    //         currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-    //         updateVisibleThumbnails();
-    //         updateTestimonial(currentIndex);
-    //     });
-
-    //     // Initialize the first set of visible thumbnails
-    //     updateVisibleThumbnails();
-    // });
     
     $(document).ready(function () {
         let testimonials = @json($testimonials);

@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Artisan;
 
 // Home Page
 // Route::redirect('/', '/home');
-Route::get("/", [HomePageController::class, "index"]);
+Route::get("/", [HomePageController::class, "index"])->name("home");
 Route::post("/newsletter-add", [HomePageController::class, "newsletter"])->name('newsletter-add');
 Route::get('/newsletter/{id}',[HomePageController::class, "deletenewsletter"])->name('newsletter-delete');
 // Route::get('/product/{category}', [HomePageController::class, 'Categoryshow'])->name('category.list');
@@ -195,7 +195,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/term-condition/delete/{id}', [TermAndConditionController::class, 'remove'])->name('term-condition-delete');
 
     // Privacy Policy module
-    Route::get('/privacy-policy',[PrivacyPolicyController::class,'index'])->name('privacy-policy-index');
+    Route::get('/privacy-policy-index',[PrivacyPolicyController::class,'index'])->name('privacy-policy-index');
     Route::post('/privacy-policy/store',[PrivacyPolicyController::class,'store'])->name('privacy-policy-store');
     Route::get('/privacy-policy/edit/{id}', [PrivacyPolicyController::class, 'edit'])->name('privacy-policy-edit');
     Route::get('/privacy-policy/delete/{id}', [PrivacyPolicyController::class, 'remove'])->name('privacy-policy-delete');
@@ -271,20 +271,16 @@ Route::get('/contact-us', function () {
 Route::post('/user/contact-us', [UserController::class, 'contactUs'])->name('contactUs-send');
 
 // Terms and Condition Page
-Route::get('/terms-and-condition', [TermAndConditionController::class,'user_index']
-)->name('terms-and-condition');
+Route::get('/terms-and-condition', [TermAndConditionController::class,'user_index'])->name('terms-and-condition');
 
 // Privacy Policy Page
-Route::get('/user-privacy-policy', [PrivacyPolicyController::class,'user_index']
-)->name('privacy-policy');
+Route::get('/privacy-policy', [PrivacyPolicyController::class,'user_index'])->name('privacy-policy');
 
 // FAQ
-Route::get('/faq', [FAQController::class,'user_index']
-)->name('user-faq');
+Route::get('/faq', [FAQController::class,'user_index'])->name('user-faq');
 
 // Price
-Route::get('/user-price', [UserController::class,'user_price']
-)->name('user-price');
+Route::get('/user-price', [UserController::class,'user_price'])->name('user-price');
 
 // categpry
 Route::get('/category/{slug}', [CategoryController::class, 'categoryDetails'])->name('category_details');

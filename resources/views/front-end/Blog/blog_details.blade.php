@@ -40,84 +40,77 @@
 <meta name="twitter:image" content="{{ $blog->image ? asset('storage/images/' . $blog->image) : asset('default/path/to/placeholder.png') }}">  
 @endsection
 @section('content')
-<div class="blog_details" style="background-color: #b1b1b11f;">
+<div class="blog_details" style="background-color: #ebedf4;">
     <div class="container blog_padding">
         <div class="row">
-            <div class="col-md-8 border-right blog-main-card">
-                <h2 class="text-capitalize">{{ $blog->title }} </h2>
-                <p>{!! $blog->short_description !!} </p>
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        Post by: <strong>{{ $blog->uploaded_by }} </strong> |
-                        {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
-                    </div>
-                    <div class="col-md-6 d-flex justify-content-end align-items-center">
-                        <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
-                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
-                        </a>
-                        <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
-                            <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
-                        </a>
-                        {{-- <div class="sharethis-inline-share-buttons"></div> --}}
-                    </div>
-
+            <div class="col-12">
+                <div class="blog-top-bar-image">
+                    <img src="{{ asset('storage/images/' . $blog->image) }}" alt="Blog Image">
                 </div>
-                <div class="mb-5">
-                    <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="blog-header">
+                    <h1 class="text-capitalize">{{ $blog->title }} </h1>
+                    {!! $blog->short_description !!}
                 </div>
-                <div>
-                    <p>{!! $blog->long_description !!} </p>
-                </div>
-                @foreach ($Blogcontents as $content)
-                    <h2 class="text-capitalize">{{ $content->content_heading }} </h2>
-                    <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $content->content_image) }}" alt="not found">
-                    <p>{!! $content->content_description_1 !!} </p>
-                    <p>{!! $content->content_description_2 !!} </p>
-                @endforeach
-            </div>
-            <div class="col-md-4 ">
-                @if ($blog->related_blogs)
-                    <div class="related_blogs sticky">
-                        <ul style="padding: 10px 17px 27px 18px; background: white; margin-top:0px; color: #4d4d4d; font-family: 'Work Sans';">
-                            <li class="mt-2">  <h3>Related Blogs</h3></li>
-                            @foreach ($blog->related_blogs as $relatedBlogId)
-                                @php
-                                    $relatedBlog = \App\Models\Blog::find($relatedBlogId);
-                                @endphp
-                                @if ($relatedBlog)
-                                    <li class="border-bottom mt-4">
-                                       <a href="{{ route('blog_details', ['category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
-                                            <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
-                                            <span class="related_blog_title text-capitalize" style="text-align: start; font-weight: 600; font-size: 14px; color: #4d4d4d; font-family: 'Work Sans';"> {{ $relatedBlog->title }}</span>
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            </div>
-            <div class="col-md-8" style="padding-right: 0px; padding-left:0px;">
-                <h1 class="card-title" style="margin-top:15px; margin-bottom:15px; font-size:1.5rem;">Comments</h1>
-            </div>
-            <div class="col-md-8" style="background-color:#ffffff;">
-                {{-- <div class="comment border-primary mb-2 mt-4" style="background-color: #f6f6f6;">
-                    <div class="card-body" style="padding-top:15px;">
-                        <form class="comment-form" action="{{route('blog-comment-post', $blog->blog_id)}}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="comment">Comment</label>
-                                <textarea class="form-control tinymce-textarea" name="comment" id="comment" rows="3"></textarea>
-                                <div id="quill-editor" style="height: 200px; background-color: white;"></div>
-                                <input type="hidden" name="comment" id="quill-content">
+                <div class="grid-container">
+                    <div class="left">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="">
+                                Post by: <strong>{{ $blog->uploaded_by }} </strong> |
+                                {{ \Carbon\Carbon::parse($blog->created_at)->format('F d, Y') }}
                             </div>
-                            <button type="submit" class="pink-blue-grad-button d-inline-block border-0">Submit</button>
-                        </form>
+                            <div class="d-flex">
+                                <a href="#" class="social-share mx-2" data-platform="facebook" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                                    <img class="facebook_img" src="{{ asset('storage/Logo_Settings/footer_facebook.png') }}" alt="facebook">
+                                </a>
+                                <a href="#" class="social-share" data-platform="twitter" data-blog-id="{{ $blog->blog_id }}" data-user-id="{{ Auth::id() }}">
+                                    <img class="facebook_img" src="{{ asset('storage/Logo_Settings/twitter.png') }}" alt="twitter">
+                                </a>
+                            </div>
+                        </div>
+                        <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $blog->image) }}" alt="not found">
+                        <div class="blog_content">
+                            {!! $blog->long_description !!}
+                        </div>
+                        @foreach ($Blogcontents as $content)
+                            <h2 class="text-capitalize">{{ $content->content_heading }} </h2>
+                            <img class="blog_detail_img match-height-item" src="{{ asset('storage/images/' . $content->content_image) }}" alt="not found">
+                            <p>{!! $content->content_description_1 !!} </p>
+                            <p>{!! $content->content_description_2 !!} </p>
+                        @endforeach
+                        <div class="blog-comments">
+                            <div class="">
+                                <livewire:comments :model="$post" />
+                            </div>
+                        </div>
                     </div>
-                </div> --}}
-                {{-- <livewire:comments :post="$post"/> --}}
-               {{-- <livewire:comments :model="$post ?? new \App\Models\Post" /> --}}
-               <livewire:comments :model="$post" />
+                    <div class="divider"></div>
+                    <div class="right">
+                         @if ($blog->related_blogs)
+                            <div class="related_blogs sticky">
+                                <ul style="padding: 25px;background: #f6f6f6;margin-top: 0px;color: #4d4d4d;font-family: 'Work Sans';border-radius: 8px;">
+                                    <li class="">  <h3>Related Blogs</h3></li>
+                                    @foreach ($blog->related_blogs as $relatedBlogId)
+                                        @php
+                                            $relatedBlog = \App\Models\Blog::find($relatedBlogId);
+                                        @endphp
+                                        @if ($relatedBlog)
+                                            <li class="border-bottom">
+                                            <a class="d-flex justufy-content-between align-items-center related_blog_link" href="{{ route('blog_details', ['category' => $relatedBlog->categoryname->name, 'slug' => Str::slug($relatedBlog->title)]) }}">
+                                                    <img class="related_blog_img match-height-item mb-2" src="{{ asset('storage/images/' . $relatedBlog->image) }}" alt="not found">
+                                                    <p class="related_blog_title text-capitalize"> {{ $relatedBlog->title }}</p>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -129,16 +122,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/8ohuouqsfj9dcnrapjxg1t1aqvftbsfowsu6tnil1fw8yk2i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-{{-- <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6826eb4698608700128c9e98&product=inline-share-buttons" async="async"></script> --}}
 
 <script>
-    //  tinymce.init({
-    //     selector: 'textarea',
-    //     menubar: false,
-    //     plugins: 'advlist autolink lists link image charmap print preview anchor',
-    //     toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-    //     height: 200
-    // });
 
     var quill = new Quill('#quill-editor', {
         theme: 'snow',

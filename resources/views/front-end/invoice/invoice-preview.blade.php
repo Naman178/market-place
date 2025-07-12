@@ -199,13 +199,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-xl-3 col-md-4 col-12 invoice-actions">
-                <div class="card">
-                    <div class="card-body">
-                        
-                    </div>
-                </div>
-            </div> --}}
          </div>
       </div>
    </div>

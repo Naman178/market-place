@@ -62,252 +62,90 @@
 <div class="col-md-12 p-4 card cart-doted-border" style="margin-bottom: 50px;">
     <p class="mb-0 mt-3" style="position: relative;">
     <div class="mb-5 cart-item-border text-center">Product Details</div>
-    {{-- @if (!empty($mergedPricing))
-    @foreach ($mergedPricing as $key => $selectedPricing)
+    @php
+        $selectedPricing = $cart['pricing'];
+        $plan = $cart['item'];
+
+        $itemPrice = (int) $selectedPricing['sale_price'];
+        $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
+        $discount = (int) ($selectedPricing['discount'] ?? 0);
+        $final_total = $itemPrice;
+    @endphp
+    <input type="hidden" id="server_discount" value="{{ $discount ?? 0 }}">
     <div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
         <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
             <!-- Product Image -->
             <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
-                            alt="{{ $plan->name }}"
-                            class="h-30 w-30">
+                alt="{{ $plan->name }}"
+                class="h-30 w-30">
+
             <!-- Product Details -->
             <div class="cart-item-details">
                 <h2 class="cart-item-title">{{ $plan->name }}</h2>
-                
             </div>
+
             <!-- Price and Quantity -->
-            <!-- <div class="price-quantity"> -->
-                  <p >Each<span class="d-block">{{ $plan->currency ?? 'INR' }} <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong> {{ $selectedPricing['billing_cycle'] ?? '' }}</span></p>
-
-                <div>
-                    <label for="quantity">Quantity:</label>
-                    <select class="d-block w-50" id="quantity" onchange="dynamicCalculation()">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <!-- <button class="pink-blue-grad-button mt-2" id="addOption" onclick="addQuantityOption()">Add Option</button> -->
-                </div>
-                    @php
-                        $itemPrice = (int) $selectedPricing['sale_price'];
-                        $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
-                        $discount = (int) ($selectedPricing['discount'] ?? 0);
-                        $final_total = $itemPrice;
-                    @endphp
-                    <p>Total: <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></p>
-              
-            <!-- </div> -->
-        </div>
-        <div class="cart-item-options">
-            <a class="remove-item" data-plan-id="{{ $plan->id }}" data-pricing-id="{{ $selectedPricing['id'] }}"data-category="{{ $categoryName }}" data-slug="{{ $subcategorySlug }}" >Remove</a>
-            <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
-            <a href="#" onclick="saveForLater({{ $plan->id }})">Save for Later</a>
-        </div>
-        <div class="border-top"></div>
-        <div class="d-flex align-items-center justify-content-between">
-            <h5 id="items-count">1 Items</h5>
-            <h5> <span class="ml-2"> <strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</strong></h5>  
-        </div>
-    </div>
-    @endforeach --}}
-    {{-- @else
-
-    <div class="row mb-3 pb-3 cart-item">
-        <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
-            <div class="cart-item-image">
-                <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
-                    alt="{{ $plan->name }}"
-                    class="h-100 w-100">
-            </div>
-        </div>
-        <div class="col-lg-9 col-sm-8 col-8 cart-detail-product align-content-center" style="margin-left: -25px;">
-            <h3 class="mt-0 mb-2 cart-item-name">{{ $plan->name }}</h3>
-            @if($selectedPricing)
-            <h5 class="mt-0 mb-2 cart-item-pri">
-                <span class="ml-2"> {{  $plan->currency ?? 'INR' }} <strong class="new-price">{{ $selectedPricing->sale_price ?? 0 }}</strong> {{ $selectedPricing->billing_cycle ?? '' }}</span>
-            </h5>
-            @endif
-            <h5 class="mt-0 mb-2 cart-item-pri">
-                Quantity: 1
-            </h5>
-        </div>
-    </div> --}}
-    {{-- @endif --}}
-    @php
-    $selectedPricing = $cart['pricing'];
-    $plan = $cart['item'];
-
-    $itemPrice = (int) $selectedPricing['sale_price'];
-    $gst = ($selectedPricing['gst_percentage'] / 100) * $itemPrice;
-    $discount = (int) ($selectedPricing['discount'] ?? 0);
-    $final_total = $itemPrice;
-@endphp
-<input type="hidden" id="server_discount" value="{{ $discount ?? 0 }}">
-<div class="cart-container" id="cart-container-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
-    <div class="cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}">
-        <!-- Product Image -->
-        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
-             alt="{{ $plan->name }}"
-             class="h-30 w-30">
-
-        <!-- Product Details -->
-        <div class="cart-item-details">
-            <h2 class="cart-item-title">{{ $plan->name }}</h2>
-        </div>
-
-        <!-- Price and Quantity -->
-        <p>Each
+            <p>Each
             <span class="d-block">
-                {{ $plan->currency ?? 'INR' }}
-                <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong>
+                <span class="price-usd">
+                    $ <strong class="new-price price-value-usd">{{ $selectedPricing['sale_price'] ?? 0 }}</strong>
+                </span>
+                <span class="price-inr d-none">
+                    ₹ <strong class="new-price price-value-inr">{{ $selectedPricing['sales_inr_price'] ?? 0 }}</strong>
+                </span>
                 {{ $selectedPricing['billing_cycle'] ?? '' }}
             </span>
         </p>
 
-        <div>
-            <label for="quantity">Quantity:</label>
-            <select class="d-block w-50" id="quantity" onchange="dynamicCalculation()">
-                @for ($i = 1; $i <= 10; $i++)
-                    <option value="{{ $i }}">{{ $i }}</option>
-                @endfor
-            </select>
+            <div>
+                <label for="quantity">Quantity:</label>
+                <select class="d-block w-50" id="quantity" onchange="dynamicCalculation()">
+                    @for ($i = 1; $i <= 10; $i++)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+
+            <p>Total:
+                <strong class="d-block finaltotals">
+                    <span class="price-usd">
+                        $ <span class="total-value-usd">{{ number_format($final_total) }}</span>
+                    </span>
+                    <span class="price-inr d-none">
+                        ₹ <span class="total-value-inr">{{ number_format($selectedPricing['sales_inr_price']) }}</span>
+                    </span>
+                </strong>
+            </p>
         </div>
 
-        <p>Total:
-            <strong class="d-block finaltotals">
-                {{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}
-            </strong>
-        </p>
+        <!-- Remove and Wishlist -->
+        <div class="cart-item-options">
+            <a class="remove-item"
+            data-plan-id="{{ $plan->id }}"
+            data-pricing-id="{{ $selectedPricing['id'] }}"
+            data-category="{{ $categoryName }}"
+            data-slug="{{ $subcategorySlug }}">
+                Remove
+            </a>
+            <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
+        </div>
+
+        <div class="border-top"></div>
+
+        <div class="d-flex align-items-center justify-content-between">
+            <h5 id="items-count">1 Item</h5>
+            <h5>
+                <strong class="d-block finaltotals">
+                    <span class="price-usd">
+                        $ <span class="total-value-usd">{{ number_format($final_total) }}</span>
+                    </span>
+                    <span class="price-inr d-none">
+                        ₹ <span class="total-value-inr">{{ number_format($selectedPricing['sales_inr_price']) }}</span>
+                    </span>
+                </strong>
+            </h5>
+        </div>
     </div>
-
-    <!-- Remove and Wishlist -->
-    <div class="cart-item-options">
-        <a class="remove-item"
-           data-plan-id="{{ $plan->id }}"
-           data-pricing-id="{{ $selectedPricing['id'] }}"
-           data-category="{{ $categoryName }}"
-           data-slug="{{ $subcategorySlug }}">
-            Remove
-        </a>
-        <a onclick="saveForLater({{ $plan->id }})">Move to Wishlist</a>
-    </div>
-
-    <div class="border-top"></div>
-
-    <div class="d-flex align-items-center justify-content-between">
-        <h5 id="items-count">1 Item</h5>
-        <h5><strong class="d-block finaltotals">{{ $plan->currency ?? 'INR' }} {{ number_format($final_total) }}</strong></h5>
-    </div>
-</div>
-
-    
-    <!-- <div class="cart-items mt-3">
-        @if (!empty($mergedPricing))
-        @foreach ($mergedPricing as $key => $selectedPricing) -->
-            <!-- <div class="row mb-3 pb-3 cart-item" id="cart-item-{{ $plan->id }}-{{ $selectedPricing['id'] }}"> -->
-                <!-- Product Image Section -->
-                <!-- <div class="col-lg-3 col-sm-4 col-4 cart-detail-img d-flex justify-content-center align-content-center">
-                    <div class="cart-item-image">
-                        <img src="@if (!empty($plan->thumbnail_image)) {{ asset('storage/items_files/' . $plan->thumbnail_image) }} @endif"
-                            alt="{{ $plan->name }}"
-                            class="h-100 w-100">
-                    </div>
-                </div> -->
-
-                <!-- Product Details Sectionx -->
-                <!-- <div class="col-lg-3 col-sm-8 col-8 cart-detail-product align-content-center">
-                    <h3 class="mt-0 mb-2 cart-item-name" style="margin-top: -20px !important">{{ $plan->name }}</h3>
-                    @if($selectedPricing)
-                    <h5 class="mt-0 mb-2 cart-item-pri">
-                        <span class="ml-2">&#8377; <strong class="new-price">{{ $selectedPricing['sale_price'] ?? 0 }}</strong> {{ $selectedPricing['billing_cycle'] ?? '' }}</span>
-                    </h5>
-                    @endif
-
-                    {{-- @if ((int) $selectedPricing['id'] > 1)
-                            <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item" 
-                                data-plan-id="{{ $plan->id }}"
-                    data-pricing-id="{{ $selectedPricing['id'] }}">
-                    Remove
-                    </button>
-                    @endif --}}
-                </div>
-                <div class="col-lg-3 col-sm-12">
-                    <h5 class="mt-0 mb-2 cart-item-pri">
-                        Quantity: <span id="quantity">1</span>
-                    </h5>
-                    <button id="decrement" class="pink-blue-grad-button d-inline-block border-0 m-0" disabled onclick="dynamicCalculation()">-</button>
-                    <button id="increment" class="pink-blue-grad-button d-inline-block border-0 m-0" onclick="dynamicCalculation()">+</button>
-                </div>
-                <div class="col-lg-3 col-sm-12">
-                    <h5 class="mt-0">Total </h5>
-                    @php
-                    if(!empty($mergedPricing)){
-                    foreach($mergedPricing as $key => $selectedPricing){
-                    $total = (int)$selectedPricing['fixed_price'];
-                    $gst = ($selectedPricing['gst_percentage']/100) * $total;
-                    $final_total = $total + $gst;
-                    }
-                    }else{
-                    $total = (int)$selectedPricing->fixed_price;
-                    $gst = ($selectedPricing->gst_percentage/100) * $total;
-                    $final_total = $total + $gst;
-                    }
-                    @endphp
-                    <h5 class="mt-0 mb-2" id="final_total">{{ $plan->currency ?? 'INR' }}  {{ number_format($final_total) }}</h5>
-                    @if ((int) $selectedPricing['id'] > 1)
-                    <div class="mt-auto">  
-                        <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item"
-                            data-plan-id="{{ $plan->id }}" 
-                            data-pricing-id="{{ $selectedPricing['id'] }}">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                    @endif
-                </div> -->
-                
-            <!-- Cart Features Section (Two-column side by side) -->
-        <!-- @if (!empty($selectedPricing['key_features']))
-                    <div class="col-lg-4 col-sm-12 cart-features d-flex justify-content-between align-items-start">
-                        <div class="d-flex flex-wrap w-100" style="margin-left: -95px;">
-                            @php
-                                $half = ceil(count($selectedPricing['key_features']) / 2);
-                                $leftColumn = array_slice($selectedPricing['key_features'], 0, $half);
-                                $rightColumn = array_slice($selectedPricing['key_features'], $half);
-                            @endphp
-                            
-                            <div class="">
-                                @foreach ($leftColumn as $feature)
-                                    <div class="mb-2">{{ $feature }}</div>
-                                @endforeach
-                            </div>
-
-                            <div class="">
-                                @foreach ($rightColumn as $feature)
-                                    <div class="mb-2">{{ $feature }}</div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        @if ((int) $selectedPricing['id'] > 1)
-                            <button class="pink-blue-grad-button d-inline-block border-0 m-0 remove-item"
-                                data-plan-id="{{ $plan->id }}" 
-                                data-pricing-id="{{ $selectedPricing['id'] }}">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        @endif
-                    </div>
-                @endif -->
-    <!-- </div>
-    @endforeach
-    @else
-    @endif -->
 </div>
 
 <div class="col-md-12 p-4 mt-3 card cart-doted-border">
@@ -360,26 +198,10 @@
                 <div class="error" id="email_error"></div>
             </div>
         </div>
-
-        <!-- Country Code -->
-        {{-- <div class="col-md-6">
-            <div class="form-group">
-                <select name="country_code" id="country_code" class="form-control select-input" required="required">
-                    <option value="">Select country code</option>
-                    @foreach($countaries as $countery)
-                    <option value="{{ $countery->id }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->country_code }}</option>
-                    @endforeach
-                </select>
-                <div class="error" id="country_code_error"></div>
-            </div>
-        </div> --}}
-
+        
         <!-- Contact Number -->
         <div class="col-md-6">
             <div class="form-group">
-                {{-- <input type="number" name="contact_number" id="contact" class="form-control" placeholder=" " value="{{ optional($user)->contact_number }}" />
-                <label for="contact" class="floating-label">Contact Number</label>
-                <div class="error" id="contact_error"></div> --}}
                 <input type="tel" id="contact_number" name="contact_number" class="form-control" value="{{ optional($user)->contact_number ?? '' }}">
                 <input type="hidden" name="country_code" id="country_code" value="{{  $user->country_code ?? '' }}">
                 {{-- <input type="hidden" name="country_code_name" id="country_code_name" value="{{ $dialCode }}"> --}}
@@ -427,19 +249,6 @@
             </div>
         </div>
 
-        <!-- Country -->
-        {{-- <div class="col-md-6">
-            <div class="form-group">
-                <select name="country" id="country" class="form-control select-input">
-                    <option value="0">Select Country</option>
-                    @foreach($countaries as $countery)
-                    <option value="{{ $countery->name }}" data-country-code="{{ $countery->ISOname }}" {{ optional($user)->country == $countery->id ? 'selected' : '' }}>{{ $countery->name }}</option>
-                    @endforeach
-                </select>
-                <div class="error" id="country_error"></div>
-            </div>
-        </div> --}}
-
         <!-- City -->
         <div class="col-md-6">
             <div class="form-group">
@@ -460,3 +269,24 @@
     </div>
     </form>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem('preferred_currency') === 'inr') {
+            document.querySelectorAll('.price-usd').forEach(el => el.classList.add('d-none'));
+            document.querySelectorAll('.price-inr').forEach(el => el.classList.remove('d-none'));
+        }
+    });
+    let unitPrice = localStorage.getItem('preferred_currency') === 'inr'
+    ? parseFloat(document.querySelector('.price-value-inr')?.textContent || 0)
+    : parseFloat(document.querySelector('.price-value-usd')?.textContent || 0);
+
+    let quantity = parseInt(document.getElementById('quantity').value);
+    let total = unitPrice * quantity;
+
+    // Update total field
+    if (localStorage.getItem('preferred_currency') === 'inr') {
+        document.querySelector('.total-value-inr').textContent = total.toLocaleString();
+    } else {
+        document.querySelector('.total-value-usd').textContent = total.toLocaleString();
+    }
+</script>

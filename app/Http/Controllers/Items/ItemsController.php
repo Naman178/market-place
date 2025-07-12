@@ -192,6 +192,9 @@ class ItemsController extends Controller
                     'grace_period'=>$request->graceperiod,
                     'expiry_date' => ($request->item_type === 'one-time' && $request->licenseradio !== 'lifetime') ? $request->expiryDate : null,
                     $isUpdate ? 'updated_at' : 'created_at' => Carbon::now(),
+                    'fixed_inr_price' => $request->fixed_price_inr ?? null,
+                    'sales_inr_price' => $request->sale_price_inr ?? null,
+                    'gst_percentage_inr' => $request->gst_percentage_inr ?? null
                 ]
             );
 

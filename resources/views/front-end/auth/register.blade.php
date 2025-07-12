@@ -70,7 +70,6 @@
             background-color: #ffffff !important; /* Light gray background */
             padding: 5px;
             border-radius: 5px 0 0 5px;
-            /* border: 1px solid #ced4da; */
         }
 
         .iti--separate-dial-code .iti__flag-container {
@@ -80,9 +79,6 @@
         .iti--allow-dropdown input {
             padding-left: 100px !important; /* Adjust padding to start after country code */
         }
-        /* .btn-google{
-            background-position: 122px 12px !important;
-        } */
         .text-left{
             text-align: left !important;
             font-size: 15px;
@@ -230,7 +226,6 @@
                                 </svg>
                                 <span class="ml-3">Register</span>
                             </button>
-                            {{-- <button type="submit" class="btn btn-block pink-btn mt-3 mb-2" style="cursor: pointer;">Register</button> --}}
                           <p class="text-center d-block text-white mt-3 mb-2">Already an Account ..? <a class="a_color" href="{{ url('user-login') }}"> Login </a> </p>       
                         </div>
                         <div class="bottom-border mb-3 mt-3"></div>
@@ -242,113 +237,6 @@
                             data-testid="userTermsLink">Terms of Use</a>.
                         </span>
                     </div>
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="tel" id="phone" name="phone" class="form-control" required="required">
-                            <input type="hidden" name="country_code" id="country_code">
-                            @error('country_code')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="contact_number" name="contact_number">
-                            <label for="contact_number" class="floating-label">Contact Number</label>
-                            @error('contact_number')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="contact_number_error"></div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="company_name" id="company_name" class="form-control" placeholder=""/>
-                            <label for="company_name" class="floating-label">Company Name</label>
-                            @error('company_name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="company_name_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="url" name="company_website" id="company_website" class="form-control" placeholder=""/>
-                            <label for="company_website" class="floating-label">Company Website</label>
-                            @error('company_website')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="company_website_error"></div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <select name="country" id="country" class="form-control select-input">
-                                <option value="0">Select Country</option>
-                                @foreach ($countaries as $countery)
-                                    <option value="{{ $countery->id }}"
-                                        data-country-code="{{ $countery->ISOname }}">
-                                        {{ $countery->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('country')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="address_line1" id="address_line1" class="form-control" placeholder=""/>
-                            <label for="address_line1" class="floating-label">Address Line 1</label>
-                            @error('address_line1')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="address_line1_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="address_line2" id="address_line2" class="form-control" placeholder=""/>
-                            <label for="address_line2" class="floating-label">Address Line 2</label>
-                            <div class="error" id="address_line2_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="city" id="city" class="form-control" placeholder=""/>
-                            <label for="city" class="floating-label">City</label>
-                            @error('city')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="city_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="postal_code" id="postal_code" class="form-control" placeholder=""/>
-                            <label for="postal_code" class="floating-label">Zip / Postal Code</label>
-                            @error('postal_code')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="postal_code_error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                            <label for="password_confirmation" class="floating-label">Confirm Password</label>
-                            @error('password_confirmation')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div class="error" id="password_confirmation_error"></div>
-                        </div>
-                    </div>                    
-                    <div class="col-md-12 pt-3">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-block pink-btn mt-3" style="cursor: pointer;">Register</button>
-                          <p class="text-center d-block text-white mt-3">Already an Account ..? <a href="{{ url('user-login') }}"> Login </a> </p>       
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div> 
@@ -376,93 +264,7 @@
                 console.error("reCAPTCHA error:", error);
             });
         });
-            // document.addEventListener("DOMContentLoaded", function () {
-            //     const inputFields = document.querySelectorAll(".form-control");
-
-            //     function updateFloatingLabel(input) {
-            //         const label = input.nextElementSibling;
-            //         const errorDiv = document.getElementById(input.id + "_error");
-            //         const hasError = errorDiv && errorDiv.textContent.trim() !== "";
-
-            //         // Specific check for disposable email message
-            //         const isDisposableEmailError =
-            //             input.id === "email" &&
-            //             document.getElementById("email_error_message") &&
-            //             document.getElementById("email_error_message").textContent.includes("Disposable Email");
-
-            //         if (isDisposableEmailError) {
-            //             label.style.top = "22px";
-            //             label.style.fontSize = "0.8rem";
-            //             label.style.color = "red";
-            //             input.style.borderColor = "red";
-            //         } else if (input.value.trim() !== "") {
-            //             label.style.top = "-1%";
-            //             label.style.fontSize = "0.8rem";
-            //             label.style.color = "#70657b";
-            //             input.style.borderColor = "#ccc";
-            //         } else if (hasError) {
-            //             label.style.top = "35%";
-            //             label.style.fontSize = "1rem";
-            //             label.style.color = "red";
-            //             input.style.borderColor = "red";
-            //         } else {
-            //             label.style.top = "50%";
-            //             label.style.fontSize = "1rem";
-            //             label.style.color = "#70657b";
-            //             input.style.borderColor = "#ccc";
-            //         }
-            //     }
-
-            //     inputFields.forEach(input => {
-            //         const errorDiv = document.getElementById(input.id + "_error");
-
-            //         updateFloatingLabel(input);
-
-            //         input.addEventListener("blur", function () {
-            //             const value = input.value.trim();
-            //             if (!value) {
-            //                 errorDiv.textContent = input.name.replace("_", " ") + " is required!";
-            //                 errorDiv.style.display = "block";
-            //                 input.style.borderColor = "red";
-            //             } else {
-            //                 errorDiv.textContent = "";
-            //                 errorDiv.style.display = "none";
-            //                 input.style.borderColor = "#ccc";
-            //             }
-            //             updateFloatingLabel(input);
-            //         });
-
-            //         input.addEventListener("input", function () {
-            //             const value = input.value.trim();
-
-            //             if (input.id === "firstname" || input.id === "last_name") {
-            //                 this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
-            //                 if (!/^[a-zA-Z\s]+$/.test(this.value)) {
-            //                     errorDiv.textContent = "Only letters and spaces are allowed!";
-            //                     errorDiv.style.display = "block";
-            //                     input.style.borderColor = "red";
-            //                 } else {
-            //                     errorDiv.textContent = "";
-            //                     errorDiv.style.display = "none";
-            //                     input.style.borderColor = "#ccc";
-            //                 }
-            //             }
-            //             updateFloatingLabel(input);
-            //         });
-
-            //         input.addEventListener("focus", function () {
-            //             const label = input.nextElementSibling;
-            //             label.style.top = "-1%";
-            //             label.style.fontSize = "0.8rem";
-            //             input.style.borderColor = "#ccc";
-
-            //             if (errorDiv && errorDiv.textContent.trim() !== "") {
-            //                 label.style.color = "red";
-            //                 input.style.borderColor = "red";
-            //             }
-            //         });
-            //     });
-            // });
+            
             document.addEventListener("DOMContentLoaded", function () {
                 const form = document.querySelector("form[action='{{ route('user-register-post') }}']");
                 const inputFields = Array.from(document.querySelectorAll(".form-control")).filter(input => input.id && input.id.trim() !== '');

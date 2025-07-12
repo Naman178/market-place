@@ -73,6 +73,16 @@
         .underline::after{
             bottom: -45px !important;
         }
+        .terms-and-condition p {
+            font-family: Work Sans;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            text-align: left;
+            color: #545454;
+            margin: 15px 0 15px;
+            letter-spacing: -0.5px;
+        }
     </style>
 @endsection
 @section('content')

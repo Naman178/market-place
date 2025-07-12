@@ -1,126 +1,128 @@
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
-//    document.addEventListener('DOMContentLoaded', function () {
-//         const trialBtn = document.getElementById('trial_button');
-//         const modal = document.getElementById('trialChoiceModal');
-//         const closeModal = document.getElementById('close_modal');
-//         const chooseTrial = document.getElementById('choose_trial');
-//         const choosePay = document.getElementById('choose_without_trial');
-//         const trialPeriodInput = document.getElementById('trial_period_days');
-//         const changeOptionBtn = document.getElementById('change_option_button');
 
-//         trialPeriodInput.value = "0";
+    document.addEventListener('DOMContentLoaded', function () {
+        const currency = localStorage.getItem('preferred_currency') || 'inr';
 
-//         // Show modal when trial button is clicked (only if not yet submitted)
-//         if (trialBtn) {
-//             trialBtn.addEventListener('click', function (e) {
-//                 if (trialBtn.getAttribute('type') !== 'submit') {
-//                     e.preventDefault(); 
-//                     modal.style.display = 'block';
-//                 }
-//             });
-//         }
+        // Subtotal price
+        const priceElement = document.getElementById('subtotal_amount');
+        const salePrice = parseFloat(priceElement.getAttribute('data-sale'));
+        const inrPrice = parseFloat(priceElement.getAttribute('data-inr'));
 
-//         // "Change Option" button opens modal again
-//         changeOptionBtn.addEventListener('click', function () {
-//             modal.style.display = 'block';
-//         });
+        if (currency === 'inr') {
+            priceElement.innerText = `₹ ${inrPrice.toLocaleString()}`;
+            priceElement.setAttribute('data-amount', inrPrice);
+        } else {
+            priceElement.innerText = `$ ${salePrice.toLocaleString()}`;
+            priceElement.setAttribute('data-amount', salePrice);
+        }
 
-//         // Close modal
-//         closeModal.addEventListener('click', function () {
-//             modal.style.display = 'none';
-//         });
+        // GST amount
+        const gstElement = document.getElementById('gst_amount');
+        const gstPercentageUSD = parseFloat(gstElement.getAttribute('data-gst-usd'));
+        const gstPercentageINR = parseFloat(gstElement.getAttribute('data-gst-inr'));
+        const salePriceUSD = parseFloat(gstElement.getAttribute('data-sale-usd'));
+        const salePriceINR = parseFloat(gstElement.getAttribute('data-sale-inr'));
 
-//         // Handle "Start Free Trial"
-//         chooseTrial.addEventListener('click', function () {
-//             trialPeriodInput.value = "{{ $plan->trial_days }}"; 
-//             const trialDays = trialPeriodInput.value;
-//             changeButtonToSubmit(trialBtn, `Free Trial for <span class="final_btn_text">${trialDays}</span> Days`);
-//             modal.style.display = 'none';
-//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
-//         });
+        let gstAmount;
+        if (currency === 'inr') {
+            gstAmount = (gstPercentageINR / 100) * salePriceINR;
+            gstElement.innerText = `₹ ${gstAmount.toFixed(2)}`;
+            gstElement.setAttribute('data-pr', gstPercentageINR);
+        } else {
+            gstAmount = (gstPercentageUSD / 100) * salePriceUSD;
+            gstElement.innerText = `$ ${gstAmount.toFixed(2)}`;
+            gstElement.setAttribute('data-pr', gstPercentageUSD); 
+        }
 
-//         // Handle "Proceed to Pay"
-//         choosePay.addEventListener('click', function () {
-//             trialPeriodInput.value = "0"; 
-//             const finalTotal = "{{ number_format((int) $final_total) }}";
-//             const currency = "{{ $plan->currency ?? 'INR' }}";
-//             changeButtonToSubmit(trialBtn, `Proceed To Pay <span class="final_btn_text">${finalTotal}</span> ${currency}`);
-//             modal.style.display = 'none';
-//             changeOptionBtn.style.display = 'inline-flex'; // show the change button
-//         });
+        const totalElement = document.getElementById('final_total');
+        const totalSaleUSD = parseFloat(totalElement.getAttribute('data-sale-usd'));
+        const totalSaleINR = parseFloat(totalElement.getAttribute('data-sale-inr'));
+        const totalGstUSD = parseFloat(totalElement.getAttribute('data-gst-usd'));
+        const totalGstINR = parseFloat(totalElement.getAttribute('data-gst-inr'));
 
-//         // Utility function to change button type and label
-//         function changeButtonToSubmit(button, labelHtml) {
-//             if (!button) return;
-//             button.setAttribute('type', 'submit'); 
-//             button.innerHTML = `
-//                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-//                     <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-//                 </svg>
-//                 <span>${labelHtml}</span>
-//             `;
-//         }
-//     });
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const trialBtn = document.getElementById('trial_button'); // main button
-    //     const modal = document.getElementById('trialChoiceModal');
-    //     const closeModal = document.getElementById('close_modal');
-    //     const trialBtnModal = document.getElementById('trial_button_modal'); // trial button inside modal
-    //     const trialPeriodInput = document.getElementById('trial_period_days');
-    //     const form = document.getElementById('stripe-form');
-    //     const form2 = document.getElementById('guest-checkout-form');
-
-    //     const trialDays = parseInt("{{ $plan->trial_days }}", 10) || 0;
-
-    //     trialPeriodInput.value = "0";
-
-    //     function validateFormRequiredFields(form) {
-    //         const requiredInputs = form.querySelectorAll('[required]');
-    //         for (let input of requiredInputs) {
-    //             if (!input.value || input.value.trim() === '') {
-    //                 return false;
-    //             }
-    //         }
-    //         return true;
-    //     }
+        let total;
+        if(currency === 'inr') {
+            total = totalSaleINR + ((totalGstINR / 100) * totalSaleINR);
+            setTimeout(() => {
+                totalElement.innerText = `₹ ${total.toFixed(2)}`;
+            }, 1000);
+        } else {
+            total = totalSaleUSD + ((totalGstUSD / 100) * totalSaleUSD);
+            setTimeout(() => {
+                totalElement.innerText = `$ ${total.toFixed(2)}`;
+            }, 1000);
+        }
+    });
 
 
-    //     if (trialBtn) {
-    //         trialBtn.addEventListener('click', function (e) {
-    //             e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        const preferredCurrency = localStorage.getItem('preferred_currency') || 'inr';
 
-    //             const form1Valid = form ? validateFormRequiredFields(form) : true;
-    //             const form2Valid = form2 ? validateFormRequiredFields(form2) : true;
+        const amountInput = document.getElementById('amount');
+        const checkoutCurrency = document.getElementById('currency');
+        const sale = parseFloat(amountInput.dataset.sale);
+        const inr = parseFloat(amountInput.dataset.inr);
+        const gst = parseFloat(amountInput.dataset.gst);
+        const gstInr = parseFloat(amountInput.dataset.gst_inr);
 
-    //             if (form1Valid && form2Valid) {
-    //                 modal.style.display = 'block';
-    //             } else {
-    //                 toastr.error('Please fill all the form details.');
-    //             }
-    //         });
-    //     }
+        const isINR = preferredCurrency === 'inr';
 
-    //     if (closeModal) {
-    //         closeModal.addEventListener('click', function () {
-    //             modal.style.display = 'none';
-    //         });
-    //     }
+        const price = isINR ? inr : sale;
+        const gstPercentage = isINR ? gstInr : gst;
+        const total = price + ((gstPercentage / 100) * price);
 
-    //     if (trialBtnModal) {
-    //         trialBtnModal.addEventListener('click', function () {
-    //             trialPeriodInput.value = trialDays;
-    //             modal.style.display = 'none';
+        const amountValue = Math.round(total * 100);
+        checkoutCurrency.value = preferredCurrency.toUpperCase();
+        amountInput.value = amountValue;
+    });
 
-    //             if (validateFormRequiredFields(form)) {
-    //                 form.submit();
-    //             } else {
-    //                 toastr.error('Please fill all the form details.');
-    //             }
-    //         });
-    //     }
-    // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const currency = localStorage.getItem('preferred_currency') || 'inr';
+        const finalTotalEl = document.getElementById('final_total');
+
+        const salePrice = parseFloat(finalTotalEl.getAttribute('data-sale'));
+        const inrPrice = parseFloat(finalTotalEl.getAttribute('data-inr'));
+        const gstPercent = parseFloat(finalTotalEl.getAttribute('data-gst'));
+
+        let price = currency === 'inr' ? inrPrice : salePrice;
+        let gst = (gstPercent / 100) * price;
+        let total = price + gst;
+
+        // Set updated value and display
+        finalTotalEl.innerText = (currency === 'inr' ? '₹' : '$') + ' ' + total.toFixed(2);
+        finalTotalEl.setAttribute('data-amount', total.toFixed(2));
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const preferredCurrency = localStorage.getItem('preferred_currency') || 'inr';
+
+        document.querySelectorAll('.proced_to_pay_btn').forEach(button => {
+            const sale = parseFloat(button.dataset.sale);
+            const inr = parseFloat(button.dataset.inr);
+            const gst = parseFloat(button.dataset.gst);
+            const gstInr = parseFloat(button.dataset.gst_inr);
+
+            const isINR = preferredCurrency === 'inr';
+
+            const price = isINR ? inr : sale;
+            const gstPercentage = isINR ? gstInr : gst;
+            const total = price + ((gstPercentage / 100) * price);
+            const currency = preferredCurrency.toUpperCase();
+
+            const amountElement = button.querySelector('.final_btn_text');
+            const currencyElement = button.querySelector('.final_currency');
+
+            if (amountElement) {
+                amountElement.innerText = total;
+            }
+
+            if (currencyElement) {
+                currencyElement.innerText = isINR ? '₹' : '$';
+            }
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         const trialBtn = document.getElementById("trial_button");
         const trialBtnModal = document.getElementById("trial_button_modal");
@@ -336,7 +338,6 @@
 
     $(document).ready(function() {
         var itemId = "{{ $plan->id }}";
-        console.log("{{ $plan->pricing->fixed_price}}")
         var storeid = localStorage.getItem("itemId");
         // var itemPrice =parseFloat("{{$totalSubtotal ?? $selectedPricing->sale_price }}") || 0;
         // var gst = Math.round(
@@ -347,7 +348,7 @@
 
         let totalGst = itemPrice * gst / 100;
 
-        console.log(itemPrice, gst, totalGst );
+        // console.log(itemPrice, gst, totalGst );
         
         if (itemId != storeid) {
             localStorage.removeItem("selectedCouponId");

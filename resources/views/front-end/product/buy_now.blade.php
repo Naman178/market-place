@@ -53,8 +53,6 @@
     use App\Models\Category;
     use App\Models\SubCategory;
     use App\Models\User;
-    // $category = Category::where('sys_state','=','0')->first();
-    // $subcategory = SubCategory::where('sys_state','=','0')->first();
     $category = Category::where('id', $item->categorySubcategory->category_id)->first();
     $subcategory = SubCategory::where('id', $item->categorySubcategory->subcategory_id)->first();
     $user = User::where('email', 'superadmin@gmail.com')->first();
@@ -139,14 +137,7 @@
                             <i class="fa fa-star"></i> Review ({{ $userReviewsCount ?? 0 }})
                         </button>
                     </li>
-
-                    {{-- <li class="nav-item" role="presentation">
-                        <button id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
-                            Wishlist</button>
-                    </li> --}}
-
                 </ul>
-                {{-- <div class="tab-content" id="pills-tabContent"> --}}
                     <div class="tab-content active" id="pills-home">
                         <div class="wsus__pro_description">
                             {!! $item->html_description !!}
@@ -169,83 +160,7 @@
                         </div>
                         <div class="wsus__pagination">
                         </div>
-                        
                         <livewire:comments :model="$post" :itemId="$item->id" />
-                        {{-- <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ Auth::user()->id ?? 0 }}">
-                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-                            
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="wsus__comment_single_input mt-2">
-                                        <fieldset>
-                                            <legend>Comment*</legend>
-                                            <textarea rows="7" name="comment" placeholder="Type here.." required></textarea>
-                                        </fieldset>
-                                    </div>
-                                    <button type="submit" class="blue_common_btn " id="submitBtn" >
-                                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="bg-line"></polyline>
-                                            <polyline points="99,1 99,99 1,99 1,1 99,1" class="hl-line"></polyline>
-                                        </svg>
-                                        <span> Submit Comment</span>
-                                    </button>
-                                    <button class="common_btn pink-blue-grad-button " id="submitBtn" type="submit">Submit Comment</button>
-                                    <button class="common_btn d-none" id="showSpain" type="submit"><i
-                                            class="fas fa-spinner fa-spin" aria-hidden="true"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="wsus__pagination">
-                            @foreach ($comments as $comment)
-                                <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
-                                    <div class="d-flex align-items-start">
-                                        <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
-
-                                        <!-- Comment Content -->
-                                        <div class="mx-3 w-100">
-                                            <h4 class="mb-1 text-primary mt-2">
-                                                {{ $comment->user->name ?? 'Anonymous' }}
-                                                @if($comment->is_edited) <small class="text-muted">(edited)</small> @endif
-                                            </h4>
-
-                                            <!-- Comment Date -->
-                                            <span class="text-muted small">{{ $comment->created_at->format('M d, Y h:i A') }}</span>
-
-                                            <!-- Comment Text -->
-                                            <p class="mb-0 mt-2 text-secondary comment-text-{{ $comment->id }}">
-                                                {{ $comment->description ?? 'No comment provided.' }}
-                                                @if ($comment->is_edited)
-                                                    <span class="text-muted">(Edited by {{ $comment->user->name }})</span>
-                                                @endif
-                                            </p>
-
-
-                                            <!-- Edit Form (Hidden by Default) -->
-                                            <textarea class="form-control d-none edit-textarea-{{ $comment->id }}">{{ $comment->description }}</textarea>
-
-                                            <!-- Action Buttons -->
-                                            @if(Auth::check() && Auth::id() == $comment->user_id)
-                                                <div class="mt-2">
-                                                    <button class="blue_common_btn btn-sm btn-outline-primary edit-btn-{{ $comment->id }}" onclick="editComment({{ $comment->id }})">
-                                                        Edit
-                                                    </button>
-                                                    <button class="blue_common_btn btn-sm btn-success save-btn-{{ $comment->id }} d-none" onclick="saveComment({{ $comment->id }})">
-                                                        Save
-                                                    </button>
-                                                    <button class="blue_common_btn btn-sm btn-secondary cancel-btn-{{ $comment->id }} d-none" onclick="cancelEdit({{ $comment->id }})">
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            @endif
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div> --}}
                         
                     </div>
                     <div class="tab-content" id="pills-contact">
@@ -285,7 +200,6 @@
                                         </svg>
                                         <span> Submit Review</span>
                                     </button>
-                                    {{-- <button class="common_btn pink-blue-grad-button" id="reviewSubmitBtn" type="submit">Submit Review</button> --}}
                                     <button class="common_btn d-none" id="reviewShowSpain" type="submit">
                                         <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
                                     </button>
@@ -367,13 +281,7 @@
                         </button>
                     </li>
 
-                    {{-- <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="wishlistBtn-{{ $item->id }}" onclick="addWishlist({{ $item->id }})"><i id="wishlistIcon-{{ $item->id }}" class="far fa-heart" aria-hidden="true"></i>
-                            Wishlist</button>
-                    </li> --}}
-
                 </ul>
-                {{-- <div class="tab-content" id="pills-tabContent"> --}}
                     <div class="tab-content active" id="pills-home">
                         <div class="wsus__pro_description">
                            {!! $item->html_description !!}
@@ -405,76 +313,6 @@
                         <div class="wsus__pagination">
                         </div>
                         <livewire:comments :model="$post" :itemId="$item->id" />
-
-                        {{-- <form class="wsus__comment_input_area" id="productCommentForm" method="POST"  action="{{ route('product-comment-post') }}">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ Auth::user()->id ?? 0 }}">
-                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-                          
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="wsus__comment_single_input mt-2">
-                                        <fieldset>
-                                            <legend>Comment*</legend>
-                                            <textarea rows="7" name="comment" placeholder="Type here.." required></textarea>
-                                        </fieldset>
-                                    </div>
-                                    <button class="common_btn pink-blue-grad-button" id="submitBtn" type="submit">Submit Comment</button>
-                                    <button class="common_btn d-none" id="showSpain" type="submit"><i
-                                            class="fas fa-spinner fa-spin" aria-hidden="true"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="wsus__pagination">
-                            @foreach ($comments as $comment)
-                                <div class="wsus__comment_single p-3 border rounded shadow-sm mb-3 bg-white mt-3">
-                                    <div class="d-flex align-items-start">
-                                        <!-- User Image -->
-                                        <img src="{{ asset('public/assets/images/user.png') }}" class="comment_img rounded-circle" alt="User Image">
-
-                                        <!-- Comment Content -->
-                                        <div class="mx-3 w-100">
-                                            <h4 class="mb-1 text-primary mt-2">
-                                                {{ $comment->user->name ?? 'Anonymous' }}
-                                                @if($comment->is_edited) <small class="text-muted">(edited)</small> @endif
-                                            </h4>
-
-                                            <!-- Comment Date -->
-                                            <span class="text-muted small">{{ $comment->created_at->format('M d, Y h:i A') }}</span>
-
-                                            <!-- Comment Text -->
-                                            <p class="mb-0 mt-2 text-secondary comment-text-{{ $comment->id }}">
-                                                {{ $comment->description ?? 'No comment provided.' }}
-                                                @if ($comment->is_edited)
-                                                    <span class="text-muted">(Edited by {{ $comment->user->name }})</span>
-                                                @endif
-                                            </p>
-
-
-                                            <!-- Edit Form (Hidden by Default) -->
-                                            <textarea class="form-control d-none edit-textarea-{{ $comment->id }}">{{ $comment->description }}</textarea>
-
-                                            <!-- Action Buttons -->
-                                            @if(Auth::check() && Auth::id() == $comment->user_id)
-                                                <div class="mt-2">
-                                                    <button class="blue_common_btn btn-sm btn-outline-primary edit-btn-{{ $comment->id }}" onclick="editComment({{ $comment->id }})">
-                                                        Edit
-                                                    </button>
-                                                    <button class="blue_common_btn btn-sm btn-success save-btn-{{ $comment->id }} d-none" onclick="saveComment({{ $comment->id }})">
-                                                        Save
-                                                    </button>
-                                                    <button class="blue_common_btn btn-sm btn-secondary cancel-btn-{{ $comment->id }} d-none" onclick="cancelEdit({{ $comment->id }})">
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            @endif
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                         --}}
                     </div>
                     <div class="tab-content" id="pills-contact">
                         <div class="wsus__pro_det_review d-flex align-items-center">
@@ -578,11 +416,24 @@
                     <div class="wsus__sidebar_licence">
                         <h2 class="p-0">
                             @if($item->pricing['fixed_price'] != $item->pricing['sale_price']) 
-                              <span class="old-price">{{ $item->currency ??  'INR' }}  <strong >{{ $item->pricing['fixed_price'] ?? 0 }}</strong> </span>
+                              <span class="old-price" id="old-price">
+                                <span class="price-usd">
+                                    $ <strong>{{ $item->pricing['fixed_price'] ?? 0 }}</strong>
+                                </span>
+                                <span class="price-inr d-none">
+                                    ₹ <strong>{{ $item->pricing['fixed_inr_price'] ?? 0 }}</strong>
+                                </span>
+                            </span>
                             @endif 
                             
-                            <span class="ml-2">{{ $item->currency ??  'INR' }} 
-                            <strong class="new-price" id="price">{{ $item->pricing['sale_price'] ?? 0 }}</strong> </span>
+                            <strong class="new-price" id="price">
+                                <span class="price-usd ml-4" >
+                                    $ <strong>{{ $item->pricing['sale_price'] ?? 0 }}</strong>
+                                </span>
+                                <span class="price-inr ml-4 d-none">
+                                    ₹ <strong>{{ $item->pricing['sales_inr_price'] ?? 0 }}</strong>
+                                </span>
+                            </strong>
                         </h2>
                         @if(count($item->features) > 0)
                             <ul class="p-0 m-0">
@@ -732,6 +583,34 @@
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const isINR = localStorage.getItem('preferred_currency') === 'inr';
+        console.log(isINR);
+
+        if (isINR) {
+            // For main sale price (if not already handled)
+            document.querySelectorAll('.price-usd').forEach(el => el.classList.add('d-none'));
+            document.querySelectorAll('.price-inr').forEach(el => el.classList.remove('d-none'));
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const isINR = localStorage.getItem('preferred_currency') === 'inr';
+        const priceElement = document.getElementById('price');
+
+        if (isINR && priceElement) {
+            const usd = priceElement.querySelector('.price-usd');
+            const inr = priceElement.querySelector('.price-inr');
+
+            if (usd && inr) {
+                usd.classList.add('d-none');
+                inr.classList.remove('d-none');
+            }
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
         let tabs = document.querySelectorAll(".nav-link");
         let contents = document.querySelectorAll(".tab-content");
     
@@ -750,20 +629,16 @@
         });
     });
     function setRating(rating) {
-        // Update hidden input value
         document.getElementById("ratingInput").value = rating;
-        
-        // Update displayed rating count
+
         document.getElementById("ratingValue").textContent = `(${rating}.0)`;
 
-        // Reset all stars to default (gray)
         document.querySelectorAll("#starRating i").forEach(star => {
-            star.style.color = "#ccc"; // Reset color
+            star.style.color = "#ccc";
         });
 
-        // Highlight clicked stars
         for (let i = 1; i <= rating; i++) {
-            document.querySelector(`.s${i}`).style.color = "gold"; // Set selected stars to yellow
+            document.querySelector(`.s${i}`).style.color = "gold";
         }
     }
     const addToWishlistRoute = "{{ route('wishlist.add') }}";

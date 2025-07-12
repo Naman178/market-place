@@ -55,7 +55,6 @@ $ogImage = $logoImage
             background-color: #ffffff !important; /* Light gray background */
             padding: 10px;
             border-radius: 5px 0 0 5px;
-            /* border: 1px solid #ced4da; */
             height: 100%;
             display: flex;
             align-items: center;
@@ -80,9 +79,7 @@ $ogImage = $logoImage
             margin-bottom: 2px;
             overflow: auto;
         }
-    </style>
-    
-    <style>
+
         .filelabel {
             display: flex;
             align-items: center;
@@ -295,8 +292,6 @@ $ogImage = $logoImage
                 $('#profile_pic_error').text(errors.profile_pic || '');
             }
         });
-        //  $('#country').select2();
-        //  $('#country_code').select2();
     </script>
     
     <script>
@@ -371,7 +366,6 @@ $ogImage = $logoImage
 
                         @php $name = optional($user)->name ? explode(" ", $user->name) : ['', ''];  @endphp
                         <div class="col-md-12 border p-4 card">
-                            {{-- <h4 class="mb-5 txt-white">Profile Details</h4> --}}
                             <form method="POST" class="erp-profile-submit" id="profile_form" enctype="multipart/form-data"
                                 data-url="{{ route('store-user-profile') }}">
                                 @csrf
@@ -403,30 +397,12 @@ $ogImage = $logoImage
                                             <div class="error" id="email_error"></div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-12">
-                                        <label for="category_image">Image</label>
-                                        <label class="form-control filelabel image-input-wrapper">
-                                            <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
-                                            <span class="btn btn-outline-primary">
-                                                <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
-                                            </span>
-                                            <img id="preview" class="previewImgCls hidepreviewimg" 
-                                                src="@if(!empty($user->profile_pic)){{asset('assets/images/faces/'.$user->profile_pic)}}@endif" 
-                                                style="{{$user->profile_pic ? 'display:block;' : 'display:none;'}}">
-                                            <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
-                                            <span id="file_name" class="file-name"></span>
-                                        </label>   
-                                    </div>--}}
-                                    {{-- <label for="category_image">Image</label> --}}
                                     <label class="form-control filelabel image-input-wrapper" style="margin: -4px 14px 14px 17px;">
                                         <input type="hidden" name="old_image" value="@if(!empty($user->profile_pic)){{$user->profile_pic}}@endif">
                                         <input type="file" name="profile_pic" id="profile_pic" class="form-control input-error image-input" onchange="previewImage(event)">
                                         <span class="btn btn-outline-primary">
                                             <i class="i-File-Upload nav-icon font-weight-bold cust-icon"></i>Choose File
                                         </span>
-                                        {{-- <img id="preview" class="previewImgCls hidepreviewimg" 
-                                            src="@if(!empty($user->profile_pic)){{ asset('assets/images/faces/'.$user->profile_pic) }}@else{{ asset('assets/images/faces/default.png') }}@endif"
-                                            style="@if(!empty($user->profile_pic)) display:block; @else display:none; @endif"> --}}
                                             @php
                                                 $profilePic = filter_var($user->profile_pic, FILTER_VALIDATE_URL)
                                                             ? $user->profile_pic
@@ -436,51 +412,17 @@ $ogImage = $logoImage
                                         <span class="title" id="profile_pic_title">{{ $user->profile_pic ?? '' }}</span>
                                         <span id="file_name" class="file-name"></span>
                                     </label>
-                                    {{-- <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input  type="file" name="profile_pic" id="profile_pic" class="form-control"
-                                                placeholder="">
-                                            <div class="error" id="profile_pic_error"></div>
-                                        </div>
-                                        @if ($user->profile_pic)
-                                            <img class="mb-3" src="{{asset('assets/images/faces/' . $user->profile_pic) }}" alt="photo" width="100" height="100">
-                                        @else
-                                            <img class="mb-3" src="{{asset('assets/images/faces/1.png') }}" alt="photo" width="100" height="100">
-                                        @endif
-                                        @if ($errors->has('profile_pic'))
-                                            <div class="text-red-500 text-sm">{{ $errors->first('profile_pic') }}</div>
-                                        @endif
-                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            {{-- <select name="country_code" id="country_code" class="form-control select-input"
-                                                required="required">
-                                                <option value="">Select country code</option>
-                                                @foreach ($countaries as $countery)
-                                                    <option value="{{ $countery->id }}"
-                                                        {{ $user->country_code == $countery->id ? 'selected' : '' }}>
-                                                        {{ $countery->country_code }}</option>
-                                                @endforeach
-                                            </select> --}}
                                             <input type="tel" id="contact" name="contact" class="form-control" value="{{ optional($user)->contact_number }}">
                                             <input type="hidden" name="country_code" id="country_code" value="{{ $user->country_code }}">
-                                            {{-- <input type="hidden" name="country_code_name" id="country_code_name" value="{{ $dialCode }}"> --}}
                                             <input type="hidden" name="country_name" id="country_name" value="{{$isoName}}">
                                             @error('country_code')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                             <div class="error" id="country_code_error"></div>
                                         </div>
-                                    </div>                           
-                                    {{-- <div class="col-md-8">
-                                        <div class="form-group">
-                                            <input type="number" name="contact" id="contact" class="form-control"
-                                                placeholder="" 
-                                                value="{{ optional($user)->contact_number }}">
-                                            <label for="contact" class="floating-label">Contact Number</label>
-                                            <div class="error" id="contact_error"></div>
-                                        </div>
-                                    </div> --}}
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" name="company_name" id="company_name" class="form-control custom-css"
@@ -499,20 +441,6 @@ $ogImage = $logoImage
                                             <div class="error" id="company_website_error"></div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-12">
-                                        <div class="form-group">
-                                            <select name="country" id="country" class="form-control custom-css select-input">
-                                                <option value="0">Select Country</option>
-                                                @foreach ($countaries as $countery)
-                                                    <option value="{{ $countery->id }}"
-                                                        data-country-code="{{ $countery->ISOname }}"
-                                                        {{ $user->country == $countery->id ? 'selected' : '' }}>
-                                                        {{ $countery->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="error" id="country_error"></div>
-                                        </div>
-                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="text" name="address_line1" id="address_line_one"
@@ -556,8 +484,6 @@ $ogImage = $logoImage
                                           </svg>
                                           <span>Submit</span>
                                       </button>
-                                          {{-- <button type="button"
-                                              class="btn btn-block pink-btn mt-3 erp-profile-form" style="cursor: pointer;">Submit</button> --}}
                                       </div>
                                 </div>
                             </form>

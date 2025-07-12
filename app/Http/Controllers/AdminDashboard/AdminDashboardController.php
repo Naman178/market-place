@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Items;
 use App\Models\Blog;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 class AdminDashboardController extends Controller
 {
@@ -21,7 +22,11 @@ class AdminDashboardController extends Controller
 
         $totalPurchase = Items::where('sys_state', '!=', '-1')->count();
 
-        $totalSales = Order::where('sys_state', '!=', '-1')->sum('payment_amount');
+         $totalSales = DB::table('order__rec_tbl')
+            ->join('items__tbl', 'order__rec_tbl.product_id', '=', 'items__tbl.id')
+            ->where('order__rec_tbl.sys_state', '!=', '-1')
+            ->where('items__tbl.sys_state', '=', '0')
+            ->sum('order__rec_tbl.payment_amount')/ 100;
 
         $users = User::where('sys_state', '!=', '-1')->latest()->take(5)->get();
 

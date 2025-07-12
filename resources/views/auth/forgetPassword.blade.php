@@ -28,7 +28,6 @@
         <div class=" d-flex justify-content-center">
             <div class="col-xl-3 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card p-4 dark-blue-card mb-5">                    
-                    {{-- <h1 class="mb-3 text-8 text-center text-white">Forgot Password</h1>                     --}}
                     @if (Session::has('message'))
                         <p class="text-white"> {{ Session::get('message') }} </p>                    
                     @endif
@@ -54,7 +53,6 @@
                                 </svg>
                                 <span class="ml-3">Send Password Reset Link</span>
                             </button>
-                            {{-- <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn" style="cursor: pointer;">Send Password Reset Link</button> --}}
                             <p class="text-center d-block text-white"><a class="a_color" href="{{ url('user-login') }}">Back to Login </a></p>
                         </div>
                     </form>

@@ -11,20 +11,6 @@
 
    <!--  FOR LIVE -->
     <script src="https://cdn.tiny.cloud/1/ccs0n7udyp8c417rnmljbdonwhsg4b8v61la4t8s2eiyhk5q/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    {{-- <script>
-        tinymce.init({
-            selector: 'textarea#html_description',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes autocorrect inlinecss',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-            init_instance_callback: function(editor) {
-                editor.on('keyup', function(e) {
-                    $(document).find('textarea').removeClass('is-invalid');
-                    $('textarea').closest(".form-group").find('.error').text("");
-            });
-            }
-        });
-    </script> --}}
 @endsection
 @section('page-css')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -248,7 +234,7 @@
                         <div class="card mt-3 mb-3">
                             <div class="card-body">
                                 <div class="col-md-12 form-group">
-                                    <h5>Pricing</h5>
+                                    <h5>USD Pricing</h5>
                                     <div class="row">
                                         @php
                                         $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
@@ -395,7 +381,7 @@
                         <div class="card mt-3 mb-3">
                             <div class="card-body">
                                 <div class="col-md-12 form-group">
-                                    <h5>Pricing</h5>
+                                    <h5>USD Pricing</h5>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="fixed_price">Enter Fixed Price</label>
@@ -469,23 +455,43 @@
                 </div>
                 <div class="card mt-2 mb-2">
                         <div class="row p-4">
-                            <div class="col-md-12 form-group">
+                           <div class="col-md-12 form-group">
                                 <label for="category_label">Category</label>
-                                {!! Form::select('category_id', ['' => 'Select category'] + $categories, $item->categorySubcategory->category_id, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
+                                @if(!empty($item->categorySubcategory->category_id))
+                                    {!! Form::select(
+                                        'category_id',
+                                        ['' => 'Select category'] + $categories,
+                                        $item->categorySubcategory->category_id,
+                                        ['class' => 'form-control select-input category-select', 'id' => 'category_id']
+                                    ) !!}
+                                @else
+                                 {!! Form::select('category_id', ['' => 'Select category'] + $categories, null, ['class' => 'form-control select-input category-select', 'id' => 'category_id']) !!}
+                                    
+                                @endif
                                 <div class="error" style="color:red;" id="category_error"></div>
                             </div>
-
+                            
                             <div class="col-md-12 form-group">
                                 <label for="subcategory_label">Sub category</label>
                                 <select name="subcategory_id" id="subcategory_id" class="form-control subcategory-select select-input">
                                     <option value="">Select sub category</option>
-                                    @foreach($subcategories as $subcategory)
-                                        @if($subcategory->category_id == $item->categorySubcategory->category_id)
-                                            <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" {{ $item->categorySubcategory->subcategory_id == $subcategory->id ? 'selected' : '' }}>{{ $subcategory->name }}</option>
-                                        @else
-                                            <option value="{{ $subcategory->id }}" data-category="{{ $subcategory->category_id }}" class="d-none">{{ $subcategory->name }}</option>
-                                        @endif
-                                    @endforeach
+                            
+                                    @if(!empty($subcategories) && !empty($item->categorySubcategory->category_id))
+                                        @foreach($subcategories as $subcategory)
+                                            @php
+                                                $selectedCatId = $item->categorySubcategory->category_id;
+                                                $selectedSubId = $item->categorySubcategory->subcategory_id;
+                                            @endphp
+                                            <option
+                                                value="{{ $subcategory->id }}"
+                                                data-category="{{ $subcategory->category_id }}"
+                                                {{ $subcategory->id == $selectedSubId ? 'selected' : '' }}
+                                                class="{{ $subcategory->category_id == $selectedCatId ? '' : 'd-none' }}"
+                                            >
+                                                {{ $subcategory->name }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 <div class="error" style="color:red;" id="subcategories_error"></div>
                             </div>
@@ -512,7 +518,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mt-2 mb-2">
+                @if ($type !== 'recurring')
+                    <div class="card mt-3 mb-3">
+                        <div class="card-body">
+                            <div class="col-md-12 form-group">
+                                <h5>INR Pricing</h5>
+                                <div class="row">
+                                    @php
+                                        $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
+                                        $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
+                                        $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
+
+                                        $gst_amount = ($sale_price * $gst_percentage) / 100;
+
+                                        $gst_amount_formatted = number_format($gst_amount, 2);
+                                    @endphp
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="fixed_price_inr">Enter fixed price</label>
+                                        {!! Form::number('fixed_price_inr', $item->pricing->fixed_inr_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price_inr')) !!}
+                                        <div class="error" style="color:red;" id="fixed_price_inr_error"></div>
+                                    </div>
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="sale_price_inr">Enter Sale Price</label>
+                                        {!! Form::number('sale_price_inr', $item->pricing->sales_inr_price, array('placeholder' => 'Enter sale price','class' => 'form-control input-error price-input' , 'id' => 'item_sale_price_inr')) !!}
+                                        <div class="error" style="color:red;" id="sale_price_inr_error"></div>
+                                    </div>
+                                    <div class="col-md-12 mt-2 mb-2">
+                                        <label for="gst_percentage_inr">Enter GST %</label>
+                                        {!! Form::number('gst_percentage_inr', $item->pricing->gst_percentage_inr, array('placeholder' => 'Enter GST %','class' => 'form-control input-error price-input' , 'id' => 'item_gst_percentage_inr')) !!}
+                                        <div class="error" style="color:red;" id="gst_percentage_inr_error"></div>
+                                        <div class="gst-amount" id="gst_amount">GST Amount: <strong><span>{{ $gst_amount_formatted }}</span></strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                {{-- <div class="card mt-2 mb-2">
                     <div class="card-body">
                         <div class="col-md-12 form-group">
                             <label for="currency_label">Currency</label>
@@ -528,7 +570,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </form>
             @else
                 <div class="card">
@@ -592,7 +634,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-2 mb-2">
+                    @if ($type !== 'recurring')
+                        <div class="card mt-3 mb-3">
+                            <div class="card-body">
+                                <div class="col-md-12 form-group">
+                                    <h5>INR Pricing</h5>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="fixed_price_inr">Enter Fixed Price</label>
+                                            {!! Form::number('fixed_price_inr', null, array('placeholder' => 'Enter fixed price','class' => 'form-control price-input input-error' , 'id' => 'item_fixed_price_inr')) !!}
+                                            <div class="error" style="color:red;" id="fixed_price_inr_error"></div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="sale_price_inr">Enter Sale Price</label>
+                                            {!! Form::number('sale_price_inr', null, array('placeholder' => 'Enter sale price','class' => 'form-control price-input input-error' , 'id' => 'item_sale_price_inr')) !!}
+                                            <div class="error" style="color:red;" id="sale_price_inr_error"></div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="gst_percentage_inr">Enter GST %</label>
+                                            {!! Form::number('gst_percentage_inr', null, array('placeholder' => 'Enter GST %','class' => 'form-control price-input input-error' , 'id' => 'item_gst_percentage_inr')) !!}
+                                            <div class="error" style="color:red;" id="gst_percentage_inr_error"></div>
+                                            <div class="gst-amount" id="gst_amount"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    {{-- <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <div class="col-md-12 form-group">
                                 <label for="currency_label">Currency</label>
@@ -608,20 +677,20 @@
                                 </select>
                             </div>
                         </div>
-                    </div>                    
+                    </div> --}}
                 </form>
             @endif
         </div>
     @endif
 
     @php
-    use App\Models\ItemsPricing;
-    use App\Models\ItemsFeature;
-    use App\Models\ItemsImage;
-    $subItem = ItemsPricing::where('item_id', $itemid)->where('pricing_type','recurring')->get();
-    $subfeature = ItemsFeature::where('item_id',$itemid)->where('sub_id','!=',null)->get();
-    $subimage = ItemsImage::where('item_id',$itemid)->where('sub_id','!=',null)->get();
-@endphp
+        use App\Models\ItemsPricing;
+        use App\Models\ItemsFeature;
+        use App\Models\ItemsImage;
+        $subItem = ItemsPricing::where('item_id', $itemid)->where('pricing_type','recurring')->get();
+        $subfeature = ItemsFeature::where('item_id',$itemid)->where('sub_id','!=',null)->get();
+        $subimage = ItemsImage::where('item_id',$itemid)->where('sub_id','!=',null)->get();
+    @endphp
 
 @if ($isshow == false && $type == 'recurring')
 <div class="row mt-2 w-100">
@@ -748,13 +817,13 @@
                         @if (!empty($item) && !empty($item->pricing) && $item->pricing->fixed_price)
                             <div class="row">
                                 @php
-                                $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
-                                $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
-                                $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
+                                    $fixed_price = isset($item->pricing->fixed_price) ? floatval($item->pricing->fixed_price) : 0;
+                                    $sale_price = isset($item->pricing->sale_price) ? floatval($item->pricing->sale_price) : 0;
+                                    $gst_percentage = isset($item->pricing->gst_percentage) ? floatval($item->pricing->gst_percentage) : 0;
 
-                                $gst_amount = ($sale_price * $gst_percentage) / 100;
+                                    $gst_amount = ($sale_price * $gst_percentage) / 100;
 
-                                $gst_amount_formatted = number_format($gst_amount, 2);
+                                    $gst_amount_formatted = number_format($gst_amount, 2);
                                 @endphp
                                 <div class="col-md-12 mt-2 mb-2">
                                     {!! Form::number('fixed_price', $item->pricing->fixed_price, array('placeholder' => 'Enter fixed price','class' => 'form-control input-error price-input' , 'id' => 'item_fixed_price')) !!}

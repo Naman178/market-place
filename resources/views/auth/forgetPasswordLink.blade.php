@@ -117,7 +117,6 @@
                                     </svg>
                                     <span class="ml-3">Reset Password</span>
                                 </button>
-                                {{-- <button type="submit" class="btn btn-block pink-btn mt-3" id="login-btn">Reset Password</button> --}}
                             </div>
                         </form>
                         

@@ -32,22 +32,37 @@ class Key extends JsonResource
         $wallet = Wallet::where('user_id',$this->user_id)->first();
         $order = Order::where('id',$this->order_id)->get()->first();
         $product_id = $wallet->product_id;
-        $plan = Items::where('id',$product_id)->get()->first();
+        $plans = Items::whereIn('id', explode(',', $product_id))
+        ->with('features')
+        ->with('pricing')
+        ->get();
+        $product = Items::with(['features', 'pricing'])->find($this->product_id);
+        $order = Order::find($this->order_id);
+        $all_features = [];
         
+        if ($product) {
+            $features = $product->features->pluck('key_feature')->toArray();
+
+            if (in_array('All Payment Integration', $features)) {
+                $features[] = 'Razorpay Payment Integration';
+                $features[] = 'Cashfree Payment Integration';
+                $features[] = 'Stripe Payment Integration';
+                $features[] = 'Shiprockt Integration';
+            }
+
+            $all_features[] = [
+                'product_name' => $product->name,
+                'price' => $order ? $order->payment_amount/100 : null,
+                'features' => $features
+            ];
+        }
         $order_id = $order->id;
         $order_count = $wallet->total_order;
         $order_limit = $wallet->remaining_order;
-        $per_order_price = $plan->monthly_price;
-        $remaining_wallet_amount = $wallet->wallet_amount;         
-        $features = explode(',',$plan->key_features);        
-        if(in_array('All Payment Integration',$features)){
-            $features[] = 'Razorpay Payment Integration';
-            $features[] = 'Cashfree Payment Integration';
-            $features[] = 'Stripe Payment Integration';
-            $features[] = 'Shiprockt Integration';
-        }
+        // $per_order_price = $plan->monthly_price;
+        $remaining_wallet_amount = $wallet->wallet_amount;
 
-        $product_name = $plan->name;
+        // $product_name = $plan->name;
         if(count($user) == 0){
             return [];
         }
@@ -57,11 +72,11 @@ class Key extends JsonResource
                 'status' => $status,
                 'expired_at' => $this->expire_at,
                 'user' => $user,
-                'plan_features' => $features,
+                'product_features' => $all_features,
                 'order_id' => $order_id,
                 'order_count'=>$order_count,
-                'order_limit'=>$order_limit,           
+                'order_limit'=>$order_limit,
             ];
-        }        
+        }
     }
 }
